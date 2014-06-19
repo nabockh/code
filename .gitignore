@@ -1,9 +1,0 @@
-env
-.env
-.idea
-*.py[cod]
-.DS_Store
-db.sqlite3
-build
-nohup.out
-local_settings.py
