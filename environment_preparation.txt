@@ -25,8 +25,8 @@ cat ~/.ssh/id_rsa.pub
 
 mkdir projects
 cd projects
-git clone git@bitbucket.org:Perfectial/bedade-internal.git
-cd bedade-internal
+git clone git@bitbucket.org:Perfectial/bedade.git
+cd bedade
 virtualenv venv
 
 sudo chmod a+x bedade_web_dev.sh
@@ -34,15 +34,15 @@ sudo chmod a+x bedade_celeryworker_dev.sh
 
 nano /etc/supervisor/conf.d/bedade_web.conf
 [program:bedade_web]
-command = /root/projects/bedade-internal/bedade_web_dev.sh
+command = /root/projects/bedade/bedade_web_dev.sh
 user = root
-stdout_logfile = /root/projects/bedade-internal/supervisor.log
+stdout_logfile = /root/projects/bedade/supervisor.log
 redirect_stderr = true
 killasgroup=true
 
 nano /etc/supervisor/conf.d/bedade_celeryworker.conf
 [program:bedade_celeryworker]
-command = /root/projects/bedade-internal/bedade_celeryworker_dev.sh
+command = /root/projects/bedade/bedade_celeryworker_dev.sh
 user = root
-stdout_logfile = /root/projects/bedade-internal/supervisor.log
+stdout_logfile = /root/projects/bedade/supervisor.log
 redirect_stderr = true

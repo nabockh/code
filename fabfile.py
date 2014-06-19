@@ -80,7 +80,7 @@ def prod_server():
 
 def deploy():
     # path to the directory on the server where your vhost is set up
-    path = "/root/projects/bedade-internal"
+    path = "/root/projects/bedade"
     # name of the application process
     process_web = "bedade_web"
     process_worker = "bedade_celeryworker"
@@ -135,8 +135,8 @@ def bootstrap():
     
     run("mkdir projects")
     with cd("projects"):
-        run("git clone git@bitbucket.org:Perfectial/bedade-internal.git")
-        with cd("bedade-internal"):
+        run("git clone git@bitbucket.org:Perfectial/bedade.git")
+        with cd("bedade"):
             run("virtualenv venv")
             sudo("chmod a+x bedade_web_dev.sh") 
             sudo("chmod a+x bedade_celeryworker_dev.sh")
