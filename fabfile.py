@@ -76,7 +76,7 @@ def prod_server():
     # Set the username
     env.user = "root"
     # Set the password [NOT RECOMMENDED]
-    env.password = "xnlhcjlgdbao"    
+    env.password = "muzcnhhsqpep"    
 
 def deploy():
     # path to the directory on the server where your vhost is set up
