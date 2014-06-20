@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load i18n %}
+{% load bootstrap %}
 
 {% block js %}
 {{ wizard.form.media }}
@@ -16,7 +17,7 @@
         {{ form }}
     {% endfor %}
 {% else %}
-    {{ wizard.form }}
+    {{ wizard.form|bootstrap }}
 {% endif %}
 </table>
 {% if wizard.steps.prev %}
