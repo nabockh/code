@@ -69,6 +69,16 @@ def demo_server():
     env.password = "rauuayhbngvv"
 
 
+def qa_server():
+    """QA and CI server configuration Ubuntu 14.04 x32"""
+    # The IP of your server
+    env.host_string = '188.226.213.66'
+    # Set the username
+    env.user = "root"
+    # Set the password [NOT RECOMMENDED]
+    env.password = "iwomtvopmrbk"
+
+
 def prod_server():
     """Production server configuration Ubuntu 14.04 x32"""
     # The IP of your server
@@ -76,7 +86,9 @@ def prod_server():
     # Set the username
     env.user = "root"
     # Set the password [NOT RECOMMENDED]
-    env.password = "muzcnhhsqpep"    
+    env.password = "muzcnhhsqpep"
+    env.branch = "master"
+
 
 def deploy():
     # path to the directory on the server where your vhost is set up
@@ -112,6 +124,7 @@ def deploy():
 
     print(red("DONE!"))
 
+
 def bootstrap():
     # before running bootstrap it's needed to generate ssh key
     # and add it to deployment keys in bitbucket repo settings
@@ -132,13 +145,13 @@ def bootstrap():
     run("sudo -u postgres createdb %s" % dbsettings['NAME'])
 
     run("aptitude  -y install rabbitmq-server")
-    
+
     run("mkdir projects")
     with cd("projects"):
         run("git clone git@bitbucket.org:Perfectial/bedade.git")
         with cd("bedade"):
             run("virtualenv venv")
-            sudo("chmod a+x bedade_web_dev.sh") 
+            sudo("chmod a+x bedade_web_dev.sh")
             sudo("chmod a+x bedade_celeryworker_dev.sh")
 
     for conf in ['bedade_web.conf', 'bedade_celeryworker.conf']:
