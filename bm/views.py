@@ -5,6 +5,7 @@ from django.contrib.formtools.wizard.views import CookieWizardView
 from django.db import transaction
 from django.http import HttpResponse
 from django.utils.decorators import method_decorator
+from django.views.generic import ListView
 
 
 class BenchmarkCreateWizardView(CookieWizardView):
@@ -40,3 +41,17 @@ class BenchmarkCreateWizardView(CookieWizardView):
                     choice = QuestionChoice(choice, i)
                     question.choices.add(choice)
         return HttpResponse('OK')
+
+
+class BenchmarkHistoryView(ListView):
+    template_name = 'bm/history.html'
+    paginate_by = 10
+    context_object_name = 'benchmark'
+
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs):
+        return super(BenchmarkHistoryView, self).dispatch(request, *args, **kwargs)
+
+    def get_queryset(self):
+        order_by = self.request.GET.get('order_by', 'name')
+        return Benchmark.objects.filter(owner=self.request.user).order_by(order_by)
