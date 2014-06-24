@@ -56,6 +56,7 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'bootstrapform',
+    'djcelery_email',
     'social_auth',
     'core',
     'social',
@@ -149,11 +150,12 @@ LINKEDIN_OAUTH2_EXTRA_DATA = [('id', 'id'), ]
 LOGIN_REDIRECT_URL = "/"
 LOGIN_ERROR_URL = "/"
 
-EMAIL_HOST_USER = os.environ.get('SENDGRID_USERNAME')
+EMAIL_BACKEND = 'djcelery_email.backends.CeleryEmailBackend'
+EMAIL_HOST_USER = os.environ.get('SENDGRID_USERNAME', 'devova')
 EMAIL_HOST = 'smtp.sendgrid.net'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-EMAIL_HOST_PASSWORD = os.environ.get('SENDGRID_PASSWORD')
+EMAIL_HOST_PASSWORD = os.environ.get('SENDGRID_PASSWORD', 'bedadesmtp')
 
 try:
     from local_settings import *
