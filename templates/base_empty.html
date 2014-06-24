@@ -6,6 +6,7 @@
     <link rel="stylesheet" href="{{ STATIC_URL }}/css/style.css"/>
     <link rel="stylesheet" href="{{ STATIC_URL }}/css/jquery.mCustomScrollbar.css"/>
     <link rel="stylesheet" href="{{ STATIC_URL }}/css/font-awesome.min.css"/>
+    <link href='http://fonts.googleapis.com/css?family=Roboto:400,900italic,500italic,400italic,500,700,700italic,900,300italic,300,100italic,100' rel='stylesheet' type='text/css'>
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
     <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
@@ -15,6 +16,7 @@
 <body>
 {% block navigation %}{% endblock %}	
 {% block body %}{% endblock %}
+{% block footer %}{% endblock %}
 
 <script src="{{ STATIC_URL }}/js/jquery.mCustomScrollbar.concat.min.js"></script>
 <script>

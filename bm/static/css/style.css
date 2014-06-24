@@ -1,9 +1,12 @@
 body {
     font-size: 14px;
     line-height: 24px;
-    color: #333;
     margin: 0;
     padding: 0;
+    background: #ccc;
+    padding-top: 90px;
+    font-family: Roboto;
+    font-weight: 300;
 }
 
 html, body {
@@ -11,7 +14,7 @@ html, body {
 }
 
 a {
-    font-weight: bold;
+    font-weight: 500;
     color: #3d4d77;
 }
 
@@ -21,10 +24,16 @@ a {
 }
 
 .navbar-default {
-    color: #fff;
-    background-color: #6C99C0;
-    border-color: #4C7FAC;
+    background-color: #fff;
+    border: none;
     border-radius: 0;
+    height: 90px;
+    margin-bottom: 0;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    box-shadow: 0 3px 5px;
 }
 
 .navbar-default .navbar-brand {
@@ -81,7 +90,6 @@ span.nav-username-dropdown {
     font-size: 1.6rem;
     padding: 0 10px;
     text-align: center;
-    color: #fff;
     cursor: pointer;
     text-decoration: none;
 }
@@ -94,7 +102,7 @@ span.nav-username-dropdown {
     }
 
 .sign-in-btn {
-    background: #fff;
+    background: #E1E6E7;
     position: relative;
     padding-left: 45px;
     color: #4b4b4b;
@@ -200,4 +208,96 @@ span.nav-username-dropdown {
 
 input.btn.full-width {
     width: 100%;
+}
+
+.top-navbar {
+    margin-top: 20px;
+}
+
+/* Colorblocking */
+
+.colorblock {
+    background-color: #fff;
+    padding: 60px 0;
+}
+
+.colorblock p {
+    margin-bottom: 40px;
+}
+
+.navbar-brand {
+    padding: 8px 0;
+}
+
+.big-title {
+    color: #666;
+    font-size: 60px;
+    line-height: 60px;
+    display: block;
+    margin-bottom: 30px;
+    text-transform: uppercase;
+}
+
+.colorblock.banner {
+    background-image: url('../img/bdde_banner.png');
+    background-position: center center;
+}
+
+    .colorblock.banner .big-title {
+        color: #fff;
+    }
+
+    .colorblock.banner .help-text {
+        color: #94a6c3;
+        font-size: 26px;
+        line-height: 26px;
+    }
+
+        .colorblock.banner .help-text i {
+            text-decoration: underline;
+            color: #77a9b6;
+        }
+
+.colorblock.footer {
+    background-color: #333;
+    color: #fff;
+}
+
+    .colorblock.footer p {
+        margin-bottom: 15px;
+    }
+
+        .colorblock.footer p.bigger {
+            font-size: 38px;
+            margin: 0 0 10px;
+            line-height: 38px;
+        }
+
+        .colorblock.footer .lrg {
+            font-size: 18px;
+            line-height: 18px;
+        }
+
+    .colorblock.footer a{
+        color: #77a9b6;
+    }
+
+    .colorblock.footer .dec {
+        color: #94a6c3;
+    }
+
+    .colorblock.footer .big {
+        color: #94a6c3;
+    }
+
+/* End - Colorblocking */
+
+
+
+/* Bootstrap fixes according to design */
+
+@media (min-width: 1200px) {
+    .container {
+        width: 970px;
+    }
 }

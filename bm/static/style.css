@@ -1,10 +1,9 @@
 body {
     font-size: 14px;
     line-height: 24px;
-    color: #333;
     margin: 0;
     padding: 0;
-    font-family: Roboto;
+    background: #ccc;
 }
 
 html, body {
@@ -22,10 +21,10 @@ a {
 }
 
 .navbar-default {
-    color: #fff;
-    background-color: #6C99C0;
-    border-color: #4C7FAC;
+    background-color: #fff;
+    border: none;
     border-radius: 0;
+    height: 90px;
 }
 
 .navbar-default .navbar-brand {
@@ -82,7 +81,6 @@ span.nav-username-dropdown {
     font-size: 1.6rem;
     padding: 0 10px;
     text-align: center;
-    color: #fff;
     cursor: pointer;
     text-decoration: none;
 }

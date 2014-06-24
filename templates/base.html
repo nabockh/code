@@ -2,7 +2,7 @@
 
 {% block navigation %}
     <nav class="navbar navbar-default" role="navigation">
-      <div class="container-fluid">
+      <div class="container top-navbar">
         <div class="navbar-header">
           <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-2">
             <span class="sr-only">Toggle navigation</span>
@@ -10,7 +10,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="/">BEDADE</a>
+          <a class="navbar-brand" href="/"><img src='{{ STATIC_URL }}/img/bdde_logo.png'/></a>
 
         </div>
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
@@ -31,24 +31,45 @@
               </div>
 
           {% endif %}
-          <form class="navbar-form navbar-right" role="search">
-            <div class="form-group">
-              <input type="text" class="form-control search-field" placeholder="Search">
-              <button type="submit" class="btn btn-default search-btn"><span class="glyphicon glyphicon-search"></span></button>
-            </div>            
-          </form>          
+                   
         </div>
       </div>
     </nav>
 {% endblock %}
 
 {% block body %}
-    <div class="container">
-        <div class="authentication">
-            
+        <div class="colorblock banner">
+            <div class='container text-center'>
+              <span class='big-title'>Better Data. <br> Better Decisions.<br></span>
+              <span class='help-text'>Benchmark Intelligence from the wisdom <br> of <i>your</i> professional network.</span>
+            </div>
         </div>
+        <div class="colorblock">
+            <div class='container'>
+              <span class='big-title text-center'>How it works</span>
+              <p>Bedade aggregates data from experts for your use. You know your industry, the data you need, and who has the right knowledge. Bedade is a platform to exchange that knowledge. You choose your target contributors, type your question and watch the results roll in. Get better data quicker. Extract data from within your network to make comparisons and benchmarks, instead of relying on guestimates or expensive data sources. Anonymously shared data from your trusted contacts will provide insight for your critical decisions. <a href='#'>View the Diagram</a></p>
+            </div>
+        </div>
+
         {% block content %}
 
         {% endblock %}
-    </div>
+{% endblock %}
+{% block footer %}
+    <div class="colorblock footer">
+            <div class='container'>
+              <div class='row'>
+                  <div class="col-md-4">
+                    <p class='bigger'>Bedade.</p>
+                    <span class='dec lrg'>Better Decisions. Better Data.</span>
+                  </div>
+                  <div class="col-md-8">
+                    <p class='dec'>Our goal is to get you better data, and in the process connect you to like minded experts.</p>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc sagittis pellentesque erat, in eleifend lorem ipsum metus lorem ipsum dolor tempus non. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus enim tortor, vulputate et elit in, pellentesque elementum risus. Nam eros nunc, gravida id orci in, aliquet lacinia nisl. <br>
+                    Copyright 2014 Bedade, Inc. All Rights Reserved. <a href="#">Privacy</a> <span class='dec'>|</span> <a href="#">Legal</a></p>
+                  </div>
+              </div>
+              
+            </div>
+        </div>
 {% endblock %}
