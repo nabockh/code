@@ -163,3 +163,24 @@ span.nav-username-dropdown {
                 text-align: left;
                 font-size: 1.3rem;
 }
+
+.form-container {
+    max-width: 300px;
+    padding: 10px;
+    border-radius: 5px;
+    margin: 0 auto;
+    background: rgba(108, 153, 192, 0.3);
+}
+
+.form-container-inner {
+    padding: 10px;
+    background: #fff;
+}
+
+.form-container-inner textarea.form-control {
+    height: 80px;
+}
+
+input.btn.full-width {
+    width: 100%;
+}
