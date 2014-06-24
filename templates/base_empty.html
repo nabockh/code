@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="{{ STATIC_URL }}style.css"/>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+    {% block js %}{% endblock %}
+    <title>{% block title %}Bedade{% endblock %}</title>
+</head>
+<body>
+{% block navigation %}{% endblock %}	
+{% block body %}{% endblock %}
+</body>
+</html>

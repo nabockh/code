@@ -1,0 +1,49 @@
+apt-get install python-virtualenv
+
+sudo apt-get install python-dev
+
+sudo apt-get install supervisor
+
+apt-get install git
+
+# install postgres
+sudo apt-get install postgresql postgresql-contrib-9.1
+
+# set password for postgres user
+sudo -u postgres psql postgres
+\password postgres
+
+apt-get install postgresql-server-dev-9.1
+apt-get install rabbitmq-server
+
+
+ssh-keygen
+ssh-agent /bin/bash
+ssh-add ~/.ssh/id_rsa
+cat ~/.ssh/id_rsa.pub
+# copy public key to deployment keys in bitbucket 
+
+mkdir projects
+cd projects
+git clone git@bitbucket.org:Perfectial/bedade.git
+cd bedade
+virtualenv venv
+
+sudo chmod a+x bedade_web_dev.sh
+sudo chmod a+x bedade_celeryworker_dev.sh
+
+nano /etc/supervisor/conf.d/bedade_web.conf
+[program:bedade_web]
+
+command = /root/projects/bedade/bedade_web_dev.sh
+user = root
+stdout_logfile = /root/projects/bedade/supervisor.log
+redirect_stderr = true
+killasgroup=true
+
+nano /etc/supervisor/conf.d/bedade_celeryworker.conf
+[program:bedade_celeryworker]
+command = /root/projects/bedade/bedade_celeryworker_dev.sh
+user = root
+stdout_logfile = /root/projects/bedade/supervisor.log
+redirect_stderr = true

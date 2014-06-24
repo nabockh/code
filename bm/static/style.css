@@ -1,0 +1,165 @@
+.btn-primary {
+    background-color: #4C7FAC;
+    border-color: #3A678F;
+}
+
+.navbar-default {
+    color: #fff;
+    background-color: #6C99C0;
+    border-color: #4C7FAC;
+    border-radius: 0;
+}
+
+.navbar-default .navbar-brand {
+    color: #fff;
+    font-weight: bold;
+}
+
+.sign-in-btn {
+    margin: 8px 0 8px 20px;
+}
+
+.search-field {
+    border-bottom-right-radius: 0;
+    border-top-right-radius: 0;
+    display: block !important;
+    float: left;
+    border-color: #3A678F;
+    border-right: none;
+}
+
+.search-btn {
+    border-bottom-left-radius: 0;
+    border-top-left-radius: 0;
+    display: block;
+    color: #fff;
+    outline: none;
+    background-color: #4C7FAC;
+    border-color: #3A678F;
+}
+
+    .search-btn:hover, .search-btn:active, .search-btn:focus {
+        background-color: #3276b1;
+        border-color: #285e8e;
+        color: #fff;
+        outline: none;
+    }
+
+span.nav-username {
+    line-height: 50px;
+    font-size: 1.6rem;
+    margin-left: 20px;
+    padding: 0 0 0 10px;
+
+}
+
+span.nav-username-dropdown:hover > ul {
+    display: block;
+}
+
+span.nav-username-dropdown {
+    display: inline-block;
+    margin: 0;
+    line-height: 50px;
+    font-size: 1.6rem;
+    padding: 0 10px;
+    text-align: center;
+    color: #fff;
+    cursor: pointer;
+    text-decoration: none;
+}
+    span.nav-username-dropdown:hover{
+        color: #4F7DA5;
+    }
+
+    span.nav-username-dropdown .glyphicon{
+        font-size: 1.3rem;
+    }
+
+.sign-in-btn {
+    background: #fff;
+    position: relative;
+    padding-left: 45px;
+    color: #4b4b4b;
+}
+
+    .sign-in-btn:before {
+        content: 'in';
+        position: absolute;
+        left: -1px;
+        width: 35px;
+        background: #426E97;
+        line-height: 34px;
+        top: -1px;
+        font-weight: bold;
+        font-size: 1.8rem;
+        border-bottom-left-radius: 4px;
+        border-top-left-radius: 4px;
+        color: #fff;
+    }
+
+    .sign-in-btn:hover {
+        background: #F0F0F0;
+    }
+
+        .sign-in-btn:hover:before {
+            background: #3C6081;
+        }
+
+
+.navbar-btn {
+    margin: 8px 0 8px 5px;
+}
+
+.dropdown-container {
+    position: relative;
+}
+
+.dropdown-container ul {
+    display: none;
+    position: absolute;
+    top: 90%;
+    right: 3px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    background: #f0f0f0;
+    border: 1px solid #dedede;
+    border-radius: 5px;
+}
+
+    .dropdown-container ul:before {
+        content: '';
+        top: -10px;
+        right: 8px;
+        position: absolute;
+        border-left: 5px solid transparent;
+        border-right: 5px solid transparent;
+        border-bottom: 9px solid #dedede;
+    }
+
+    .dropdown-container ul:after {
+        content: '';
+        top: -7px;
+        right: 9px;
+        position: absolute;
+        border-left: 4px solid transparent;
+        border-right: 4px solid transparent;
+        border-bottom: 7px solid #f0f0f0;
+    }
+
+        .dropdown-container ul li {
+            border-bottom: 1px solid #ccc;
+        }
+            .dropdown-container ul li:last-child {
+                border-bottom: none;
+            }
+
+            .dropdown-container ul li a {
+                display: block;
+                padding: 7px 10px 8px;
+                color: #4b4b4b;            
+                line-height: initial;
+                text-align: left;
+                font-size: 1.3rem;
+}

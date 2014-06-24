@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+<h1>History</h1>
+{% block content %}
+    <th>Sort by:</th>
+    <th><a href="?order_by=start_date">Date</a></th>
+    <th><a href="?order_by=name">Name</a></th>
+    <th><a href="?order_by=geographic_coverage">Geo</a></th>
+    {% for benchmark in object_list %}
+        <div class="benchmark">
+            <div class="benchmark_name">{{ benchmark.name }}&nbsp;&nbsp;{{ benchmark.owner }}&nbsp;&nbsp;{{ benchmark.start_date }}</div>
+        </div>
+    {% empty %}
+        <p>There are no Benchmarks in your History</p>
+    {% endfor %}
+{% endblock %}
