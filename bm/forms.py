@@ -1,4 +1,4 @@
-from bm.models import Question, Region
+from bm.models import Question, Region, Benchmark
 from django import forms
 from social.models import LinkedInIndustry
 
@@ -22,3 +22,11 @@ class CreateBenchmarkStep2(forms.Form):
     answer_options = forms.CharField(widget=forms.Textarea())
     additional_comments = forms.CharField(widget=forms.Textarea(), required=False)
     minimum_number_of_answers = forms.IntegerField(min_value=0, initial=5)
+
+
+class AnswerMultipleChoiceForm(forms.Form):
+
+    def __init__(self, choices, *args, **kwargs):
+        super(AnswerMultipleChoiceForm, self).__init__(*args, **kwargs)
+        self.fields['choice'] = forms.MultipleChoiceField(choices=choices, widget=forms.CheckboxSelectMultiple())
+
