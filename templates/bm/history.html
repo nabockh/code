@@ -10,6 +10,7 @@
     {% for benchmark in object_list %}
         <div class="benchmark">
             <div class="benchmark_name">{{ benchmark.name }}&nbsp;&nbsp;{{ benchmark.owner }}&nbsp;&nbsp;{{ benchmark.start_date }}</div>
+            <div class="bm_question">{{ benchmark.question.first.description }}</div>
         </div>
     {% empty %}
         <p>There are no Benchmarks in your History</p>
