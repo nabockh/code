@@ -72,10 +72,12 @@ class QuestionChoice(models.Model):
     label = models.CharField(max_length=45)
     order = models.PositiveSmallIntegerField(null=True, blank=True)
 
-    def __init__(self, label=None, order=None):
-        super(QuestionChoice, self).__init__()
-        self.label = label
-        self.order = order
+    def __init__(self, label=None, order=None, *args, **kwargs):
+        super(QuestionChoice, self).__init__(*args, **kwargs)
+        if label and order:
+            self.label = label
+            self.order = order
+
 
 
 class QuestionRanking(models.Model):
