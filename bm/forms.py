@@ -48,5 +48,5 @@ class NumericAnswerForm(forms.Form):
 
 
 class RangeAnswerForm(forms.Form):
-    min_val = forms.IntegerField()
-    max_val = forms.IntegerField()
+    min = forms.IntegerField(label="min")
+    max = forms.IntegerField(label='max')

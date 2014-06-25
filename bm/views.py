@@ -1,6 +1,7 @@
 from bm.forms import CreateBenchmarkStep1Form, CreateBenchmarkStep2Form, AnswerMultipleChoiceForm, \
-    CreateBenchmarkStep3Form, NumericAnswerForm
-from bm.models import Benchmark, Region, Question, QuestionChoice, QuestionResponse, ResponseChoice, ResponseNumeric
+    CreateBenchmarkStep3Form, NumericAnswerForm, RangeAnswerForm
+from bm.models import Benchmark, Region, Question, QuestionChoice, QuestionResponse, ResponseChoice, ResponseNumeric, \
+    ResponseRange
 from django.contrib.auth.decorators import login_required
 from django.contrib.formtools.wizard.views import CookieWizardView
 from django.db import transaction
@@ -123,7 +124,7 @@ class RankingAnswerView(BaseBenchmarkAnswerView):
 
 
 class RangeAnswerView(BaseBenchmarkAnswerView):
-    form_class = NumericAnswerForm
+    form_class = RangeAnswerForm
     template_name = 'bm/answer.html'
 
     def dispatch(self, request, *args, **kwargs):
@@ -132,7 +133,17 @@ class RangeAnswerView(BaseBenchmarkAnswerView):
     def form_valid(self, form):
         if form.is_valid():
             with transaction.atomic():
-                pass
+                question_response = QuestionResponse()
+                question_response.user = self.request.user
+                question_response.question = self.benchmark.question.first()
+                question_response.save()
+                bm_response_range = ResponseRange()
+                min_val = form.cleaned_data['min']
+                max_val = form.cleaned_data['max']
+                bm_response_range.min = min_val
+                bm_response_range.max = max_val
+                question_response.data_range.add(bm_response_range)
+        return super(RangeAnswerView, self).form_valid(form)
 
 
 class NumericAnswerView(BaseBenchmarkAnswerView):
