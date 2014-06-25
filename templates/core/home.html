@@ -1,8 +1,30 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    {% if user.is_authenticated %}
-        <!-- <p><strong>Welcome: {{ user.first_name }} {{ user.last_name }}</strong></p> -->
-        <!-- <p><a href="{% url 'in_contacts_import' %}" class="btn btn-primary btn-sm">Import contacts</a></p> -->
-    {% endif %}
+        <div class="colorblock banner">
+            <div class='container text-center'>
+                <span class='big-title'>Better Data. <br> Better Decisions.<br></span>
+                <span class='help-text'>Benchmark Intelligence from the wisdom <br> of <i>your</i> professional network.</span>
+            </div>
+        </div>
+        <div class="colorblock">
+            <div class='container'>
+                <span class='big-title text-center'>How it works</span>
+                <p>Bedade aggregates data from experts for your use. You know your industry, the data you need, and who has the right knowledge. Bedade is a platform to exchange that knowledge. You choose your target contributors, type your question and watch the results roll in. Get better data quicker. Extract data from within your network to make comparisons and benchmarks, instead of relying on guestimates or expensive data sources. Anonymously shared data from your trusted contacts will provide insight for your critical decisions. <a href='#'>View the Diagram</a></p>
+                <div class='row'>
+                    <div class="col-md-4 how-it-works">
+                        <div class='title fa-cogs'>Create Custom <br>Benchmark Surveys</div>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc sagittis pellentesque erat, in eleifend lorem ipsum metus lorem ipsum dolor tempus non.</p>
+                    </div>
+                    <div class="col-md-4 how-it-works">
+                        <div class='title fa-comments'>Get Trusted Data from <br>Your Professional Network</div>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc sagittis pellentesque erat, in eleifend lorem ipsum metus lorem ipsum dolor tempus non.</p>
+                    </div>
+                    <div class="col-md-4 how-it-works">
+                        <div class='title fa-tasks'>Compare and Analyze<br>to Make Better Decisions</div>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc sagittis pellentesque erat, in eleifend lorem ipsum metus lorem ipsum dolor tempus non.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
 {% endblock %}

@@ -193,7 +193,7 @@ span.nav-username-dropdown {
     max-width: 300px;
     padding: 10px;
     border-radius: 5px;
-    margin: 0 auto;
+    margin: 40px auto;
     background: rgba(108, 153, 192, 0.3);
 }
 
@@ -276,7 +276,10 @@ input.btn.full-width {
         .colorblock.footer .lrg {
             font-size: 18px;
             line-height: 18px;
-        }
+        
+            margin-bottom: 30px;
+            display: block;
+}
 
     .colorblock.footer a{
         color: #77a9b6;
@@ -284,10 +287,33 @@ input.btn.full-width {
 
     .colorblock.footer .dec {
         color: #94a6c3;
-    }
+    
+}
 
     .colorblock.footer .big {
         color: #94a6c3;
+    }
+
+.how-it-works .title {
+    color: #3d4d77;
+    font-size: 18px;
+    font-weight: 500;
+    margin-bottom: 15px;
+    padding-left: 65px;
+    position: relative;
+}
+
+    .how-it-works .title:before {
+        font-size: 4.5rem;
+        line-height: 4rem;
+        position: absolute;
+        left: 0;    
+        font-family: fontawesome;
+        top: 5px;
+    }
+
+    .how-it-works p {
+        margin-bottom: 10px;
     }
 
 /* End - Colorblocking */
