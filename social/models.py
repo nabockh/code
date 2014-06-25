@@ -1,5 +1,9 @@
+from app import settings
 from django.core.cache import cache
+from django.core.mail import send_mail
 from django.db import models, transaction
+from linkedin import linkedin
+from social.backend.linkedin import extract_access_tokens, LinkedInApplication
 from social_auth.db.django_models import USER_MODEL
 
 
@@ -55,10 +59,41 @@ class Contact(models.Model):
     provider = models.PositiveSmallIntegerField()
     first_name = models.CharField(max_length=100)
     last_name = models.CharField(max_length=100)
-    email = models.EmailField(blank=True, null=True)
+    _email = models.EmailField(blank=True, null=True, db_column="email")
     headline = models.CharField(max_length=200, blank=True, null=True)
     location = models.ForeignKey(Region, blank=True, null=True, db_constraint=False, on_delete=models.SET_NULL)
     company = models.ForeignKey(Company, blank=True, null=True, db_constraint=False, on_delete=models.SET_NULL)
+    user = models.ForeignKey(USER_MODEL, blank=True, null=True, db_constraint=False, on_delete=models.SET_NULL)
+
+    @property
+    def email(self):
+        return self._email if self._email else self.user and self.user.email
+
+    @email.setter
+    def email(self, value):
+        self._email = value
+
+    @classmethod
+    def send_mail(cls, user_from, subject, body, contacts):
+        assert isinstance(contacts[0], cls), 'Contacts should be social.Contact instances'
+        recipients_without_email = []
+        for contact in contacts:
+            if contact.email:
+                send_mail(subject, body, user_from.email, recipient_list=[contact.email])
+            else:
+                recipients_without_email.append(contact.code)
+        if len(recipients_without_email):
+            auth = user_from.social_auth.first()
+            user_access = extract_access_tokens(auth.tokens)
+            authentication = linkedin.LinkedInDeveloperAuthentication(
+                settings.LINKEDIN_CONSUMER_KEY,
+                settings.LINKEDIN_CONSUMER_SECRET,
+                user_access.token,
+                user_access.token_secret,
+                ''
+            )
+            application = LinkedInApplication(authentication)
+            application.send_message(subject, body, recipients_without_email)
 
     @classmethod
     def create(cls, owner, provider, **kwargs):
