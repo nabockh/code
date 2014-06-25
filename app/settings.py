@@ -149,6 +149,7 @@ LINKEDIN_OAUTH2_EXTRA_DATA = [('id', 'id'), ]
 
 LOGIN_REDIRECT_URL = "/"
 LOGIN_ERROR_URL = "/"
+LOGIN_URL = '/login/linkedin'
 
 EMAIL_BACKEND = 'djcelery_email.backends.CeleryEmailBackend'
 EMAIL_HOST_USER = os.environ.get('SENDGRID_USERNAME', 'devova')
@@ -156,6 +157,7 @@ EMAIL_HOST = 'smtp.sendgrid.net'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_PASSWORD = os.environ.get('SENDGRID_PASSWORD', 'bedadesmtp')
+DEFAULT_FROM_EMAIL = 'info@bedade.com'
 
 try:
     from local_settings import *

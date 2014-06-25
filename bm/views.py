@@ -1,5 +1,5 @@
-from bm.forms import CreateBenchmarkStep1, CreateBenchmarkStep2, AnswerMultipleChoiceForm
-from bm.models import Benchmark, Region, Question, QuestionChoice, QuestionResponse, ResponseChoice
+from bm.forms import CreateBenchmarkStep1Form, CreateBenchmarkStep2Form, AnswerMultipleChoiceForm
+from bm.models import Benchmark, Region, Question, QuestionChoice, QuestionResponse
 from django.contrib.auth.decorators import login_required
 from django.contrib.formtools.wizard.views import CookieWizardView
 from django.db import transaction
@@ -11,7 +11,7 @@ from django.views.generic.edit import FormView
 
 class BenchmarkCreateWizardView(CookieWizardView):
     template_name = 'bm/create.html'
-    form_list = [CreateBenchmarkStep1, CreateBenchmarkStep2]
+    form_list = [CreateBenchmarkStep1Form, CreateBenchmarkStep2Form]
 
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
@@ -84,19 +84,12 @@ class MultipleChoiceAnswerView(BaseBenchmarkAnswerView):
         # This method is called when valid form data has been POSTed.
         # It should return an HttpResponse.
         if form.is_valid():
-            with transaction.atomic():
-                question_response = QuestionResponse()
-                question_response.user = self.request.user
-                question_response.question = self.benchmark.question.first()
-                question_response.save()
-                choice = form.cleaned_data['choice']
-                for choice in QuestionChoice.objects.filter(id__in=choice):
-                    bm_response_choice = ResponseChoice()
-                    bm_response_choice.choice = choice
-                    question_response.data_choices.add(bm_response_choice)
+            # with transaction.atomic():
+            #     question_response = QuestionResponse()
+            #     question_response.user = self.request.user
+
             print form.cleaned_data['choice']
         return super(MultipleChoiceAnswerView, self).form_valid(form)
-
 
 class RankingAnswer(BaseBenchmarkAnswerView):
     pass
