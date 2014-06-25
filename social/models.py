@@ -26,12 +26,16 @@ class LinkedInIndustry(models.Model):
             cache.set(cls.__name__, data)
         return LinkedInIndustry(data.get(name), name) if not code else LinkedInIndustry(code, name)
 
+    @classmethod
+    def get_proposal(cls, contacts):
+        return cls.objects.filter(companies__employees__in=contacts.values_list('id', flat=True)).values_list('code', 'name').distinct().order_by('name')
+
 from bm.models import Region
 
 
 class Company(models.Model):
     name = models.CharField(max_length=100, blank=True, null=True)
-    _industry = models.ForeignKey(LinkedInIndustry, db_column="industry_id", blank=True, null=True, db_constraint=False, on_delete=models.SET_NULL)
+    _industry = models.ForeignKey(LinkedInIndustry, db_column="industry_id", blank=True, null=True, db_constraint=False, on_delete=models.SET_NULL, related_name='companies')
     code = models.PositiveIntegerField(null=True, blank=True)
 
     @property
@@ -61,8 +65,10 @@ class Contact(models.Model):
     last_name = models.CharField(max_length=100)
     _email = models.EmailField(blank=True, null=True, db_column="email")
     headline = models.CharField(max_length=200, blank=True, null=True)
-    location = models.ForeignKey(Region, blank=True, null=True, db_constraint=False, on_delete=models.SET_NULL)
-    company = models.ForeignKey(Company, blank=True, null=True, db_constraint=False, on_delete=models.SET_NULL)
+    location = models.ForeignKey(Region, blank=True, null=True, db_constraint=False, on_delete=models.SET_NULL,
+                                 related_name='contacts')
+    company = models.ForeignKey(Company, blank=True, null=True, db_constraint=False, on_delete=models.SET_NULL,
+                                related_name='employees')
     user = models.ForeignKey(USER_MODEL, blank=True, null=True, db_constraint=False, on_delete=models.SET_NULL)
 
     @property

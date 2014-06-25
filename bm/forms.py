@@ -11,10 +11,10 @@ class CreateBenchmarkStep1Form(forms.Form):
     question_text = forms.CharField(widget=forms.Textarea())
     question_type = forms.MultipleChoiceField(choices=Question.TYPES)
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, user, *args, **kwargs):
         super(CreateBenchmarkStep1Form, self).__init__(*args, **kwargs)
         self.fields['geo'].choices = list(Region.regions.values_list('id', 'name').order_by('name'))
-        self.fields['industry'].choices = list(LinkedInIndustry.objects.values_list('code', 'name').order_by('name'))
+        self.fields['industry'].choices = list(LinkedInIndustry.get_proposal(user.contacts))
 
 
 class CreateBenchmarkStep2Form(forms.Form):
@@ -25,7 +25,15 @@ class CreateBenchmarkStep2Form(forms.Form):
 
 
 class CreateBenchmarkStep3Form(forms.Form):
-    pass    
+    industry = forms.ChoiceField()
+    geo = forms.ChoiceField()
+    role = forms.CharField(max_length=200)
+    name = forms.CharField(max_length=100)
+
+    def __init__(self, user, *args, **kwargs):
+        super(CreateBenchmarkStep3Form, self).__init__(*args, **kwargs)
+        self.fields['geo'].choices = list(Region.regions.values_list('id', 'name').order_by('name'))
+        self.fields['industry'].choices = list(LinkedInIndustry.get_proposal(user.contacts))
 
 
 class AnswerMultipleChoiceForm(forms.Form):

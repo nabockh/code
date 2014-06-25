@@ -1,4 +1,5 @@
-from bm.forms import CreateBenchmarkStep1Form, CreateBenchmarkStep2Form, AnswerMultipleChoiceForm
+from bm.forms import CreateBenchmarkStep1Form, CreateBenchmarkStep2Form, AnswerMultipleChoiceForm, \
+    CreateBenchmarkStep3Form
 from bm.models import Benchmark, Region, Question, QuestionChoice, QuestionResponse
 from django.contrib.auth.decorators import login_required
 from django.contrib.formtools.wizard.views import CookieWizardView
@@ -11,11 +12,14 @@ from django.views.generic.edit import FormView
 
 class BenchmarkCreateWizardView(CookieWizardView):
     template_name = 'bm/create.html'
-    form_list = [CreateBenchmarkStep1Form, CreateBenchmarkStep2Form]
+    form_list = [CreateBenchmarkStep1Form, CreateBenchmarkStep2Form, CreateBenchmarkStep3Form]
 
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
         return super(BenchmarkCreateWizardView, self).dispatch(*args, **kwargs)
+
+    def get_form_kwargs(self, step=None):
+        return {'user': self.request.user}
 
     def done(self, form_list, **kwargs):
         step1 = form_list[0]
