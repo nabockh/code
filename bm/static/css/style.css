@@ -193,7 +193,7 @@ span.nav-username-dropdown {
     max-width: 300px;
     padding: 10px;
     border-radius: 5px;
-    margin: 0 auto;
+    margin: 40px auto;
     background: rgba(108, 153, 192, 0.3);
 }
 
@@ -219,6 +219,8 @@ input.btn.full-width {
 .colorblock {
     background-color: #fff;
     padding: 60px 0;
+    background-position: center center;
+    background-size: auto 100%;
 }
 
 .colorblock p {
@@ -233,6 +235,7 @@ input.btn.full-width {
     color: #666;
     font-size: 60px;
     line-height: 60px;
+    font-weight: 100;
     display: block;
     margin-bottom: 30px;
     text-transform: uppercase;
@@ -240,10 +243,30 @@ input.btn.full-width {
 
 .colorblock.banner {
     background-image: url('../img/bdde_banner.png');
-    background-position: center center;
 }
 
-    .colorblock.banner .big-title {
+.colorblock.features {
+    background-image: url('../img/bdde_features.png');
+    min-height: 430px;
+    background-position: center bottom;
+    background-repeat: no-repeat;
+}
+
+.colorblock.contacts {
+    background-color: #ebeef2; 
+}
+
+.colorblock.map {
+    padding: 0;
+}
+
+    .colorblock.map iframe {
+        margin: 0;
+        padding: 0;
+        display: block;
+    }
+
+    .colorblock.banner .big-title, .colorblock.features .big-title, .colorblock.about .big-title {
         color: #fff;
     }
 
@@ -276,7 +299,10 @@ input.btn.full-width {
         .colorblock.footer .lrg {
             font-size: 18px;
             line-height: 18px;
-        }
+        
+            margin-bottom: 30px;
+            display: block;
+}
 
     .colorblock.footer a{
         color: #77a9b6;
@@ -284,10 +310,190 @@ input.btn.full-width {
 
     .colorblock.footer .dec {
         color: #94a6c3;
-    }
+    
+}
 
     .colorblock.footer .big {
         color: #94a6c3;
+    }
+
+.how-it-works .title {
+    color: #3d4d77;
+    font-size: 18px;
+    font-weight: 500;
+    margin-bottom: 15px;
+    padding-left: 65px;
+    position: relative;
+}
+
+    .how-it-works .title:before {
+        font-size: 4.5rem;
+        line-height: 4rem;
+        position: absolute;
+        left: 0;    
+        font-family: fontawesome;
+        top: 5px;
+    }
+
+    .how-it-works p {
+        margin-bottom: 10px;
+    }
+
+.features .title {
+    color: #fff;
+    font-size: 18px;
+    margin-bottom: 15px;
+    font-weight: 500;
+}
+
+.features p {
+    margin-bottom: 25px;
+    color: #94a6c3;
+}
+
+.features.text-left > * {
+    padding-left: 40px;
+}
+
+.features.text-right > * {
+    padding-right: 20px;
+}
+
+.features .big-title {
+    margin-top: -15px;
+}
+
+/* Examples */
+
+.big-icon {
+    height: 50px;
+    width: 70px;
+    margin: 30px auto 20px;
+}
+
+.example-block {
+    width: 16.6666666%;
+    height: 240px;
+    float: left;
+    text-align: center;
+    color: #fff;
+    z-index: 1;
+    position: relative;
+    -webkit-transform: scale(1,1);
+    -webkit-transition-timing-function: ease-out;
+    -webkit-transition-duration: 250ms;
+    -moz-transform: scale(1,1);
+    -moz-transition-timing-function: ease-out;
+    -moz-transition-duration: 250ms;
+    transform: scale(1,1);
+    transition-timing-function: ease-out;
+    transition-duration: 250ms;
+}
+
+    .example-block:hover {
+        -webkit-transform: scale(1.05,1.07);
+        -moz-transform: scale(1.05,1.07);
+        transform: scale(1.05,1.07);
+        z-index: 2;
+        box-shadow: 2px 2px 3px rgba(0, 0, 0, 0.3), -2px 2px 3px rgba(0, 0, 0, 0.3);
+    }
+
+    .example-block.benchmark {
+        background-color: #202c45;
+    }
+
+        .example-block.benchmark .big-icon {
+            background-image: url('../img/icon_benchmark.png');
+        }
+
+    .example-block.market-trending {
+        background-color: #41495d;
+    }
+
+        .example-block.market-trending .big-icon {
+            background-image: url('../img/icon_market_trending.png');
+        }
+
+    .example-block.market-share {
+        background-color: #8592b2;
+    }
+
+        .example-block.market-share .big-icon {
+            background-image: url('../img/icon_market_share.png');
+        }
+
+    .example-block.market-size {
+        background-color: #98b0b3;
+    }
+
+        .example-block.market-size .big-icon {
+            background-image: url('../img/icon_market_size.png');
+        }
+
+    .example-block.historical-series {
+        background-color: #608a94;
+    }
+
+        .example-block.historical-series .big-icon {
+            background-image: url('../img/icon_historical_series.png');
+        }
+
+    .example-block.adoption-rate {
+        background-color: #33626e;
+    }
+
+        .example-block.adoption-rate .big-icon {
+            background-image: url('../img/icon_adoption_rate.png');
+        }
+
+    .example-block .title {
+        font-size: 14px;
+        font-weight: 500;
+        line-height: 24px;
+    }
+
+    .example-block p {
+        padding: 0 10px;
+        font-size: 12px;
+        line-height: 22px;
+    }
+
+/* About */
+
+.colorblock.about {
+    background-image: url('../img/bdde_about.png');
+}
+
+    .colorblock.about p {
+        color: #fff;
+        text-align: left;
+        margin-bottom: 0;
+    }
+
+.about-container {
+    padding: 30px 60px;
+    background-color: rgba(25, 30, 44, 0.76);
+}
+
+.big-title.decored {
+    position: relative;
+}
+
+    .big-title.decored:before,.big-title.decored:after {
+        content: '';
+        position: absolute;
+        height: 1px;
+        background: #fff;
+        width: 30%;
+        top: 50%;
+    }
+
+    .big-title.decored:before {
+        left: 0
+    }
+
+    .big-title.decored:after {
+        right: 0;
     }
 
 /* End - Colorblocking */
