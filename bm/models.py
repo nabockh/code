@@ -79,7 +79,6 @@ class QuestionChoice(models.Model):
             self.order = order
 
 
-
 class QuestionRanking(models.Model):
     question = models.ForeignKey(Question, related_name='ranks')
     label = models.CharField(max_length=45)
