@@ -42,3 +42,11 @@ class AnswerMultipleChoiceForm(forms.Form):
         super(AnswerMultipleChoiceForm, self).__init__(*args, **kwargs)
         self.fields['choice'] = forms.MultipleChoiceField(choices=choices, widget=forms.CheckboxSelectMultiple())
 
+
+class NumericAnswerForm(forms.Form):
+    numeric_box = forms.IntegerField()
+
+
+class RangeAnswerForm(forms.Form):
+    min_val = forms.IntegerField()
+    max_val = forms.IntegerField()

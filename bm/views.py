@@ -1,6 +1,6 @@
 from bm.forms import CreateBenchmarkStep1Form, CreateBenchmarkStep2Form, AnswerMultipleChoiceForm, \
-    CreateBenchmarkStep3Form
-from bm.models import Benchmark, Region, Question, QuestionChoice, QuestionResponse
+    CreateBenchmarkStep3Form, NumericAnswerForm
+from bm.models import Benchmark, Region, Question, QuestionChoice, QuestionResponse, ResponseChoice, ResponseNumeric
 from django.contrib.auth.decorators import login_required
 from django.contrib.formtools.wizard.views import CookieWizardView
 from django.db import transaction
@@ -69,6 +69,17 @@ class BaseBenchmarkAnswerView(FormView):
     def __init__(self):
         self.benchmark = Benchmark.objects.select_related('owner', 'geographic_coverage', '_industry', 'question').first()
 
+    def dispatch(self, request, *args, **kwargs):
+        question_type = self.benchmark.question.first().type
+        if question_type == Question.MULTIPLE:
+            return MultipleChoiceAnswerView.as_view()(self.request, *args, **kwargs)
+        elif question_type == Question.RANKING:
+            return RankingAnswerView.as_view()(self.request, *args, **kwargs)
+        elif question_type == Question.RANGE:
+            return RangeAnswerView.as_view()(self.request, *args, **kwargs)
+        elif question_type == Question.NUMERIC:
+            return NumericAnswerView.as_view()(self.request, *args, **kwargs)
+
     def get_context_data(self, **kwargs):
         context = super(BaseBenchmarkAnswerView, self).get_context_data(**kwargs)
         context['benchmark'] = self.benchmark
@@ -78,6 +89,9 @@ class BaseBenchmarkAnswerView(FormView):
 class MultipleChoiceAnswerView(BaseBenchmarkAnswerView):
     form_class = AnswerMultipleChoiceForm
     template_name = 'bm/answer.html'
+
+    def dispatch(self, request, *args, **kwargs):
+        return super(BaseBenchmarkAnswerView, self).dispatch(self.request, *args, **kwargs)
 
     def get_form_kwargs(self):
         kwargs = super(MultipleChoiceAnswerView, self).get_form_kwargs()
@@ -102,5 +116,42 @@ class MultipleChoiceAnswerView(BaseBenchmarkAnswerView):
         return super(MultipleChoiceAnswerView, self).form_valid(form)
 
 
-class RankingAnswer(BaseBenchmarkAnswerView):
-    pass
+class RankingAnswerView(BaseBenchmarkAnswerView):
+
+    def dispatch(self, request, *args, **kwargs):
+        return super(BaseBenchmarkAnswerView, self).dispatch(self.request, *args, **kwargs)
+
+
+class RangeAnswerView(BaseBenchmarkAnswerView):
+    form_class = NumericAnswerForm
+    template_name = 'bm/answer.html'
+
+    def dispatch(self, request, *args, **kwargs):
+        return super(BaseBenchmarkAnswerView, self).dispatch(self.request, *args, **kwargs)
+
+    def form_valid(self, form):
+        if form.is_valid():
+            with transaction.atomic():
+                pass
+
+
+class NumericAnswerView(BaseBenchmarkAnswerView):
+    form_class = NumericAnswerForm
+    template_name = 'bm/answer.html'
+
+    def dispatch(self, request, *args, **kwargs):
+        return super(BaseBenchmarkAnswerView, self).dispatch(self.request, *args, **kwargs)
+
+    def form_valid(self, form):
+        if form.is_valid():
+            with transaction.atomic():
+                question_response = QuestionResponse()
+                question_response.user = self.request.user
+                question_response.question = self.benchmark.question.first()
+                question_response.save()
+                bm_response_numeric = ResponseNumeric()
+                bm_response_numeric.value = form.cleaned_data['numeric_box']
+                question_response.data_numeric.add(bm_response_numeric)
+            print form.cleaned_data['numeric_box']
+
+        return super(NumericAnswerView, self).form_valid(form)
