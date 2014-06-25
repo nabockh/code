@@ -21,6 +21,14 @@ class Benchmark(models.Model):
     def industry(self, value):
         self._industry = LinkedInIndustry.get(code=value) if str(value).isdigit() else LinkedInIndustry.get(value)
 
+    def __unicode__(self):
+        return self.name
+
+    class Meta:
+        verbose_name = 'Pending Benchmark'
+        # app_label = 'asx'
+
+
 class BenchmarkInvitation(models.Model):
     benchmark = models.ForeignKey(Benchmark)
     recipient = models.ForeignKey("social.Contact", on_delete=models.CASCADE)
@@ -124,3 +132,6 @@ class Region(models.Model):
 
     objects = models.Manager()
     regions = RegionsManager()
+
+    def __unicode__(self):
+        return self.name
