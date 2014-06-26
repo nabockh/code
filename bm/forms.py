@@ -1,5 +1,6 @@
 from bm.models import Question, Region
 from django import forms
+from bm.widgets import RankingWidget
 from social.models import LinkedInIndustry
 
 
@@ -58,3 +59,10 @@ class NumericAnswerForm(forms.Form):
 class RangeAnswerForm(forms.Form):
     min = forms.IntegerField(label="min")
     max = forms.IntegerField(label='max')
+
+
+class RankingAnswerForm(forms.Form):
+    def __init__(self, ranks, *args, **kwargs):
+        super(RankingAnswerForm, self).__init__(*args, **kwargs)
+        for i, rank in enumerate(ranks):
+            self.fields['rank{0}'.format(rank[0])] = forms.IntegerField(widget=RankingWidget(attrs={'label': rank[1], 'value':i}))

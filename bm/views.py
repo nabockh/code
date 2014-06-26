@@ -1,7 +1,7 @@
 from bm.forms import CreateBenchmarkStep1Form, CreateBenchmarkStep2Form, AnswerMultipleChoiceForm, \
-    CreateBenchmarkStep3Form, CreateBenchmarkStep4Form, NumericAnswerForm, RangeAnswerForm
+    CreateBenchmarkStep3Form, CreateBenchmarkStep4Form, NumericAnswerForm, RangeAnswerForm, RankingAnswerForm
 from bm.models import Benchmark, Region, Question, QuestionChoice, QuestionResponse, ResponseChoice, ResponseNumeric, \
-    ResponseRange
+    ResponseRange, QuestionRanking, ResponseRanking
 from django.contrib.auth.decorators import login_required
 from django.contrib.formtools.wizard.forms import ManagementForm
 from django.contrib.formtools.wizard.views import CookieWizardView
@@ -166,14 +166,33 @@ class MultipleChoiceAnswerView(BaseBenchmarkAnswerView):
                     bm_response_choice = ResponseChoice()
                     bm_response_choice.choice = choice
                     question_response.data_choices.add(bm_response_choice)
-            print form.cleaned_data['choice']
         return super(MultipleChoiceAnswerView, self).form_valid(form)
 
 
 class RankingAnswerView(BaseBenchmarkAnswerView):
+    form_class = RankingAnswerForm
+    template_name = 'bm/answer.html'
 
     def dispatch(self, request, *args, **kwargs):
         return super(BaseBenchmarkAnswerView, self).dispatch(self.request, *args, **kwargs)
+
+    def get_form_kwargs(self):
+        kwargs = super(RankingAnswerView, self).get_form_kwargs()
+        kwargs['ranks'] = self.benchmark.question.first().ranks.values_list('id', 'label')
+        return kwargs
+
+    def form_valid(self, form):
+        if form.is_valid():
+            with transaction.atomic():
+                question_response = QuestionResponse()
+                question_response.user = self.request.user
+                question_response.question = self.benchmark.question.first()
+                question_response.save()
+                ranks = question_response.question.ranks.all()
+                for rank in ranks:
+                    rank_value = form.cleaned_data['rank{0}'.format(rank.id)]
+                    response_rank = ResponseRanking()
+                    pass
 
 
 class RangeAnswerView(BaseBenchmarkAnswerView):
