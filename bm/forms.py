@@ -23,17 +23,25 @@ class CreateBenchmarkStep2Form(forms.Form):
     additional_comments = forms.CharField(widget=forms.Textarea(), required=False)
     minimum_number_of_answers = forms.IntegerField(min_value=0, initial=5)
 
+    def __init__(self, user, *args, **kwargs):
+        super(CreateBenchmarkStep2Form, self).__init__(*args, **kwargs)
+
 
 class CreateBenchmarkStep3Form(forms.Form):
     industry = forms.ChoiceField()
     geo = forms.ChoiceField()
-    role = forms.CharField(max_length=200)
-    name = forms.CharField(max_length=100)
+    role = forms.CharField(max_length=200, required=False)
+    name = forms.CharField(max_length=100, required=False)
 
     def __init__(self, user, *args, **kwargs):
         super(CreateBenchmarkStep3Form, self).__init__(*args, **kwargs)
         self.fields['geo'].choices = list(Region.regions.values_list('id', 'name').order_by('name'))
         self.fields['industry'].choices = list(LinkedInIndustry.get_proposal(user.contacts))
+
+
+class CreateBenchmarkStep4Form(forms.Form):
+    def __init__(self, user, *args, **kwargs):
+        super(CreateBenchmarkStep4Form, self).__init__(*args, **kwargs)
 
 
 class AnswerMultipleChoiceForm(forms.Form):

@@ -19,7 +19,12 @@
                 {{ form }}
             {% endfor %}
         {% else %}
-            {{ wizard.form|bootstrap }}
+            {% if wizard.steps.step1 == 3 %}
+                {{ wizard.form|bootstrap }}
+                <button name="save_and_wizard_goto_step" type="submit" class="btn" value="2">{% trans "Search" %}</button>
+            {% else %}
+                {{ wizard.form|bootstrap }}
+            {% endif %}
         {% endif %}
         </table>
         {% if wizard.steps.prev %}

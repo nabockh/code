@@ -38,7 +38,8 @@ from bm.models import Region
 
 class Company(models.Model):
     name = models.CharField(max_length=100, blank=True, null=True)
-    _industry = models.ForeignKey(LinkedInIndustry, db_column="industry_id", blank=True, null=True, db_constraint=False, on_delete=models.SET_NULL)
+    _industry = models.ForeignKey(LinkedInIndustry, db_column="industry_id", blank=True, null=True, db_constraint=False,
+                                  on_delete=models.SET_NULL, related_name='companies')
     code = models.PositiveIntegerField(null=True, blank=True)
 
     @property
