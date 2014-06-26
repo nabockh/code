@@ -34,6 +34,7 @@ a {
     left: 0;
     right: 0;
     box-shadow: 0 3px 5px rgba(0, 0, 0, 0.34);
+    z-index: 9;
 }
 
 .navbar-default .navbar-brand {
@@ -67,7 +68,7 @@ ul.main-nav {
         color: #608a94;
     }
 
-    ul.main-nav li a.active {
+    ul.main-nav li.active a {
         box-shadow: 0 22px #fff, 0 30px #425380;
     }
 
