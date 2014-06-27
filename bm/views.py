@@ -192,7 +192,10 @@ class RankingAnswerView(BaseBenchmarkAnswerView):
                 for rank in ranks:
                     rank_value = form.cleaned_data['rank{0}'.format(rank.id)]
                     response_rank = ResponseRanking()
-                    pass
+                    response_rank.rank = rank
+                    response_rank.value = rank_value
+                    question_response.data_ranks.add(response_rank)
+            return super(RankingAnswerView, self).form_valid(form)
 
 
 class RangeAnswerView(BaseBenchmarkAnswerView):
