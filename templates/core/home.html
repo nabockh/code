@@ -105,11 +105,31 @@
             <div class='container'>
                 <span class='big-title text-center'>Contact</span>
                 <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut euismod vel neque vel ullamcorper. Morbi vel placerat lorem. Integer lacinia vulputate ligula id consectetur. Vivamus commodo nibh in ultricies varius. Quisque semper pellentesque rutrum. Fusce semper porta massa, congue egestas nunc accumsan sollicitudin. Fusce sagittis leo vitae nunc fermentum vestibulum. Donec vel euismod velit. Fusce luctus metus vitae justo semper, vitae auctor urna consequat. Nunc eget lacus sed magna tincidunt mattis. Proin viverra luctus quam, et congue mauris ornare eu.</p>
-                <form action="/" method="post">
-                    {% csrf_token %}
-                    {{ form }}
-                    <input type="submit" value="Submit" />
-                </form>
+                
+                <div class='row'>
+                    <div class='col-md-9'>
+                        <div class='row'>
+                            <div class='col-md-6'>
+                                <form action="/" class='styled-form' method="post">
+                                    {% csrf_token %}
+                                    {{ form }}
+                                    <input type="submit" value="Submit" />
+                                </form>
+                            </div>
+                         </div>
+                    </div>
+                    <div class='col-md-3'>
+                        <div class='contact-info'>
+                            <div class='title'>Contact Details</div>
+                            <p>Bedade Inc.</p>
+                            <p>50 California Street</p>
+                            <p>San Francisco, CA USA</p>
+                            <p style='margin-bottom:40px;'><a href="#">Get Directions</a></p>
+                            <p>+1.415.275.0280</p>
+                            <p><a href='@mailto:contact@bedade.com'>contact@bedade.com</a></p>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
 
