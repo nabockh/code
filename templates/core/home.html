@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load bootstrap %}
 
 {% block content %}
         <div class="colorblock banner" id='banner'>
@@ -103,7 +104,12 @@
         <div class="colorblock contacts" id='contact'>
             <div class='container'>
                 <span class='big-title text-center'>Contact</span>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut euismod vel neque vel ullamcorper. Morbi vel placerat lorem. Integer lacinia vulputate ligula id consectetur. Vivamus commodo nibh in ultricies varius. Quisque semper pellentesque rutrum. Fusce semper porta massa, congue egestas nunc accumsan sollicitudin. Fusce sagittis leo vitae nunc fermentum vestibulum. Donec vel euismod velit. Fusce luctus metus vitae justo semper, vitae auctor urna consequat. Nunc eget lacus sed magna tincidunt mattis. Proin viverra luctus quam, et congue mauris ornare eu.</p>                
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut euismod vel neque vel ullamcorper. Morbi vel placerat lorem. Integer lacinia vulputate ligula id consectetur. Vivamus commodo nibh in ultricies varius. Quisque semper pellentesque rutrum. Fusce semper porta massa, congue egestas nunc accumsan sollicitudin. Fusce sagittis leo vitae nunc fermentum vestibulum. Donec vel euismod velit. Fusce luctus metus vitae justo semper, vitae auctor urna consequat. Nunc eget lacus sed magna tincidunt mattis. Proin viverra luctus quam, et congue mauris ornare eu.</p>
+                <form action="/" method="post">
+                    {% csrf_token %}
+                    {{ form }}
+                    <input type="submit" value="Submit" />
+                </form>
             </div>
         </div>
 
