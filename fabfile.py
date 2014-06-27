@@ -114,6 +114,7 @@ def deploy():
     print(red("Beginning Deploy:"))
     with cd("%s" % path):
         run("pwd")
+        sudo('find . -name "*.pyc" -exec rm -rf {} \;')
         print(green("Pulling master from GitHub..."))
         sudo("git pull origin %s && git checkout %s" % (branch, branch), user=env.appuser)
         # sudo("git pull origin master", user=env.appuser)

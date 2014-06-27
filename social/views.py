@@ -7,5 +7,5 @@ class ContactsImport(RedirectView):
 
     def get(self, request, *args, **kwargs):
 
-        tasks.import_linkedin_contacts(request.user)
+        tasks.import_linkedin_contacts.delay(request.user)
         return super(ContactsImport, self).get(request, *args, **kwargs)

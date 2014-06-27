@@ -85,6 +85,13 @@ class Contact(models.Model):
     def email(self, value):
         self._email = value
 
+    @property
+    def full_name(self):
+        return self.first_name + ' ' + self.last_name
+
+    def __unicode__(self):
+        return self.full_name
+
     @classmethod
     def send_mail(cls, user_from, subject, body, contacts):
         assert isinstance(contacts[0], cls), 'Contacts should be social.Contact instances'
