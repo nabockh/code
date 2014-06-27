@@ -1,7 +1,5 @@
 from social.models import Profile, Company, LinkedInIndustry
 from bm.models import Region
-
-
 def load_extra_data(backend, details, response, uid, user, social_user=None,
                     *args, **kwargs):
     """Load extra data from provider and store it on current UserSocialAuth
@@ -19,16 +17,27 @@ def load_extra_data(backend, details, response, uid, user, social_user=None,
         location.code = response.get('location', {}).get('country', {}).get('code')
         location.save()
     for item in response.get('positions').get('position'):
-        if item['is-current'] == 'true':
-            company = Company.objects.filter(code=response['positions'].get('position', {})[0].get('company').get('id')).first()
-            if not company:
-                company = Company()
-                company.code = response['positions'].get('position', {})[0].get('company').get('id',{})
-                company.name = response['positions'].get('position', {})[0].get('company').get('name', {})
-                company.industry = LinkedInIndustry.objects.filter(name=response.get('industry', {})).first()
-                company.save()
-            break
-    social_profile.location = location
-    social_profile.company = company
-    social_profile.save()
-    return {'social_profile': social_profile}
+        if type(item) == dict:
+            if item['is-current']:
+                company = Company.objects.filter(code=response['positions'].get('position', {})[0].get('company').get('id')).first()
+                if not company:
+                    company = Company()
+                    company.code = response['positions'].get('position', {})[0].get('company').get('id',{})
+                    company.name = response['positions'].get('position', {})[0].get('company').get('name', {})
+                    company.industry = LinkedInIndustry.objects.filter(name=response.get('industry', {})).first()
+                    company.save()
+                break
+        elif type(item) == str:
+            if item == "is-current":
+                company = Company.objects.filter(code=response['positions'].get('position').get('company', {}).get('id')).first()
+                if not company:
+                    company = Company()
+                    company.code = response['positions'].get('position', {}).get('company', {}).get('id', {})
+                    company.name = response['positions'].get('position', {}).get('company', {}).get('name', {})
+                    company.industry = LinkedInIndustry.objects.filter(name=response.get('industry', {})).first()
+                    company.save()
+                break
+        social_profile.location = location
+        social_profile.company = company
+        social_profile.save()
+        return {'social_profile': social_profile}
