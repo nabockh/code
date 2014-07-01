@@ -49,7 +49,7 @@ class Question(models.Model):
         (MULTIPLE, 'Multiple'),
         (RANKING, 'Ranking'),
         (NUMERIC, 'Numeric'),
-        (SLIDING_SCALE, 'Sliding scale'),
+        # (SLIDING_SCALE, 'Sliding scale'),
         (RANGE, 'Range'),
     )
 
@@ -92,6 +92,23 @@ class QuestionRanking(models.Model):
     question = models.ForeignKey(Question, related_name='ranks')
     label = models.CharField(max_length=45)
     order = models.PositiveSmallIntegerField(null=True, blank=True)
+
+    def __init__(self, label=None, order=None, *args, **kwargs):
+        super(QuestionRanking, self).__init__(*args, **kwargs)
+        if label and order:
+            self.label = label
+            self.order = order
+
+
+class QuestionOptions(models.Model):
+    question = models.ForeignKey(Question, rel_class=models.OneToOneRel, related_name='options')
+    units = models.CharField(max_length=50)
+    number_of_decimal = models.PositiveSmallIntegerField(default=2)
+
+    def __init__(self, units, number_of_decimal, *args, **kwargs):
+        super(QuestionOptions, self).__init__(*args, **kwargs)
+        self.units = units
+        self.number_of_decimal = number_of_decimal
 
 
 class ResponseChoice(models.Model):
