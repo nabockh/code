@@ -53,6 +53,7 @@ class Company(models.Model):
     def __unicode__(self):
         return self.name
 
+
 class Profile(models.Model):
     user = models.ForeignKey(USER_MODEL, related_name='social_profile', on_delete=models.CASCADE)
     headline = models.CharField(max_length=200, blank=True, null=True)

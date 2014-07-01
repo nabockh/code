@@ -30,11 +30,12 @@ class Benchmark(models.Model):
 
 
 class BenchmarkInvitation(models.Model):
-    benchmark = models.ForeignKey(Benchmark)
+    benchmark = models.ForeignKey(Benchmark, related_name='invites')
+    sender = models.ForeignKey(USER_MODEL, blank=True, null=True, db_constraint=False, on_delete=models.SET_NULL)
     recipient = models.ForeignKey("social.Contact", on_delete=models.CASCADE)
-    sent_date = models.DateField(auto_now_add=True)
+    sent_date = models.DateField(blank=True, null=True)
     status = models.CharField(max_length=45)
-    is_allowed_to_forward_invite = models.BinaryField(default=False)
+    is_allowed_to_forward_invite = models.BooleanField(default=False)
 
 
 class Question(models.Model):

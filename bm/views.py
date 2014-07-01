@@ -1,7 +1,7 @@
 from bm.forms import CreateBenchmarkStep1Form, CreateBenchmarkStep2Form, AnswerMultipleChoiceForm, \
     CreateBenchmarkStep3Form, CreateBenchmarkStep4Form, NumericAnswerForm, RangeAnswerForm, RankingAnswerForm
 from bm.models import Benchmark, Region, Question, QuestionChoice, QuestionResponse, ResponseChoice, ResponseNumeric, \
-    ResponseRange, QuestionRanking, ResponseRanking
+    ResponseRange, QuestionRanking, ResponseRanking, BenchmarkInvitation
 from django.contrib.auth.decorators import login_required
 from django.contrib.formtools.wizard.forms import ManagementForm
 from django.contrib.formtools.wizard.views import CookieWizardView
@@ -78,6 +78,7 @@ class BenchmarkCreateWizardView(CookieWizardView):
     def done(self, form_list, **kwargs):
         step1 = form_list[0]
         step2 = form_list[1]
+        step3 = form_list[2]
         with transaction.atomic():
             benchmark = Benchmark()
             benchmark.name = step1.cleaned_data['name']
@@ -99,6 +100,16 @@ class BenchmarkCreateWizardView(CookieWizardView):
                 for i, choice in enumerate(choices):
                     choice = QuestionChoice(choice, i)
                     question.choices.add(choice)
+            step3_data = self.storage.get_step_data('2')
+            for contact in step3.contacts_filtered:
+                if step3_data.get('2-contact-{0}-invite'.format(contact.id)):
+                    invite = BenchmarkInvitation()
+                    invite.sender = benchmark.owner
+                    invite.recipient = contact
+                    invite.status = '0' #not send
+                    invite.is_allowed_to_forward_invite = bool(step3_data.get('2-contact-{0}-secondary'.format(contact.id)))
+                    benchmark.invites.add(invite)
+
         return HttpResponse('OK')
 
 
