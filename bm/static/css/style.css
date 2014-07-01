@@ -532,6 +532,63 @@ input.btn.full-width {
 /* End - Colorblocking */
 
 
+/* Forms */
+
+.styled-form label {
+    display: block;
+    line-height: 21px;
+    font-weight: 500;
+    color: #364468;
+}
+.styled-form input, .styled-form textarea {
+    width: 100%;
+    padding: 6px;
+    margin-bottom: 10px;
+    border: 1px solid #C9C9C9;
+}
+
+.styled-form textarea {
+    max-width: 100%;
+    max-height: 110px;
+}
+
+.styled-form input[type='submit'] {
+    width: 50%;
+    float: right;
+    color: #fff;
+    border: none;
+    outline: none;
+    background: #3F465A;
+    text-transform: uppercase;
+}
+
+.styled-form input[type='submit']:hover {
+    background: #4D566F;
+}
+
+.styled-form input[type='submit']:focus, .styled-form input[type='submit']:active {
+    box-shadow: 0 2px #ccc;
+}
+
+.colorblock.contacts .col-md-3 {
+    box-shadow: -1px 0 #ccc;
+}
+
+.contact-info {
+    float: right;
+    letter-spacing: 1px;
+}
+    .contact-info .title {
+        line-height: 21px; font-weight: 500; color: #364468;
+        margin-bottom: 15px;
+    }
+    .contact-info p {
+        margin-bottom: 0;
+    }
+
+        .contact-info p a {
+            font-weight: 300;
+        }
 
 /* Bootstrap fixes according to design */
 
