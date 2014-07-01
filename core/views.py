@@ -1,3 +1,4 @@
+from django.contrib.auth.decorators import login_required
 from django.core.mail import send_mail
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
@@ -23,3 +24,10 @@ class HomeView(TemplateView):
             recipient_list = User.objects.filter(is_superuser=True).values_list('email', flat=True)
             send_mail('Customer feedback', comments, last_name + '' + first_name, recipient_list)
             return HttpResponseRedirect('/thanks/')
+        else:
+            form = ContactForm()
+        return  render(request, 'core/home.html', {'form': form})
+
+
+class DashboardView(TemplateView):
+    template_name = 'bm/dashboard.html'

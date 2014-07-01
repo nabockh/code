@@ -57,9 +57,9 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'bootstrapform',
     'djcelery_email',
+    'social',
     'social_auth',
     'core',
-    'social',
     'bm',
 )
 
@@ -158,6 +158,10 @@ EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_PASSWORD = os.environ.get('SENDGRID_PASSWORD', 'bedadesmtp')
 DEFAULT_FROM_EMAIL = 'info@bedade.com'
+
+SOCIAL_AUTH_COMPLETE_URL_NAME = 'social_complete'
+FIRST_TIME_USER_REDIRECT_URL = '/'
+REGISTERED_USER_REDIRECT_URL = '/dashboard'
 
 try:
     from local_settings import *
