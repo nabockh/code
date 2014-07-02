@@ -121,7 +121,9 @@ class BenchmarkCreateWizardView(CookieWizardView):
                     invite.is_allowed_to_forward_invite = bool(step3_data.get('2-contact-{0}-secondary'.format(contact.id)))
                     benchmark.invites.add(invite)
 
-        return HttpResponse('OK')
+            link = benchmark.create_link()
+
+        return HttpResponse(link)
 
 
 class BenchmarkHistoryView(ListView):

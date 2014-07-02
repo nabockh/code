@@ -1,4 +1,6 @@
-from django.db import models
+import uuid
+from django.core.urlresolvers import reverse
+from django.db import models, IntegrityError
 from social.models import LinkedInIndustry
 from social_auth.db.django_models import USER_MODEL
 
@@ -24,6 +26,11 @@ class Benchmark(models.Model):
     def __unicode__(self):
         return self.name
 
+    def create_link(self):
+        link = BenchmarkLink()
+        self.links.add(link)
+        return reverse('bm_answer', kwargs=dict(slug=link.slug))
+
     class Meta:
         verbose_name = 'Pending Benchmark'
         # app_label = 'asx'
@@ -36,6 +43,24 @@ class BenchmarkInvitation(models.Model):
     sent_date = models.DateField(blank=True, null=True)
     status = models.CharField(max_length=45)
     is_allowed_to_forward_invite = models.BooleanField(default=False)
+
+
+class BenchmarkLink(models.Model):
+    benchmark = models.ForeignKey(Benchmark, related_name='links')
+    slug = models.SlugField(max_length=36, unique=True)
+
+    def __init__(self):
+        super(BenchmarkLink, self).__init__()
+        self.slug = str(uuid.uuid4())
+
+    def save(self, *args, **kwargs):
+        while True:
+            try:
+                super(BenchmarkLink, self).save(*args, **kwargs)
+            except IntegrityError:
+                self.slug = str(uuid.uuid4())
+            else:
+                break
 
 
 class Question(models.Model):
