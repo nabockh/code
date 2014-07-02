@@ -1,16 +1,17 @@
 from bm.forms import CreateBenchmarkStep1Form, CreateBenchmarkStep2Form, AnswerMultipleChoiceForm, \
     CreateBenchmarkStep3Form, CreateBenchmarkStep4Form, NumericAnswerForm, RangeAnswerForm, RankingAnswerForm
 from bm.models import Benchmark, Region, Question, QuestionChoice, QuestionResponse, ResponseChoice, ResponseNumeric, \
-    ResponseRange, QuestionRanking, ResponseRanking, BenchmarkInvitation, QuestionOptions
+    ResponseRange, QuestionRanking, ResponseRanking, BenchmarkInvitation, QuestionOptions, BenchmarkLink
 from django.contrib.auth.decorators import login_required
 from django.contrib.formtools.wizard.forms import ManagementForm
 from django.contrib.formtools.wizard.views import CookieWizardView
 from django.core.exceptions import ValidationError
 from django.db import transaction
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseNotFound
 from django.utils.decorators import method_decorator
 from django.views.generic import ListView
 from django.views.generic.edit import FormView
+from bm.signals import benchmark_answered
 
 
 class BenchmarkCreateWizardView(CookieWizardView):
@@ -46,7 +47,7 @@ class BenchmarkCreateWizardView(CookieWizardView):
 
         form_current_step = management_form.cleaned_data['current_step']
         if (form_current_step != self.steps.current and
-                self.storage.current_step is not None):
+                    self.storage.current_step is not None):
             # form refreshed, change current step
             self.storage.current_step = form_current_step
 
@@ -144,31 +145,55 @@ class BaseBenchmarkAnswerView(FormView):
     success_url = '/thanks/'
     benchmark = None
 
-    def __init__(self):
-        self.benchmark = Benchmark.objects.select_related('owner', 'geographic_coverage', '_industry', 'question').first()
+    # def __init__(self, *args, **kwargs):
+    #     self.benchmark = Benchmark.objects.select_related('owner', 'geographic_coverage', '_industry',
+    #                                                       'question').first()
 
-    def dispatch(self, request, *args, **kwargs):
-        question_type = self.benchmark.question.first().type
+    def dispatch(self, request, slug, *args, **kwargs):
+
+        benchmark_link = BenchmarkLink.objects.filter(slug=slug).select_related('benchmark', 'benchmark__owner',
+                                                                                'benchmark__question',
+                                                                                'benchmark___industry',
+                                                                                'benchmark__geographic_coverage',).first()
+        if not benchmark_link:
+            return HttpResponseNotFound()
+        benchmark = benchmark_link.benchmark
+        question_type = benchmark.question.first().type
         if question_type == Question.MULTIPLE:
-            return MultipleChoiceAnswerView.as_view()(self.request, *args, **kwargs)
+            return MultipleChoiceAnswerView.as_view()(self.request, benchmark, *args, **kwargs)
         elif question_type == Question.RANKING:
-            return RankingAnswerView.as_view()(self.request, *args, **kwargs)
+            return RankingAnswerView.as_view()(self.request, benchmark, *args, **kwargs)
         elif question_type == Question.RANGE:
-            return RangeAnswerView.as_view()(self.request, *args, **kwargs)
+            return RangeAnswerView.as_view()(self.request, benchmark, *args, **kwargs)
         elif question_type == Question.NUMERIC:
-            return NumericAnswerView.as_view()(self.request, *args, **kwargs)
+            return NumericAnswerView.as_view()(self.request, benchmark, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
         context = super(BaseBenchmarkAnswerView, self).get_context_data(**kwargs)
         context['benchmark'] = self.benchmark
         return context
 
+    def post(self, request, *args, **kwargs):
+        """
+        Handles POST requests, instantiating a form instance with the passed
+        POST variables and then checked for validity.
+        """
+        form_class = self.get_form_class()
+        form = self.get_form(form_class)
+        if form.is_valid():
+            result = self.form_valid(form)
+            benchmark_answered.send(sender=self.__class__, user=request.user)
+            return result
+        else:
+            return self.form_invalid(form)
+
 
 class MultipleChoiceAnswerView(BaseBenchmarkAnswerView):
     form_class = AnswerMultipleChoiceForm
     template_name = 'bm/answer.html'
 
-    def dispatch(self, request, *args, **kwargs):
+    def dispatch(self, request, benchmark, *args, **kwargs):
+        self.benchmark = benchmark
         return super(BaseBenchmarkAnswerView, self).dispatch(self.request, *args, **kwargs)
 
     def get_form_kwargs(self):
@@ -184,7 +209,7 @@ class MultipleChoiceAnswerView(BaseBenchmarkAnswerView):
                 question_response = QuestionResponse()
                 question_response.user = self.request.user
                 question_response.question = self.benchmark.question.first()
-                question_response.save()                                                                    
+                question_response.save()
                 choice = form.cleaned_data['choice']
                 for choice in QuestionChoice.objects.filter(id__in=choice):
                     bm_response_choice = ResponseChoice()
@@ -197,7 +222,8 @@ class RankingAnswerView(BaseBenchmarkAnswerView):
     form_class = RankingAnswerForm
     template_name = 'bm/answer.html'
 
-    def dispatch(self, request, *args, **kwargs):
+    def dispatch(self, request, benchmark, *args, **kwargs):
+        self.benchmark = benchmark
         return super(BaseBenchmarkAnswerView, self).dispatch(self.request, *args, **kwargs)
 
     def get_form_kwargs(self):
@@ -226,7 +252,8 @@ class RangeAnswerView(BaseBenchmarkAnswerView):
     form_class = RangeAnswerForm
     template_name = 'bm/answer.html'
 
-    def dispatch(self, request, *args, **kwargs):
+    def dispatch(self, request, benchmark, *args, **kwargs):
+        self.benchmark = benchmark
         return super(BaseBenchmarkAnswerView, self).dispatch(self.request, *args, **kwargs)
 
     def form_valid(self, form):
@@ -249,7 +276,8 @@ class NumericAnswerView(BaseBenchmarkAnswerView):
     form_class = NumericAnswerForm
     template_name = 'bm/answer.html'
 
-    def dispatch(self, request, *args, **kwargs):
+    def dispatch(self, request, benchmark, *args, **kwargs):
+        self.benchmark = benchmark
         return super(BaseBenchmarkAnswerView, self).dispatch(self.request, *args, **kwargs)
 
     def form_valid(self, form):

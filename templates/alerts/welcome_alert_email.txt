@@ -1,0 +1,4 @@
+{% load i18n %}
+{% trans 'Hi,' %} {{ user_name}} {% trans ' !'%}
+{% trans "Thank you for answering Benchmark!" %}
+

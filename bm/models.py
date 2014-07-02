@@ -49,9 +49,10 @@ class BenchmarkLink(models.Model):
     benchmark = models.ForeignKey(Benchmark, related_name='links')
     slug = models.SlugField(max_length=36, unique=True)
 
-    def __init__(self):
-        super(BenchmarkLink, self).__init__()
-        self.slug = str(uuid.uuid4())
+    def __init__(self, *args, **kwargs):
+        super(BenchmarkLink, self).__init__(*args, **kwargs)
+        if not self.slug:
+            self.slug = str(uuid.uuid4())
 
     def save(self, *args, **kwargs):
         while True:
@@ -82,7 +83,6 @@ class Question(models.Model):
     label = models.CharField(max_length=255)
     description = models.TextField()
     type = models.PositiveSmallIntegerField(choices=TYPES)
-
 
 class QuestionResponse(models.Model):
     question = models.ForeignKey(Question, related_name='responses')
@@ -178,3 +178,6 @@ class Region(models.Model):
 
     def __unicode__(self):
         return self.name
+
+
+import signals
