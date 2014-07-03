@@ -10,16 +10,7 @@ from social_auth.utils import setting, backend_setting
 LOGIN_ERROR_URL = setting('LOGIN_ERROR_URL', setting('LOGIN_URL'))
 from django.contrib import messages
 from urllib2 import quote
-
-
-class ContactsImport(RedirectView):
-    pattern_name = 'home'
-
-    def get(self, request, *args, **kwargs):
-
-        tasks.import_linkedin_contacts.delay(request.user)
-        return super(ContactsImport, self).get(request, *args, **kwargs)
-
+from social.signals import first_time_user_login
 
 @csrf_exempt
 @dsa_view()
@@ -54,10 +45,12 @@ def complete_process(request, backend, *args, **kwargs):
             # user.social_user is the used UserSocialAuth instance defined
             # in authenticate process
             treshold = 10  # seconds
-            if (request.user.last_login - request.user.date_joined).total_seconds() < treshold:
-                redirect_value = FIRST_TIME_USER_REDIRECT_URL
-            else:
-                redirect_value = REGISTERED_USER_REDIRECT_URL
+            if not redirect_value:
+                if (request.user.last_login - request.user.date_joined).total_seconds() < treshold:
+                    first_time_user_login.send(sender=request.user, user=request.user)
+                    redirect_value = FIRST_TIME_USER_REDIRECT_URL
+                else:
+                    redirect_value = REGISTERED_USER_REDIRECT_URL
             social_user = user.social_user
             if redirect_value:
                 request.session[REDIRECT_FIELD_NAME] = redirect_value or \

@@ -31,3 +31,8 @@ class HomeView(TemplateView):
 
 class DashboardView(TemplateView):
     template_name = 'bm/dashboard.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(DashboardView, self).get_context_data(**kwargs)
+        context['user'] = self.request.user
+        return context

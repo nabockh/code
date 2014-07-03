@@ -115,6 +115,7 @@ class Question(models.Model):
     description = models.TextField()
     type = models.PositiveSmallIntegerField(choices=TYPES)
 
+
 class QuestionResponse(models.Model):
     question = models.ForeignKey(Question, related_name='responses')
     user = models.ForeignKey(USER_MODEL, null=True, on_delete=models.SET_NULL)
@@ -137,8 +138,10 @@ class QuestionChoice(models.Model):
     label = models.CharField(max_length=45)
     order = models.PositiveSmallIntegerField(null=True, blank=True)
 
-    def __init__(self, label=None, order=None, *args, **kwargs):
+    def __init__(self, *args, **kwargs):
         super(QuestionChoice, self).__init__(*args, **kwargs)
+        label = kwargs.get('label')
+        order = kwargs.get('order')
         if label and order:
             self.label = label
             self.order = order
@@ -149,8 +152,10 @@ class QuestionRanking(models.Model):
     label = models.CharField(max_length=45)
     order = models.PositiveSmallIntegerField(null=True, blank=True)
 
-    def __init__(self, label=None, order=None, *args, **kwargs):
+    def __init__(self, *args, **kwargs):
         super(QuestionRanking, self).__init__(*args, **kwargs)
+        label = kwargs.get('label')
+        order = kwargs.get('order')
         if label and order:
             self.label = label
             self.order = order

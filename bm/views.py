@@ -8,8 +8,9 @@ from django.contrib.formtools.wizard.views import CookieWizardView
 from django.core.exceptions import ValidationError
 from django.db import transaction
 from django.http import HttpResponse, HttpResponseNotFound
+from django.shortcuts import redirect
 from django.utils.decorators import method_decorator
-from django.views.generic import ListView
+from django.views.generic import ListView, TemplateView
 from django.views.generic.edit import FormView
 from bm.signals import benchmark_answered
 
@@ -41,7 +42,7 @@ class BenchmarkCreateWizardView(CookieWizardView):
         management_form = ManagementForm(self.request.POST, prefix=self.prefix)
         if not management_form.is_valid():
             raise ValidationError(
-                _('ManagementForm data is missing or has been tampered.'),
+                ('ManagementForm data is missing or has been tampered.'),
                 code='missing_management_form',
             )
 
@@ -100,12 +101,12 @@ class BenchmarkCreateWizardView(CookieWizardView):
             if question.type == Question.MULTIPLE:
                 choices = step1.cleaned_data['answer_options'].split('\r\n')
                 for i, choice in enumerate(choices, start=1):
-                    choice = QuestionChoice(choice, i)
+                    choice = QuestionChoice(label=choice, order=i)
                     question.choices.add(choice)
             elif question.type == Question.RANKING:
                 ranks = step1.cleaned_data['answer_options'].split('\r\n')
                 for i, rank in enumerate(ranks, start=1):
-                    rank = QuestionRanking(rank, i)
+                    rank = QuestionRanking(label=rank, order=i)
                     question.ranks.add(rank)
             elif question.type == Question.NUMERIC or question.type == Question.RANGE:
                 question.options.add(QuestionOptions(step1.cleaned_data.get('units'), step1.cleaned_data.get('max_number_of_decimal')))
@@ -146,7 +147,7 @@ class BaseBenchmarkAnswerView(FormView):
     # def __init__(self, *args, **kwargs):
     #     self.benchmark = Benchmark.objects.select_related('owner', 'geographic_coverage', '_industry',
     #                                                       'question').first()
-
+    @method_decorator(login_required)
     def dispatch(self, request, slug, *args, **kwargs):
 
         benchmark_link = BenchmarkLink.objects.filter(slug=slug).select_related('benchmark', 'benchmark__owner',
@@ -181,6 +182,8 @@ class BaseBenchmarkAnswerView(FormView):
         if form.is_valid():
             result = self.form_valid(form)
             benchmark_answered.send(sender=self.__class__, user=request.user)
+            if not QuestionResponse.objects.filter(user=request.user).count() > 1:
+                return redirect('/benchmark/welcome')
             return result
         else:
             return self.form_invalid(form)
@@ -208,8 +211,9 @@ class MultipleChoiceAnswerView(BaseBenchmarkAnswerView):
                 question_response.user = self.request.user
                 question_response.question = self.benchmark.question.first()
                 question_response.save()
-                choice = form.cleaned_data['choice']
-                for choice in QuestionChoice.objects.filter(id__in=choice):
+                choices = form.cleaned_data['choice']
+                choices = QuestionChoice.objects.filter(id__in=choices)
+                for choice in choices:
                     bm_response_choice = ResponseChoice()
                     bm_response_choice.choice = choice
                     question_response.data_choices.add(bm_response_choice)
@@ -291,3 +295,12 @@ class NumericAnswerView(BaseBenchmarkAnswerView):
             print form.cleaned_data['numeric_box']
 
         return super(NumericAnswerView, self).form_valid(form)
+
+
+class WelcomeView(TemplateView):
+    template_name = 'bm/welcome.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(WelcomeView, self).get_context_data(**kwargs)
+        context['user'] = self.request.user
+        return context
