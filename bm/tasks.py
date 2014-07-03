@@ -34,7 +34,7 @@ def send_invites(benchmark_id):
             else:
                 invites_without_email.append(invite)
 
-        invites_to_send_via_linked = invites_without_email[:99]
+        invites_to_send_via_linked = invites_without_email[:100]
         invites_groups = grouper(10, invites_to_send_via_linked)
         for invites_group in invites_groups:
             sender = invites_group[0].sender
@@ -44,6 +44,4 @@ def send_invites(benchmark_id):
             invite.status = 1
             invite.save()
         if len(invites_without_email) > 100:
-            send_invites.apply_async(benchmark_id, countdown=86400)
-
-    print benchmark_id
+            send_invites.apply_async(args=(benchmark_id,), countdown=86400)

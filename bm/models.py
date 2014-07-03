@@ -1,5 +1,6 @@
 from copy import copy
 import uuid
+from django.contrib.sites.models import Site
 from django.core.urlresolvers import reverse
 from django.db import models, IntegrityError
 from social.models import LinkedInIndustry
@@ -56,7 +57,7 @@ class Benchmark(models.Model):
     def create_link(self):
         link = BenchmarkLink()
         self.links.add(link)
-        return reverse('bm_answer', kwargs=dict(slug=link.slug))
+        return link
 
     @property
     def link(self):
@@ -74,6 +75,10 @@ class BenchmarkInvitation(models.Model):
     sent_date = models.DateField(blank=True, null=True)
     status = models.CharField(max_length=45)
     is_allowed_to_forward_invite = models.BooleanField(default=False)
+
+    #TODO: this can produce extra db request
+    def __unicode__(self):
+        return str(self.recipient)
 
 
 class BenchmarkLink(models.Model):
@@ -93,6 +98,9 @@ class BenchmarkLink(models.Model):
                 self.slug = str(uuid.uuid4())
             else:
                 break
+
+    def __unicode__(self):
+        return 'http://{0}{1}'.format(Site.objects.get_current().domain, reverse('bm_answer', kwargs=dict(slug=self.slug)))
 
 
 class Question(models.Model):
@@ -193,4 +201,3 @@ class ResponseRange(models.Model):
     min = models.IntegerField()
     max = models.IntegerField()
 
-import signals

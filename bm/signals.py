@@ -26,4 +26,4 @@ def send_welcome_alert(sender, **kwargs):
 def check_for_approve(instance, **kwargs):
     if not instance.already_approved and instance.approved:
         instance.already_approved = True
-        send_invites(instance.id)
+        send_invites.delay(instance.id)
