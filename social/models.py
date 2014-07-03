@@ -33,8 +33,6 @@ class LinkedInIndustry(models.Model):
     def __unicode__(self):
         return self.name
 
-from bm.models import Region
-
 
 class Company(models.Model):
     name = models.CharField(max_length=100, blank=True, null=True)
@@ -58,7 +56,7 @@ class Profile(models.Model):
     user = models.ForeignKey(USER_MODEL, related_name='social_profile', on_delete=models.CASCADE)
     headline = models.CharField(max_length=200, blank=True, null=True)
     company = models.ForeignKey(Company, blank=True, null=True, db_constraint=False, on_delete=models.SET_NULL)
-    location = models.ForeignKey(Region, blank=True, null=True, db_constraint=False, on_delete=models.SET_NULL)
+    location = models.ForeignKey('bm.Region', blank=True, null=True, db_constraint=False, on_delete=models.SET_NULL)
 
 
 class Contact(models.Model):
@@ -72,7 +70,7 @@ class Contact(models.Model):
     last_name = models.CharField(max_length=100)
     _email = models.EmailField(blank=True, null=True, db_column="email")
     headline = models.CharField(max_length=200, blank=True, null=True)
-    location = models.ForeignKey(Region, blank=True, null=True, db_constraint=False, on_delete=models.SET_NULL,
+    location = models.ForeignKey('bm.Region', blank=True, null=True, db_constraint=False, on_delete=models.SET_NULL,
                                  related_name='contacts')
     company = models.ForeignKey(Company, blank=True, null=True, db_constraint=False, on_delete=models.SET_NULL,
                                 related_name='employees')
@@ -117,6 +115,7 @@ class Contact(models.Model):
 
     @classmethod
     def create(cls, owner, provider, **kwargs):
+        from bm.models import Region
         #check if contact already exists
         contact = cls.objects.filter(code=kwargs['id'], provider=provider).first() or cls()
         with transaction.atomic():

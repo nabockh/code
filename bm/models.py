@@ -1,8 +1,31 @@
+from copy import copy
 import uuid
 from django.core.urlresolvers import reverse
 from django.db import models, IntegrityError
 from social.models import LinkedInIndustry
 from social_auth.db.django_models import USER_MODEL
+
+
+class RegionsManager(models.Manager):
+    def get_queryset(self):
+        return super(RegionsManager, self).get_queryset().filter(type__name='region')
+
+
+class RegionType(models.Model):
+    name = models.CharField(max_length=45)
+
+
+class Region(models.Model):
+    name = models.CharField(max_length=45)
+    code = models.CharField(max_length=2, null=True, blank=True)
+    type = models.ForeignKey(RegionType, related_name='regions')
+    parent = models.ForeignKey('self', null=True, blank=True)
+
+    objects = models.Manager()
+    regions = RegionsManager()
+
+    def __unicode__(self):
+        return self.name
 
 
 class Benchmark(models.Model):
@@ -14,6 +37,10 @@ class Benchmark(models.Model):
     geographic_coverage = models.ManyToManyField('Region', related_name='benchmarks')
     _industry = models.ForeignKey(LinkedInIndustry, db_column="industry_id", blank=True, null=True, db_constraint=False, on_delete=models.SET_NULL)
     approved = models.BooleanField(default=False)
+
+    def __init__(self, *args, **kwargs):
+        super(Benchmark, self).__init__(*args, **kwargs)
+        self.already_approved = copy(self.approved)
 
     @property
     def industry(self):
@@ -30,6 +57,10 @@ class Benchmark(models.Model):
         link = BenchmarkLink()
         self.links.add(link)
         return reverse('bm_answer', kwargs=dict(slug=link.slug))
+
+    @property
+    def link(self):
+        return self.links.first()
 
     class Meta:
         verbose_name = 'Pending Benchmark'
@@ -156,28 +187,5 @@ class ResponseRange(models.Model):
     response = models.ForeignKey(QuestionResponse, rel_class=models.OneToOneRel, related_name='data_range')
     min = models.IntegerField()
     max = models.IntegerField()
-
-
-class RegionsManager(models.Manager):
-    def get_queryset(self):
-        return super(RegionsManager, self).get_queryset().filter(type__name='region')
-
-
-class RegionType(models.Model):
-    name = models.CharField(max_length=45)
-
-
-class Region(models.Model):
-    name = models.CharField(max_length=45)
-    code = models.CharField(max_length=2, null=True, blank=True)
-    type = models.ForeignKey(RegionType, related_name='regions')
-    parent = models.ForeignKey('self', null=True, blank=True)
-
-    objects = models.Manager()
-    regions = RegionsManager()
-
-    def __unicode__(self):
-        return self.name
-
 
 import signals
