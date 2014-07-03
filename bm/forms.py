@@ -5,32 +5,29 @@ from django.db.models import Q
 from social.models import LinkedInIndustry
 
 
-class CreateBenchmarkStep1Form(forms.Form):
+class CreateBenchmarkStep12Form(forms.Form):
     name = forms.CharField(max_length=45)
     industry = forms.ChoiceField()
     geo = forms.ChoiceField()
     question_label = forms.CharField(max_length=255)
     question_text = forms.CharField(widget=forms.Textarea())
-    question_type = forms.MultipleChoiceField(choices=Question.TYPES)
-
-    def __init__(self, user, *args, **kwargs):
-        super(CreateBenchmarkStep1Form, self).__init__(*args, **kwargs)
-        self.fields['geo'].choices = list(Region.regions.values_list('id', 'name').order_by('name'))
-        self.fields['industry'].choices = list(LinkedInIndustry.get_proposal(user.contacts))
-
-
-class CreateBenchmarkStep2Form(forms.Form):
     question_type = forms.ChoiceField(choices=Question.TYPES)
     answer_options = forms.CharField(widget=forms.Textarea())
+    units = forms.CharField(max_length=50)
+    max_number_of_decimal = forms.IntegerField(min_value=1, max_value=6)
     additional_comments = forms.CharField(widget=forms.Textarea(), required=False)
     minimum_number_of_answers = forms.IntegerField(min_value=0, initial=5)
 
-    def __init__(self, user, question_type, *args, **kwargs):
-        super(CreateBenchmarkStep2Form, self).__init__(*args, **kwargs)
-        if question_type == Question.NUMERIC or question_type == Question.RANGE:
-            del self.fields['answer_options']
-            self.fields.insert(1, 'units', forms.CharField(max_length=50))
-            self.fields.insert(2, 'max_number_of_decimal', forms.IntegerField(min_value=1, max_value=6))
+    def __init__(self, user, data, *args, **kwargs):
+        super(CreateBenchmarkStep12Form, self).__init__(data=data, *args, **kwargs)
+        self.fields['geo'].choices = list(Region.regions.values_list('id', 'name').order_by('name'))
+        self.fields['industry'].choices = list(LinkedInIndustry.get_proposal(user.contacts))
+        question_type = int(data and data.get('0-question_type', '1') or '1')
+        if question_type == Question.MULTIPLE or question_type == Question.RANKING:
+            self.fields['units'].required = False
+            self.fields['max_number_of_decimal'].required = False
+        elif question_type == Question.NUMERIC or question_type == Question.RANGE:
+            self.fields['answer_options'].required = False
 
 
 class CreateBenchmarkStep3Form(forms.Form):

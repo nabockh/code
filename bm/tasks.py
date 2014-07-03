@@ -12,9 +12,9 @@ INVITE_SUBJECT = 'You has been invited to benchmark'
 
 
 def grouper(n, iterable, fillvalue=None):
-    "grouper(3, 'ABCDEFG', 'x') --> ABC DEF Gxx"
+    """grouper(3, 'ABCDEFG', 'x') --> ABC DEF Gxx"""
     args = [iter(iterable)] * n
-    return itertools.zip_longest(*args, fillvalue=fillvalue)
+    return itertools.izip_longest(*args, fillvalue=fillvalue)
 
 @shared_task
 def send_invites(benchmark_id):

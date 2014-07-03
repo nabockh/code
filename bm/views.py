@@ -1,4 +1,4 @@
-from bm.forms import CreateBenchmarkStep1Form, CreateBenchmarkStep2Form, AnswerMultipleChoiceForm, \
+from bm.forms import CreateBenchmarkStep12Form, AnswerMultipleChoiceForm, \
     CreateBenchmarkStep3Form, CreateBenchmarkStep4Form, NumericAnswerForm, RangeAnswerForm, RankingAnswerForm
 from bm.models import Benchmark, Region, Question, QuestionChoice, QuestionResponse, ResponseChoice, ResponseNumeric, \
     ResponseRange, QuestionRanking, ResponseRanking, BenchmarkInvitation, QuestionOptions, BenchmarkLink
@@ -16,7 +16,7 @@ from bm.signals import benchmark_answered
 
 class BenchmarkCreateWizardView(CookieWizardView):
     template_name = 'bm/create.html'
-    form_list = [CreateBenchmarkStep1Form, CreateBenchmarkStep2Form, CreateBenchmarkStep3Form, CreateBenchmarkStep4Form]
+    form_list = [CreateBenchmarkStep12Form, CreateBenchmarkStep3Form, CreateBenchmarkStep4Form]
 
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
@@ -75,8 +75,6 @@ class BenchmarkCreateWizardView(CookieWizardView):
 
     def get_form_kwargs(self, step=None):
         params = {'user': self.request.user}
-        if step == '1':
-            params['question_type'] = int(self.storage.get_step_data('0').get('0-question_type', '1'))
         return params
 
     def done(self, form_list, **kwargs):
@@ -96,30 +94,30 @@ class BenchmarkCreateWizardView(CookieWizardView):
             question.benchmark = benchmark
             question.label = step1.cleaned_data['question_label']
             question.description = step1.cleaned_data['question_text']
-            question.type = int(step2.cleaned_data['question_type'])
+            question.type = int(step1.cleaned_data['question_type'])
             question.save()
 
             if question.type == Question.MULTIPLE:
-                choices = step2.cleaned_data['answer_options'].split('\r\n')
+                choices = step1.cleaned_data['answer_options'].split('\r\n')
                 for i, choice in enumerate(choices, start=1):
                     choice = QuestionChoice(choice, i)
                     question.choices.add(choice)
             elif question.type == Question.RANKING:
-                ranks = step2.cleaned_data['answer_options'].split('\r\n')
+                ranks = step1.cleaned_data['answer_options'].split('\r\n')
                 for i, rank in enumerate(ranks, start=1):
                     rank = QuestionRanking(rank, i)
                     question.ranks.add(rank)
             elif question.type == Question.NUMERIC or question.type == Question.RANGE:
-                question.options.add(QuestionOptions(step2.cleaned_data.get('units'), step2.cleaned_data.get('max_number_of_decimal')))
+                question.options.add(QuestionOptions(step1.cleaned_data.get('units'), step1.cleaned_data.get('max_number_of_decimal')))
 
-            step3_data = self.storage.get_step_data('2')
-            for contact in step3.contacts_filtered:
-                if step3_data.get('2-contact-{0}-invite'.format(contact.id)):
+            step2_data = self.storage.get_step_data('1')
+            for contact in step2.contacts_filtered:
+                if step2_data.get('1-contact-{0}-invite'.format(contact.id)):
                     invite = BenchmarkInvitation()
                     invite.sender = benchmark.owner
                     invite.recipient = contact
                     invite.status = '0' #not send
-                    invite.is_allowed_to_forward_invite = bool(step3_data.get('2-contact-{0}-secondary'.format(contact.id)))
+                    invite.is_allowed_to_forward_invite = bool(step2_data.get('1-contact-{0}-secondary'.format(contact.id)))
                     benchmark.invites.add(invite)
 
             link = benchmark.create_link()
