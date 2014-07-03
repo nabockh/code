@@ -3,7 +3,7 @@ body {
     line-height: 24px;
     margin: 0;
     padding: 0;
-    background: #ccc;
+    background: #eff0f2;
     padding-top: 90px;
     font-family: Roboto;
     font-weight: 300;
@@ -16,11 +16,6 @@ html, body {
 a {
     font-weight: 500;
     color: #3d4d77;
-}
-
-.btn-primary {
-    background-color: #4C7FAC;
-    border-color: #3A678F;
 }
 
 .navbar-default {
@@ -52,27 +47,66 @@ ul.main-nav {
     text-align: center;
 }
 
-    ul.main-nav li {
+    ul.main-nav > li {
         display: inline-block;    
         padding: 20px 10px 20px;
     }
 
-    ul.main-nav li a {
+    ul.main-nav > li > a {
         font-size: 12px;
         text-transform: uppercase;
         font-weight: 400;
         text-decoration: none;
     }
 
-    ul.main-nav li a:hover {
+    ul.main-nav > li > a:hover {
         color: #608a94;
     }
 
-    ul.main-nav li.active a {
+    ul.main-nav > li.active > a {
         box-shadow: 0 22px #fff, 0 30px #425380;
     }
 
 /* End Main Nav */
+
+/* User Nav */
+
+.user-nav {
+    background: #333;
+    color: #fff;
+    padding: 25px 0;
+}
+
+    .user-nav .hello {
+    color: #9dbef0;
+    font-size: 24px;
+    line-height: 18px;
+}
+
+        ul.user-nav-inner {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+
+        ul.user-nav-inner li {
+            float: left;
+            margin: 0 15px;
+            color: #fff;
+            font-size: 16px;
+            line-height: 21px;
+        }
+
+        ul.user-nav-inner li > a {
+            color: #fff;
+        }
+        
+        ul.user-nav-inner li > a:hover {
+            color: #5D828B;
+        }
+
+
+/* End User Nav */
 
 .sign-in-btn {
     margin: 8px 0 8px 20px;
@@ -590,7 +624,63 @@ input.btn.full-width {
             font-weight: 300;
         }
 
+
+.search-help-text {
+    display: inline-block;
+    float: left;
+    line-height: 20px;
+    margin: 22px 0;
+    color: #ccc;
+    text-transform: uppercase;
+    font-size: 12px;
+    color: #333;
+}
+
+form[role='search'] .form-control {
+    height: 25px;
+    margin-top: 12px;
+    border-radius: 0;
+    box-shadow: none;
+}
+
+form[role='search'] .btn-search {
+    background: #3d4d77;    
+    color: #fff;
+    outline: none;
+    border-radius: 0;
+    text-transform: uppercase;
+    height: 25px;
+    line-height: 12px;
+    margin-top: 12px;
+    font-size: 12px;
+    padding: 0 10px;
+    font-weight: 400;
+}
+
 /* Bootstrap fixes according to design */
+
+.btn {
+    border-radius: 0;
+    border: none;
+    padding: 10px 18px;
+    font-weight: bold;
+    font-size: 14px;
+    text-transform: uppercase;
+}
+
+    .btn .fa {
+        padding: 0 0 0 10px;
+    }
+
+
+
+.btn-primary {
+    background-color: #33626e;
+}
+
+    .btn-primary:hover {
+        background-color: #5D828B;
+    }
 
 @media (min-width: 1200px) {
     .container {
