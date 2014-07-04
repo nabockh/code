@@ -16,6 +16,10 @@
 {% else %}
 
     {% block navigation %}
+
+{% if user.is_authenticated %}
+            {{user}}
+            {% endif %}
             <nav class="navbar navbar-default" role="navigation">
                 <div class="container top-navbar">
                     <div class='row'>
