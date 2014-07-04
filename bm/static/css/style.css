@@ -18,6 +18,27 @@ a {
     color: #3d4d77;
 }
 
+hr {
+    margin: 10px 0 15px;
+    border-color: #dedede;
+}
+
+.bordered {
+    border: 1px solid #dadada;
+}
+
+.bgwhite {
+    background-color: #fff;
+}
+
+.margined {
+    margin: 45px auto;
+}
+
+.margined.no-bottom {
+    margin-bottom: 0;
+}
+
 .navbar-default {
     background-color: #fff;
     border: none;
@@ -556,11 +577,13 @@ input.btn.full-width {
     color: #364468;
     margin-bottom: 0px;
 }
-.styled-form input, .styled-form textarea {
+.styled-form input, .styled-form textarea, .styled-form select {
     width: 100%;
     padding: 6px;
     margin-bottom: 5px;
     border: 1px solid #C9C9C9;
+    box-shadow: none !important;
+    border-radius: 0;
 }
 
 .styled-form textarea {
@@ -570,7 +593,6 @@ input.btn.full-width {
 }
 
 .styled-form input[type='submit'] {
-    width: 50%;
     float: right;
     color: #fff;
     border: none;
@@ -587,8 +609,12 @@ input.btn.full-width {
     box-shadow: 0 2px #ccc;
 }
 
-.colorblock.contacts .col-md-3 {
+.lined-right {
     box-shadow: -1px 0 #ccc;
+}
+
+.lined-left {
+    box-shadow: 1px 0 #ccc;
 }
 
 .contact-info {
@@ -639,6 +665,80 @@ form[role='search'] .btn-search {
     padding: 0 10px;
     font-weight: 400;
 }
+
+/* Creating Benchmarks */
+
+.title-header {
+    background: #333;
+    color: #fff;
+    padding: 6px 60px;
+    text-transform: uppercase;
+    font-weight: bold;
+    margin: 0 -60px;
+}
+
+
+.benchmark-creation {
+    padding: 0 60px;
+}
+
+.benchmark-help {
+    margin: 0 -60px;
+    padding: 25px 60px;   
+    background: #41495d;
+    color: #fff;
+    font-size: 12px;
+    line-height: 22px;
+    font-weight: 400;
+}
+
+.benchmark-creation .styled-form label {
+    text-transform: uppercase;
+    color: #333;
+    font-size: 12px;
+}
+
+.benchmark-creation .margined .styled-form .col-md-8 {
+    padding-right: 30px;
+}
+
+.tips {
+    padding-left: 15px;
+}
+
+        
+    .tips .label-like {
+        display: block;
+        font-weight: 500;  
+        margin-bottom: 0px;
+        text-transform: uppercase; 
+        color: #333; 
+        font-size: 12px;
+    }
+
+    .tips p.title {
+        display: block; 
+        font-weight: 600; 
+        margin-bottom: 5px; 
+        text-transform: uppercase; 
+        color: #41495d; 
+        font-size: 12px;
+        line-height: 18px;
+    }
+
+    .tips p {
+        margin-bottom: 20px;
+        font-size: 12px;
+        line-height: 18px;
+    }
+
+    .btn-holder {
+        margin: 0 -45px;
+        clear: both;
+        padding: 30px 75px;
+        background: #333;
+        height: 95px;
+    }
 
 /* Bootstrap fixes according to design */
 
