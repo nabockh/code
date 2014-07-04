@@ -3,7 +3,7 @@ body {
     line-height: 24px;
     margin: 0;
     padding: 0;
-    background: #ccc;
+    background: #eff0f2;
     padding-top: 90px;
     font-family: Roboto;
     font-weight: 300;
@@ -16,11 +16,6 @@ html, body {
 a {
     font-weight: 500;
     color: #3d4d77;
-}
-
-.btn-primary {
-    background-color: #4C7FAC;
-    border-color: #3A678F;
 }
 
 .navbar-default {
@@ -52,31 +47,82 @@ ul.main-nav {
     text-align: center;
 }
 
-    ul.main-nav li {
+    ul.main-nav > li {
         display: inline-block;    
         padding: 20px 10px 20px;
     }
 
-    ul.main-nav li a {
+    ul.main-nav > li > a {
         font-size: 12px;
         text-transform: uppercase;
         font-weight: 400;
         text-decoration: none;
     }
 
-    ul.main-nav li a:hover {
+    ul.main-nav > li > a:hover {
         color: #608a94;
     }
 
-    ul.main-nav li.active a {
+    ul.main-nav > li.active > a {
         box-shadow: 0 22px #fff, 0 30px #425380;
     }
-
+    
+    .social-btns > a {
+        background: #3d4d77;
+        color: #fff;
+        width: 18px;
+        line-height: 19px;
+        text-align: center;
+        height: 19px;
+        display: inline-block;
+        margin: 20px 3px;
+        font-size: 12px;
+    }
+    
 /* End Main Nav */
 
-.sign-in-btn {
-    margin: 8px 0 8px 20px;
+/* User Nav */
+
+.user-nav {
+    background: #333;
+    color: #fff;
+    padding: 25px 0;
 }
+
+    .user-nav .hello {
+    color: #9dbef0;
+    font-size: 24px;
+    line-height: 18px;
+}
+
+        ul.user-nav-inner {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+
+        ul.user-nav-inner > li {
+            float: left;
+            margin: 0 15px;
+            color: #fff;
+            font-size: 16px;
+            line-height: 30px;
+        }
+        
+        ul.user-nav-inner > li.username {
+            margin-left: 0;
+        }
+
+        ul.user-nav-inner > li > a {
+            color: #fff;
+        }
+        
+        ul.user-nav-inner > li > a:hover {
+            color: #5D828B;
+        }
+
+
+/* End User Nav */
 
 .search-field {
     border-bottom-right-radius: 0;
@@ -133,36 +179,6 @@ span.nav-username-dropdown {
     span.nav-username-dropdown .glyphicon{
         font-size: 1.3rem;
     }
-
-.sign-in-btn {
-    background: #E1E6E7;
-    position: relative;
-    padding-left: 45px;
-    color: #4b4b4b;
-}
-
-    .sign-in-btn:before {
-        content: 'in';
-        position: absolute;
-        left: -1px;
-        width: 35px;
-        background: #426E97;
-        line-height: 34px;
-        top: -1px;
-        font-weight: bold;
-        font-size: 1.8rem;
-        border-bottom-left-radius: 4px;
-        border-top-left-radius: 4px;
-        color: #fff;
-    }
-
-    .sign-in-btn:hover {
-        background: #F0F0F0;
-    }
-
-        .sign-in-btn:hover:before {
-            background: #3C6081;
-        }
 
 
 .navbar-btn {
@@ -536,20 +552,21 @@ input.btn.full-width {
 
 .styled-form label {
     display: block;
-    line-height: 21px;
     font-weight: 500;
     color: #364468;
+    margin-bottom: 0px;
 }
 .styled-form input, .styled-form textarea {
     width: 100%;
     padding: 6px;
-    margin-bottom: 10px;
+    margin-bottom: 5px;
     border: 1px solid #C9C9C9;
 }
 
 .styled-form textarea {
     max-width: 100%;
-    max-height: 110px;
+    max-height: 105px;
+    margin-bottom: 20px;
 }
 
 .styled-form input[type='submit'] {
@@ -590,7 +607,101 @@ input.btn.full-width {
             font-weight: 300;
         }
 
+
+.search-help-text {
+    display: inline-block;
+    float: left;
+    line-height: 20px;
+    margin: 22px 0;
+    color: #ccc;
+    text-transform: uppercase;
+    font-size: 12px;
+    color: #333;
+}
+
+form[role='search'] .form-control {
+    height: 25px;
+    margin-top: 12px;
+    border-radius: 0;
+    box-shadow: none;
+}
+
+form[role='search'] .btn-search {
+    background: #3d4d77;    
+    color: #fff;
+    outline: none;
+    border-radius: 0;
+    text-transform: uppercase;
+    height: 25px;
+    line-height: 12px;
+    margin-top: 12px;
+    font-size: 12px;
+    padding: 0 10px;
+    font-weight: 400;
+}
+
 /* Bootstrap fixes according to design */
+
+.btn {
+    border-radius: 0;
+    border: none;
+    padding: 10px 18px;
+    font-weight: bold;
+    font-size: 14px;
+    text-transform: uppercase;
+}
+
+    .btn .fa {
+        padding: 0 0 0 10px;
+    }
+
+
+
+.btn-primary {
+    background-color: #33626e;
+}
+
+    .btn-primary:hover {
+        background-color: #5D828B;
+    }
+
+
+.btn.sign-in-btn {
+    background: #fff;
+    position: relative;
+    padding: 7px 15px 7px 45px;
+    color: #4b4b4b;
+    text-transform: none;
+    border-radius: 5px;
+    margin-top: 20px;
+}
+
+    .btn.sign-in-btn:before {
+        content: 'in';
+        position: absolute;
+        left: 0;
+        width: 35px;
+        background: #426E97;
+        line-height: 34px;
+        top: 0;
+        font-weight: bold;
+        font-size: 1.8rem;
+        border-bottom-left-radius: 4px;
+        border-top-left-radius: 4px;
+        color: #fff;
+    }
+
+    .btn.sign-in-btn:hover {
+        background: #F0F0F0;
+    }
+
+        .btn.sign-in-btn:hover:before {
+            background: #3C6081;
+        }
+
+.navbar>.container .navbar-brand {
+    margin-left: 0;
+}
 
 @media (min-width: 1200px) {
     .container {
