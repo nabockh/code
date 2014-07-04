@@ -154,3 +154,13 @@ class Contact(models.Model):
             contact.save()
             contact.owners.add(owner)
         return contact
+
+    @classmethod
+    def get_suggested(cls, geo=None, industry=None):
+        contact_filter = {}
+        if industry:
+            contact_filter['company___industry__code'] = industry
+        if geo:
+            contact_filter['location__parent__id'] = geo
+        contacts = cls.objects.filter(**contact_filter)[:10]
+        return contacts

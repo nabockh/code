@@ -76,6 +76,8 @@ class BenchmarkCreateWizardView(CookieWizardView):
 
     def get_form_kwargs(self, step=None):
         params = {'user': self.request.user}
+        if step == '1':
+            params['step0data'] = self.storage.get_step_data('0')
         return params
 
     def done(self, form_list, **kwargs):
@@ -119,6 +121,15 @@ class BenchmarkCreateWizardView(CookieWizardView):
                     invite.recipient = contact
                     invite.status = '0' #not send
                     invite.is_allowed_to_forward_invite = bool(step2_data.get('1-contact-{0}-secondary'.format(contact.id)))
+                    benchmark.invites.add(invite)
+
+            for contact in step2.suggested_contacts:
+                if step2_data.get('1-suggested-{0}-invite'.format(contact.id)):
+                    invite = BenchmarkInvitation()
+                    invite.sender = benchmark.owner
+                    invite.recipient = contact
+                    invite.status = '0' #not send
+                    invite.is_allowed_to_forward_invite = bool(step2_data.get('1-suggested-{0}-secondary'.format(contact.id)))
                     benchmark.invites.add(invite)
 
             link = benchmark.create_link()
