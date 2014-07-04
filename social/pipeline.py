@@ -1,9 +1,13 @@
+from django.shortcuts import redirect
 from social.models import Profile, Company, LinkedInIndustry
 from bm.models import Region
-def load_extra_data(backend, details, response, uid, user, social_user=None,
+
+
+def load_extra_data(backend, details,request, response, uid, user, is_new=False, social_user=None,
                     *args, **kwargs):
     """Load extra data from provider and store it on current UserSocialAuth
     extra_data field.
+
     """
     social_profile = Profile.objects.filter(user=user).first()
     if not social_profile:
@@ -26,6 +30,7 @@ def load_extra_data(backend, details, response, uid, user, social_user=None,
                     company.name = response['positions'].get('position', {})[0].get('company').get('name', {})
                     company.industry = LinkedInIndustry.objects.filter(name=response.get('industry', {})).first()
                     company.save()
+                social_profile.company = company
                 break
         elif type(item) == str:
             if item == "is-current":
@@ -36,8 +41,8 @@ def load_extra_data(backend, details, response, uid, user, social_user=None,
                     company.name = response['positions'].get('position', {}).get('company', {}).get('name', {})
                     company.industry = LinkedInIndustry.objects.filter(name=response.get('industry', {})).first()
                     company.save()
+                social_profile.company = company
                 break
         social_profile.location = location
-        social_profile.company = company
         social_profile.save()
         return {'social_profile': social_profile}
