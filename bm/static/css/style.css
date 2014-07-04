@@ -668,6 +668,83 @@ form[role='search'] .btn-search {
 
 /* Creating Benchmarks */
 
+/* Steps */
+
+.creation_steps {
+    margin: 0 -60px;
+    height: 90px;
+}
+.creation_steps .cr_step {
+    width: 33.33333%;
+    float: left;
+    padding: 10px 40px;
+    box-sizing: border-box;
+    background: #dfe6f5;
+    box-shadow: -1px 0 #fff;
+}
+
+.creation_steps .cr_step > * {
+    opacity: 0.5;
+}
+
+.creation_steps .cr_step.active {
+    background: #fff;
+    box-shadow: none;
+}
+
+.creation_steps .cr_step.active > * {
+    opacity: 1;
+}
+
+.creation_steps .cr_step .step_image {
+    width: 70px;
+    height: 70px;
+    display: inline-block;
+    float: left;
+}
+
+.creation_steps .cr_step.one .step_image {
+    background-image: url('../img/step1.png');    
+}
+
+.creation_steps .cr_step.one.done .step_image {
+    background-image: url('../img/step1_done.png');    
+}
+
+.creation_steps .cr_step.two .step_image {
+    background-image: url('../img/step2.png');    
+}
+
+.creation_steps .cr_step.two.done .step_image {
+    background-image: url('../img/step2_done.png');    
+}
+
+.creation_steps .cr_step.three .step_image {
+    background-image: url('../img/step3.png');    
+}
+
+
+.creation_steps .cr_step .step_title, .creation_steps .cr_step .step_descr {
+    margin-left: 90px;
+    text-transform: uppercase;
+    color: #41495d;
+}
+
+.creation_steps .cr_step .step_title {
+    font-size: 18px;
+    font-weight: bold;
+    margin-top: 12px;
+}
+
+.creation_steps .cr_step .step_descr {
+    font-size: 14px;
+    line-height: 14px
+}
+
+/* End Steps */
+
+
+
 .title-header {
     background: #333;
     color: #fff;
@@ -695,11 +772,27 @@ form[role='search'] .btn-search {
 .benchmark-creation .styled-form label {
     text-transform: uppercase;
     color: #333;
+    font-size: 11px;
+    display: inline-block;
+    font-weight: 600;
+}
+
+.benchmark-creation .styled-form input:not([type='submit']), .benchmark-creation .styled-form textarea, .benchmark-creation .styled-form select {
+    background: #F8F7F7;   
+    padding: 3px 6px;
     font-size: 12px;
+    margin-bottom: 10px;
 }
 
 .benchmark-creation .margined .styled-form .col-md-8 {
     padding-right: 30px;
+    margin-bottom: 45px;
+}
+
+
+.benchmark-creation .margined .styled-form .col-md-8.normal-padding {
+    padding-right: 15px;
+    margin-bottom: 0;
 }
 
 .tips {
@@ -740,6 +833,67 @@ form[role='search'] .btn-search {
         height: 95px;
     }
 
+    span.add_info {
+        float: right;
+        color: #717171;
+        font-size: 11px;
+    }
+
+    /* tooltips */
+
+    .add_help {
+        display: inline-block;
+        background: #33626e;
+        color: #fff;
+        height: 12px;
+        padding: 0 4px  0 3px;
+        text-align: center;
+        line-height: 12px;
+        font-size: 11px;
+        font-weight: bold;
+        border-radius: 6px;
+        cursor: pointer;
+        position: relative;    
+        margin: 0 5px;
+    }
+
+        .add_help_inner {
+            display: none;
+            position: absolute;
+            background: #33626e;
+            color: #b9d4db;
+            font-size: 11px;
+            line-height: 15px;
+            font-weight: 400;
+            bottom: 25px;
+            width: 250px;
+            text-align: left;
+            padding: 10px 20px 15px;        
+            margin-left: -125px;
+            left: 50%;
+            border-radius: 3px;
+        }
+        
+            .add_help_inner:after {
+                position: absolute;
+                content: '';
+                width: 0px; height: 0px; 
+                border-left: 12px solid transparent; 
+                border-right: 12px solid transparent; 
+                border-top: 12px solid #33626e;
+                bottom: -12px;
+                left: 50%;
+                margin-left: -12px;
+            }
+
+        .add_help:hover > .add_help_inner {
+            display: block;
+        }
+
+        #units_maxDecimals {
+            display: none;
+        }
+
 /* Bootstrap fixes according to design */
 
 .btn {
@@ -755,7 +909,9 @@ form[role='search'] .btn-search {
         padding: 0 0 0 10px;
     }
 
-
+    .btn.auto-width {
+        width: auto;
+    }
 
 .btn-primary {
     background-color: #33626e;
@@ -765,6 +921,19 @@ form[role='search'] .btn-search {
         background-color: #5D828B;
     }
 
+
+.styled-form .btn-holder > input[type='submit'].btn-primary {
+    background: #33626e;
+}
+
+.styled-form .btn-holder > input[type='submit'].btn {
+    padding: 10px 18px;
+}
+
+.styled-form .btn-holder > input[type='submit'].continue-btn:after {
+    font-family: fontawesome;
+    content: "\f0a9";
+}
 
 .btn.sign-in-btn {
     background: #fff;

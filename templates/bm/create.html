@@ -77,11 +77,60 @@
 <div class='container bordered bgwhite benchmark-creation margined'>
     <div class='title-header'>Create a new benchmark</div>
 {% if wizard.steps.step1 == 1 %}
-    <p>Step {{ wizard.steps.step1 }} of {{ wizard.steps.count }}</p>
+    <!-- <p>Step {{ wizard.steps.step1 }} of {{ wizard.steps.count }}</p> -->
+    <div class='creation_steps'>
+        <div class='cr_step one active'>
+            <div class='step_image'></div>
+            <div class='step_title'>Step 1:</div>
+            <div class='step_descr'>Define your Query</div>
+        </div>
+        <div class='cr_step two'>
+            <div class='step_image'></div>
+            <div class='step_title'>Step 2:</div>
+            <div class='step_descr'>Select Contacts</div>
+        </div>
+        <div class='cr_step three'>
+            <div class='step_image'></div>
+            <div class='step_title'>Step 3:</div>
+            <div class='step_descr'>Review &amp; Send</div>
+        </div>
+    </div>
 {% elif wizard.steps.step1 == 2 %}
-    <!-- Active step 2 label -->
+    <div class='creation_steps'>
+        <div class='cr_step one done'>
+            <div class='step_image'></div>
+            <div class='step_title'>Step 1:</div>
+            <div class='step_descr'>Define your Query</div>
+        </div>
+        <div class='cr_step two active'>
+            <div class='step_image'></div>
+            <div class='step_title'>Step 2:</div>
+            <div class='step_descr'>Select Contacts</div>
+        </div>
+        <div class='cr_step three'>
+            <div class='step_image'></div>
+            <div class='step_title'>Step 3:</div>
+            <div class='step_descr'>Review &amp; Send</div>
+        </div>
+    </div>
 {% elif wizard.steps.step1 == 3 %}
-    <!-- Active step 3 label -->
+    <div class='creation_steps'>
+        <div class='cr_step one done'>
+            <div class='step_image'></div>
+            <div class='step_title'>Step 1:</div>
+            <div class='step_descr'>Define your Query</div>
+        </div>
+        <div class='cr_step two done'>
+            <div class='step_image'></div>
+            <div class='step_title'>Step 2:</div>
+            <div class='step_descr'>Select Contacts</div>
+        </div>
+        <div class='cr_step three active'>
+            <div class='step_image'></div>
+            <div class='step_title'>Step 3:</div>
+            <div class='step_descr'>Review &amp; Send</div>
+        </div>
+    </div>
 {% endif %}
     <div class='benchmark-help'>This space is reserved for instructional text. Should try to keep it pretty succinct but helpful. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed pellentesque tincidunt est, id lacinia orci lacinia eu. Aenean dignissim rutrum velit in faucibus. Nam non odio non neque porttitor dignissim in sed enim. Nunc facilisis ac mauris at eleifend. Maecenas pulvinar erat vestibulum odio aliquet suscipit. Nam venenatis nec lorem vel cursus.</div>
 
@@ -101,7 +150,81 @@
                             <button name="save_and_wizard_goto_step" type="submit" class="btn" value="1">{% trans "Search" %}</button>
                         {% elif wizard.steps.step1 == 1 %}
                             <div class='col-md-8 lined-left'>
-                                {{ wizard.form|bootstrap }}
+                                <div class='row'>
+                                    <div class='col-md-12'>
+                                        {{ form.name.errors }}
+                                        <label for="name">Query Name</label>
+                                        <span class="add_info">(ie 'IT SaaS Costs')</span>
+                                        {{ form.name }}        
+                                    </div>
+                                    <div class='col-md-12'>
+                                        {{ form.question_label.errors }}
+                                        <label for="question_label">Your Query</label>
+                                        <span class="add_info">(ie 'What is your annual Marketing budget for SaaS services')</span>
+                                        {{ form.question_label }}        
+                                    </div>
+                                    <div class='col-md-12'>
+                                        {{ form.question_text.errors }}
+                                        <label for="question_text">Query Details</label>
+                                        <span class="add_help">?
+                                            <span class='add_help_inner'>Lorem ipsum dolor sit amet, consectetur eta adipiscing elit. Pellentasque eu tempor tortor. Aliquam Trisque eros arcu, sed bibendum enim faucibus in. In vulputate blendit lorem ut.</span>
+                                        </span>
+                                        {{ form.question_text }}        
+                                    </div>
+                                    <div class='col-md-12'>
+                                        <div class='row'>
+                                            <div class='col-md-4'>
+                                                {{ form.industry.errors }}
+                                                <label for="industry">Industry</label>
+                                                {{ form.industry }}
+                                            </div>
+                                            <div class='col-md-4'>
+                                                {{ form.geo.errors }}
+                                                <label for="geo">Location</label>
+                                                {{ form.geo }}
+                                            </div>
+                                            <div class='col-md-4'>
+                                                {{ form.question_type.errors }}
+                                                <label for="question_type">Type of Answer</label>
+                                                {{ form.question_type }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class='col-md-12' id='answer_options'>
+                                        {{ form.answer_options.errors }}
+                                        <label for="answer_options">Answer Options</label>
+                                        <span class="add_info">(Enter each choice on a seperate line)</span>
+                                        {{ form.answer_options }}        
+                                    </div>
+                                    <div class='col-md-12' id='units_maxDecimals'>
+                                        <div class='row'>
+                                            <div class='col-md-6'>
+                                                {{ form.units.errors }}
+                                                <label for="units">Units</label>
+                                                {{ form.units }}
+                                            </div>
+                                            <div class='col-md-6'>
+                                                {{ form.max_number_of_decimal.errors }}
+                                                <label for="max_number_of_decimal">maximum number of decimals</label>
+                                                {{ form.max_number_of_decimal }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class='col-md-12'>
+                                        <div class='row'>
+                                            <div class='col-md-8 normal-padding'>                         
+                                                <label for="industry">Minimum responses required to validate benchmark</label>
+                                                <span class="add_help">?
+                                                    <span class='add_help_inner'>Lorem ipsum dolor sit amet, consectetur eta adipiscing elit. Pellentasque eu tempor tortor. Aliquam Trisque eros arcu, sed bibendum enim faucibus in. In vulputate blendit lorem ut.</span>
+                                                </span>
+                                            </div>
+                                            <div class='col-md-4'>
+                                                {{ form.industry.errors }}
+                                                {{ form.industry }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>                                
                             </div>
                             <div class='col-md-4'>
                                 <div class='tips'>
@@ -124,7 +247,7 @@
                         <button name="wizard_goto_step" type="submit" value="{{ wizard.steps.first }}">{% trans "first step" %}</button>
                         <button name="wizard_goto_step" type="submit" value="{{ wizard.steps.prev }}">{% trans "prev step" %}</button>
                         {% endif %}
-                        <input type="submit" class="btn btn-primary auto-width continue-btn" value="{% trans "Continue" %}"/>                    
+                        <input type="submit" class="btn btn-primary auto-width continue-btn" value="{% trans "Continue" %}"/>
                     </div>
                 </form>
             </div>

@@ -1,3 +1,19 @@
+$(function () {
+
+    $( "#id_0-question_type" ).change(function() {
+        var selected = $(this).find('option:selected').val();
+        if (selected > 2) {
+            $('#units_maxDecimals').show();
+            $('#answer_options').hide();
+        }
+        else {
+            $('#answer_options').show();
+            $('#units_maxDecimals').hide();
+        }
+    });
+});
+
+
 
 // Animate Scroll to # links
 
@@ -67,4 +83,3 @@ $( document ).ready(function() {
 
 
 // End Main Nav behavior on scroll
-
