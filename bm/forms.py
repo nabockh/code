@@ -2,7 +2,7 @@ from bm.models import Question, Region
 from django import forms
 from bm.widgets import RankingWidget
 from django.db.models import Q
-from social.models import LinkedInIndustry
+from social.models import LinkedInIndustry, Contact
 
 
 class CreateBenchmarkStep12Form(forms.Form):
@@ -36,7 +36,7 @@ class CreateBenchmarkStep3Form(forms.Form):
     role = forms.CharField(max_length=200, required=False)
     name = forms.CharField(max_length=100, required=False)
 
-    def __init__(self, user, *args, **kwargs):
+    def __init__(self, user, step0data, *args, **kwargs):
         super(CreateBenchmarkStep3Form, self).__init__(*args, **kwargs)
         regions = [('', '------')]
         regions.extend(list(Region.regions.values_list('id', 'name').order_by('name')))
@@ -61,6 +61,16 @@ class CreateBenchmarkStep3Form(forms.Form):
             for contact in self.contacts_filtered:
                 self.fields['contact-{0}-invite'.format(contact.id)] = forms.BooleanField(label=contact.full_name)
                 self.fields['contact-{0}-secondary'.format(contact.id)] = forms.BooleanField(label='')
+
+            self.add_suggested_contacts(self.cleaned_data.get('geo'), self.cleaned_data.get('industry'))
+        else:
+            self.add_suggested_contacts(step0data.get('0-geo'), step0data.get('0-industry'))
+
+    def add_suggested_contacts(self, geo, industry):
+        self.suggested_contacts = Contact.get_suggested(geo, industry)
+        for contact in self.suggested_contacts:
+            self.fields['suggested-{0}-invite'.format(contact.id)] = forms.BooleanField(label=contact.full_name)
+            self.fields['suggested-{0}-secondary'.format(contact.id)] = forms.BooleanField(label='')
 
 
 
