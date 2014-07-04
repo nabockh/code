@@ -1,15 +1,19 @@
 from django.shortcuts import redirect
-from social.models import Profile, Company, LinkedInIndustry
+from social.models import Profile, Company, LinkedInIndustry, Contact
 from bm.models import Region
 
 
-def load_extra_data(backend, details,request, response, uid, user, is_new=False, social_user=None,
+def load_extra_data(backend, details,request, response, uid, user, social_user=None,
                     *args, **kwargs):
     """Load extra data from provider and store it on current UserSocialAuth
     extra_data field.
 
     """
     social_profile = Profile.objects.filter(user=user).first()
+    social_contact = Contact.objects.filter(code=uid).first()
+    social_contact.user = user
+    social_contact.save()
+
     if not social_profile:
         social_profile = Profile()
         social_profile.user = user
