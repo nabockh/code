@@ -66,7 +66,19 @@ ul.main-nav {
     ul.main-nav > li.active > a {
         box-shadow: 0 22px #fff, 0 30px #425380;
     }
-
+    
+    .social-btns > a {
+        background: #3d4d77;
+        color: #fff;
+        width: 18px;
+        line-height: 19px;
+        text-align: center;
+        height: 19px;
+        display: inline-block;
+        margin: 20px 3px;
+        font-size: 12px;
+    }
+    
 /* End Main Nav */
 
 /* User Nav */
@@ -89,28 +101,28 @@ ul.main-nav {
             list-style: none;
         }
 
-        ul.user-nav-inner li {
+        ul.user-nav-inner > li {
             float: left;
             margin: 0 15px;
             color: #fff;
             font-size: 16px;
-            line-height: 21px;
+            line-height: 30px;
+        }
+        
+        ul.user-nav-inner > li.username {
+            margin-left: 0;
         }
 
-        ul.user-nav-inner li > a {
+        ul.user-nav-inner > li > a {
             color: #fff;
         }
         
-        ul.user-nav-inner li > a:hover {
+        ul.user-nav-inner > li > a:hover {
             color: #5D828B;
         }
 
 
 /* End User Nav */
-
-.sign-in-btn {
-    margin: 8px 0 8px 20px;
-}
 
 .search-field {
     border-bottom-right-radius: 0;
@@ -167,36 +179,6 @@ span.nav-username-dropdown {
     span.nav-username-dropdown .glyphicon{
         font-size: 1.3rem;
     }
-
-.sign-in-btn {
-    background: #E1E6E7;
-    position: relative;
-    padding-left: 45px;
-    color: #4b4b4b;
-}
-
-    .sign-in-btn:before {
-        content: 'in';
-        position: absolute;
-        left: -1px;
-        width: 35px;
-        background: #426E97;
-        line-height: 34px;
-        top: -1px;
-        font-weight: bold;
-        font-size: 1.8rem;
-        border-bottom-left-radius: 4px;
-        border-top-left-radius: 4px;
-        color: #fff;
-    }
-
-    .sign-in-btn:hover {
-        background: #F0F0F0;
-    }
-
-        .sign-in-btn:hover:before {
-            background: #3C6081;
-        }
 
 
 .navbar-btn {
@@ -570,20 +552,21 @@ input.btn.full-width {
 
 .styled-form label {
     display: block;
-    line-height: 21px;
     font-weight: 500;
     color: #364468;
+    margin-bottom: 0px;
 }
 .styled-form input, .styled-form textarea {
     width: 100%;
     padding: 6px;
-    margin-bottom: 10px;
+    margin-bottom: 5px;
     border: 1px solid #C9C9C9;
 }
 
 .styled-form textarea {
     max-width: 100%;
-    max-height: 110px;
+    max-height: 105px;
+    margin-bottom: 20px;
 }
 
 .styled-form input[type='submit'] {
@@ -681,6 +664,44 @@ form[role='search'] .btn-search {
     .btn-primary:hover {
         background-color: #5D828B;
     }
+
+
+.btn.sign-in-btn {
+    background: #fff;
+    position: relative;
+    padding: 7px 15px 7px 45px;
+    color: #4b4b4b;
+    text-transform: none;
+    border-radius: 5px;
+    margin-top: 20px;
+}
+
+    .btn.sign-in-btn:before {
+        content: 'in';
+        position: absolute;
+        left: 0;
+        width: 35px;
+        background: #426E97;
+        line-height: 34px;
+        top: 0;
+        font-weight: bold;
+        font-size: 1.8rem;
+        border-bottom-left-radius: 4px;
+        border-top-left-radius: 4px;
+        color: #fff;
+    }
+
+    .btn.sign-in-btn:hover {
+        background: #F0F0F0;
+    }
+
+        .btn.sign-in-btn:hover:before {
+            background: #3C6081;
+        }
+
+.navbar>.container .navbar-brand {
+    margin-left: 0;
+}
 
 @media (min-width: 1200px) {
     .container {
