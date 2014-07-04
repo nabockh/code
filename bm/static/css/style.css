@@ -23,6 +23,13 @@ hr {
     border-color: #dedede;
 }
 
+ul.errorlist {
+    list-style: none;
+    padding: 0;
+    margin: -10px 0 0;
+    color: red;
+}
+
 .bordered {
     border: 1px solid #dadada;
 }
@@ -650,6 +657,7 @@ form[role='search'] .form-control {
     margin-top: 12px;
     border-radius: 0;
     box-shadow: none;
+    max-width: 150px;
 }
 
 form[role='search'] .btn-search {
