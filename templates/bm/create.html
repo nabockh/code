@@ -122,8 +122,6 @@
             <div class='col-md-3'></div>
             <div class='col-md-3'></div>
         </div>
-        {{ wizard.form|bootstrap }}
-        <button name="save_and_wizard_goto_step" type="submit" class="btn" value="1">{% trans "Search" %}</button>
     </div>
 {% elif wizard.steps.step1 == 3 %}
     <div class='creation_steps'>
@@ -246,7 +244,12 @@
                             </div>
                         {% elif wizard.steps.step1 == 2 %}
                             <!-- step 2 -->
-                            
+                            {{ user }}
+                            {{ wizard.form }}
+                            <button name="save_and_wizard_goto_step" type="submit" class="btn" value="1">{% trans "Search" %}</button>
+                        {% elif wizard.steps.step1 == 3 %}
+                            <!-- step 3 -->
+                            {{ form }}
                         {% endif %}
                     {% endif %}
                     </table>
