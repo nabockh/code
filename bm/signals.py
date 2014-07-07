@@ -1,5 +1,5 @@
 from django.core.mail import send_mail
-from django.db.models.signals import post_save
+from django.db.models.signals import post_save, pre_save
 from django.dispatch import Signal
 from django.dispatch import receiver
 from django.template import loader, Context
@@ -21,6 +21,11 @@ def send_welcome_alert(sender, **kwargs):
         })
         send_mail('Welcome', template.render(context), None, recipient_list)
 
+
+@receiver(pre_save, sender=Benchmark)
+def calculate_deadline(instance, **kwargs):
+    if not instance.already_approved and instance.approved:
+        instance.calculate_deadline()
 
 @receiver(post_save, sender=Benchmark)
 def check_for_approve(instance, **kwargs):

@@ -1,5 +1,8 @@
 from copy import copy
+from datetime import datetime, timedelta
 import uuid
+import math
+from app.settings import BENCHMARK_DURATIONS_DAYS
 from django.contrib.sites.models import Site
 from django.core.urlresolvers import reverse
 from django.db import models, IntegrityError
@@ -62,6 +65,11 @@ class Benchmark(models.Model):
     @property
     def link(self):
         return self.links.first()
+
+    def calculate_deadline(self):
+        count_without_email = self.invites.filter(recipient___email__isnull=True, recipient__user_id__isnull=True).count()
+        days_to_sent_via_linkedin = math.ceil(float(count_without_email)/100)
+        self.end_date = datetime.now() + timedelta(days=days_to_sent_via_linkedin+BENCHMARK_DURATIONS_DAYS)
 
     class Meta:
         verbose_name = 'Pending Benchmark'

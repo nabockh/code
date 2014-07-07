@@ -169,3 +169,6 @@ try:
     from local_settings import *
 except ImportError:
     pass
+
+
+BENCHMARK_DURATIONS_DAYS = 3
