@@ -50,9 +50,8 @@ def send_invites(benchmark_id):
 
 
 
-@periodic_task(run_every=crontab())
+@periodic_task(run_every=crontab(minute=0, hour=0))
 def send_reminders():
-    print 'dscsd'
     current_time = datetime.now()
     days_count = timedelta(days=2)
     approved_benchmarks = Benchmark.objects.filter(approved=True, end_date__gt=current_time, end_date__lte=current_time+days_count)
