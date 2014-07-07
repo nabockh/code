@@ -95,6 +95,7 @@
             <div class='step_descr'>Review &amp; Send</div>
         </div>
     </div>
+    <div class='benchmark-help'>This space is reserved for instructional text. Should try to keep it pretty succinct but helpful. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed pellentesque tincidunt est, id lacinia orci lacinia eu. Aenean dignissim rutrum velit in faucibus. Nam non odio non neque porttitor dignissim in sed enim. Nunc facilisis ac mauris at eleifend. Maecenas pulvinar erat vestibulum odio aliquet suscipit. Nam venenatis nec lorem vel cursus.</div>
 {% elif wizard.steps.step1 == 2 %}
     <div class='creation_steps'>
         <div class='cr_step one done'>
@@ -112,6 +113,17 @@
             <div class='step_title'>Step 3:</div>
             <div class='step_descr'>Review &amp; Send</div>
         </div>
+    </div>
+    <div class='benchmark-help'>
+        <div class='row'>
+            <div class='col-md-12'>Use the search fields below to narrow your network to those most relevant to your benchmark. You will be able to preview &amp; edit your list before publishing.</div>
+            <div class='col-md-3'></div>
+            <div class='col-md-3'></div>
+            <div class='col-md-3'></div>
+            <div class='col-md-3'></div>
+        </div>
+        {{ wizard.form|bootstrap }}
+        <button name="save_and_wizard_goto_step" type="submit" class="btn" value="1">{% trans "Search" %}</button>
     </div>
 {% elif wizard.steps.step1 == 3 %}
     <div class='creation_steps'>
@@ -132,8 +144,6 @@
         </div>
     </div>
 {% endif %}
-    <div class='benchmark-help'>This space is reserved for instructional text. Should try to keep it pretty succinct but helpful. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed pellentesque tincidunt est, id lacinia orci lacinia eu. Aenean dignissim rutrum velit in faucibus. Nam non odio non neque porttitor dignissim in sed enim. Nunc facilisis ac mauris at eleifend. Maecenas pulvinar erat vestibulum odio aliquet suscipit. Nam venenatis nec lorem vel cursus.</div>
-
     <div class="margined no-bottom">
         <div class='row'>            
                 <form action="" method="post" class='styled-form'>{% csrf_token %}
@@ -145,10 +155,7 @@
                             {{ form }}
                         {% endfor %}
                     {% else %}
-                        {% if wizard.steps.step1 == 2 %}
-                            {{ wizard.form|bootstrap }}
-                            <button name="save_and_wizard_goto_step" type="submit" class="btn" value="1">{% trans "Search" %}</button>
-                        {% elif wizard.steps.step1 == 1 %}
+                        {% if wizard.steps.step1 == 1 %}
                             <div class='col-md-8 lined-left'>
                                 <div class='row'>
                                     <div class='col-md-12'>
@@ -237,17 +244,35 @@
                                     <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer suscipit, dui in mattis venenatis, purus lectus dictum quam, et vehicula nunc risus nec orci.</p>
                                 </div>
                             </div>
+                        {% elif wizard.steps.step1 == 2 %}
+                            <!-- step 2 -->
+                            
                         {% endif %}
                     {% endif %}
                     </table>
 
                     <div class='btn-holder'>
                         {% if wizard.steps.prev %}
-                
-                        <button name="wizard_goto_step" type="submit" value="{{ wizard.steps.first }}">{% trans "first step" %}</button>
-                        <button name="wizard_goto_step" type="submit" value="{{ wizard.steps.prev }}">{% trans "prev step" %}</button>
+                            {% if wizard.steps.step1 == 1 %}
+                            {% else %}
+                                <button id='go_back' name="wizard_goto_step" type="submit" value="{{ wizard.steps.prev }}" class="btn btn-default auto-width continue-btn hidden">{% trans "go back" %}</button>
+                                <label for='go_back' class='btn btn-default auto-width'><i class='fa fa-arrow-circle-o-left'></i> Go Back</label>
+                            >
+                            {% endif %}
+
+                            {% if wizard.steps.step1 == 3 %}
+                                <!-- <button name="wizard_goto_step" type="submit" value="{{ wizard.steps.first }}" class="btn btn-default auto-width continue-btn">{% trans "first step" %}</button> -->
+                                <label for='saveAndFinishLater' class='btn btn-default auto-width'> Save &amp; Finish later</label>
+                            {% endif %}
+
                         {% endif %}
-                        <input type="submit" class="btn btn-primary auto-width continue-btn" value="{% trans "Continue" %}"/>
+                        {% if wizard.steps.step1 == 3 %}
+                            <input id='bm-submit' type="submit" class="btn btn-primary auto-width continue-btn hidden" value="{% trans "Send invitations" %}"/>
+                            <label for='bm-submit' class='btn btn-primary auto-width pull-right'> Send Invitations <i class='fa fa-arrow-circle-o-right'></i></label>
+                        {% else %}
+                            <input id='bm-submit' type="submit" class="btn btn-primary auto-width continue-btn hidden" value="{% trans "Continue" %}"/>
+                            <label for='bm-submit' class='btn btn-primary auto-width pull-right'> Continue <i class='fa fa-arrow-circle-o-right'></i></label>
+                        {% endif %}
                     </div>
                 </form>
             </div>

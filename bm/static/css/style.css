@@ -785,6 +785,11 @@ form[role='search'] .btn-search {
     font-weight: 600;
 }
 
+.benchmark-creation .styled-form label.btn {
+    font-size: 14px;
+    color: #fff;
+}
+
 .benchmark-creation .styled-form input:not([type='submit']), .benchmark-creation .styled-form textarea, .benchmark-creation .styled-form select {
     background: #F8F7F7;   
     padding: 3px 6px;
@@ -912,8 +917,12 @@ form[role='search'] .btn-search {
     font-size: 14px;
     text-transform: uppercase;
 }
-
+    
     .btn .fa {
+        padding: 0 10px 0 0;
+    }
+
+    .btn.pull-right .fa {
         padding: 0 0 0 10px;
     }
 
@@ -927,6 +936,14 @@ form[role='search'] .btn-search {
 
     .btn-primary:hover {
         background-color: #5D828B;
+    }
+
+.btn-default {
+    background-color: #5d5d5d;
+}
+
+    .btn-default:hover {
+        background-color: #6d6d6d;
     }
 
 
