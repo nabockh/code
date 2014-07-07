@@ -11,6 +11,16 @@ $(function () {
             $('#units_maxDecimals').hide();
         }
     });
+
+    $('.single-contact input[type="checkbox"]').change(function() {
+        if ($('.single-contact input[type="checkbox"]:checked').length > 0) {
+            $(this).parents('.single-contact').addClass('active');
+        }
+        else {
+            $(this).parents('.single-contact').removeClass('active');
+        }
+
+    });
 });
 
 

@@ -624,6 +624,18 @@ input.btn.full-width {
     box-shadow: 1px 0 #ccc;
 }
 
+    .lined-left .title-header {
+        margin: 0 10px;
+        padding: 5px 10px;
+        font-size: 12px;
+    }
+
+    .lined-left .title-header .add_help {
+        background: #fff;
+        color: #333;
+        margin: 0 1px;
+    }
+
 .contact-info {
     float: right;
     letter-spacing: 1px;
@@ -781,9 +793,53 @@ form[role='search'] .btn-search {
     font-weight: 400;
 }
 
-.benchmark-help label {
-    display: block;
+    .benchmark-help.search {
+        margin: -45px -45px 0;
+    
+        padding-bottom: 0;
 }
+
+    .benchmark-help label {
+        display: block;
+}
+
+.benchmark-creation .styled-form .benchmark-help.search label {
+    display: block;
+    margin-top: 10px;
+    color: #fff;
+    font-size: 12px;
+}
+
+.benchmark-creation .styled-form .benchmark-help.search select, .benchmark-creation .styled-form, .benchmark-help.search input[type='text'] {
+    height: 32px;
+    margin: -1px 0 0;
+    padding: 0;
+    
+    background: #fff;
+    color: #333;
+}
+    .benchmark-creation .styled-form .benchmark-help.search label.btn {
+        padding: 0;
+        margin-top: 31px;
+        width: 50px;
+        height: 32px;
+        line-height: 32px;
+        text-align: center;
+        font-size: 14px;
+    
+    }
+    
+        .benchmark-creation .styled-form .benchmark-help.search label.btn.btn-primary {
+            background-color: #5D828B;
+        }
+        
+            .benchmark-creation .styled-form .benchmark-help.search label.btn.btn-primary:hover {
+                background-color: #809094;
+            }
+    
+        .benchmark-creation .styled-form .benchmark-help.search label.btn i.fa {
+            padding: 0;
+        }
 
 .benchmark-creation .styled-form label {
     text-transform: uppercase;
@@ -805,7 +861,7 @@ form[role='search'] .btn-search {
     margin-bottom: 10px;
 }
 
-.benchmark-creation .margined .styled-form .col-md-8 {
+.benchmark-creation .margined .styled-form > .col-md-8 {
     padding-right: 30px;
     margin-bottom: 45px;
 }
@@ -845,6 +901,18 @@ form[role='search'] .btn-search {
         font-size: 12px;
         line-height: 18px;
     }
+
+    .tips a {
+        color: #339999;
+        font-size: 12px;
+        text-decoration: none;
+        display: inline-block;
+        line-height: 36px;
+    }
+    
+        .tips a:hover {
+            text-decoration: underline;
+        }
 
     .btn-holder {
         margin: 0 -45px;
@@ -893,7 +961,9 @@ form[role='search'] .btn-search {
             margin-left: -125px;
             left: 50%;
             border-radius: 3px;
-        }
+        
+            text-transform: none;
+}
         
             .add_help_inner:after {
                 position: absolute;
@@ -913,6 +983,89 @@ form[role='search'] .btn-search {
 
         #units_maxDecimals {
             display: none;
+        }
+        
+        .contact-results {
+            height: 400px;
+            overflow-x: hidden;
+            border: 1px solid #dedede;
+        
+            margin: 0 10px;
+}
+
+        .single-contact {
+            border-bottom: 1px solid #dedede;
+            padding: 5px 10px;
+        }
+
+            .single-contact.active {
+                background-color: #eff0f2;
+            }
+
+        .benchmark-creation .styled-form .single-contact input[type="checkbox"] {
+            margin: 12px 0;
+            display: inline-block;
+        }
+
+        .benchmark-creation .styled-form .single-contact label, .benchmark-creation .styled-form .suggested-contact label {
+            text-transform: none;
+            font-size: 12px;
+            color: #339999;
+            line-height: 36px;
+        }
+        
+        .benchmark-creation .styled-form .suggested-contact {
+            border-bottom: 1px solid #dedede;            
+        }
+
+        .benchmark-creation .styled-form .tips .suggested-contact:first-of-type {
+            margin-top: -13px;
+        }
+        
+        .benchmark-creation .styled-form .suggested-contact input[type="checkbox"] {
+            margin: 12px 0;
+        }
+
+        .search .col-md-12.tabulation {
+            padding: 0 10px;
+        }
+
+            .search .tabulation .nav-tabs {
+                border-bottom: 1px solid #fff;
+            }
+
+                .search .tabulation .nav-tabs>li {
+                    margin-right: 5px;
+                    margin-bottom: 0;
+                }
+
+                    .search .tabulation .nav-tabs>li>a {
+                        border-radius: 0;
+                        font-size: 12px;
+                        font-weight: bold;
+                        line-height: 40px;
+                        padding: 0 20px;
+                        text-transform: uppercase;            
+                        background: #dddfe1;
+                        color: #333;
+                    }
+
+                        .search .tabulation .nav-tabs>li>a:hover {           
+                            background: #ccc;                        
+                            border-color: #ccc;
+                        }
+                    
+                        .search .tabulation .nav-tabs>li.active>a {
+                            background-color: #fff;
+                        }
+
+                            .search .tabulation .nav-tabs>li.active>a:hover {
+                                background-color: #fff;
+                                border-color: #fff;
+                            }
+
+        .search .row.contacts-search {
+            margin-bottom: 25px;
         }
 
 /* Bootstrap fixes according to design */
@@ -1005,7 +1158,41 @@ form[role='search'] .btn-search {
     margin-left: 0;
 }
 
+/* 5 columns fix */
+
+.col-xs-5ths,
+.col-sm-5ths,
+.col-md-5ths,
+.col-lg-5ths {
+    position: relative;
+    min-height: 1px;
+    padding-right: 10px;
+    padding-left: 10px;
+}
+
+.col-xs-5ths {
+    width: 20%;
+    float: left;
+}
+
+@media (min-width: 768px) {
+.col-sm-5ths {
+        width: 20%;
+        float: left;
+    }
+}
+@media (min-width: 992px) {
+    .col-md-5ths {
+        width: 20%;
+        float: left;
+    }
+}
 @media (min-width: 1200px) {
+    .col-lg-5ths {
+        width: 20%;
+        float: left;
+    }
+
     .container {
         width: 970px;
     }

@@ -77,7 +77,6 @@
 <div class='container bordered bgwhite benchmark-creation margined'>
     <div class='title-header'>Create a new benchmark</div>
 {% if wizard.steps.step1 == 1 %}
-    <!-- <p>Step {{ wizard.steps.step1 }} of {{ wizard.steps.count }}</p> -->
     <div class='creation_steps'>
         <div class='cr_step one active'>
             <div class='step_image'></div>
@@ -112,15 +111,6 @@
             <div class='step_image'></div>
             <div class='step_title'>Step 3:</div>
             <div class='step_descr'>Review &amp; Send</div>
-        </div>
-    </div>
-    <div class='benchmark-help'>
-        <div class='row'>
-            <div class='col-md-12'>Use the search fields below to narrow your network to those most relevant to your benchmark. You will be able to preview &amp; edit your list before publishing.</div>
-            <div class='col-md-3'></div>
-            <div class='col-md-3'></div>
-            <div class='col-md-3'></div>
-            <div class='col-md-3'></div>
         </div>
     </div>
 {% elif wizard.steps.step1 == 3 %}
@@ -217,7 +207,7 @@
                                     </div>
                                     <div class='col-md-12'>
                                         <div class='row'>
-                                            <div class='col-md-8 normal-padding'>                         
+                                            <div class='col-md-8 normal-padding'>
                                                 <label for="industry">Minimum responses required to validate benchmark</label>
                                                 <span class="add_help">?
                                                     <span class='add_help_inner'>Lorem ipsum dolor sit amet, consectetur eta adipiscing elit. Pellentasque eu tempor tortor. Aliquam Trisque eros arcu, sed bibendum enim faucibus in. In vulputate blendit lorem ut.</span>
@@ -243,10 +233,106 @@
                                 </div>
                             </div>
                         {% elif wizard.steps.step1 == 2 %}
-                            <!-- step 2 -->
-                            {{ user }}
-                            {{ wizard.form }}
-                            <button name="save_and_wizard_goto_step" type="submit" class="btn" value="1">{% trans "Search" %}</button>
+                            <div class='benchmark-help search'>
+                                <div class='row'>
+                                    <div class='col-md-12'>Use the search fields below to narrow your network to those most relevant to your benchmark. You will be able to preview &amp; edit your list before publishing.</div>
+                                </div>
+                                <div class='row contacts-search'>
+                                    <div class="col-md-5ths col-xs-6">
+                                        <label for="id_1-industry">Industry</label>
+                                        {{ form.industry }}
+                                        {{ form.industry.errors }}
+                                    </div>
+                                    <div class="col-md-5ths col-xs-6">
+                                        <label for="id_1-geo">Geography</label>
+                                        {{ form.geo }}
+                                        {{ form.geo.errors }}
+                                    </div>
+                                    <div class="col-md-5ths col-xs-6">
+                                        <label for="id_1-role">Role</label>
+                                        {{ form.role }}
+                                        {{ form.role.errors }}
+                                    </div>
+                                    <div class="col-md-5ths col-xs-6">
+                                        <label for="id_1-name">Name</label>
+                                        {{ form.name }}
+                                        {{ form.name.errors }}
+                                    </div>
+                                    <div class="col-md-5ths col-xs-6">
+                                        <button name="save_and_wizard_goto_step" type="submit" class="btn btn-primary full-width hidden" value="1">{% trans "Search" %}</button>
+                                        <label for='save_and_wizard_goto_step' class='btn btn-primary full-width'><i class='fa fa-search'></i></label>
+                                    </div>
+                                </div>
+                                <div class='row'>
+                                    <div class='col-md-12 tabulation'>
+                                        <ul class="nav nav-tabs" role="tablist">
+                                          <li class="active"><a href="#">Search results</a></li>
+                                          <li><a href="#">Recomendations</a></li>
+                                          <li><a href="#">Selected Contacts</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class='row'>
+                                <div class='col-md-8 lined-left margined'>
+                                    <!-- {{ wizard.form }} -->
+                                    <div class="title-header">
+                                        <div class='row'>
+                                            <div class='col-md-8'>Contact</div>
+                                            <div class='col-md-2 text-center'>Select</div>
+                                            <div class='col-md-2 text-center'>Share 
+                                                <span class="add_help">?
+                                                    <span class='add_help_inner'>Lorem ipsum dolor sit amet, consectetur eta adipiscing elit. Pellentasque eu tempor tortor. Aliquam Trisque eros arcu, sed bibendum enim faucibus in. In vulputate blendit lorem ut.</span>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class='contact-results'>
+                                        {% for contact in wizard.form.contacts_filtered %}
+                                            <div class='single-contact'>
+                                                <div class='row'>
+                                                    <div class='col-md-8'>
+                                                        <label for='id_1-contact-{{contact.id}}-invite'>{{ contact }}</label>
+                                                    </div>
+                                                    <div class='col-md-2'>
+                                                        <input type='checkbox' name='id_1-contact-{{contact.id}}-invite' />
+                                                    </div>
+                                                    <div class='col-md-2'>
+                                                        <input type='checkbox' name='1-contact-{{contact.id}}-secondary' id='id_1-contact-{{contact.id}}-secondary' />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        {% endfor %}
+                                    </div>
+                                    
+                                </div>
+                                <div class='col-md-4 margined'>
+                                    <div class='tips'>
+                                        <p class='label-like'>We Recommend...</p>
+                                        <hr>
+                                        {% for contact in wizard.form.suggested_contacts %}
+                                            <div class='suggested-contact'>
+                                                <div class='row'>
+                                                    <div class='col-md-8'>
+                                                        <label for='id_1-suggested-{{contact.id}}-invite'>{{ contact }}</label>
+                                                    </div>
+                                                    <div class='col-md-2'>
+                                                        <input type='checkbox' name='id_1-suggested-{{contact.id}}-invite' />
+                                                    </div>
+                                                    <div class='col-md-2'>
+                                                        <input type='checkbox' name='1-suggested-{{contact.id}}-secondary' id='id_1-suggested-{{contact.id}}-secondary' />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        {% endfor %} 
+                                        <a href='#'>See All Recommendations →</a>                                  
+                                    </div>
+                                </div>
+                            </div>
+                            
+                          
+                           <!--  {{ wizard.form }} -->
+                            
                         {% elif wizard.steps.step1 == 3 %}
                             <!-- step 3 -->
                             {{ form }}
