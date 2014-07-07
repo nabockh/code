@@ -747,6 +747,10 @@ form[role='search'] .btn-search {
 .creation_steps .cr_step .step_descr {
     font-size: 14px;
     line-height: 14px
+;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
 }
 
 /* End Steps */
@@ -775,6 +779,10 @@ form[role='search'] .btn-search {
     font-size: 12px;
     line-height: 22px;
     font-weight: 400;
+}
+
+.benchmark-help label {
+    display: block;
 }
 
 .benchmark-creation .styled-form label {
