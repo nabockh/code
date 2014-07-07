@@ -5,6 +5,7 @@ from django.shortcuts import render
 from django.views.generic import TemplateView
 from core.forms import ContactForm
 from django.contrib.auth.models import User
+from django.utils.decorators import method_decorator
 
 
 class HomeView(TemplateView):
@@ -32,7 +33,11 @@ class HomeView(TemplateView):
 class DashboardView(TemplateView):
     template_name = 'bm/dashboard.html'
 
-    def get_context_data(self, **kwargs):
-        context = super(DashboardView, self).get_context_data(**kwargs)
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super(DashboardView, self).dispatch(*args, **kwargs)
+
+    def get_context_data(self,*args, **kwargs):
+        context = super(DashboardView, self).get_context_data(*args, **kwargs)
         context['user'] = self.request.user
         return context
