@@ -1043,6 +1043,20 @@
     }
 },
 {
+    "model":"bm.regiontype",
+    "fields": {
+        "id":1,
+        "name": "region"
+    }
+},
+{
+    "model":"bm.regiontype",
+    "fields": {
+        "id":2,
+        "name": "country"
+    }
+},
+{
     "model":"bm.region",
     "fields": {
         "id":1,
@@ -1070,46 +1084,6 @@
     "model":"bm.region",
     "fields": {
         "id":4,
-        "name":"Antarctica",
-        "type": 1
-    }
-},
-{
-    "model":"bm.region",
-    "fields": {
-        "id":5,
-        "name":"The Caribbean",
-        "type": 1
-    }
-},
-{
-    "model":"bm.region",
-    "fields": {
-        "id":6,
-        "name":"Central America",
-        "type": 1
-    }
-},
-{
-    "model":"bm.region",
-    "fields": {
-        "id":7,
-        "name":"South America",
-        "type": 1
-    }
-},
-{
-    "model":"bm.region",
-    "fields": {
-        "id":8,
-        "name":"Northern America",
-        "type": 1
-    }
-},
-{
-    "model":"bm.region",
-    "fields": {
-        "id":9,
         "name":"Africa",
         "type": 1
     }
@@ -1117,22 +1091,22 @@
 {
     "model":"bm.region",
     "fields": {
-        "id":10,
-        "name":"Oceania",
+        "id":5,
+        "name":"North America",
         "type": 1
     }
 },
 {
     "model":"bm.region",
     "fields": {
-        "id":11,
-        "name":"Other",
+        "id":6,
+        "name":"Latin America",
         "type": 1
     }
 },
 {
    "fields":{
-      "id": 12,
+      "id": 7,
       "parent":1,
       "code":"ad",
       "name":"Andorra",
@@ -1142,7 +1116,7 @@
 },
 {
    "fields":{
-       "id":13,
+       "id":8,
       "parent":2,
       "code":"ae",
       "name":"United Arab Emirates",
@@ -1152,7 +1126,7 @@
 },
 {
    "fields":{
-       "id":14,
+       "id":9,
       "parent":3,
       "code":"af",
       "name":"Afghanistan",
@@ -1162,8 +1136,8 @@
 },
 {
    "fields":{
-       "id":15,
-      "parent":5,
+       "id":10,
+      "parent":6,
       "code":"ag",
       "name":"Antigua and Barbuda",
       "type":2
@@ -1172,8 +1146,8 @@
 },
 {
    "fields":{
-       "id":16,
-      "parent":5,
+       "id":11,
+      "parent":6,
       "code":"ai",
       "name":"Anguilla",
       "type":2
@@ -1182,7 +1156,7 @@
 },
 {
    "fields":{
-       "id":17,
+       "id":12,
       "parent":1,
       "code":"al",
       "name":"Albania",
@@ -1192,7 +1166,7 @@
 },
 {
    "fields":{
-       "id":18,
+       "id":13,
       "parent":3,
       "code":"am",
       "name":"Armenia",
@@ -1202,7 +1176,7 @@
 },
 {
    "fields":{
-       "id":19,
+       "id":14,
       "parent":1,
       "code":"an",
       "name":"Netherlands Antilles",
@@ -1212,8 +1186,8 @@
 },
 {
    "fields":{
-       "id":20,
-      "parent":9,
+       "id":15,
+      "parent":4,
       "code":"ao",
       "name":"Angola",
       "type":2
@@ -1222,8 +1196,8 @@
 },
 {
    "fields":{
-       "id":21,
-      "parent":4,
+       "id":16,
+      "parent":3,
       "code":"aq",
       "name":"Antarctica",
       "type":2
@@ -1232,8 +1206,8 @@
 },
 {
    "fields":{
-       "id":22,
-      "parent":7,
+       "id":17,
+      "parent":6,
       "code":"ar",
       "name":"Argentina",
       "type":2
@@ -1242,8 +1216,8 @@
 },
 {
    "fields":{
-       "id":23,
-      "parent":10,
+       "id":18,
+      "parent":3,
       "code":"as",
       "name":"American Samoa",
       "type":2
@@ -1252,7 +1226,7 @@
 },
 {
    "fields":{
-       "id":24,
+       "id":19,
       "parent":1,
       "code":"at",
       "name":"Austria",
@@ -1262,8 +1236,8 @@
 },
 {
    "fields":{
-       "id":25,
-      "parent":10,
+       "id":20,
+      "parent":3,
       "code":"au",
       "name":"Australia",
       "type":2
@@ -1272,8 +1246,8 @@
 },
 {
    "fields":{
-       "id":26,
-      "parent":5,
+       "id":21,
+      "parent":6,
       "code":"aw",
       "name":"Aruba",
       "type":2
@@ -1282,7 +1256,7 @@
 },
 {
    "fields":{
-       "id":27,
+       "id":22,
       "parent":1,
       "code":"ax",
       "name":"Aland Islands",
@@ -1292,7 +1266,7 @@
 },
 {
    "fields":{
-       "id":28,
+       "id":23,
       "parent":3,
       "code":"az",
       "name":"Azerbaijan",
@@ -1302,7 +1276,7 @@
 },
 {
    "fields":{
-       "id":29,
+       "id":24,
       "parent":1,
       "code":"ba",
       "name":"Bosnia and Herzegovina",
@@ -1312,8 +1286,8 @@
 },
 {
    "fields":{
-       "id":30,
-      "parent":5,
+       "id":25,
+      "parent":6,
       "code":"bb",
       "name":"Barbados",
       "type":2
@@ -1322,7 +1296,7 @@
 },
 {
    "fields":{
-       "id":31,
+       "id":26,
       "parent":3,
       "code":"bd",
       "name":"Bangladesh",
@@ -1332,7 +1306,7 @@
 },
 {
    "fields":{
-       "id":32,
+       "id":27,
       "parent":1,
       "code":"be",
       "name":"Belgium",
@@ -1342,8 +1316,8 @@
 },
 {
    "fields":{
-       "id":33,
-      "parent":9,
+       "id":28,
+      "parent":4,
       "code":"bf",
       "name":"Burkina Faso",
       "type":2
@@ -1352,7 +1326,7 @@
 },
 {
    "fields":{
-       "id":34,
+       "id":29,
       "parent":1,
       "code":"bg",
       "name":"Bulgaria",
@@ -1362,7 +1336,7 @@
 },
 {
    "fields":{
-       "id":35,
+       "id":30,
       "parent":2,
       "code":"bh",
       "name":"Bahrain",
@@ -1372,8 +1346,8 @@
 },
 {
    "fields":{
-       "id":36,
-      "parent":9,
+       "id":31,
+      "parent":4,
       "code":"bi",
       "name":"Burundi",
       "type":2
@@ -1382,8 +1356,8 @@
 },
 {
    "fields":{
-       "id":37,
-      "parent":9,
+       "id":32,
+      "parent":4,
       "code":"bj",
       "name":"Benin",
       "type":2
@@ -1392,8 +1366,8 @@
 },
 {
    "fields":{
-       "id":38,
-      "parent":8,
+       "id":33,
+      "parent":5,
       "code":"bm",
       "name":"Bermuda",
       "type":2
@@ -1402,7 +1376,7 @@
 },
 {
    "fields":{
-       "id":39,
+       "id":34,
       "parent":3,
       "code":"bn",
       "name":"Brunei Darussalam",
@@ -1412,8 +1386,8 @@
 },
 {
    "fields":{
-       "id":40,
-      "parent":7,
+       "id":35,
+      "parent":6,
       "code":"bo",
       "name":"Bolivia",
       "type":2
@@ -1422,8 +1396,8 @@
 },
 {
    "fields":{
-       "id":41,
-      "parent":7,
+       "id":36,
+      "parent":6,
       "code":"br",
       "name":"Brazil",
       "type":2
@@ -1432,8 +1406,8 @@
 },
 {
    "fields":{
-       "id":42,
-      "parent":5,
+       "id":37,
+      "parent":6,
       "code":"bs",
       "name":"Bahamas",
       "type":2
@@ -1442,7 +1416,7 @@
 },
 {
    "fields":{
-       "id":43,
+       "id":38,
       "parent":3,
       "code":"bt",
       "name":"Bhutan",
@@ -1452,8 +1426,8 @@
 },
 {
    "fields":{
-       "id":44,
-      "parent":10,
+       "id":39,
+      "parent":3,
       "code":"bv",
       "name":"Bouvet Island",
       "type":2
@@ -1462,8 +1436,8 @@
 },
 {
    "fields":{
-       "id":45,
-      "parent":9,
+       "id":40,
+      "parent":4,
       "code":"bw",
       "name":"Botswana",
       "type":2
@@ -1472,7 +1446,7 @@
 },
 {
    "fields":{
-       "id":46,
+       "id":41,
       "parent":1,
       "code":"by",
       "name":"Belarus",
@@ -1482,7 +1456,7 @@
 },
 {
    "fields":{
-       "id":47,
+       "id":42,
       "parent":6,
       "code":"bz",
       "name":"Belize",
@@ -1492,8 +1466,8 @@
 },
 {
    "fields":{
-       "id":48,
-      "parent":8,
+       "id":43,
+      "parent":5,
       "code":"ca",
       "name":"Canada",
       "type":2
@@ -1502,8 +1476,8 @@
 },
 {
    "fields":{
-       "id":49,
-      "parent":5,
+       "id":44,
+      "parent":6,
       "code":"cb",
       "name":"Caribbean Nations",
       "type":2
@@ -1512,8 +1486,8 @@
 },
 {
    "fields":{
-       "id":50,
-      "parent":10,
+       "id":45,
+      "parent":3,
       "code":"cc",
       "name":"Cocos (Keeling) Islands",
       "type":2
@@ -1522,8 +1496,8 @@
 },
 {
    "fields":{
-       "id":51,
-      "parent":9,
+       "id":46,
+      "parent":4,
       "code":"cd",
       "name":"Democratic Republic of the Congo",
       "type":2
@@ -1532,8 +1506,8 @@
 },
 {
    "fields":{
-       "id":52,
-      "parent":9,
+       "id":47,
+      "parent":4,
       "code":"cf",
       "name":"Central African Republic",
       "type":2
@@ -1542,8 +1516,8 @@
 },
 {
    "fields":{
-       "id":53,
-      "parent":9,
+       "id":48,
+      "parent":4,
       "code":"cg",
       "name":"Congo",
       "type":2
@@ -1552,7 +1526,7 @@
 },
 {
    "fields":{
-       "id":54,
+       "id":49,
       "parent":1,
       "code":"ch",
       "name":"Switzerland",
@@ -1562,8 +1536,8 @@
 },
 {
    "fields":{
-       "id":55,
-      "parent":9,
+       "id":50,
+      "parent":4,
       "code":"ci",
       "name":"Cote D'Ivoire (Ivory Coast)",
       "type":2
@@ -1572,8 +1546,8 @@
 },
 {
    "fields":{
-       "id":56,
-      "parent":10,
+       "id":51,
+      "parent":3,
       "code":"ck",
       "name":"Cook Islands",
       "type":2
@@ -1582,8 +1556,8 @@
 },
 {
    "fields":{
-       "id":57,
-      "parent":7,
+       "id":52,
+      "parent":6,
       "code":"cl",
       "name":"Chile",
       "type":2
@@ -1592,8 +1566,8 @@
 },
 {
    "fields":{
-       "id":58,
-      "parent":9,
+       "id":53,
+      "parent":4,
       "code":"cm",
       "name":"Cameroon",
       "type":2
@@ -1602,7 +1576,7 @@
 },
 {
    "fields":{
-       "id":59,
+       "id":54,
       "parent":3,
       "code":"cn",
       "name":"China",
@@ -1612,8 +1586,8 @@
 },
 {
    "fields":{
-       "id":60,
-      "parent":7,
+       "id":55,
+      "parent":6,
       "code":"co",
       "name":"Colombia",
       "type":2
@@ -1622,7 +1596,7 @@
 },
 {
    "fields":{
-       "id":61,
+       "id":56,
       "parent":6,
       "code":"cr",
       "name":"Costa Rica",
@@ -1632,7 +1606,7 @@
 },
 {
    "fields":{
-       "id":62,
+       "id":57,
       "parent":1,
       "code":"cs",
       "name":"Serbia and Montenegro",
@@ -1642,8 +1616,8 @@
 },
 {
    "fields":{
-       "id":63,
-      "parent":5,
+       "id":58,
+      "parent":6,
       "code":"cu",
       "name":"Cuba",
       "type":2
@@ -1652,8 +1626,8 @@
 },
 {
    "fields":{
-       "id":64,
-      "parent":9,
+       "id":59,
+      "parent":4,
       "code":"cv",
       "name":"Cape Verde",
       "type":2
@@ -1662,8 +1636,8 @@
 },
 {
    "fields":{
-       "id":65,
-      "parent":10,
+       "id":60,
+      "parent":3,
       "code":"cx",
       "name":"Christmas Island",
       "type":2
@@ -1672,7 +1646,7 @@
 },
 {
    "fields":{
-       "id":66,
+       "id":61,
       "parent":1,
       "code":"cy",
       "name":"Cyprus",
@@ -1682,7 +1656,7 @@
 },
 {
    "fields":{
-       "id":67,
+       "id":62,
       "parent":1,
       "code":"cz",
       "name":"Czech Republic",
@@ -1692,7 +1666,7 @@
 },
 {
    "fields":{
-       "id":68,
+       "id":63,
       "parent":1,
       "code":"de",
       "name":"Germany",
@@ -1702,8 +1676,8 @@
 },
 {
    "fields":{
-       "id":69,
-      "parent":9,
+       "id":64,
+      "parent":4,
       "code":"dj",
       "name":"Djibouti",
       "type":2
@@ -1712,7 +1686,7 @@
 },
 {
    "fields":{
-       "id":70,
+       "id":65,
       "parent":1,
       "code":"dk",
       "name":"Denmark",
@@ -1722,8 +1696,8 @@
 },
 {
    "fields":{
-       "id":71,
-      "parent":5,
+       "id":66,
+      "parent":6,
       "code":"dm",
       "name":"Dominica",
       "type":2
@@ -1732,8 +1706,8 @@
 },
 {
    "fields":{
-       "id":72,
-      "parent":5,
+       "id":67,
+      "parent":6,
       "code":"do",
       "name":"Dominican Republic",
       "type":2
@@ -1742,8 +1716,8 @@
 },
 {
    "fields":{
-       "id":73,
-      "parent":9,
+       "id":68,
+      "parent":4,
       "code":"dz",
       "name":"Algeria",
       "type":2
@@ -1752,8 +1726,8 @@
 },
 {
    "fields":{
-       "id":74,
-      "parent":7,
+       "id":69,
+      "parent":6,
       "code":"ec",
       "name":"Ecuador",
       "type":2
@@ -1762,7 +1736,7 @@
 },
 {
    "fields":{
-       "id":75,
+       "id":70,
       "parent":1,
       "code":"ee",
       "name":"Estonia",
@@ -1772,8 +1746,8 @@
 },
 {
    "fields":{
-       "id":76,
-      "parent":9,
+       "id":71,
+      "parent":4,
       "code":"eg",
       "name":"Egypt",
       "type":2
@@ -1782,8 +1756,8 @@
 },
 {
    "fields":{
-       "id":77,
-      "parent":9,
+       "id":72,
+      "parent":4,
       "code":"eh",
       "name":"Western Sahara",
       "type":2
@@ -1792,8 +1766,8 @@
 },
 {
    "fields":{
-       "id":78,
-      "parent":9,
+       "id":73,
+      "parent":4,
       "code":"er",
       "name":"Eritrea",
       "type":2
@@ -1802,7 +1776,7 @@
 },
 {
    "fields":{
-       "id":79,
+       "id":74,
       "parent":1,
       "code":"es",
       "name":"Spain",
@@ -1812,8 +1786,8 @@
 },
 {
    "fields":{
-       "id":80,
-      "parent":9,
+       "id":75,
+      "parent":4,
       "code":"et",
       "name":"Ethiopia",
       "type":2
@@ -1822,7 +1796,7 @@
 },
 {
    "fields":{
-       "id":81,
+       "id":76,
       "parent":1,
       "code":"fi",
       "name":"Finland",
@@ -1832,8 +1806,8 @@
 },
 {
    "fields":{
-       "id":82,
-      "parent":10,
+       "id":77,
+      "parent":3,
       "code":"fj",
       "name":"Fiji",
       "type":2
@@ -1842,8 +1816,8 @@
 },
 {
    "fields":{
-       "id":83,
-      "parent":7,
+       "id":78,
+      "parent":6,
       "code":"fk",
       "name":"Falkland Islands (Malvinas)",
       "type":2
@@ -1852,8 +1826,8 @@
 },
 {
    "fields":{
-       "id":84,
-      "parent":10,
+       "id":79,
+      "parent":3,
       "code":"fm",
       "name":"Federated States of Micronesia",
       "type":2
@@ -1862,7 +1836,7 @@
 },
 {
    "fields":{
-       "id":85,
+       "id":80,
       "parent":1,
       "code":"fo",
       "name":"Faroe Islands",
@@ -1872,7 +1846,7 @@
 },
 {
    "fields":{
-       "id":86,
+       "id":81,
       "parent":1,
       "code":"fr",
       "name":"France",
@@ -1882,7 +1856,7 @@
 },
 {
    "fields":{
-       "id":87,
+       "id":82,
       "parent":1,
       "code":"fx",
       "name":"France, Metropolitan",
@@ -1892,8 +1866,8 @@
 },
 {
    "fields":{
-       "id":88,
-      "parent":9,
+       "id":83,
+      "parent":4,
       "code":"ga",
       "name":"Gabon",
       "type":2
@@ -1902,7 +1876,7 @@
 },
 {
    "fields":{
-       "id":89,
+       "id":84,
       "parent":1,
       "code":"gb",
       "name":"United Kingdom",
@@ -1912,8 +1886,8 @@
 },
 {
    "fields":{
-       "id":90,
-      "parent":5,
+       "id":85,
+      "parent":6,
       "code":"gd",
       "name":"Grenada",
       "type":2
@@ -1922,7 +1896,7 @@
 },
 {
    "fields":{
-       "id":91,
+       "id":86,
       "parent":3,
       "code":"ge",
       "name":"Georgia",
@@ -1932,8 +1906,8 @@
 },
 {
    "fields":{
-       "id":92,
-      "parent":7,
+       "id":87,
+      "parent":6,
       "code":"gf",
       "name":"French Guiana",
       "type":2
@@ -1942,8 +1916,8 @@
 },
 {
    "fields":{
-       "id":93,
-      "parent":9,
+       "id":88,
+      "parent":4,
       "code":"gh",
       "name":"Ghana",
       "type":2
@@ -1952,7 +1926,7 @@
 },
 {
    "fields":{
-       "id":94,
+       "id":89,
       "parent":1,
       "code":"gi",
       "name":"Gibraltar",
@@ -1962,8 +1936,8 @@
 },
 {
    "fields":{
-       "id":95,
-      "parent":8,
+       "id":90,
+      "parent":5,
       "code":"gl",
       "name":"Greenland",
       "type":2
@@ -1972,8 +1946,8 @@
 },
 {
    "fields":{
-       "id":96,
-      "parent":9,
+       "id":91,
+      "parent":4,
       "code":"gm",
       "name":"Gambia",
       "type":2
@@ -1982,8 +1956,8 @@
 },
 {
    "fields":{
-       "id":97,
-      "parent":9,
+       "id":92,
+      "parent":4,
       "code":"gn",
       "name":"Guinea",
       "type":2
@@ -1992,8 +1966,8 @@
 },
 {
    "fields":{
-       "id":98,
-      "parent":5,
+       "id":93,
+      "parent":6,
       "code":"gp",
       "name":"Guadeloupe",
       "type":2
@@ -2002,8 +1976,8 @@
 },
 {
    "fields":{
-       "id":99,
-      "parent":9,
+       "id":94,
+      "parent":4,
       "code":"gq",
       "name":"Equatorial Guinea",
       "type":2
@@ -2012,7 +1986,7 @@
 },
 {
    "fields":{
-       "id":100,
+       "id":95,
       "parent":1,
       "code":"gr",
       "name":"Greece",
@@ -2022,8 +1996,8 @@
 },
 {
    "fields":{
-       "id":101,
-      "parent":10,
+       "id":96,
+      "parent":3,
       "code":"gs",
       "name":"S. Georgia and S. Sandwich Islands",
       "type":2
@@ -2032,7 +2006,7 @@
 },
 {
    "fields":{
-       "id":102,
+       "id":97,
       "parent":6,
       "code":"gt",
       "name":"Guatemala",
@@ -2042,8 +2016,8 @@
 },
 {
    "fields":{
-       "id":103,
-      "parent":10,
+       "id":98,
+      "parent":3,
       "code":"gu",
       "name":"Guam",
       "type":2
@@ -2052,8 +2026,8 @@
 },
 {
    "fields":{
-       "id":104,
-      "parent":9,
+       "id":99,
+      "parent":4,
       "code":"gw",
       "name":"Guinea-Bissau",
       "type":2
@@ -2062,8 +2036,8 @@
 },
 {
    "fields":{
-       "id":105,
-      "parent":7,
+       "id":100,
+      "parent":6,
       "code":"gy",
       "name":"Guyana",
       "type":2
@@ -2072,7 +2046,7 @@
 },
 {
    "fields":{
-       "id":106,
+       "id":101,
       "parent":3,
       "code":"hk",
       "name":"Hong Kong",
@@ -2082,8 +2056,8 @@
 },
 {
    "fields":{
-       "id":107,
-      "parent":4,
+       "id":102,
+      "parent":3,
       "code":"hm",
       "name":"Heard Island and McDonald Islands",
       "type":2
@@ -2092,7 +2066,7 @@
 },
 {
    "fields":{
-       "id":108,
+       "id":103,
       "parent":6,
       "code":"hn",
       "name":"Honduras",
@@ -2102,7 +2076,7 @@
 },
 {
    "fields":{
-       "id":109,
+       "id":104,
       "parent":1,
       "code":"hr",
       "name":"Croatia",
@@ -2112,8 +2086,8 @@
 },
 {
    "fields":{
-       "id":110,
-      "parent":5,
+       "id":105,
+      "parent":6,
       "code":"ht",
       "name":"Haiti",
       "type":2
@@ -2122,7 +2096,7 @@
 },
 {
    "fields":{
-       "id":111,
+       "id":106,
       "parent":1,
       "code":"hu",
       "name":"Hungary",
@@ -2132,7 +2106,7 @@
 },
 {
    "fields":{
-       "id":112,
+       "id":107,
       "parent":3,
       "code":"id",
       "name":"Indonesia",
@@ -2142,7 +2116,7 @@
 },
 {
    "fields":{
-       "id":113,
+       "id":108,
       "parent":1,
       "code":"ie",
       "name":"Ireland",
@@ -2152,7 +2126,7 @@
 },
 {
    "fields":{
-       "id":114,
+       "id":109,
       "parent":2,
       "code":"il",
       "name":"Israel",
@@ -2162,7 +2136,7 @@
 },
 {
    "fields":{
-       "id":115,
+       "id":110,
       "parent":3,
       "code":"in",
       "name":"India",
@@ -2172,7 +2146,7 @@
 },
 {
    "fields":{
-       "id":116,
+       "id":111,
       "parent":3,
       "code":"io",
       "name":"British Indian Ocean Territory",
@@ -2182,7 +2156,7 @@
 },
 {
    "fields":{
-       "id":117,
+       "id":112,
       "parent":2,
       "code":"iq",
       "name":"Iraq",
@@ -2192,7 +2166,7 @@
 },
 {
    "fields":{
-       "id":118,
+       "id":113,
       "parent":2,
       "code":"ir",
       "name":"Iran",
@@ -2202,7 +2176,7 @@
 },
 {
    "fields":{
-       "id":119,
+       "id":114,
       "parent":1,
       "code":"is",
       "name":"Iceland",
@@ -2212,7 +2186,7 @@
 },
 {
    "fields":{
-       "id":120,
+       "id":115,
       "parent":1,
       "code":"it",
       "name":"Italy",
@@ -2222,8 +2196,8 @@
 },
 {
    "fields":{
-       "id":121,
-      "parent":5,
+       "id":116,
+      "parent":6,
       "code":"jm",
       "name":"Jamaica",
       "type":2
@@ -2232,7 +2206,7 @@
 },
 {
    "fields":{
-       "id":122,
+       "id":117,
       "parent":2,
       "code":"jo",
       "name":"Jordan",
@@ -2242,7 +2216,7 @@
 },
 {
    "fields":{
-       "id":123,
+       "id":118,
       "parent":3,
       "code":"jp",
       "name":"Japan",
@@ -2252,8 +2226,8 @@
 },
 {
    "fields":{
-       "id":124,
-      "parent":9,
+       "id":119,
+      "parent":4,
       "code":"ke",
       "name":"Kenya",
       "type":2
@@ -2262,7 +2236,7 @@
 },
 {
    "fields":{
-       "id":125,
+       "id":120,
       "parent":3,
       "code":"kg",
       "name":"Kyrgyzstan",
@@ -2272,7 +2246,7 @@
 },
 {
    "fields":{
-       "id":126,
+       "id":121,
       "parent":3,
       "code":"kh",
       "name":"Cambodia",
@@ -2282,8 +2256,8 @@
 },
 {
    "fields":{
-       "id":127,
-      "parent":10,
+       "id":122,
+      "parent":3,
       "code":"ki",
       "name":"Kiribati",
       "type":2
@@ -2292,7 +2266,7 @@
 },
 {
    "fields":{
-       "id":128,
+       "id":123,
       "parent":3,
       "code":"km",
       "name":"Comoros",
@@ -2302,8 +2276,8 @@
 },
 {
    "fields":{
-       "id":129,
-      "parent":5,
+       "id":124,
+      "parent":6,
       "code":"kn",
       "name":"Saint Kitts and Nevis",
       "type":2
@@ -2312,7 +2286,7 @@
 },
 {
    "fields":{
-       "id":130,
+       "id":125,
       "parent":3,
       "code":"kp",
       "name":"Korea (North)",
@@ -2322,7 +2296,7 @@
 },
 {
    "fields":{
-       "id":131,
+       "id":126,
       "parent":3,
       "code":"kr",
       "name":"Korea",
@@ -2332,7 +2306,7 @@
 },
 {
    "fields":{
-       "id":132,
+       "id":127,
       "parent":2,
       "code":"kw",
       "name":"Kuwait",
@@ -2342,8 +2316,8 @@
 },
 {
    "fields":{
-       "id":133,
-      "parent":5,
+       "id":128,
+      "parent":6,
       "code":"ky",
       "name":"Cayman Islands",
       "type":2
@@ -2352,7 +2326,7 @@
 },
 {
    "fields":{
-       "id":134,
+       "id":129,
       "parent":3,
       "code":"kz",
       "name":"Kazakhstan",
@@ -2362,7 +2336,7 @@
 },
 {
    "fields":{
-       "id":135,
+       "id":130,
       "parent":3,
       "code":"la",
       "name":"Laos",
@@ -2372,7 +2346,7 @@
 },
 {
    "fields":{
-       "id":136,
+       "id":131,
       "parent":2,
       "code":"lb",
       "name":"Lebanon",
@@ -2382,8 +2356,8 @@
 },
 {
    "fields":{
-       "id":137,
-      "parent":5,
+       "id":132,
+      "parent":6,
       "code":"lc",
       "name":"Saint Lucia",
       "type":2
@@ -2392,7 +2366,7 @@
 },
 {
    "fields":{
-       "id":138,
+       "id":133,
       "parent":1,
       "code":"li",
       "name":"Liechtenstein",
@@ -2402,7 +2376,7 @@
 },
 {
    "fields":{
-       "id":139,
+       "id":134,
       "parent":3,
       "code":"lk",
       "name":"Sri Lanka",
@@ -2412,8 +2386,8 @@
 },
 {
    "fields":{
-       "id":140,
-      "parent":9,
+       "id":135,
+      "parent":4,
       "code":"lr",
       "name":"Liberia",
       "type":2
@@ -2422,8 +2396,8 @@
 },
 {
    "fields":{
-       "id":141,
-      "parent":9,
+       "id":136,
+      "parent":4,
       "code":"ls",
       "name":"Lesotho",
       "type":2
@@ -2432,7 +2406,7 @@
 },
 {
    "fields":{
-       "id":142,
+       "id":137,
       "parent":1,
       "code":"lt",
       "name":"Lithuania",
@@ -2442,7 +2416,7 @@
 },
 {
    "fields":{
-       "id":143,
+       "id":138,
       "parent":1,
       "code":"lu",
       "name":"Luxembourg",
@@ -2452,7 +2426,7 @@
 },
 {
    "fields":{
-       "id":144,
+       "id":139,
       "parent":1,
       "code":"lv",
       "name":"Latvia",
@@ -2462,8 +2436,8 @@
 },
 {
    "fields":{
-       "id":145,
-      "parent":9,
+       "id":140,
+      "parent":4,
       "code":"ly",
       "name":"Libya",
       "type":2
@@ -2472,8 +2446,8 @@
 },
 {
    "fields":{
-       "id":146,
-      "parent":9,
+       "id":141,
+      "parent":4,
       "code":"ma",
       "name":"Morocco",
       "type":2
@@ -2482,7 +2456,7 @@
 },
 {
    "fields":{
-       "id":147,
+       "id":142,
       "parent":1,
       "code":"mc",
       "name":"Monaco",
@@ -2492,7 +2466,7 @@
 },
 {
    "fields":{
-       "id":148,
+       "id":143,
       "parent":1,
       "code":"md",
       "name":"Moldova",
@@ -2502,8 +2476,8 @@
 },
 {
    "fields":{
-       "id":149,
-      "parent":9,
+       "id":144,
+      "parent":4,
       "code":"mg",
       "name":"Madagascar",
       "type":2
@@ -2512,8 +2486,8 @@
 },
 {
    "fields":{
-       "id":150,
-      "parent":10,
+       "id":145,
+      "parent":3,
       "code":"mh",
       "name":"Marshall Islands",
       "type":2
@@ -2522,7 +2496,7 @@
 },
 {
    "fields":{
-       "id":151,
+       "id":146,
       "parent":1,
       "code":"mk",
       "name":"Macedonia",
@@ -2532,8 +2506,8 @@
 },
 {
    "fields":{
-       "id":152,
-      "parent":9,
+       "id":147,
+      "parent":4,
       "code":"ml",
       "name":"Mali",
       "type":2
@@ -2542,7 +2516,7 @@
 },
 {
    "fields":{
-       "id":153,
+       "id":148,
       "parent":3,
       "code":"mm",
       "name":"Myanmar",
@@ -2552,7 +2526,7 @@
 },
 {
    "fields":{
-       "id":154,
+       "id":149,
       "parent":3,
       "code":"mn",
       "name":"Mongolia",
@@ -2562,7 +2536,7 @@
 },
 {
    "fields":{
-       "id":155,
+       "id":150,
       "parent":3,
       "code":"mo",
       "name":"Macao",
@@ -2572,8 +2546,8 @@
 },
 {
    "fields":{
-       "id":156,
-      "parent":10,
+       "id":151,
+      "parent":3,
       "code":"mp",
       "name":"Northern Mariana Islands",
       "type":2
@@ -2582,8 +2556,8 @@
 },
 {
    "fields":{
-       "id":157,
-      "parent":5,
+       "id":152,
+      "parent":6,
       "code":"mq",
       "name":"Martinique",
       "type":2
@@ -2592,8 +2566,8 @@
 },
 {
    "fields":{
-       "id":158,
-      "parent":9,
+       "id":153,
+      "parent":4,
       "code":"mr",
       "name":"Mauritania",
       "type":2
@@ -2602,8 +2576,8 @@
 },
 {
    "fields":{
-       "id":159,
-      "parent":5,
+       "id":154,
+      "parent":6,
       "code":"ms",
       "name":"Montserrat",
       "type":2
@@ -2612,7 +2586,7 @@
 },
 {
    "fields":{
-       "id":160,
+       "id":155,
       "parent":1,
       "code":"mt",
       "name":"Malta",
@@ -2622,8 +2596,8 @@
 },
 {
    "fields":{
-       "id":161,
-      "parent":9,
+       "id":156,
+      "parent":4,
       "code":"mu",
       "name":"Mauritius",
       "type":2
@@ -2632,7 +2606,7 @@
 },
 {
    "fields":{
-       "id":162,
+       "id":157,
       "parent":3,
       "code":"mv",
       "name":"Maldives",
@@ -2642,8 +2616,8 @@
 },
 {
    "fields":{
-       "id":163,
-      "parent":9,
+       "id":158,
+      "parent":4,
       "code":"mw",
       "name":"Malawi",
       "type":2
@@ -2652,7 +2626,7 @@
 },
 {
    "fields":{
-       "id":164,
+       "id":159,
       "parent":6,
       "code":"mx",
       "name":"Mexico",
@@ -2662,7 +2636,7 @@
 },
 {
    "fields":{
-       "id":165,
+       "id":160,
       "parent":3,
       "code":"my",
       "name":"Malaysia",
@@ -2672,8 +2646,8 @@
 },
 {
    "fields":{
-       "id":166,
-      "parent":9,
+       "id":161,
+      "parent":4,
       "code":"mz",
       "name":"Mozambique",
       "type":2
@@ -2682,8 +2656,8 @@
 },
 {
    "fields":{
-       "id":167,
-      "parent":9,
+       "id":162,
+      "parent":4,
       "code":"na",
       "name":"Namibia",
       "type":2
@@ -2692,8 +2666,8 @@
 },
 {
    "fields":{
-       "id":168,
-      "parent":10,
+       "id":163,
+      "parent":3,
       "code":"nc",
       "name":"New Caledonia",
       "type":2
@@ -2702,8 +2676,8 @@
 },
 {
    "fields":{
-       "id":169,
-      "parent":9,
+       "id":164,
+      "parent":4,
       "code":"ne",
       "name":"Niger",
       "type":2
@@ -2712,8 +2686,8 @@
 },
 {
    "fields":{
-       "id":170,
-      "parent":10,
+       "id":165,
+      "parent":3,
       "code":"nf",
       "name":"Norfolk Island",
       "type":2
@@ -2722,8 +2696,8 @@
 },
 {
    "fields":{
-       "id":171,
-      "parent":9,
+       "id":166,
+      "parent":4,
       "code":"ng",
       "name":"Nigeria",
       "type":2
@@ -2732,7 +2706,7 @@
 },
 {
    "fields":{
-       "id":172,
+       "id":167,
       "parent":6,
       "code":"ni",
       "name":"Nicaragua",
@@ -2742,7 +2716,7 @@
 },
 {
    "fields":{
-       "id":173,
+       "id":168,
       "parent":1,
       "code":"nl",
       "name":"Netherlands",
@@ -2752,7 +2726,7 @@
 },
 {
    "fields":{
-       "id":175,
+       "id":169,
       "parent":1,
       "code":"No",
       "name":"Norway",
@@ -2762,7 +2736,7 @@
 },
 {
    "fields":{
-       "id":176,
+       "id":170,
       "parent":3,
       "code":"np",
       "name":"Nepal",
@@ -2772,8 +2746,8 @@
 },
 {
    "fields":{
-       "id":177,
-      "parent":10,
+       "id":171,
+      "parent":3,
       "code":"nr",
       "name":"Nauru",
       "type":2
@@ -2782,8 +2756,8 @@
 },
 {
    "fields":{
-       "id":178,
-      "parent":10,
+       "id":172,
+      "parent":3,
       "code":"nu",
       "name":"Niue",
       "type":2
@@ -2792,8 +2766,8 @@
 },
 {
    "fields":{
-       "id":179,
-      "parent":10,
+       "id":173,
+      "parent":3,
       "code":"nz",
       "name":"New Zealand",
       "type":2
@@ -2802,7 +2776,7 @@
 },
 {
    "fields":{
-       "id":180,
+       "id":174,
       "parent":2,
       "code":"om",
       "name":"Sultanate of Oman",
@@ -2812,8 +2786,8 @@
 },
 {
    "fields":{
-       "id":181,
-      "parent":11,
+       "id":175,
+      "parent":9,
       "code":"oo",
       "name":"Other",
       "type":2
@@ -2822,7 +2796,7 @@
 },
 {
    "fields":{
-       "id":182,
+       "id":176,
       "parent":6,
       "code":"pa",
       "name":"Panama",
@@ -2832,8 +2806,8 @@
 },
 {
    "fields":{
-       "id":183,
-      "parent":7,
+       "id":177,
+      "parent":6,
       "code":"pe",
       "name":"Peru",
       "type":2
@@ -2842,8 +2816,8 @@
 },
 {
    "fields":{
-       "id":184,
-      "parent":10,
+       "id":178,
+      "parent":3,
       "code":"pf",
       "name":"French Polynesia",
       "type":2
@@ -2852,8 +2826,8 @@
 },
 {
    "fields":{
-       "id":185,
-      "parent":10,
+       "id":179,
+      "parent":3,
       "code":"pg",
       "name":"Papua New Guinea",
       "type":2
@@ -2862,7 +2836,7 @@
 },
 {
    "fields":{
-       "id":185,
+       "id":180,
       "parent":3,
       "code":"ph",
       "name":"Philippines",
@@ -2872,7 +2846,7 @@
 },
 {
    "fields":{
-       "id":186,
+       "id":181,
       "parent":3,
       "code":"pk",
       "name":"Pakistan",
@@ -2882,7 +2856,7 @@
 },
 {
    "fields":{
-       "id":187,
+       "id":182,
       "parent":1,
       "code":"pl",
       "name":"Poland",
@@ -2892,8 +2866,8 @@
 },
 {
    "fields":{
-       "id":188,
-      "parent":8,
+       "id":183,
+      "parent":5,
       "code":"pm",
       "name":"Saint Pierre and Miquelon",
       "type":2
@@ -2902,8 +2876,8 @@
 },
 {
    "fields":{
-       "id":189,
-      "parent":10,
+       "id":184,
+      "parent":3,
       "code":"pn",
       "name":"Pitcairn",
       "type":2
@@ -2912,8 +2886,8 @@
 },
 {
    "fields":{
-       "id":190,
-      "parent":5,
+       "id":185,
+      "parent":6,
       "code":"pr",
       "name":"Puerto Rico",
       "type":2
@@ -2922,7 +2896,7 @@
 },
 {
    "fields":{
-       "id":191,
+       "id":186,
       "parent":2,
       "code":"ps",
       "name":"Palestinian Territory",
@@ -2932,7 +2906,7 @@
 },
 {
    "fields":{
-       "id":192,
+       "id":187,
       "parent":1,
       "code":"pt",
       "name":"Portugal",
@@ -2942,8 +2916,8 @@
 },
 {
    "fields":{
-       "id":193,
-      "parent":10,
+       "id":188,
+      "parent":3,
       "code":"pw",
       "name":"Palau",
       "type":2
@@ -2952,8 +2926,8 @@
 },
 {
    "fields":{
-       "id":194,
-      "parent":7,
+       "id":189,
+      "parent":6,
       "code":"py",
       "name":"Paraguay",
       "type":2
@@ -2962,7 +2936,7 @@
 },
 {
    "fields":{
-       "id":195,
+       "id":190,
       "parent":2,
       "code":"qa",
       "name":"Qatar",
@@ -2972,8 +2946,8 @@
 },
 {
    "fields":{
-       "id":196,
-      "parent":9,
+       "id":191,
+      "parent":4,
       "code":"re",
       "name":"Reunion",
       "type":2
@@ -2982,7 +2956,7 @@
 },
 {
    "fields":{
-       "id":197,
+       "id":192,
       "parent":1,
       "code":"ro",
       "name":"Romania",
@@ -2992,7 +2966,7 @@
 },
 {
    "fields":{
-       "id":198,
+       "id":193,
       "parent":1,
       "code":"ru",
       "name":"Russian Federation",
@@ -3002,8 +2976,8 @@
 },
 {
    "fields":{
-       "id":199,
-      "parent":9,
+       "id":194,
+      "parent":4,
       "code":"rw",
       "name":"Rwanda",
       "type":2
@@ -3012,7 +2986,7 @@
 },
 {
    "fields":{
-       "id":200,
+       "id":195,
       "parent":2,
       "code":"sa",
       "name":"Saudi Arabia",
@@ -3022,8 +2996,8 @@
 },
 {
    "fields":{
-       "id":201,
-      "parent":10,
+       "id":196,
+      "parent":3,
       "code":"sb",
       "name":"Solomon Islands",
       "type":2
@@ -3032,8 +3006,8 @@
 },
 {
    "fields":{
-       "id":202,
-      "parent":9,
+       "id":197,
+      "parent":4,
       "code":"sc",
       "name":"Seychelles",
       "type":2
@@ -3042,8 +3016,8 @@
 },
 {
    "fields":{
-       "id":203,
-      "parent":9,
+       "id":198,
+      "parent":4,
       "code":"sd",
       "name":"Sudan",
       "type":2
@@ -3052,7 +3026,7 @@
 },
 {
    "fields":{
-       "id":204,
+       "id":199,
       "parent":1,
       "code":"se",
       "name":"Sweden",
@@ -3062,7 +3036,7 @@
 },
 {
    "fields":{
-       "id":205,
+       "id":200,
       "parent":3,
       "code":"sg",
       "name":"Singapore",
@@ -3072,8 +3046,8 @@
 },
 {
    "fields":{
-       "id":206,
-      "parent":9,
+       "id":201,
+      "parent":4,
       "code":"sh",
       "name":"Saint Helena",
       "type":2
@@ -3082,7 +3056,7 @@
 },
 {
    "fields":{
-       "id":207,
+       "id":202,
       "parent":1,
       "code":"si",
       "name":"Slovenia",
@@ -3092,7 +3066,7 @@
 },
 {
    "fields":{
-       "id":208,
+       "id":203,
       "parent":1,
       "code":"sj",
       "name":"Svalbard and Jan Mayen",
@@ -3102,7 +3076,7 @@
 },
 {
    "fields":{
-       "id":209,
+       "id":204,
       "parent":1,
       "code":"sk",
       "name":"Slovak Republic",
@@ -3112,8 +3086,8 @@
 },
 {
    "fields":{
-       "id":210,
-      "parent":9,
+       "id":205,
+      "parent":4,
       "code":"sl",
       "name":"Sierra Leone",
       "type":2
@@ -3122,7 +3096,7 @@
 },
 {
    "fields":{
-       "id":211,
+       "id":206,
       "parent":1,
       "code":"sm",
       "name":"San Marino",
@@ -3132,8 +3106,8 @@
 },
 {
    "fields":{
-       "id":212,
-      "parent":9,
+       "id":207,
+      "parent":4,
       "code":"sn",
       "name":"Senegal",
       "type":2
@@ -3142,8 +3116,8 @@
 },
 {
    "fields":{
-       "id":213,
-      "parent":9,
+       "id":208,
+      "parent":4,
       "code":"so",
       "name":"Somalia",
       "type":2
@@ -3152,8 +3126,8 @@
 },
 {
    "fields":{
-       "id":214,
-      "parent":7,
+       "id":209,
+      "parent":6,
       "code":"sr",
       "name":"Suriname",
       "type":2
@@ -3162,8 +3136,8 @@
 },
 {
    "fields":{
-       "id":215,
-      "parent":9,
+       "id":210,
+      "parent":4,
       "code":"st",
       "name":"Sao Tome and Principe",
       "type":2
@@ -3172,7 +3146,7 @@
 },
 {
    "fields":{
-       "id":216,
+       "id":211,
       "parent":6,
       "code":"sv",
       "name":"El Salvador",
@@ -3182,7 +3156,7 @@
 },
 {
    "fields":{
-       "id":217,
+       "id":212,
       "parent":2,
       "code":"sy",
       "name":"Syria",
@@ -3192,8 +3166,8 @@
 },
 {
    "fields":{
-       "id":218,
-      "parent":9,
+       "id":213,
+      "parent":4,
       "code":"sz",
       "name":"Swaziland",
       "type":2
@@ -3202,8 +3176,8 @@
 },
 {
    "fields":{
-       "id":219,
-      "parent":5,
+       "id":214,
+      "parent":6,
       "code":"tc",
       "name":"Turks and Caicos Islands",
       "type":2
@@ -3212,8 +3186,8 @@
 },
 {
    "fields":{
-       "id":220,
-      "parent":9,
+       "id":215,
+      "parent":4,
       "code":"td",
       "name":"Chad",
       "type":2
@@ -3222,8 +3196,8 @@
 },
 {
    "fields":{
-      "id":221,
-      "parent":9,
+      "id":216,
+      "parent":4,
       "code":"tf",
       "name":"French Southern Territories",
       "type":2
@@ -3232,8 +3206,8 @@
 },
 {
    "fields":{
-       "id":222,
-      "parent":9,
+       "id":217,
+      "parent":4,
       "code":"tg",
       "name":"Togo",
       "type":2
@@ -3242,7 +3216,7 @@
 },
 {
    "fields":{
-       "id":223,
+       "id":218,
       "parent":3,
       "code":"th",
       "name":"Thailand",
@@ -3252,7 +3226,7 @@
 },
 {
    "fields":{
-       "id":224,
+       "id":219,
       "parent":3,
       "code":"tj",
       "name":"Tajikistan",
@@ -3262,8 +3236,8 @@
 },
 {
    "fields":{
-       "id":225,
-      "parent":5,
+       "id":220,
+      "parent":6,
       "code":"tk",
       "name":"Tokelau",
       "type":2
@@ -3272,7 +3246,7 @@
 },
 {
    "fields":{
-       "id":226,
+       "id":221,
       "parent":3,
       "code":"tl",
       "name":"Timor-Leste",
@@ -3282,7 +3256,7 @@
 },
 {
    "fields":{
-       "id":227,
+       "id":222,
       "parent":3,
       "code":"tm",
       "name":"Turkmenistan",
@@ -3292,8 +3266,8 @@
 },
 {
    "fields":{
-       "id":228,
-      "parent":9,
+       "id":223,
+      "parent":4,
       "code":"tn",
       "name":"Tunisia",
       "type":2
@@ -3302,8 +3276,8 @@
 },
 {
    "fields":{
-       "id":229,
-      "parent":10,
+       "id":224,
+      "parent":3,
       "code":"to",
       "name":"Tonga",
       "type":2
@@ -3312,7 +3286,7 @@
 },
 {
    "fields":{
-       "id":230,
+       "id":225,
       "parent":3,
       "code":"tp",
       "name":"East Timor",
@@ -3322,7 +3296,7 @@
 },
 {
    "fields":{
-       "id":231,
+       "id":226,
       "parent":1,
       "code":"tr",
       "name":"Turkey",
@@ -3332,8 +3306,8 @@
 },
 {
    "fields":{
-       "id":232,
-      "parent":5,
+       "id":227,
+      "parent":6,
       "code":"tt",
       "name":"Trinidad and Tobago",
       "type":2
@@ -3342,8 +3316,8 @@
 },
 {
    "fields":{
-       "id":233,
-      "parent":10,
+       "id":228,
+      "parent":3,
       "code":"tv",
       "name":"Tuvalu",
       "type":2
@@ -3352,7 +3326,7 @@
 },
 {
    "fields":{
-       "id":234,
+       "id":229,
       "parent":3,
       "code":"tw",
       "name":"Taiwan",
@@ -3362,8 +3336,8 @@
 },
 {
    "fields":{
-       "id":235,
-      "parent":9,
+       "id":230,
+      "parent":4,
       "code":"tz",
       "name":"Tanzania",
       "type":2
@@ -3372,7 +3346,7 @@
 },
 {
    "fields":{
-       "id":236,
+       "id":231,
       "parent":1,
       "code":"ua",
       "name":"Ukraine",
@@ -3382,8 +3356,8 @@
 },
 {
    "fields":{
-       "id":237,
-      "parent":9,
+       "id":232,
+      "parent":4,
       "code":"ug",
       "name":"Uganda",
       "type":2
@@ -3392,8 +3366,8 @@
 },
 {
    "fields":{
-       "id":238,
-      "parent":8,
+       "id":233,
+      "parent":5,
       "code":"us",
       "name":"United States",
       "type":2
@@ -3402,8 +3376,8 @@
 },
 {
    "fields":{
-       "id":239,
-      "parent":7,
+       "id":234,
+      "parent":6,
       "code":"uy",
       "name":"Uruguay",
       "type":2
@@ -3412,7 +3386,7 @@
 },
 {
    "fields":{
-       "id":240,
+       "id":235,
       "parent":3,
       "code":"uz",
       "name":"Uzbekistan",
@@ -3422,7 +3396,7 @@
 },
 {
    "fields":{
-       "id":241,
+       "id":236,
       "parent":1,
       "code":"va",
       "name":"Vatican City State (Holy See)",
@@ -3432,8 +3406,8 @@
 },
 {
    "fields":{
-       "id":242,
-      "parent":5,
+       "id":237,
+      "parent":6,
       "code":"vc",
       "name":"Saint Vincent and the Grenadines",
       "type":2
@@ -3442,8 +3416,8 @@
 },
 {
    "fields":{
-       "id":243,
-      "parent":7,
+       "id":238,
+      "parent":6,
       "code":"ve",
       "name":"Venezuela",
       "type":2
@@ -3452,8 +3426,8 @@
 },
 {
    "fields":{
-       "id":244,
-      "parent":5,
+       "id":239,
+      "parent":6,
       "code":"vg",
       "name":"Virgin Islands (British)",
       "type":2
@@ -3462,8 +3436,8 @@
 },
 {
    "fields":{
-       "id":245,
-      "parent":5,
+       "id":240,
+      "parent":6,
       "code":"vi",
       "name":"Virgin Islands (U.S.)",
       "type":2
@@ -3472,7 +3446,7 @@
 },
 {
    "fields":{
-       "id":246,
+       "id":241,
       "parent":3,
       "code":"vn",
       "name":"Viet Nam",
@@ -3482,8 +3456,8 @@
 },
 {
    "fields":{
-       "id":247,
-      "parent":10,
+       "id":242,
+      "parent":3,
       "code":"vu",
       "name":"Vanuatu",
       "type":2
@@ -3492,8 +3466,8 @@
 },
 {
    "fields":{
-       "id":248,
-      "parent":10,
+       "id":243,
+      "parent":3,
       "code":"wf",
       "name":"Wallis and Futuna",
       "type":2
@@ -3502,8 +3476,8 @@
 },
 {
    "fields":{
-       "id":249,
-      "parent":10,
+       "id":244,
+      "parent":3,
       "code":"ws",
       "name":"Samoa",
       "type":2
@@ -3512,7 +3486,7 @@
 },
 {
    "fields":{
-       "id":250,
+       "id":245,
       "parent":2,
       "code":"ye",
       "name":"Yemen",
@@ -3522,8 +3496,8 @@
 },
 {
    "fields":{
-       "id":251,
-      "parent":9,
+       "id":246,
+      "parent":4,
       "code":"yt",
       "name":"Mayotte",
       "type":2
@@ -3532,7 +3506,7 @@
 },
 {
    "fields":{
-       "id":252,
+       "id":247,
       "parent":1,
       "code":"yu",
       "name":"Yugoslavia",
@@ -3542,8 +3516,8 @@
 },
 {
    "fields":{
-       "id":253,
-      "parent":9,
+       "id":248,
+      "parent":4,
       "code":"za",
       "name":"South Africa",
       "type":2
@@ -3552,8 +3526,8 @@
 },
 {
    "fields":{
-       "id":254,
-      "parent":9,
+       "id":249,
+      "parent":4,
       "code":"zm",
       "name":"Zambia",
       "type":2
@@ -3562,8 +3536,8 @@
 },
 {
    "fields":{
-       "id":255,
-      "parent":9,
+       "id":250,
+      "parent":4,
       "code":"zw",
       "name":"Zimbabwe",
       "type":2
@@ -3571,4 +3545,6 @@
    "model":"bm.region"
 }
 ]
+
+
 
