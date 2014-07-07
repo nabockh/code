@@ -74,7 +74,20 @@ class CreateBenchmarkStep3Form(forms.Form):
 
 
 class CreateBenchmarkStep4Form(CreateBenchmarkStep12Form):
-    def __init__(self, user, *args, **kwargs):
+    def __init__(self, user, step0data, *args, **kwargs):
+        initial = {
+            'name': step0data.get('0-name'),
+            'geo': step0data.get('0-geo'),
+            'industry': step0data.get('0-industry'),
+            'question_label': step0data.get('0-question_label'),
+            'question_text': step0data.get('0-question_text'),
+            'question_type': step0data.get('0-question_type'),
+            'answer_options': step0data.get('0-answer_options'),
+            'units': step0data.get('0-units'),
+            'max_number_of_decimal': step0data.get('0-max_number_of_decimal'),
+            'minimum_number_of_answers': step0data.get('0-minimum_number_of_answers'),
+        }
+        kwargs['initial'] = initial
         super(CreateBenchmarkStep4Form, self).__init__(user, *args, **kwargs)
 
 

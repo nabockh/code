@@ -76,7 +76,7 @@ class BenchmarkCreateWizardView(CookieWizardView):
 
     def get_form_kwargs(self, step=None):
         params = {'user': self.request.user}
-        if step == '1':
+        if step == '1' or step == '2':
             params['step0data'] = self.storage.get_step_data('0')
         return params
 
