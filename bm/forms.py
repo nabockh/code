@@ -73,10 +73,9 @@ class CreateBenchmarkStep3Form(forms.Form):
             self.fields['suggested-{0}-secondary'.format(contact.id)] = forms.BooleanField(label='')
 
 
-
-class CreateBenchmarkStep4Form(forms.Form):
+class CreateBenchmarkStep4Form(CreateBenchmarkStep12Form):
     def __init__(self, user, *args, **kwargs):
-        super(CreateBenchmarkStep4Form, self).__init__(*args, **kwargs)
+        super(CreateBenchmarkStep4Form, self).__init__(user, *args, **kwargs)
 
 
 class AnswerMultipleChoiceForm(forms.Form):
