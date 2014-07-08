@@ -901,7 +901,11 @@ form[role='search'] .btn-search {
         font-size: 12px;
         line-height: 18px;
     }
-
+    
+    .tips .suggested-contact p {
+        margin: 0 0 10px;
+    }
+    
     .tips a {
         color: #339999;
         font-size: 12px;
@@ -995,15 +999,28 @@ form[role='search'] .btn-search {
 
         .single-contact {
             border-bottom: 1px solid #dedede;
-            padding: 5px 10px;
+            padding: 5px 10px 10px;
         }
 
             .single-contact.active {
                 background-color: #eff0f2;
             }
+            
+            .single-contact p {
+                margin: 0;
+                font-size: 12px;
+                line-height: 18px;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+            }
+            
+            .single-contact p.grey {
+                color: #999999;
+            }
 
         .benchmark-creation .styled-form .single-contact input[type="checkbox"] {
-            margin: 12px 0;
+            margin: 25px 0 22px;
             display: inline-block;
         }
 
@@ -1011,15 +1028,17 @@ form[role='search'] .btn-search {
             text-transform: none;
             font-size: 12px;
             color: #339999;
-            line-height: 36px;
+            line-height: 12px;
         }
         
         .benchmark-creation .styled-form .suggested-contact {
             border-bottom: 1px solid #dedede;            
         }
 
-        .benchmark-creation .styled-form .tips .suggested-contact:first-of-type {
-            margin-top: -13px;
+        .suggested-contacts {
+            height: 400px;
+            padding-right: 10px;
+            overflow-x: hidden;
         }
         
         .benchmark-creation .styled-form .suggested-contact input[type="checkbox"] {
