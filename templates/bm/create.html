@@ -265,74 +265,107 @@
                                 </div>
                                 <div class='row'>
                                     <div class='col-md-12 tabulation'>
-                                        <ul class="nav nav-tabs" role="tablist">
-                                          <li class="active"><a href="#">Search results</a></li>
-                                          <li><a href="#">Recomendations</a></li>
-                                          <li><a href="#">Selected Contacts</a></li>
+                                        <ul class="nav nav-tabs" role="tablist" id='searchTabs'>
+                                          <li class="active"><a href="#results">Search results</a></li>
+                                          <li class='tab-recommended'><a href="#recommended">Recommendations</a></li>
+                                          <li><a href="#selected">Selected Contacts</a></li>
                                         </ul>
                                     </div>
                                 </div>
                             </div>
                             <div class='row'>
-                                <div class='col-md-8 lined-left margined'>
-                                    <!-- {{ wizard.form }} -->
-                                    <div class="title-header">
-                                        <div class='row'>
-                                            <div class='col-md-8'>Contact</div>
-                                            <div class='col-md-2 text-center'>Select</div>
-                                            <div class='col-md-2 text-center'>Share 
-                                                <span class="add_help">?
-                                                    <span class='add_help_inner'>Lorem ipsum dolor sit amet, consectetur eta adipiscing elit. Pellentasque eu tempor tortor. Aliquam Trisque eros arcu, sed bibendum enim faucibus in. In vulputate blendit lorem ut.</span>
-                                                </span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class='contact-results'>
-                                        {% for contact in wizard.form.contacts_filtered %}
-                                            <div class='single-contact'>
+                                <div class="tab-content">
+                                    <div class="tab-pane active" id="results">
+                                        <div class='col-md-8 lined-left margined'>
+                                            <!-- {{ wizard.form }} -->
+                                            <div class="title-header inner">
                                                 <div class='row'>
-                                                    <div class='col-md-8'>
-                                                        <label for='id_1-contact-{{contact.id}}-invite'>{{ contact }}</label>
-                                                        <p title='{{ contact.headline }}'>{{ contact.headline }}</p>
-                                                        <p class='grey' title='{{ contact.location.name }} &middot; {{ contact.company.industry }}'>{{ contact.location.name }} &middot; {{ contact.company.industry }}</p>
-                                                    </div>
-                                                    <div class='col-md-2'>
-                                                        <input type='checkbox' id='id_1-contact-{{contact.id}}-invite' name='id_1-contact-{{contact.id}}-invite' />
-                                                    </div>
-                                                    <div class='col-md-2'>
-                                                        <input type='checkbox' name='1-contact-{{contact.id}}-secondary' id='id_1-contact-{{contact.id}}-secondary' />
+                                                    <div class='col-md-8'>Contact</div>
+                                                    <div class='col-md-2 text-center'>Select</div>
+                                                    <div class='col-md-2 text-center'>Share 
+                                                        <span class="add_help">?
+                                                            <span class='add_help_inner'>Lorem ipsum dolor sit amet, consectetur eta adipiscing elit. Pellentasque eu tempor tortor. Aliquam Trisque eros arcu, sed bibendum enim faucibus in. In vulputate blendit lorem ut.</span>
+                                                        </span>
                                                     </div>
                                                 </div>
                                             </div>
-                                        {% endfor %}
-                                    </div>
-                                    
-                                </div>
-                                <div class='col-md-4 margined'>
-                                    <div class='tips'>
-                                        <p class='label-like'>We Recommend...</p>
-                                        <hr>
-                                        <div class='suggested-contacts'>
-                                            {% for contact in wizard.form.suggested_contacts %}
-                                                <div class='suggested-contact'>
-                                                    <div class='row'>
-                                                        <div class='col-md-8'>
-                                                            <label for='id_1-suggested-{{contact.id}}-invite'>{{ contact }}</label>
-                                                            <p title='{{ contact.headline }}'>{{ contact.headline }}</p>
-                                                        </div>
-                                                        <div class='col-md-2'>
-                                                            <input type='checkbox' name='id_1-suggested-{{contact.id}}-invite' />
-                                                        </div>
-                                                        <div class='col-md-2'>
-                                                            <input type='checkbox' name='1-suggested-{{contact.id}}-secondary' id='id_1-suggested-{{contact.id}}-secondary' />
+                                            <div class='contact-results'>
+                                                {% for contact in wizard.form.contacts_filtered %}
+                                                    <div class='single-contact'>
+                                                        <div class='row'>
+                                                            <div class='col-md-8'>
+                                                                <label for='id_1-contact-{{contact.id}}-invite'>{{ contact }}</label>
+                                                                <p title='{{ contact.headline }}'>{{ contact.headline }}</p>
+                                                                <p class='grey' title='{{ contact.location.name }} &middot; {{ contact.company.industry }}'>{{ contact.location.name }} &middot; {{ contact.company.industry }}</p>
+                                                            </div>
+                                                            <div class='col-md-2'>
+                                                                <input class='choose-checkbox' type='checkbox' id='id_1-contact-{{contact.id}}-invite' name='id_1-contact-{{contact.id}}-invite' />
+                                                            </div>
+                                                            <div class='col-md-2'>
+                                                                <input class='share-checkbox' type='checkbox' name='1-contact-{{contact.id}}-secondary' id='id_1-contact-{{contact.id}}-secondary' />
+                                                            </div>
                                                         </div>
                                                     </div>
-                                                </div>
-                                            {% endfor %} 
+                                                {% endfor %}
+                                            </div>                                    
                                         </div>
-                                        <a href='#'>See All Recommendations →</a>                                  
+                                        <div class='col-md-4 margined'>
+                                            <div class='tips'>
+                                                <p class='label-like'>We Recommend...</p>
+                                                <hr>
+                                                <div class='suggested-contacts'>
+                                                    {% for contact in wizard.form.suggested_contacts|slice:":3" %}
+                                                        <div class='suggested-contact'>
+                                                            <div class='row'>
+                                                                <div class='col-md-12'>
+                                                                    <label for='id_1-suggested-{{contact.id}}-invite'>{{ contact }}</label>
+                                                                    <p title='{{ contact.headline }}'>{{ contact.headline }}</p>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    {% endfor %} 
+                                                </div>
+                                                <a class='tab-switcher' href='#recommended'>See All Recommendations →</a>
+                                            </div>
+                                        </div>
                                     </div>
+                                    <div class="tab-pane" id="recommended">
+                                        <div class='col-md-12 margined'>
+                                            <!-- {{ wizard.form }} -->
+                                            <div class="title-header inner">
+                                                <div class='row'>
+                                                    <div class='col-md-8'>Recommended Contacts</div>
+                                                    <div class='col-md-2 text-center'>Select</div>
+                                                    <div class='col-md-2 text-center'>Share 
+                                                        <span class="add_help">?
+                                                            <span class='add_help_inner'>Lorem ipsum dolor sit amet, consectetur eta adipiscing elit. Pellentasque eu tempor tortor. Aliquam Trisque eros arcu, sed bibendum enim faucibus in. In vulputate blendit lorem ut.</span>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class='contact-results'>
+                                                {% for contact in wizard.form.suggested_contacts %}
+                                                    <div class='single-contact'>
+                                                        <div class='row'>
+                                                            <div class='col-md-8'>
+                                                                <label for='id_1-suggested-{{contact.id}}-invite'>{{ contact }}</label>
+                                                                <p title='{{ contact.headline }}'>{{ contact.headline }}</p>
+                                                            </div>
+                                                            <div class='col-md-2'>
+                                                                <input class='choose-checkbox' type='checkbox' name='id_1-suggested-{{contact.id}}-invite' />
+                                                            </div>
+                                                            <div class='col-md-2'>
+                                                                <input class='share-checkbox' type='checkbox' name='1-suggested-{{contact.id}}-secondary' id='id_1-suggested-{{contact.id}}-secondary' />
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                {% endfor %}
+                                            </div>                                    
+                                        </div>
+                                    </div>
+                                    <div class="tab-pane" id="selected">Selected</div>
                                 </div>
+                                
                             </div>
                             
                           

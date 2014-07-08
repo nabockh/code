@@ -1,16 +1,36 @@
+    
+$(function () {
+    var sectionStateChange = function() {
+        var selected = $('#id_0-question_type').find('option:selected').val();
+            if (selected > 2) {
+                $('#units_maxDecimals').show();
+                $('#answer_options').hide();
+            }
+            else {
+                $('#answer_options').show();
+                $('#units_maxDecimals').hide();
+            }
+    };
+    sectionStateChange();
+    $( "#id_0-question_type" ).on('change', sectionStateChange);
+});
+
+
+
 $(function () {
 
-    $( "#id_0-question_type" ).change(function() {
-        var selected = $(this).find('option:selected').val();
-        if (selected > 2) {
-            $('#units_maxDecimals').show();
-            $('#answer_options').hide();
-        }
-        else {
-            $('#answer_options').show();
-            $('#units_maxDecimals').hide();
-        }
+    // Becnhmark Creation Tabs
+
+    $('#searchTabs a, .tab-switcher').click(function (e) {
+      e.preventDefault()
+      $(this).tab('show');
     });
+
+    $('.tab-switcher').click(function (e) {
+        $('.search .tabulation .nav-tabs li.tab-recommended').tab('show').addClass('active');
+    });
+
+    // Becnhmark Creation Checkboxes
 
     $('.single-contact input[type="checkbox"]').change(function() {
         if ($('.single-contact input[type="checkbox"]:checked').length > 0) {
@@ -19,7 +39,22 @@ $(function () {
         else {
             $(this).parents('.single-contact').removeClass('active');
         }
+    });
 
+    $('.share-checkbox').change(function() {
+        if ($(this).is(':checked') == true) {
+            if ($(this).parents('.col-md-2').siblings('.col-md-2').children('input[type="checkbox"]').is(':checked') == false) {
+                $(this).parents('.col-md-2').siblings('.col-md-2').children('input[type="checkbox"]').trigger('click');
+            }
+        }
+    });
+
+    $('.choose-checkbox').change(function() {
+        if ($(this).is(':checked') == false) {
+            if ($(this).parents('.col-md-2').siblings('.col-md-2').children('input[type="checkbox"]').is(':checked') == true) {
+                $(this).parents('.col-md-2').siblings('.col-md-2').children('input[type="checkbox"]').trigger('click');
+            }
+        }
     });
 });
 
@@ -56,7 +91,7 @@ $( document ).ready(function() {
     var fourthOffset = $('.colorblock#about').offset().top - 90;
     var fifthOffset = $('.colorblock#contact').offset().top - 90;
 
-    $document.on("resize scroll", function () {
+    $document.on("scroll", function () {
         if ($document.scrollTop() < firstOffset) {
             $('.main-nav li#home-link').addClass('active')
             .siblings().removeClass('active');
@@ -86,8 +121,9 @@ $( document ).ready(function() {
             $('.main-nav li#contacts-link').addClass('active')
             .siblings().removeClass('active');
         }
-
+        console.clear();
     });
+
 });
 
 
