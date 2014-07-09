@@ -63,6 +63,7 @@ INSTALLED_APPS = (
     'social_auth',
     'core',
     'bm',
+    'formadmin',
 )
 
 INSTALLED_APPS += ('django_jenkins',)

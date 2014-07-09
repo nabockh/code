@@ -150,7 +150,8 @@
                 
                 <div class='row'>
                     <div class='col-md-9'>
-                        <form action="/contact/" method="post" class='styled-form'>
+                        <form action="" method="post" class='styled-form'>
+                            {% csrf_token %}
                             {{ form.non_field_errors }}
                             <div class='row'>
                                 <div class="col-md-6">
