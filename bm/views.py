@@ -65,6 +65,9 @@ class BenchmarkCreateWizardView(CookieWizardView):
             if save_and_wizard_goto_step and save_and_wizard_goto_step in self.get_form_list():
                 return self.render_goto_step(save_and_wizard_goto_step)
 
+            add_selected = self.request.POST.get('add_selected', None)
+            if add_selected and add_selected in self.get_form_list():
+                return self.render_goto_step(add_selected, context={'active_tab': 3})
             # check if the current step is the last step
             if self.steps.current == self.steps.last:
                 # no more steps, render done view
@@ -73,6 +76,17 @@ class BenchmarkCreateWizardView(CookieWizardView):
                 # proceed to the next step
                 return self.render_next_step(form)
         return self.render(form)
+
+    def render_goto_step(self, goto_step, **kwargs):
+        """
+        This method gets called when the current step has to be changed.
+        `goto_step` contains the requested step to go to.
+        """
+        self.storage.current_step = goto_step
+        form = self.get_form(
+            data=self.storage.get_step_data(self.steps.current),
+            files=self.storage.get_step_files(self.steps.current))
+        return self.render(form, **kwargs.get('context', {}))
 
     def get_form_kwargs(self, step=None):
         params = {'user': self.request.user}
@@ -86,50 +100,41 @@ class BenchmarkCreateWizardView(CookieWizardView):
         step3 = form_list[2]
         with transaction.atomic():
             benchmark = Benchmark()
-            benchmark.name = step1.cleaned_data['name']
+            benchmark.name = step3.cleaned_data['name']
             benchmark.owner = self.request.user
-            benchmark.industry = step1.cleaned_data['industry']
-            region = Region.objects.get(pk=step1.cleaned_data['geo'])
+            benchmark.industry = step3.cleaned_data['industry']
+            region = Region.objects.get(pk=step3.cleaned_data['geo'])
             benchmark.save()
             benchmark.geographic_coverage.add(region)
 
             question = Question()
             question.benchmark = benchmark
-            question.label = step1.cleaned_data['question_label']
-            question.description = step1.cleaned_data['question_text']
-            question.type = int(step1.cleaned_data['question_type'])
+            question.label = step3.cleaned_data['question_label']
+            question.description = step3.cleaned_data['question_text']
+            question.type = int(step3.cleaned_data['question_type'])
             question.save()
 
             if question.type == Question.MULTIPLE:
-                choices = step1.cleaned_data['answer_options'].split('\r\n')
+                choices = step3.cleaned_data['answer_options'].split('\r\n')
                 for i, choice in enumerate(choices, start=1):
                     choice = QuestionChoice(label=choice, order=i)
                     question.choices.add(choice)
             elif question.type == Question.RANKING:
-                ranks = step1.cleaned_data['answer_options'].split('\r\n')
+                ranks = step3.cleaned_data['answer_options'].split('\r\n')
                 for i, rank in enumerate(ranks, start=1):
                     rank = QuestionRanking(label=rank, order=i)
                     question.ranks.add(rank)
             elif question.type == Question.NUMERIC or question.type == Question.RANGE:
-                question.options.add(QuestionOptions(step1.cleaned_data.get('units'), step1.cleaned_data.get('max_number_of_decimal')))
+                question.options.add(QuestionOptions(step3.cleaned_data.get('units'), step3.cleaned_data.get('max_number_of_decimal')))
 
             step2_data = self.storage.get_step_data('1')
             for contact in step2.contacts_filtered:
-                if step2_data.get('1-contact-{0}-invite'.format(contact.id)):
+                if step2_data.get('1-selected-{0}-invite'.format(contact.id)):
                     invite = BenchmarkInvitation()
                     invite.sender = benchmark.owner
                     invite.recipient = contact
                     invite.status = '0' #not send
-                    invite.is_allowed_to_forward_invite = bool(step2_data.get('1-contact-{0}-secondary'.format(contact.id)))
-                    benchmark.invites.add(invite)
-
-            for contact in step2.suggested_contacts:
-                if step2_data.get('1-suggested-{0}-invite'.format(contact.id)):
-                    invite = BenchmarkInvitation()
-                    invite.sender = benchmark.owner
-                    invite.recipient = contact
-                    invite.status = '0' #not send
-                    invite.is_allowed_to_forward_invite = bool(step2_data.get('1-suggested-{0}-secondary'.format(contact.id)))
+                    invite.is_allowed_to_forward_invite = bool(step2_data.get('1-selected-{0}-secondary'.format(contact.id)))
                     benchmark.invites.add(invite)
 
             link = benchmark.create_link()

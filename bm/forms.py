@@ -1,3 +1,4 @@
+import re
 from bm.models import Question, Region
 from django import forms
 from bm.widgets import RankingWidget
@@ -59,18 +60,66 @@ class CreateBenchmarkStep3Form(forms.Form):
             self.contacts_filtered = user.contacts.filter(name_filter, **contact_filter) if name_filter else \
                 user.contacts.filter(**contact_filter)
             for contact in self.contacts_filtered:
-                self.fields['contact-{0}-invite'.format(contact.id)] = forms.BooleanField(label=contact.full_name)
-                self.fields['contact-{0}-secondary'.format(contact.id)] = forms.BooleanField(label='')
+                self.fields['contact-{0}-invite'.format(contact.id)] = \
+                    forms.BooleanField(widget=forms.CheckboxInput(attrs={'class': 'choose-checkbox'}))
+                contact.invite_element = 'contact-{0}-invite'.format(contact.id)
+                self.fields['contact-{0}-secondary'.format(contact.id)] = \
+                    forms.BooleanField(widget=forms.CheckboxInput(attrs={'class': 'share-checkbox'}))
+                contact.secondary_element = 'contact-{0}-secondary'.format(contact.id)
 
             self.add_suggested_contacts(self.cleaned_data.get('geo'), self.cleaned_data.get('industry'))
         else:
             self.add_suggested_contacts(step0data.get('0-geo'), step0data.get('0-industry'))
+        self.add_selected_contacts(kwargs.get('data') or {})
 
     def add_suggested_contacts(self, geo, industry):
         self.suggested_contacts = Contact.get_suggested(geo, industry)
         for contact in self.suggested_contacts:
-            self.fields['suggested-{0}-invite'.format(contact.id)] = forms.BooleanField(label=contact.full_name)
-            self.fields['suggested-{0}-secondary'.format(contact.id)] = forms.BooleanField(label='')
+            self.fields['suggested-{0}-invite'.format(contact.id)] = \
+                forms.BooleanField(widget=forms.CheckboxInput(attrs={'class': 'choose-checkbox'}))
+            contact.invite_element = 'suggested-{0}-invite'.format(contact.id)
+            self.fields['suggested-{0}-secondary'.format(contact.id)] = \
+                forms.BooleanField(widget=forms.CheckboxInput(attrs={'class': 'share-checkbox'}))
+            contact.secondary_element = 'suggested-{0}-secondary'.format(contact.id)
+
+    def add_selected_contacts(self, data={}):
+        selected_ids = []
+        selected_secondary_ids = []
+
+        for key in data.keys():
+            r = re.match(r'1-selected-(?P<contact_id>\d+)-invite', key)
+            if r:
+                cid = int(r.group('contact_id'))
+                selected_ids.append(cid)
+                if data.get('1-selected-{0}-secondary'.format(cid)):
+                    selected_secondary_ids.append(cid)
+
+        if self.is_valid():
+            for contact in self.contacts_filtered:
+                    if data.get('1-contact-{0}-invite'.format(contact.id)):
+                        selected_ids.append(contact.id)
+                        if data.get('1-contact-{0}-secondary'.format(contact.id)):
+                            selected_secondary_ids.append(contact.id)
+        for contact in self.suggested_contacts:
+                if data.get('1-suggested-{0}-invite'.format(contact.id)):
+                    selected_ids.append(contact.id)
+                    if data.get('1-suggested-{0}-secondary'.format(contact.id)):
+                        selected_secondary_ids.append(contact.id)
+
+        selected_ids = set(selected_ids)
+        selected_secondary_ids = set(selected_secondary_ids)
+
+        self.selected_contacts = Contact.objects.filter(id__in=selected_ids)
+        for contact in self.selected_contacts:
+            self.fields['selected-{0}-invite'.format(contact.id)] = \
+                forms.BooleanField(initial=True, widget=forms.CheckboxInput(attrs={'class': 'choose-checkbox', 'checked': 'checked'}))
+            contact.invite_element = 'selected-{0}-invite'.format(contact.id)
+            attr = {'class': 'share-checkbox'}
+            if contact.id in selected_secondary_ids:
+                attr['checked'] = 'checked'
+            self.fields['selected-{0}-secondary'.format(contact.id)] = \
+                forms.BooleanField(widget=forms.CheckboxInput(attrs=attr))
+            contact.secondary_element = 'selected-{0}-secondary'.format(contact.id)
 
 
 class CreateBenchmarkStep4Form(CreateBenchmarkStep12Form):
