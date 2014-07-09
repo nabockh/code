@@ -22,12 +22,14 @@ $(function () {
     // Becnhmark Creation Tabs
 
     $('#searchTabs a, .tab-switcher').click(function (e) {
-      e.preventDefault()
+      e.preventDefault();
+      e.stopPropagation();
       $(this).tab('show');
     });
 
     $('.tab-switcher').click(function (e) {
         $('.search .tabulation .nav-tabs li.tab-recommended').tab('show').addClass('active');
+        e.stopPropagation();
     });
 
     // Becnhmark Creation Checkboxes
@@ -63,7 +65,7 @@ $(function () {
 // Animate Scroll to # links
 
 $(function () {
-    $('a[href*=#]:not([href=#])').click(function () {
+    $('a[href*=#]:not([href=#]):not([href=#results]):not([href=#recommended]):not([href=#selected])').click(function () {
         if (location.pathname.replace(/^\//, '') == this.pathname.replace(/^\//, '') && location.hostname == this.hostname) {
 
             var target = $(this.hash);
