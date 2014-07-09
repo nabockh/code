@@ -37,16 +37,17 @@
                 </div>
             </div>                
         </nav>
+        <div class='user-nav homepage'>
+            <div class='container text-center'>
+                <a href="{% url 'socialauth_begin' backend='linkedin' %}" class="btn sign-in-btn">Sign in with Linkedin</a>
+            </div>
+        </div>
 {% endblock %}
 {% block content %}
         <div class="colorblock banner" id='banner'>
             <div class='container text-center'>
                 <span class='big-title'>Better Data. <br> Better Decisions.<br></span>
-                <span class='help-text'>Benchmark Intelligence from the wisdom <br> of <i>your</i> professional network.</span>
-                <div class='col-md-12'>
-                    <a href="{% url 'socialauth_begin' backend='linkedin' %}" class="btn sign-in-btn">Sign in with Linkedin</a>
-                </div>
-                
+                <span class='help-text'>Benchmark Intelligence from the wisdom <br> of <i>your</i> professional network.</span>                
             </div>
         </div>
         <div class="colorblock" id='how-it-works'>

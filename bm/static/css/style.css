@@ -162,6 +162,11 @@ ul.main-nav {
     padding: 25px 0 17px;
 }
 
+    .user-nav.homepage {
+    padding: 0;
+        
+    }
+
     .user-nav .hello {
     color: #9dbef0;
     font-size: 24px;
@@ -1193,7 +1198,7 @@ form[role='search'] .btn-search {
     color: #4b4b4b;
     text-transform: none;
     border-radius: 5px;
-    margin-top: 20px;
+    margin: 10px 0;
 }
 
     .btn.sign-in-btn:before {
@@ -1248,17 +1253,17 @@ form[role='search'] .btn-search {
     border-radius: 0;
     color: #fff;
     text-transform: uppercase;
-    padding: 12px 15px;
+    padding: 12px 15px 11px;
 }
 
 .panel-default>.panel-heading>h4.panel-title {
-    font-size: 13px;
+    font-size: 14px;
 }
 
 .panel-default>.panel-heading>h4.panel-title>a {
     text-decoration: none;
-    font-weight: 900;
-    letter-spacing: 0.2px;
+    font-weight: 600;
+    /* letter-spacing: 0.2px; */
 }
 
 /* Progress bars */
