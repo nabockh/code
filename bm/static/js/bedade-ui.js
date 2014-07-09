@@ -1,8 +1,8 @@
     
 $(function () {
-    var sectionStateChange = function() {
-        var selected = $('#id_0-question_type').find('option:selected').val();
-            if (selected > 2) {
+    var sectionStateChangeStep1 = function() {
+        var selectedStep1 = $('#id_0-question_type').find('option:selected').val();
+            if (selectedStep1 > 2) {
                 $('#units_maxDecimals').show();
                 $('#answer_options').hide();
             }
@@ -11,14 +11,27 @@ $(function () {
                 $('#units_maxDecimals').hide();
             }
     };
-    sectionStateChange();
-    $( "#id_0-question_type" ).on('change', sectionStateChange);
+    var sectionStateChangeStep3 = function() {
+        var selectedStep3 = $('#id_2-question_type').find('option:selected').val();
+            if (selectedStep3 > 2) {
+                $('#units_maxDecimals_step3').show();
+                $('#answer_options_step3').hide();
+            }
+            else {
+                $('#answer_options_step3').show();
+                $('#units_maxDecimals_step3').hide();
+            }
+    };
+    sectionStateChangeStep1();
+    sectionStateChangeStep3();
+    $( "#id_0-question_type" ).on('change', sectionStateChangeStep1);
+    $( "#id_2-question_type" ).on('change', sectionStateChangeStep3);
 });
 
 
 
 $(function () {
-
+    $('.collapse').collapse();
     // Becnhmark Creation Tabs
 
     $('#searchTabs a, .tab-switcher').click(function (e) {
@@ -65,7 +78,7 @@ $(function () {
 // Animate Scroll to # links
 
 $(function () {
-    $('a[href*=#]:not([href=#]):not([href=#results]):not([href=#recommended]):not([href=#selected])').click(function () {
+    $('.main-nav a[href*=#]:not([href=#])').click(function () {
         if (location.pathname.replace(/^\//, '') == this.pathname.replace(/^\//, '') && location.hostname == this.hostname) {
 
             var target = $(this.hash);

@@ -131,6 +131,7 @@
             <div class='step_descr'>Review &amp; Send</div>
         </div>
     </div>
+    <div class='benchmark-help'>This space is reserved for instructional text. Should try to keep it pretty succinct but helpful. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed pellentesque tincidunt est, id lacinia orci lacinia eu. Aenean dignissim rutrum velit in faucibus. Nam non odio non neque porttitor dignissim in sed enim. Nunc facilisis ac mauris at eleifend. Maecenas pulvinar erat vestibulum odio aliquet suscipit. Nam venenatis nec lorem vel cursus.</div>
 {% endif %}
     <div class="margined no-bottom">
         <div class='row'>            
@@ -367,13 +368,94 @@
                                 </div>
                                 
                             </div>
-                            
-                          
-                           <!--  {{ wizard.form }} -->
-                            
                         {% elif wizard.steps.step1 == 3 %}
-                            <!-- step 3 -->
-                            {{ form }}
+                            <div class='col-md-8 lined-left'>
+                                <div class='row'>
+                                    <div class='col-md-12'>
+                                        <label for="id_0-name">Query Name</label>
+                                        <span class="add_info">(ie 'IT SaaS Costs')</span>
+                                        {{ form.name }}
+                                        {{ form.name.errors }}
+                                    </div>
+                                    <div class='col-md-12'>
+                                        <label for="id_0-question_label">Your Query</label>
+                                        <span class="add_info">(ie 'What is your annual Marketing budget for SaaS services')</span>
+                                        {{ form.question_label }}
+                                        {{ form.question_label.errors }}
+                                    </div>
+                                    <div class='col-md-12'>
+                                        <label for="id_0-question_text">Query Details</label>
+                                        <span class="add_help">?
+                                            <span class='add_help_inner'>Lorem ipsum dolor sit amet, consectetur eta adipiscing elit. Pellentasque eu tempor tortor. Aliquam Trisque eros arcu, sed bibendum enim faucibus in. In vulputate blendit lorem ut.</span>
+                                        </span>
+                                        {{ form.question_text }}
+                                        {{ form.question_text.errors }}
+                                    </div>
+                                    <div class='col-md-12'>
+                                        <div class='row'>
+                                            <div class='col-md-4'>
+                                                <label for="industry">Industry</label>
+                                                {{ form.industry }}
+                                                {{ form.industry.errors }}
+                                            </div>
+                                            <div class='col-md-4'>
+                                                <label for="geo">Location</label>
+                                                {{ form.geo }}
+                                                {{ form.geo.errors }}
+                                            </div>
+                                            <div class='col-md-4'>
+                                                <label for="question_type">Type of Answer</label>
+                                                {{ form.question_type }}
+                                                {{ form.question_type.errors }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class='col-md-12' id='answer_options_step3'>
+                                        <label for="id_0-answer_options">Answer Options</label>
+                                        <span class="add_info">(Enter each choice on a seperate line)</span>
+                                        {{ form.answer_options }}
+                                        {{ form.answer_options.errors }}
+                                    </div>
+                                    <div class='col-md-12' id='units_maxDecimals_step3'>
+                                        <div class='row'>
+                                            <div class='col-md-6'>
+                                                <label for="id_0-units">Units</label>
+                                                {{ form.units }}
+                                                {{ form.units.errors }}
+                                            </div>
+                                            <div class='col-md-6'>
+                                                <label for="id_0-max_number_of_decimal">maximum number of decimals</label>
+                                                {{ form.max_number_of_decimal }}
+                                                {{ form.max_number_of_decimal.errors }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class='col-md-12'>
+                                        <div class='row'>
+                                            <div class='col-md-8 normal-padding'>
+                                                <label for="industry">Minimum responses required to validate benchmark</label>
+                                                <span class="add_help">?
+                                                    <span class='add_help_inner'>Lorem ipsum dolor sit amet, consectetur eta adipiscing elit. Pellentasque eu tempor tortor. Aliquam Trisque eros arcu, sed bibendum enim faucibus in. In vulputate blendit lorem ut.</span>
+                                                </span>
+                                            </div>
+                                            <div class='col-md-4'>
+                                                {{ form.minimum_number_of_answers }}
+                                                {{ form.minimum_number_of_answers.errors }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>                                
+                            </div>
+                            <div class='col-md-4'>
+                                <div class='tips'>
+                                    <p class='label-like'>Selected Contacts</p>
+                                    <hr>
+                                </div>
+                            </div>
+                            <div class='col-md-12'>
+                                {{ form }}
+                            </div>
+                            
                         {% endif %}
                     {% endif %}
                     </table>

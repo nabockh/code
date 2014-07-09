@@ -83,7 +83,7 @@ ul.main-nav {
     }
 
     ul.main-nav > li > a {
-        font-size: 12px;
+        font-size: 11px;
         text-transform: uppercase;
         font-weight: 400;
         text-decoration: none;
@@ -109,6 +109,45 @@ ul.main-nav {
         font-size: 12px;
     }
     
+        ul.main-nav .dropdown-menu {
+            top: 50px;
+            left: 0;
+            border-radius: 0;
+            padding: 0;
+        
+            min-width: 110px;
+}
+
+            ul.main-nav .dropdown-menu:before {
+                position: absolute;
+                content: '';
+                width: 0px; 
+                height: 0px; 
+                border-left: 10px solid transparent; 
+                border-right: 10px solid transparent; 
+                border-bottom: 10px solid #ccc;
+                top: -10px;
+                left: 50%;
+                margin-left: -5px;
+            }
+
+            ul.main-nav .dropdown-menu:after {
+                position: absolute;
+                content: '';
+                width: 0px; 
+                height: 0px; 
+                border-left: 9px solid transparent; 
+                border-right: 9px solid transparent; 
+                border-bottom: 9px solid #fff;
+                top: -9px;
+                left: 50%;            
+                margin-left: -4.5px;
+            }
+            
+                ul.main-nav .dropdown-menu>li>a {
+                    padding: 5px 20px;
+                }
+    
 /* End Main Nav */
 
 /* User Nav */
@@ -116,7 +155,7 @@ ul.main-nav {
 .user-nav {
     background: #333;
     color: #fff;
-    padding: 25px 0;
+    padding: 25px 0 17px;
 }
 
     .user-nav .hello {
@@ -1176,6 +1215,115 @@ form[role='search'] .btn-search {
 .navbar>.container .navbar-brand {
     margin-left: 0;
 }
+
+/* Accordion */
+
+.panel-group .panel {
+    border-radius: 0;
+    margin-bottom: 25px;
+    box-shadow: none;
+}
+
+    .panel h4.panel-title a:before {
+        content: "\f146";
+        padding-right: 10px;
+        font-size: 16px;
+        line-height: 13px;
+        font-family: fontawesome;
+    }
+
+    .panel h4.panel-title a.collapsed:before {
+        content: "\f0fe";
+    }
+
+.panel-default>.panel-heading {
+    background: #333;
+    border-radius: 0;
+    color: #fff;
+    text-transform: uppercase;
+    padding: 12px 15px;
+}
+
+.panel-default>.panel-heading>h4.panel-title {
+    font-size: 13px;
+}
+
+.panel-default>.panel-heading>h4.panel-title>a {
+    text-decoration: none;
+    font-weight: 900;
+    letter-spacing: 0.2px;
+}
+
+/* Progress bars */
+
+.progress {
+    border-radius: 0;
+    height: 40px;
+    box-shadow: inset 1px 1px #dedede, inset -1px -1px #DEDEDE;
+}
+
+.progress-bar {
+    border-radius: 0;
+    line-height: 40px;
+    text-align: right;
+    padding-right: 10px;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+    .progress-bar[aria-valuenow="10"] {
+        text-align: center;
+        padding-right: 2px;
+    }
+
+.dashboard-progress-block {
+    border-bottom: 1px solid #dedede;
+    margin-bottom: 10px;
+}
+    .dashboard-progress-block:last-child {
+        margin-bottom: 0;
+        border-bottom: none;
+    }
+    
+    .dashboard-progress-block p.title {
+        font-weight: bold;
+        margin-bottom: 5px;
+        line-height: 21px;
+        font-size: 14px;
+    }
+
+    .dashboard-progress-block p.info {
+        line-height: 18px;
+        font-size: 14px;
+    }
+
+        .dashboard-progress-block p.info > span {
+            font-weight: bold;
+        }
+
+    .dashboard-progress-block:nth-of-type(3n+1) .progress-bar {
+        background-color: #202c45;
+    }
+
+    .dashboard-progress-block:nth-of-type(3n+1) p.info > span {
+        color: #202c45;
+    }
+
+    .dashboard-progress-block:nth-of-type(3n+2) .progress-bar {
+        background-color: #8592b2;
+    }
+
+    .dashboard-progress-block:nth-of-type(3n+2) p.info > span {
+        color: #8592b2;
+    }
+
+    .dashboard-progress-block:nth-of-type(3n+3) .progress-bar {
+        background-color: #608a94;
+    }
+
+    .dashboard-progress-block:nth-of-type(3n+3) p.info > span {
+        color: #608a94;
+    }
 
 /* 5 columns fix */
 
