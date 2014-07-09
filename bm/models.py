@@ -40,7 +40,8 @@ class Benchmark(models.Model):
     min_numbers_of_responses = models.PositiveIntegerField(default=5)
     geographic_coverage = models.ManyToManyField('Region', related_name='benchmarks')
     _industry = models.ForeignKey(LinkedInIndustry, db_column="industry_id", blank=True, null=True, db_constraint=False, on_delete=models.SET_NULL)
-    approved = models.BooleanField(default=False)
+    approved = models.NullBooleanField(blank=True)
+    popular = models.BooleanField(default=False)
 
     def __init__(self, *args, **kwargs):
         super(Benchmark, self).__init__(*args, **kwargs)

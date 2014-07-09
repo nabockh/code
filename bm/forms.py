@@ -112,3 +112,14 @@ class RankingAnswerForm(forms.Form):
         super(RankingAnswerForm, self).__init__(*args, **kwargs)
         for i, rank in enumerate(ranks):
             self.fields['rank{0}'.format(rank[0])] = forms.IntegerField(widget=RankingWidget(attrs={'label': rank[1], 'value':i}))
+
+
+class DeclineBenchmarkForm(forms.Form):
+    reason = forms.CharField(widget=forms.Textarea())
+
+    def __init__(self, benchmark, owner, email, *args, **kwargs):
+        super(DeclineBenchmarkForm, self).__init__(*args, **kwargs)
+        self.fields['Benchmark name'] = forms.CharField(widget=forms.TextInput({'value': benchmark}))
+        self.fields['Benchmark owner'] = forms.CharField(widget=forms.TextInput({'value': owner}))
+        self.fields['Owner email'] = forms.EmailField(widget=forms.TextInput({'value':email}))
+

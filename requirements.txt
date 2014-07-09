@@ -16,3 +16,4 @@ gunicorn==18.0
 Fabric==1.9.0
 django-bootstrap-form==3.1
 django-celery-email==1.0.4
+django-form-admin==0.4.2

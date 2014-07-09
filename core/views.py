@@ -19,15 +19,16 @@ class HomeView(TemplateView):
     def post(self, request, *args, **kwargs):
         form = ContactForm(request.POST)
         if form.is_valid():
-            first_name = form.cleaned_data['first name']
-            last_name = form.cleaned_data['last name']
-            comments = form.cleaned_data['comments']
+            first_name = form.cleaned_data['first_name']
+            last_name = form.cleaned_data['last_name']
+            comments = form.cleaned_data['comment']
             recipient_list = User.objects.filter(is_superuser=True).values_list('email', flat=True)
-            send_mail('Customer feedback', comments, last_name + '' + first_name, recipient_list)
+            if recipient_list:
+                send_mail('Customer feedback', comments, last_name + '' + first_name, recipient_list)
             return HttpResponseRedirect('/thanks/')
         else:
             form = ContactForm()
-        return  render(request, 'core/home.html', {'form': form})
+        return render(request, 'core/home.html', {'form': form})
 
 
 class DashboardView(TemplateView):
@@ -41,3 +42,7 @@ class DashboardView(TemplateView):
         context = super(DashboardView, self).get_context_data(*args, **kwargs)
         context['user'] = self.request.user
         return context
+
+
+class ThankYouView(TemplateView):
+    template_name = "general/thanks.html"
