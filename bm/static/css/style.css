@@ -44,6 +44,10 @@ ul.errorlist {
     margin: 45px auto;
 }
 
+.margin-bot {
+    margin-bottom: 25px;
+}
+
 .margined.no-bottom {
     margin-bottom: 0;
 }
@@ -808,14 +812,17 @@ form[role='search'] .btn-search {
 
 /* End Steps */
 
-
-
 .title-header {
     background: #333;
     color: #fff;
-    padding: 6px 60px;
+    padding: 7px 15px;
     text-transform: uppercase;
     font-weight: bold;
+    margin: 0 -15px;
+}
+
+.benchmark-creation .title-header {
+    padding: 6px 60px;
     margin: 0 -60px;
 }
 
