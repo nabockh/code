@@ -11,6 +11,7 @@ $(function () {
                 $('#units_maxDecimals').hide();
             }
     };
+
     var sectionStateChangeStep3 = function() {
         var selectedStep3 = $('#id_2-question_type').find('option:selected').val();
             if (selectedStep3 > 2) {
@@ -22,6 +23,7 @@ $(function () {
                 $('#units_maxDecimals_step3').hide();
             }
     };
+
     sectionStateChangeStep1();
     sectionStateChangeStep3();
     $( "#id_0-question_type" ).on('change', sectionStateChangeStep1);
@@ -31,7 +33,9 @@ $(function () {
 
 
 $(function () {
+
     $('.collapse').collapse();
+
     // Becnhmark Creation Tabs
 
     $('#searchTabs a, .tab-switcher').click(function (e) {
@@ -71,6 +75,13 @@ $(function () {
             }
         }
     });
+
+    $('span.deselect-btn').click(function () {
+        var id = $(this).parents('.single-contact').attr('data-contact-id');
+        $('#results .single-contact[data-contact-id='+id+']').find('.choose-checkbox').removeAttr('checked');
+        $('#selected .single-contact[data-contact-id='+id+']').find('.choose-checkbox').removeAttr('checked').end().fadeOut(500, function(){ $(this).remove();});
+    });
+
 });
 
 

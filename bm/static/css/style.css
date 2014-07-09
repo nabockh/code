@@ -674,7 +674,7 @@ input.btn.full-width {
     box-shadow: 1px 0 #ccc;
 }
 
-    .title-header.inner {
+    .benchmark-creation .title-header.inner {
         margin: 0 10px;
         padding: 5px 10px;
         font-size: 12px;
@@ -902,9 +902,13 @@ form[role='search'] .btn-search {
     font-weight: 600;
 }
 
-.benchmark-creation .styled-form label.btn {
+.benchmark-creation .styled-form .btn {
     font-size: 14px;
     color: #fff;
+}
+
+label.btn.btn-primary.auto-width.pull-right.fix {
+    margin-right: 10px;
 }
 
 .benchmark-creation .styled-form input:not([type='submit']), .benchmark-creation .styled-form textarea, .benchmark-creation .styled-form select {
@@ -974,9 +978,9 @@ form[role='search'] .btn-search {
     .btn-holder {
         margin: 0 -45px;
         clear: both;
-        padding: 30px 75px;
+        padding: 30px 60px;
         background: #333;
-        height: 95px;
+        height: 100px;
     }
 
     span.add_info {
@@ -1083,6 +1087,20 @@ form[role='search'] .btn-search {
             color: #339999;
             line-height: 12px;
         }
+        
+            .benchmark-creation .styled-form .single-contact span.deselect-btn {
+                cursor: pointer;
+                margin: 25px 0 22px;
+                color: #999;
+            
+                font-size: 14px;
+                line-height: 14px;
+                display: inline-block;
+}
+
+            .benchmark-creation .styled-form .single-contact span.deselect-btn:hover {
+                color: #339999;
+            }
         
         .benchmark-creation .styled-form .suggested-contact {
             border-bottom: 1px solid #dedede;            

@@ -112,7 +112,7 @@ class CreateBenchmarkStep3Form(forms.Form):
         self.selected_contacts = Contact.objects.filter(id__in=selected_ids)
         for contact in self.selected_contacts:
             self.fields['selected-{0}-invite'.format(contact.id)] = \
-                forms.BooleanField(initial=True, widget=forms.CheckboxInput(attrs={'class': 'choose-checkbox', 'checked': 'checked'}))
+                forms.BooleanField(initial=True, widget=forms.CheckboxInput(attrs={'class': 'choose-checkbox hidden', 'checked': 'checked'}))
             contact.invite_element = 'selected-{0}-invite'.format(contact.id)
             attr = {'class': 'share-checkbox'}
             if contact.id in selected_secondary_ids:
