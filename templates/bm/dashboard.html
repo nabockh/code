@@ -82,7 +82,7 @@
                             </a>
                           </h4>
                         </div>
-                        <div id="myBenchmarkHistory" class="panel-collapse collapse in">
+                        <div id="myBenchmarkHistory" class="panel-collapse collapse">
                             <div class="panel-body">
                                 Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
                             </div>
@@ -91,7 +91,7 @@
                       <div class="panel panel-default">
                         <div class="panel-heading">
                             <h4 class="panel-title">
-                                <a data-toggle="collapse" data-parent="#accordion" href="#myOpenBenchmarks">
+                                <a data-toggle="collapse" data-parent="#accordion" href="#myOpenBenchmarks" class='collapsed'>
                                 My Open Benchmarks
                                 </a>
                             </h4>
@@ -138,9 +138,184 @@
                 <div class='col-md-7'>
                     <div class='col-md-12 bordered bgwhite margin-bot'>
                         <div class='title-header'>My Recent Benchmarks</div>
+                        <div class='row'>
+                          <div class='benchmark'>
+                            <div id="myRecentBenchmarks" class="carousel slide" data-ride="carousel">
+                              <!-- Wrapper for slides -->
+                              <div class="carousel-inner">
+                                <div class="item active">
+                                  <div class='title' title='IT Spending for MiFID'>IT Spending for MiFID</div>
+                                  <img src="{{ STATIC_URL }}img/graph-placeholder.png" alt="...">
+                                  <div class='benchmark-stats perc-based'>
+                                    <div class='single-stat'>
+                                      <span class='title'>Min</span>
+                                      <span class='value'>0%</span>
+                                    </div>
+                                    <div class='single-stat'>
+                                      <span class='title'>Max</span>
+                                      <span class='value'>91%</span>
+                                    </div>
+                                    <div class='single-stat'>
+                                      <span class='title'>Mean</span>
+                                      <span class='value'>47%</span>
+                                    </div>
+                                    <div class='single-stat'>
+                                      <span class='title'>Avg</span>
+                                      <span class='value'>51%</span>
+                                    </div>
+                                    <div class='single-stat'>
+                                      <span class='title'>SD</span>
+                                      <span class='value'>1.4</span>
+                                    </div>
+                                  </div>
+                                  <div class='benchmark-footer text-center'>
+                                    <span class='color-blue'><i class='fa fa-user'></i> 125 Contributors</span>
+                                    <span class='separator'></span>
+                                    <span class="rating">
+                                      <span class="star"></span><span class="star"></span><span class="star"></span><span class="star"></span><span class="star"></span>
+                                    </span>
+                                    <span class='color-grey'>(17)</span>
+                                  </div>
+                                </div>
+                                <div class="item">
+                                  <div class='title' title='Electronic Training in Chinese Government Bonds'>Electronic Training in Chinese Government Bonds</div>
+                                  <img src="{{ STATIC_URL }}img/graph-placeholder1.png" alt="...">
+                                  <div class='benchmark-stats val-based'>
+                                    <div class='single-stat'>
+                                      <span class='title'>Min</span>
+                                      <span class='value'>5.2</span>
+                                    </div>
+                                    <div class='single-stat'>
+                                      <span class='title'>Max</span>
+                                      <span class='value'>8.0</span>
+                                    </div>
+                                    <div class='single-stat'>
+                                      <span class='title'>Mean</span>
+                                      <span class='value'>7.5</span>
+                                    </div>
+                                    <div class='single-stat'>
+                                      <span class='title'>Avg</span>
+                                      <span class='value'>6.1</span>
+                                    </div>
+                                    <div class='single-stat'>
+                                      <span class='title'>SD</span>
+                                      <span class='value'>0.2</span>
+                                    </div>
+                                  </div>
+                                  <div class='benchmark-footer text-center'>
+                                    <span class='color-blue'><i class='fa fa-user'></i> 48 Contributors</span>
+                                    <span class='separator'></span>
+                                    <span class="rating">
+                                      <span class="star"></span><span class="star"></span><span class="star"></span><span class="star"></span><span class="star"></span>
+                                    </span>
+                                    <span class='color-grey'>(2)</span>
+                                  </div>
+                                  
+                                </div>
+                              </div>
+
+                              <!-- Controls -->
+                              <div class='recent-benchmark-controls'>
+                                <a class="left carousel-control" href="#myRecentBenchmarks" role="button" data-slide="prev">
+                                  <i class='fa fa-caret-left'></i>
+                                </a>
+                                <a class="right carousel-control" href="#myRecentBenchmarks" role="button" data-slide="next">
+                                  <i class='fa fa-caret-right'></i>
+                                </a>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
                     </div>
                     <div class='col-md-12 bordered bgwhite'>
                         <div class='title-header'>Popular Comunity Benchmarks</div>
+                        <div class='row'>
+                          <div class='benchmark'>
+                            <div id="popularComunityBenchmarks" class="carousel slide" data-ride="carousel">
+                              <!-- Wrapper for slides -->
+                              <div class="carousel-inner">
+                                <div class="item active">
+                                  <div class='title' title='Electronic Training in Chinese Government Bonds'>Electronic Training in Chinese Government Bonds</div>
+                                  <img src="{{ STATIC_URL }}img/graph-placeholder1.png" alt="...">
+                                  <div class='benchmark-stats val-based'>
+                                    <div class='single-stat'>
+                                      <span class='title'>Min</span>
+                                      <span class='value'>5.2</span>
+                                    </div>
+                                    <div class='single-stat'>
+                                      <span class='title'>Max</span>
+                                      <span class='value'>8.0</span>
+                                    </div>
+                                    <div class='single-stat'>
+                                      <span class='title'>Mean</span>
+                                      <span class='value'>7.5</span>
+                                    </div>
+                                    <div class='single-stat'>
+                                      <span class='title'>Avg</span>
+                                      <span class='value'>6.1</span>
+                                    </div>
+                                    <div class='single-stat'>
+                                      <span class='title'>SD</span>
+                                      <span class='value'>0.2</span>
+                                    </div>
+                                  </div>
+                                  <div class='benchmark-footer text-center'>
+                                    <span class='color-blue'><i class='fa fa-user'></i> 48 Contributors</span>
+                                    <span class='separator'></span>
+                                    <span class="rating">
+                                      <span class="star"></span><span class="star"></span><span class="star"></span><span class="star"></span><span class="star"></span>
+                                    </span>
+                                    <span class='color-grey'>(2)</span>
+                                  </div>                                  
+                                </div>
+                                <div class="item">
+                                  <div class='title' title='IT Spending for MiFID'>IT Spending for MiFID</div>
+                                  <img src="{{ STATIC_URL }}img/graph-placeholder.png" alt="...">
+                                  <div class='benchmark-stats perc-based'>
+                                    <div class='single-stat'>
+                                      <span class='title'>Min</span>
+                                      <span class='value'>0%</span>
+                                    </div>
+                                    <div class='single-stat'>
+                                      <span class='title'>Max</span>
+                                      <span class='value'>91%</span>
+                                    </div>
+                                    <div class='single-stat'>
+                                      <span class='title'>Mean</span>
+                                      <span class='value'>47%</span>
+                                    </div>
+                                    <div class='single-stat'>
+                                      <span class='title'>Avg</span>
+                                      <span class='value'>51%</span>
+                                    </div>
+                                    <div class='single-stat'>
+                                      <span class='title'>SD</span>
+                                      <span class='value'>1.4</span>
+                                    </div>
+                                  </div>
+                                  <div class='benchmark-footer text-center'>
+                                    <span class='color-blue'><i class='fa fa-user'></i> 125 Contributors</span>
+                                    <span class='separator'></span>
+                                    <span class="rating">
+                                      <span class="star"></span><span class="star"></span><span class="star"></span><span class="star"></span><span class="star"></span>
+                                    </span>
+                                    <span class='color-grey'>(17)</span>
+                                  </div>
+                                </div>
+                              </div>
+
+                              <!-- Controls -->
+                              <div class='recent-benchmark-controls'>
+                                <a class="left carousel-control" href="#popularComunityBenchmarks" role="button" data-slide="prev">
+                                  <i class='fa fa-caret-left'></i>
+                                </a>
+                                <a class="right carousel-control" href="#popularComunityBenchmarks" role="button" data-slide="next">
+                                  <i class='fa fa-caret-right'></i>
+                                </a>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
                     </div>
                 </div>
             </div>

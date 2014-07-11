@@ -34,7 +34,14 @@ $(function () {
 
 $(function () {
 
-    $('.collapse').collapse();
+    $('.collapse').collapse({
+        toggle: false
+    });
+
+    $('.carousel').carousel({interval: false});
+    $(document).on('mouseleave', '.carousel', function() {
+        $(this).carousel('pause');
+    });
 
     // Becnhmark Creation Tabs
 
