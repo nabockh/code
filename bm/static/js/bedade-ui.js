@@ -87,6 +87,7 @@ $(function () {
         var id = $(this).parents('.single-contact').attr('data-contact-id');
         $('#results .single-contact[data-contact-id='+id+']').find('.choose-checkbox').removeAttr('checked');
         $('#selected .single-contact[data-contact-id='+id+']').find('.choose-checkbox').removeAttr('checked').end().fadeOut(500, function(){ $(this).remove();});
+        $('#step3Selected .single-contact[data-contact-id='+id+']').find('.choose-checkbox').removeAttr('checked').end().fadeOut(500, function(){ $(this).remove();});
     });
 
 });

@@ -408,6 +408,7 @@
                             </div>
                         {% elif wizard.steps.step1 == 3 %}
                             <div class='col-md-8 lined-left'>
+                                <input id="id_benchmark_create_wizard_view-current_step" name="benchmark_create_wizard_view-current_step" type="hidden" value="2">
                                 <div class='row'>
                                     <div class='col-md-12'>
                                         <label for="id_2-name">Query Name</label>
@@ -496,10 +497,35 @@
                                 <div class='tips'>
                                     <p class='label-like'>Selected Contacts</p>
                                     <hr>
+                                    <div id='step3Selected'>
+                                        {% for contact in selected_contacts %}
+                                            <div class='single-contact' data-contact-id='{{ contact.id }}'>
+                                                <div class='row'>
+                                                    <div class='col-md-12'>
+                                                        <label>{{ contact }}</label>
+                                                        <p class='text-do-wrap' title='{{ contact.headline }}'>{{ contact.headline }}</p>
+                                                    </div>
+                                                    
+                                                    {% if contact.allow_secondary %}
+                                                        <div class='col-md-12'>
+                                                            <input class='pre-checked' type='checkbox' checked='checked' disabled />
+                                                            <span class='grey'>Allow Sharing</span>
+                                                        </div>
+                                                    {% else %}
+                                                        <div class='col-md-12'>
+                                                            <input class='pre-checked' type='checkbox'disabled />
+                                                            <span class='grey'>Allow Sharing</span>
+                                                        </div>
+                                                    {% endif %}
+                                                    
+                                                </div>
+                                            </div>
+                                        {% endfor %}    
+                                    </div>
+                                    
                                 </div>
                             </div>
-                            {{ selected_contacts }}
-                            {{ form }}
+                            <!-- {{ selected_contacts }} -->
                         {% endif %}
                     {% endif %}
                     </table>
