@@ -90,9 +90,19 @@ class BenchmarkCreateWizardView(CookieWizardView):
 
     def get_form_kwargs(self, step=None):
         params = {'user': self.request.user}
+        if step == '1':
+            params['wizard'] = self
         if step == '1' or step == '2':
             params['step0data'] = self.storage.get_step_data('0')
+        # if step == '2':
+        #     params['step1data'] = self.storage.get_step_data('1')
         return params
+
+    def get_context_data(self, form, **kwargs):
+        context = super(BenchmarkCreateWizardView, self).get_context_data(form, **kwargs)
+        if self.steps.current == '2':
+            context['selected_contacts'] = self.selected_contacts
+        return context
 
     def done(self, form_list, **kwargs):
         step1 = form_list[0]

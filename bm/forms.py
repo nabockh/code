@@ -37,7 +37,7 @@ class CreateBenchmarkStep3Form(forms.Form):
     role = forms.CharField(max_length=200, required=False)
     name = forms.CharField(max_length=100, required=False)
 
-    def __init__(self, user, step0data, *args, **kwargs):
+    def __init__(self, user, step0data, wizard, *args, **kwargs):
         super(CreateBenchmarkStep3Form, self).__init__(*args, **kwargs)
         regions = [('', '------')]
         regions.extend(list(Region.regions.values_list('id', 'name').order_by('name')))
@@ -70,7 +70,7 @@ class CreateBenchmarkStep3Form(forms.Form):
             self.add_suggested_contacts(self.cleaned_data.get('geo'), self.cleaned_data.get('industry'))
         else:
             self.add_suggested_contacts(step0data.get('0-geo'), step0data.get('0-industry'))
-        self.add_selected_contacts(kwargs.get('data') or {})
+        wizard.selected_contacts = self.add_selected_contacts(kwargs.get('data') or {})
 
     def add_suggested_contacts(self, geo, industry):
         self.suggested_contacts = Contact.get_suggested(geo, industry)
@@ -82,7 +82,7 @@ class CreateBenchmarkStep3Form(forms.Form):
                 forms.BooleanField(widget=forms.CheckboxInput(attrs={'class': 'share-checkbox'}))
             contact.secondary_element = 'suggested-{0}-secondary'.format(contact.id)
 
-    def add_selected_contacts(self, data={}):
+    def add_selected_contacts(self, data):
         selected_ids = []
         selected_secondary_ids = []
 
@@ -117,9 +117,14 @@ class CreateBenchmarkStep3Form(forms.Form):
             attr = {'class': 'share-checkbox'}
             if contact.id in selected_secondary_ids:
                 attr['checked'] = 'checked'
+                contact.allow_secondary = True
+            else:
+                contact.allow_secondary = False
             self.fields['selected-{0}-secondary'.format(contact.id)] = \
                 forms.BooleanField(widget=forms.CheckboxInput(attrs=attr))
             contact.secondary_element = 'selected-{0}-secondary'.format(contact.id)
+
+        return self.selected_contacts
 
 
 class CreateBenchmarkStep4Form(CreateBenchmarkStep12Form):
