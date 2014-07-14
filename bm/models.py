@@ -45,7 +45,7 @@ class Benchmark(models.Model):
 
     def __init__(self, *args, **kwargs):
         super(Benchmark, self).__init__(*args, **kwargs)
-        self.already_approved = copy(self.approved)
+        self.already_approved = bool(self.approved)
 
     @property
     def industry(self):

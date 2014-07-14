@@ -40,7 +40,7 @@ def send_invites(benchmark_id):
         invites_groups = grouper(10, invites_to_send_via_linked)
         for invites_group in invites_groups:
             sender = invites_group[0].sender
-            contacts = [invite.recipient for invite in invites_group]
+            contacts = [invite.recipient for invite in invites_group if invite]
             Contact.send_mail(sender, subject, body, contacts)
         for invite in invites_to_send_via_linked:
             invite.status = 1
