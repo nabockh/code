@@ -32,6 +32,10 @@ ul.errorlist {
     font-size: 11px;
 }
 
+.mobile {
+    display: none;
+}
+
 .bordered {
     border: 1px solid #dadada;
 }
@@ -344,6 +348,7 @@ input.btn.full-width {
 .top-navbar {
     margin-top: 20px;
 }
+
 
 /* Colorblocking */
 
@@ -1578,5 +1583,97 @@ label.btn.btn-primary.auto-width.pull-right.fix {
 
     .container {
         width: 970px;
+    }
+}
+
+@media (max-width: 767px) {
+    .mobile {
+        display: block;
+    }
+
+    .non-mobile {
+        display: none;
+    }
+
+    .navbar>.container .navbar-brand {
+        margin-left: 15px;       
+    }
+
+    .container>.navbar-header {
+        margin-bottom: 20px;
+    }
+
+    .navbar-default .navbar-collapse, .navbar-default .navbar-form {
+        background-color: #fff;
+    }
+
+    ul.main-nav > li {
+        display: block;
+        padding: 0 20px;    
+        margin: 0 -15px;
+    }
+    ul.main-nav > li.active {
+        background: #425380;
+    }
+    ul.main-nav > li > a {
+        padding: 10px 0;
+        float: none;
+        display: block;
+        font-size: 14px;
+    }
+    ul.main-nav > li.active > a {
+        box-shadow: none;
+        color: #fff;
+    }
+
+    .how-it-works {
+        margin-bottom: 30px;
+    }
+
+    .colorblock.features {
+        background-image: url('../img/bdde_banner.png');
+    }
+
+    .features {
+        text-align: center;
+    }
+
+    .example-block {
+        width: 33.3333%;
+    }
+
+    p.first-about-block {
+        padding-bottom: 15px;
+        border-bottom: 1px solid #fff;
+        margin-bottom: 15px !important;
+    }
+
+    .colorblock.about p {
+        text-align: center;
+    }
+    .contact-info {
+        float: none;
+        margin: 30px 0 0;
+        text-align: center;
+    }
+    .contact-info .title {
+        text-transform: uppercase;
+    }
+    .features.text-left > * {
+        padding-left: 0;
+    }
+    .features.text-right > * {
+        padding-right: 0;
+    }
+
+    .big-title.decored:before, .big-title.decored:after {
+        width: 15%;
+    }
+}
+
+
+@media (max-width: 640px) {
+    .example-block {
+        width: 50%;
     }
 }
