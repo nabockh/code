@@ -83,11 +83,17 @@ ul.errorlist {
 
 /* Main Nav */
 
+nav.collapse.navbar-collapse.bs-navbar-collapse {
+    float: left;
+}
+
 ul.main-nav {
     list-style: none;
     margin: 0;
     padding: 0;
     text-align: center;
+    width: 630px;
+    float: left;
 }
 
     ul.main-nav > li {
@@ -1593,6 +1599,18 @@ label.btn.btn-primary.auto-width.pull-right.fix {
 
     .non-mobile {
         display: none;
+    }
+
+    .social-btns {
+        display: none;
+    }
+
+    nav.collapse.navbar-collapse.bs-navbar-collapse {
+        float: none;
+    }
+
+    ul.main-nav {
+        width: 100%;
     }
 
     .navbar>.container .navbar-brand {

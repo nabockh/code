@@ -24,44 +24,13 @@
                   <li id='contacts-link'><a href="#contact">Contact</a></li>
                 </ul>             
             </nav>
+            <div class='social-btns pull-right'>
+                <a href="#"><i class='fa fa-linkedin'></i></a>
+                <a href="#"><i class='fa fa-twitter'></i></a>
+                <a href="#"><i class='fa fa-facebook'></i></a>
+            </div>
           </div>
         </header>
-       <nav class="navbar navbar-default hidden" role="navigation">
-            <div class="container top-navbar">
-                <div class='row'>
-                  <div class='col-md-2'>
-                    <div class="navbar-header">
-                      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-2">
-                        <span class="sr-only">Toggle navigation</span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                      </button>
-                      <a class="navbar-brand" href="/"><img src='{{ STATIC_URL }}/img/bdde_logo.png'/></a>
-
-                    </div>
-                  </div>
-                  <div class='col-md-8'>
-                    <ul class='main-nav text-center'>
-                      <li id='home-link' class='active'><a href="#banner">Home</a></li>
-                      <li id='how-link'><a href="#how-it-works">How it works</a></li>
-                      <li id='features-link'><a href="#features">Features</a></li>
-                      <li id='examples-link'><a href="#examples">Examples</a></li>
-                      <li id='about-link'><a href="#about">About</a></li>
-                      <li id='faq-link'><a href="">FaQ</a></li>
-                      <li id='contacts-link'><a href="#contact">Contact</a></li>
-                    </ul>
-                  </div>
-                  <div class='col-md-2'>
-                    <div class='social-btns pull-right'>
-                        <a href="#"><i class='fa fa-linkedin'></i></a>
-                        <a href="#"><i class='fa fa-twitter'></i></a>
-                        <a href="#"><i class='fa fa-facebook'></i></a>
-                    </div>
-                  </div>
-                </div>
-            </div>                
-        </nav>
         <div class='user-nav homepage'>
             <div class='container text-center'>
                 <a href="{% url 'socialauth_begin' backend='linkedin' %}" class="btn sign-in-btn">Sign in with Linkedin</a>
