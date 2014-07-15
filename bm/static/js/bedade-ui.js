@@ -34,6 +34,10 @@ $(function () {
 
 $(function () {
 
+    $('.rating').on('click', '[data-score]', function() {
+        $.get(window.location.pathname, {'rate':$(this).attr('data-score')});
+    });
+
     $('.collapse').collapse({
         toggle: false
     });

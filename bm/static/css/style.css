@@ -1570,15 +1570,27 @@ label.btn.btn-primary.auto-width.pull-right.fix {
 }
 
 @media (min-width: 768px) {
-.col-sm-5ths {
+    .col-sm-5ths {
         width: 20%;
         float: left;
+    }
+
+    ul.main-nav.dashboard-nav {
+        width: 370px;
+    }
+
+    .search-help-text {
+        display: none;
     }
 }
 @media (min-width: 992px) {
     .col-md-5ths {
         width: 20%;
         float: left;
+    }
+
+    ul.main-nav.dashboard-nav {
+        width: 590px;
     }
 }
 @media (min-width: 1200px) {
@@ -1609,7 +1621,7 @@ label.btn.btn-primary.auto-width.pull-right.fix {
         float: none;
     }
 
-    ul.main-nav {
+    ul.main-nav, ul.main-nav.dashboard-nav {
         width: 100%;
     }
 
@@ -1630,19 +1642,35 @@ label.btn.btn-primary.auto-width.pull-right.fix {
         padding: 0 20px;    
         margin: 0 -15px;
     }
+    
     ul.main-nav > li.active {
         background: #425380;
     }
+    
     ul.main-nav > li > a {
         padding: 10px 0;
         float: none;
         display: block;
         font-size: 14px;
     }
+
     ul.main-nav > li.active > a {
         box-shadow: none;
         color: #fff;
     }
+
+    ul.main-nav .dropdown-menu {
+        width: 100%;
+        position: static;
+    }
+
+    ul.main-nav .dropdown-menu:before, ul.main-nav .dropdown-menu:after {
+        content: none;
+    }
+    
+        ul.main-nav .dropdown-menu li a {
+            padding: 10px;
+        }
 
     .how-it-works {
         margin-bottom: 30px;
@@ -1686,6 +1714,54 @@ label.btn.btn-primary.auto-width.pull-right.fix {
 
     .big-title.decored:before, .big-title.decored:after {
         width: 15%;
+    }
+
+    .search-fields {
+        float: left;
+        width: 100%;
+        margin: 0;
+        text-align: center;
+    }
+
+    .search-fields .search-help-text {
+        display: block;
+        width: 100%;
+        float: left;
+    
+        margin: 0;
+        padding: 10px 0 0;
+        border-top: 1px solid #dedede;
+}
+
+    .search-fields  .navbar-form {
+        display: block;
+        float: left;
+        width: 100%;
+        margin: 0 0 10px;
+    
+        border: none;
+}
+
+    .search-fields .form-group {
+        margin: 0;
+        width: 90%;
+    }
+
+    .search-fields form[role='search'] .form-control {
+        float: left;
+        width: 100%;
+        max-width: 100%;
+        padding: 15px;
+        margin: 0;
+    }
+
+    .search-fields form[role='search'] .btn-search {
+        width: 10%;
+        float: left;
+        padding: 0;
+        line-height: 30px;
+        height: 32px;
+        margin: 0;
     }
 }
 
