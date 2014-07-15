@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block meta_tags %}
+    <!-- Open Graph data -->
+    <meta property="og:title" content={{ benchmark.name }} />
+    <meta property="og:type" content="article" />
+    <meta property="og:image" content="{{ STATIC_URL }}img/bdde_logo.png" />
+    <meta property="og:url" content={{ url }} />
+
+    <!-- Twitter Card data -->
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:url" content={{ url }}>
+    <meta name="twitter:title" content={{ benchmark.name }}>
+    <meta name="twitter:image" content="{{ STATIC_URL }}img/bdde_logo.png">
+{% endblock %}
+{% block content %}
+
+<div class="addthis_toolbox">
+
+<div class="custom_images">
+
+    <a class="addthis_button_linkedin"><img src="{{ STATIC_URL }}img/linkedin.png"/></a>
+
+    <a class="addthis_button_twitter"><img src="{{ STATIC_URL }}img/twitter.png"/></a>
+
+    <a class="addthis_button_facebook"><img src="{{ STATIC_URL }}img/facebook.png" /></a>
+
+</div>
+
+</div>
+    </div>
+    <img src="http://127.0.0.1:8000/static/img/graph-placeholder1.png"/>
+{% endblock %}
