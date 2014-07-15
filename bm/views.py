@@ -1,7 +1,9 @@
 from bm.forms import CreateBenchmarkStep12Form, AnswerMultipleChoiceForm, \
-    CreateBenchmarkStep3Form, CreateBenchmarkStep4Form, NumericAnswerForm, RangeAnswerForm, RankingAnswerForm
+    CreateBenchmarkStep3Form, CreateBenchmarkStep4Form, NumericAnswerForm, RangeAnswerForm, RankingAnswerForm, \
+    BenchmarkStatisticForm
 from bm.models import Benchmark, Region, Question, QuestionChoice, QuestionResponse, ResponseChoice, ResponseNumeric, \
-    ResponseRange, QuestionRanking, ResponseRanking, BenchmarkInvitation, QuestionOptions, BenchmarkLink
+    ResponseRange, QuestionRanking, ResponseRanking, BenchmarkInvitation, QuestionOptions, BenchmarkLink, BenchmarkRating
+from core.utils import login_required_ajax
 from django.contrib.auth.decorators import login_required
 from django.contrib.formtools.wizard.forms import ManagementForm
 from django.contrib.formtools.wizard.views import CookieWizardView
@@ -10,7 +12,7 @@ from django.db import transaction
 from django.http import HttpResponse, HttpResponseNotFound
 from django.shortcuts import redirect
 from django.utils.decorators import method_decorator
-from django.views.generic import ListView, TemplateView
+from django.views.generic import ListView, TemplateView, View
 from django.views.generic.edit import FormView
 from bm.signals import benchmark_answered
 
@@ -284,6 +286,11 @@ class RangeAnswerView(BaseBenchmarkAnswerView):
         self.benchmark = benchmark
         return super(BaseBenchmarkAnswerView, self).dispatch(self.request, *args, **kwargs)
 
+    def get_form_kwargs(self):
+        kwargs = super(RangeAnswerView, self).get_form_kwargs()
+        kwargs['decimals'] = self.benchmark.question.first().options.values('number_of_decimal')[0]
+        return kwargs
+
     def form_valid(self, form):
         if form.is_valid():
             with transaction.atomic():
@@ -308,6 +315,11 @@ class NumericAnswerView(BaseBenchmarkAnswerView):
         self.benchmark = benchmark
         return super(BaseBenchmarkAnswerView, self).dispatch(self.request, *args, **kwargs)
 
+    def get_form_kwargs(self):
+        kwargs = super(NumericAnswerView, self).get_form_kwargs()
+        kwargs['decimals'] = self.benchmark.question.first().options.values('number_of_decimal')[0]
+        return kwargs
+
     def form_valid(self, form):
         if form.is_valid():
             with transaction.atomic():
@@ -330,3 +342,57 @@ class WelcomeView(TemplateView):
         context = super(WelcomeView, self).get_context_data(**kwargs)
         context['user'] = self.request.user
         return context
+
+
+class BenchmarkDetailView(TemplateView):
+    template_name = 'bm/benchmark_details.html'
+
+    def get_benchmark(self, **kwargs):
+        if hasattr(self, 'benchmark'):
+            return self.benchmark
+        else:
+            bm_id = kwargs['bm_id']
+            self.benchmark = Benchmark.objects.filter(id=bm_id).first()
+            return self.benchmark
+
+    def get_context_data(self, **kwargs):
+        context = super(BenchmarkDetailView, self).get_context_data(**kwargs)
+        benchmark = self.get_benchmark(**kwargs)
+        context['benchmark'] = benchmark
+        context['url'] = self.request.META['HTTP_HOST'] + self.request.path
+        return context
+
+    @method_decorator(login_required_ajax)
+    def post(self, request, **kwargs):
+        print request.POST.get('rate')
+        if self.request.is_ajax():
+            with transaction.atomic():
+                # rating = BenchmarkRating()
+                benchmark_id = kwargs['bm_id']
+                benchmark = self.get_benchmark(**kwargs)
+                if BenchmarkRating.objects.filter(benchmark=benchmark, user=benchmark.question.first().responses.first().user):
+                    rating = BenchmarkRating.objects.filter(benchmark=benchmark, user=request.user).first()
+                    rating.rating = request.POST.get('rate')
+                    rating.save()
+                elif benchmark.question.first().responses.first().user == request.user:
+                    rating = BenchmarkRating()
+                    rating.rating = request.POST.get('rate')
+                    rating.benchmark_id = benchmark_id
+                    rating.save()
+                    benchmark.rating.add(rating)
+                else:
+                    return HttpResponse(401)
+        return HttpResponse(200)
+
+
+class BenchmarkStatisticView(FormView):
+    form_class = BenchmarkStatisticForm
+    template_name = 'bm/statistic.html'
+
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs):
+        return super(BenchmarkStatisticView, self).dispatch(request, *args, **kwargs)
+
+    def post(self, request, *args, **kwargs):
+        choice = request.POST['Analyse Contributor Pools by:']
+        return HttpResponse('200')

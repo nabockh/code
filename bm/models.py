@@ -210,3 +210,8 @@ class ResponseRange(models.Model):
     min = models.IntegerField()
     max = models.IntegerField()
 
+
+class BenchmarkRating(models.Model):
+    benchmark = models.ForeignKey(Benchmark, related_name='rating')
+    user = models.ForeignKey(USER_MODEL, null=True)
+    rating = models.PositiveSmallIntegerField()

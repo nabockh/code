@@ -4,6 +4,7 @@ from django import forms
 from bm.widgets import RankingWidget
 from django.db.models import Q
 from social.models import LinkedInIndustry, Contact
+from math import pow
 
 
 class CreateBenchmarkStep12Form(forms.Form):
@@ -112,7 +113,7 @@ class CreateBenchmarkStep3Form(forms.Form):
         self.selected_contacts = Contact.objects.filter(id__in=selected_ids)
         for contact in self.selected_contacts:
             self.fields['selected-{0}-invite'.format(contact.id)] = \
-                forms.BooleanField(initial=True, widget=forms.CheckboxInput(attrs={'class': 'choose-checkbox hidden', 'checked': 'checked'}))
+                forms.BooleanField(initial=True, widget=forms.CheckboxInput(attrs={'class': 'choose-checkbox', 'checked': 'checked'}))
             contact.invite_element = 'selected-{0}-invite'.format(contact.id)
             attr = {'class': 'share-checkbox'}
             if contact.id in selected_secondary_ids:
@@ -153,12 +154,26 @@ class AnswerMultipleChoiceForm(forms.Form):
 
 
 class NumericAnswerForm(forms.Form):
-    numeric_box = forms.IntegerField()
+    # numeric_box = forms.IntegerField()
+
+    def __init__(self, decimals, *args, **kwargs):
+        super(NumericAnswerForm, self).__init__(*args, **kwargs)
+        number = decimals['number_of_decimal']
+        value = (pow(10, number) - 1)
+        self.fields['numeric_box'] = forms.IntegerField(max_value=value)
 
 
 class RangeAnswerForm(forms.Form):
-    min = forms.IntegerField(label="min")
-    max = forms.IntegerField(label='max')
+    # min = forms.IntegerField(label="min")
+    # max = forms.IntegerField(label='max')
+
+    def __init__(self, decimals, *args, **kwargs):
+        super(RangeAnswerForm, self).__init__(*args, **kwargs)
+        number = decimals['number_of_decimal']
+        max_value = (pow(10, number) - 1)
+        min_value = (-(pow(10, number) - 1))
+        self.fields['max'] = forms.IntegerField(max_value=max_value)
+        self.fields['min'] = forms.IntegerField(min_value=min_value)
 
 
 class RankingAnswerForm(forms.Form):
@@ -177,3 +192,11 @@ class DeclineBenchmarkForm(forms.Form):
         self.fields['Benchmark owner'] = forms.CharField(widget=forms.TextInput({'value': owner}))
         self.fields['Owner email'] = forms.EmailField(widget=forms.TextInput({'value':email}))
 
+
+class BenchmarkStatisticForm(forms.Form):
+    choices = [
+        ('Role', 'Role'), ('Geo', 'Geo'),  ('Country', 'Country'), ('Industry', 'Industry')]
+
+    def __init__(self, *args, **kwargs):
+        super(BenchmarkStatisticForm, self).__init__(*args, **kwargs)
+        self.fields['Analyse Contributor Pools by:'] = forms.ChoiceField(choices=self.choices, widget=forms.SelectMultiple)
