@@ -35,7 +35,9 @@ $(function () {
 $(function () {
 
     $('.rating').on('click', '[data-score]', function() {
-        $.get(window.location.pathname, {'rate':$(this).attr('data-score')});
+        var csrf = document.cookie.match(/csrftoken=([\w]+)/);        
+        $.post(window.location.pathname, {'csrfmiddlewaretoken' : csrf? csrf[1] : null,
+                                          'rate' : $(this).attr('data-score')});
     });
 
     $('.collapse').collapse({
