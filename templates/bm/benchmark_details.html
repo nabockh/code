@@ -2,16 +2,16 @@
 {% load i18n %}
 {% block meta_tags %}
     <!-- Open Graph data -->
-    <meta property="og:title" content={{ benchmark.name }} />
+    <meta property="og:title" content="{{ benchmark.name }}" />
     <meta property="og:type" content="article" />
-    <meta property="og:image" content="{{ STATIC_URL }}img/bdde_logo.png" />
-    <meta property="og:url" content={{ url }} />
+    <meta property="og:image" content="{{ STATIC_URL }}img/bdde_logo_wide.png" />
+    <meta property="og:url" content="{{ url }}" />
 
     <!-- Twitter Card data -->
     <meta name="twitter:card" content="summary">
-    <meta name="twitter:url" content={{ url }}>
-    <meta name="twitter:title" content={{ benchmark.name }}>
-    <meta name="twitter:image" content="{{ STATIC_URL }}img/bdde_logo.png">
+    <meta name="twitter:url" content="{{ url }}">
+    <meta name="twitter:title" content="{{ benchmark.name }}">
+    <meta name="twitter:image" content="{{ STATIC_URL }}img/bdde_logo_wide.png">
 {% endblock %}
 {% block content %}
 
@@ -36,5 +36,4 @@
     <span data-score="4" class="star">4</span>
     <span data-score="5" class="star">5</span>
 </span>
-    <img src="http://127.0.0.1:8000/static/img/graph-placeholder1.png"/>
 {% endblock %}
