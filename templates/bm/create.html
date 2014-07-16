@@ -277,7 +277,6 @@
                                 <div class="tab-content">
                                     <div class="tab-pane {% if not active_tab or active_tab == 1 %}active{% endif %}" id="results">
                                         <div class='col-md-8 lined-left margined'>
-                                            <!-- {{ wizard.form }} -->
                                             <div class="title-header inner">
                                                 <div class='row'>
                                                     <div class='col-md-8 col-xs-8'>Contact</div>
@@ -331,7 +330,6 @@
                                     </div>
                                     <div class="tab-pane {% if active_tab == 2 %}active{% endif %}" id="recommended">
                                         <div class='col-md-12 margined'>
-                                            <!-- {{ wizard.form }} -->
                                             <div class="title-header inner">
                                                 <div class='row'>
                                                     <div class='col-md-8 col-xs-8'>Recommended Contacts</div>
@@ -365,7 +363,6 @@
                                     </div>
                                     <div class="tab-pane {% if active_tab == 3 %}active{% endif %}" id="selected">
                                         <div class='col-md-12 margined'>
-                                            <!-- {{ wizard.form }} -->
                                             <div class="title-header inner">
                                                 <div class='row'>
                                                     <div class='col-md-8 col-xs-8'>Selected Contacts</div>
@@ -524,7 +521,6 @@
                                     
                                 </div>
                             </div>
-                            <!-- {{ selected_contacts }} -->
                         {% endif %}
                     {% endif %}
                     </table>
@@ -543,7 +539,6 @@
                             {% endif %}
 
                             {% if wizard.steps.step1 == 3 %}
-                                <!-- <button name="wizard_goto_step" type="submit" value="{{ wizard.steps.first }}" class="btn btn-default auto-width continue-btn">{% trans "first step" %}</button> -->
                                 <label for='saveAndFinishLater' class='btn btn-default auto-width'> Save &amp; Finish later</label>
                             {% endif %}
 
@@ -571,10 +566,4 @@
     </div>
     
 </div>
-<!-- <div class='form-container'>
-    <div class='form-container-inner'>
-        <p>Step {{ wizard.steps.step1 }} of {{ wizard.steps.count }}</p>
-        
-    </div>
-</div> -->
 {% endblock %}

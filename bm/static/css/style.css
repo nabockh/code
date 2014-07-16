@@ -44,6 +44,10 @@ ul.errorlist {
     background-color: #fff;
 }
 
+.padding-bot {
+    padding-bottom: 15px;
+}
+
 .margined {
     margin: 45px auto;
 }
@@ -1579,7 +1583,30 @@ label.btn.btn-primary.auto-width.pull-right.fix {
     float: left;
 }
 
+/* Answering Benchmarks */
 
+ul#id_choice {
+    list-style: none;
+    padding-left: 20px;
+}
+
+span.answer-footer-text {
+    display: block;
+    line-height: 20px;
+    font-size: 12px;
+}
+
+label.btn.btn-primary.answer_btn {
+    width: 100%;
+    text-align: left;
+    position: relative;
+}
+
+    label.btn.btn-primary.answer_btn:after {
+        content: "\f0a9";
+        font-family: fontAwesome;
+        float: right;
+    }
 
 
 /* RESPONSIVENESS */

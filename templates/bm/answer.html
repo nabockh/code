@@ -73,18 +73,30 @@
                 <div class='title-header'><i class='fa fa-cog'></i> How it works</div>
             </div>
             <div class='col-md-7'>
-                <div class='col-md-12 bordered bgwhite margin-bot'>
+                <div class='col-md-12 bordered bgwhite margin-bot padding-bot'>
                     <div class='title-header'><i class='fa fa-check'></i> Contribute to benchmark</div>
                     <div class='row'>
-                        <p>Owner:{{ benchmark.owner }}</p>
+                        <p>Query: {{ benchmark.name }}</p>
+                        <p>Owner: {{ benchmark.owner }}</p>
                         <p>Industry: {{ benchmark.industry.name }}</p>
                         <p>Geo:{{ benchmark.geographic_coverage.first.name }}</p>
-                        <p>Query: {{ benchmark.question.first.label }}</p>
+                        <hr>
+                        <p><strong>{{ benchmark.question.first.label }}</strong></p>
+                        <p>{{ benchmark.question.first.description }}</p>
                         <form action="" method="post">
                         {% csrf_token %}
                         {{ form|bootstrap }}
-                          <input type="submit" value="{% trans "submit" %}"/>
-                        </form>        
+                        <hr>
+                            <div class='col-md-5'>
+                                <input type="submit" value="{% trans "submit" %}" id='answer_btn' class='hidden'/>
+                                <label for='go_back' class='btn btn-primary answer_btn'>Submit Answer</label>      
+                            </div>
+                            <div class='col-md-7'>
+                                <span class='answer-footer-text'><strong>3</strong> people were invited to participate</span>
+                                <span class='answer-footer-text'>Results will be published on <strong>{{ benchmark.end_date }}</strong></span>
+                            </div>
+                        </form>      
+                      
                     </div>
                 </div>
                 
