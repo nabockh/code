@@ -2,16 +2,95 @@
 {% load i18n %}
 {% load bootstrap %}
 
+{% block navigation %}
 
+          <header class="navbar navbar-default bs-docs-nav" id="top" role="banner">
+              <div class="container top-navbar">
+                <div class="navbar-header">
+                  <button class="navbar-toggle" type="button" data-toggle="collapse" data-target=".bs-navbar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                  </button>
+                  <a class="navbar-brand" href="/"><img src='{{ STATIC_URL }}/img/bdde_logo.png'/></a>
+                </div>
+                <nav class="collapse navbar-collapse bs-navbar-collapse" role="navigation">
+                    <ul class='main-nav text-center dashboard-nav'>
+                      <li><a href="/dashboard">Dashboard</a></li>
+                      <li class="dropdown active">
+                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">Benchmarks <span class="caret"></span></a>
+                         <ul class="dropdown-menu" role="menu">
+                            <li><a href="#">Create</a></li>
+                         </ul>
+                      </li>
+                      <li><a href="#">Support</a></li>
+
+                    </ul>
+                    <ul class='nav navbar-nav navbar-right search-fields'>
+                      <li>
+                          <form class="navbar-form navbar-right" role="search">
+                            <div class="form-group">
+                              <input type="text" class="form-control" placeholder="Search benchmarks:">
+                            </div>
+                            <button type="submit" class="btn btn-search">go</button>
+                          </form>
+                        </li>
+                    </ul>
+
+                </nav>
+
+              </div>
+            </header>
+
+            <div class='user-nav'>
+                <div class='container'>
+                    <div class='row'>
+                    <div class='col-md-8 col-xs-6'>
+                        <div class='hello'>Hello,</div>
+                        <ul class='user-nav-inner'>
+                            <li class='username'>{{ user.first_name }} {{ user.last_name }}</li>
+                            <li class="dropdown">
+                             <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class='fa fa-cogs'></i></a>
+                             <ul class="dropdown-menu" role="menu">
+                                <li><a href="/logout">Sign Out</a></li>
+                             </ul>
+                          </li>
+                            <li><a href='#'><i class='fa fa-unlock'></i></a></li>
+                        </ul>
+                    </div>
+                    <div class='col-md-4 col-xs-6'>
+                        <a href="{% url 'bm_create' %}" class='btn btn-primary pull-right'>Create new benchmark <i class='fa fa-plus-circle'></i></a>
+                    </div>
+                </div>
+                </div>
+            </div>
+    {% endblock %}
 {% block content %}
-
-    <p>Owner:{{ benchmark.owner }}</p>
-    <p>Industry: {{ benchmark.industry.name }}</p>
-    <p>Geo:{{ benchmark.geographic_coverage.first.name }}</p>
-    <p>Query: {{ benchmark.question.first.label }}</p>
-    <form action="" method="post">{% csrf_token %}
-    {{ form|bootstrap }}
-    <input type="submit" value="{% trans "submit" %}"/>
-</form>
+    <div class='container margined'>
+        <div class='row'>
+            <div class='col-md-5'>
+                <div class='title-header'><i class='fa fa-cog'></i> How it works</div>
+            </div>
+            <div class='col-md-7'>
+                <div class='col-md-12 bordered bgwhite margin-bot'>
+                    <div class='title-header'><i class='fa fa-check'></i> Contribute to benchmark</div>
+                    <div class='row'>
+                        <p>Owner:{{ benchmark.owner }}</p>
+                        <p>Industry: {{ benchmark.industry.name }}</p>
+                        <p>Geo:{{ benchmark.geographic_coverage.first.name }}</p>
+                        <p>Query: {{ benchmark.question.first.label }}</p>
+                        <form action="" method="post">
+                        {% csrf_token %}
+                        {{ form|bootstrap }}
+                          <input type="submit" value="{% trans "submit" %}"/>
+                        </form>        
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+    </div>            
+   
 {% endblock %}
 </form>

@@ -33,12 +33,15 @@ $(function () {
 
 
 $(function () {
+    // Rating Functionality
 
     $('.rating').on('click', '[data-score]', function() {
         var csrf = document.cookie.match(/csrftoken=([\w]+)/);        
         $.post(window.location.pathname, {'csrfmiddlewaretoken' : csrf? csrf[1] : null,
                                           'rate' : $(this).attr('data-score')});
     });
+
+    // Layout JS
 
     $('.collapse').collapse({
         toggle: false
@@ -49,7 +52,7 @@ $(function () {
         $(this).carousel('pause');
     });
 
-    // Becnhmark Creation Tabs
+    // Benchmark Creation Tabs
 
     $('#searchTabs a, .tab-switcher').click(function (e) {
       e.preventDefault();
@@ -93,6 +96,7 @@ $(function () {
         var id = $(this).parents('.single-contact').attr('data-contact-id');
         $('#results .single-contact[data-contact-id='+id+']').find('.choose-checkbox').removeAttr('checked');
         $('#selected .single-contact[data-contact-id='+id+']').find('.choose-checkbox').removeAttr('checked').end().fadeOut(500, function(){ $(this).remove();});
+        $('#recommended .single-contact[data-contact-id='+id+']').find('.choose-checkbox').removeAttr('checked');
         $('#step3Selected .single-contact[data-contact-id='+id+']').find('.choose-checkbox').removeAttr('checked').end().fadeOut(500, function(){ $(this).remove();});
     });
 

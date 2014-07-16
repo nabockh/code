@@ -1552,6 +1552,16 @@ label.btn.btn-primary.auto-width.pull-right.fix {
     overflow-y: scroll;
 }
 
+.benchmark-creation .styled-form label.link-like {
+    color: #339999;
+    font-size: 12px;
+    text-decoration: none; 
+    text-transform: none;
+    display: inline-block;
+    line-height: 36px;
+    cursor: pointer;
+}
+
 /* 5 columns fix */
 
 .col-xs-5ths,
@@ -1568,6 +1578,12 @@ label.btn.btn-primary.auto-width.pull-right.fix {
     width: 20%;
     float: left;
 }
+
+
+
+
+/* RESPONSIVENESS */
+
 
 @media (min-width: 768px) {
     .col-sm-5ths {
@@ -1826,6 +1842,9 @@ label.btn.btn-primary.auto-width.pull-right.fix {
     
     #step3Selected {
         height: 190px;
+    }
+    .bm-search-btn {
+        margin-left: 25%;
     }
 }
 

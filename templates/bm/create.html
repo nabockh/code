@@ -22,11 +22,11 @@
                 </div>
                 <nav class="collapse navbar-collapse bs-navbar-collapse" role="navigation">
                     <ul class='main-nav text-center dashboard-nav'>
-                      <li><a href="#">Dashboard</a></li>
+                      <li><a href="/dashboard">Dashboard</a></li>
                       <li class="dropdown active">
                          <a href="#" class="dropdown-toggle" data-toggle="dropdown">Benchmarks <span class="caret"></span></a>
                          <ul class="dropdown-menu" role="menu">
-                            <li><a href="{% url 'bm_create' %}">Create</a></li>
+                            <li><a href="#">Create</a></li>
                          </ul>
                       </li>
                       <li><a href="#">Support</a></li>
@@ -34,10 +34,9 @@
                     </ul>
                     <ul class='nav navbar-nav navbar-right search-fields'>
                       <li>
-                          <div class='search-help-text'>Search benchmarks:</div>
                           <form class="navbar-form navbar-right" role="search">
                             <div class="form-group">
-                              <input type="text" class="form-control" placeholder="Search">
+                              <input type="text" class="form-control" placeholder="Search benchmarks:">
                             </div>
                             <button type="submit" class="btn btn-search">go</button>
                           </form>
@@ -259,7 +258,7 @@
                                         {{ form.name }}
                                         {{ form.name.errors }}
                                     </div>
-                                    <div class="col-md-5ths col-xs-6 col-xs-offset-3">
+                                    <div class="col-md-5ths col-xs-6 bm-search-btn">
                                         <button id='save_and_wizard_goto_step' name="save_and_wizard_goto_step" type="submit" class="btn btn-primary full-width hidden" value="1"><i class='fa fa-search'></i></button>
                                         <label for='save_and_wizard_goto_step' class='btn btn-primary full-width'><i class='fa fa-search'></i></label>
                                     </div>
@@ -346,7 +345,7 @@
                                             </div>
                                             <div class='contact-results'>
                                                 {% for contact in wizard.form.suggested_contacts %}
-                                                    <div class='single-contact'>
+                                                    <div class='single-contact' data-contact-id='{{ contact.id }}'>
                                                         <div class='row'>
                                                             <div class='col-md-8 col-xs-8'>
                                                                 <label for='id_1-suggested-{{contact.id}}-invite'>{{ contact }}</label>
@@ -393,7 +392,7 @@
                                                                 {% bound_field wizard.form contact.secondary_element %}
                                                             </div>
                                                             <div class='col-md-2 col-xs-2 text-center'>
-                                                                {% bound_field wizard.form contact.invite_element %}
+                                                                <span class='hidden'>{% bound_field wizard.form contact.invite_element %}</span>
                                                                 <span class='deselect-btn'><i class='fa fa-times'></i></span>
                                                             </div>
                                                         </div>
@@ -519,7 +518,8 @@
                                                     
                                                 </div>
                                             </div>
-                                        {% endfor %}    
+                                        {% endfor %}
+                                        <label for="go_back" class="link-like"><i class="fa fa-cog"></i> Edit</label> 
                                     </div>
                                     
                                 </div>
