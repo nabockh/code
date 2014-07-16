@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 {% load i18n %}
 {% load bootstrap %}
+{% load helpers %}
 
 {% block navigation %}
 
@@ -70,33 +71,64 @@
     <div class='container margined'>
         <div class='row'>
             <div class='col-md-5'>
-                <div class='title-header'><i class='fa fa-cog'></i> How it works</div>
+                <div class='col-md-12 bordered bgwhite margin-bot'>
+                    <div class='title-header answer'><i class='fa fa-cog'></i> How it works</div>
+                    <div class="how-blocks">
+                        <div class="how-it-works-block">
+                            <div class="title">Thank you for participating!</div>
+                            <p>You were invited to this benchmark query because you have valuable information that can be used to help your professional network make better decisions.</p>
+                        </div>
+                        <div class="how-it-works-block">
+                            <div class="title"><i class='fa fa-lock'></i> Your privacy is important</div>
+                            <p>The answers you submit to benchmark questions will be aggregated and published with all other results. However, your specific answer will not be tied to you and other users will not  know which benchmarks you participated in.</p>
+                        </div>
+                        <div class="how-it-works-block">
+                            <span class="title"><i class='fa fa-question-circle'></i> Have more questions?</span>
+                            <a href='#'>Read our FAQs </a>
+                        </div>
+                    </div>
+                </div>
             </div>
             <div class='col-md-7'>
                 <div class='col-md-12 bordered bgwhite margin-bot padding-bot'>
-                    <div class='title-header'><i class='fa fa-check'></i> Contribute to benchmark</div>
+                    <div class='title-header answer'><i class='fa fa-check'></i> Contribute to benchmark</div>
                     <div class='row'>
-                        <p>Query: {{ benchmark.name }}</p>
-                        <p>Owner: {{ benchmark.owner }}</p>
-                        <p>Industry: {{ benchmark.industry.name }}</p>
-                        <p>Geo:{{ benchmark.geographic_coverage.first.name }}</p>
-                        <hr>
-                        <p><strong>{{ benchmark.question.first.label }}</strong></p>
-                        <p>{{ benchmark.question.first.description }}</p>
-                        <form action="" method="post">
-                        {% csrf_token %}
-                        {{ form|bootstrap }}
-                        <hr>
-                            <div class='col-md-5'>
-                                <input type="submit" value="{% trans "submit" %}" id='answer_btn' class='hidden'/>
-                                <label for='go_back' class='btn btn-primary answer_btn'>Submit Answer</label>      
+                        <div class='bm-answer'>
+                            <div class='row'>
+                                <div class='col-md-3 col-cs-4'>
+                                    <p><strong>Benchmark:</strong></p>
+                                    <p><strong>Submitted By:</strong></p>
+                                    <p><strong>Industry:</strong></p>
+                                    <p><strong>Geography:</strong></p>
+                                </div>
+                                <div class='col-md-9 col-cs-8'>
+                                    <p>{{ benchmark.name }}</p>
+                                    <p class='text-green'>{{ benchmark.owner }}</p>
+                                    <p>{{ benchmark.industry.name }}</p>
+                                    <p>{{ benchmark.geographic_coverage.first.name }}</p>
+                                </div>
                             </div>
-                            <div class='col-md-7'>
-                                <span class='answer-footer-text'><strong>3</strong> people were invited to participate</span>
-                                <span class='answer-footer-text'>Results will be published on <strong>{{ benchmark.end_date }}</strong></span>
-                            </div>
-                        </form>      
-                      
+                            
+                            <hr>
+                            <p><strong>{{ benchmark.question.first.label }}</strong></p>
+                            <p>{{ benchmark.question.first.description }}</p>
+                            <form action="" method="post">
+                                {% csrf_token %}
+                                {% block answer_form %}
+                                {% endblock %}
+                                <hr>
+                                <div class='row'>
+                                    <div class='col-md-5'>
+                                        <input type="submit" value="{% trans "submit" %}" id='answer_btn' class='hidden'/>
+                                        <label for='answer_btn' class='btn btn-primary answer_btn'>Submit Answer</label>      
+                                    </div>
+                                    <div class='col-md-7'>
+                                        <span class='answer-footer-text'><strong>{{ contributors }}</strong> people were invited to participate</span>
+                                        <span class='answer-footer-text'>Results will be published on <strong>{{ benchmark.end_date }}</strong></span>
+                                    </div>
+                                </div>
+                            </form>   
+                        </div>
                     </div>
                 </div>
                 

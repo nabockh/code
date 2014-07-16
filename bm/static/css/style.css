@@ -60,6 +60,10 @@ ul.errorlist {
     margin-bottom: 0;
 }
 
+.text-green {
+    color: #5D828B;
+}
+
 .text-do-wrap {
     white-space: normal !important;
     overflow: visible !important;
@@ -846,6 +850,10 @@ form[role='search'] .btn-search {
     margin: 0 -15px;
 }
 
+    .title-header.answer {
+        padding: 7px 20px;
+    }
+
 .benchmark-creation .title-header {
     padding: 6px 60px;
     margin: 0 -60px;
@@ -1608,6 +1616,135 @@ label.btn.btn-primary.answer_btn {
         float: right;
     }
 
+.how-it-works-block {
+    margin: 0 -15px;
+    padding: 11px 15px 20px;
+    border-bottom: 1px solid #dedede;
+    color: #fff;
+    font-size: 12px;
+    font-weight: 400;
+}
+
+    .how-it-works-block:nth-child(1) {
+        background: #41495d;
+    }
+
+    .how-it-works-block:nth-child(2) {
+        background: #8592b2;
+    }
+
+    .how-it-works-block:nth-child(3) {
+        background: #9aa6c4;
+        border-bottom: none;
+        padding-bottom: 10px;
+    }
+
+    .how-it-works-block .title {
+        text-transform: uppercase;
+        font-weight: bold;
+    }
+
+    .how-it-works-block p {
+        margin-bottom: 0;
+        line-height: 18px;
+    }
+
+    .how-it-works-block span.title {
+        padding-right: 10px;
+    }
+    
+    .how-it-works-block a {
+        font-weight: normal;
+    }
+
+.bm-answer {
+    padding: 20px 20px 5px;
+}
+
+    .bm-answer p {
+        margin: 0 0 5px;
+        line-height: 16px;
+        font-size: 14px;
+    }
+
+label.control-label[for='id_choice'] {
+    margin-top: 20px;
+}
+
+ul#id_choice li > label {
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 13px;
+    margin-bottom: 10px;
+}
+
+    ul#id_choice li > label >input {
+        margin-top: 0;
+        vertical-align: bottom;
+    }
+
+    /* RANKING BENCHMARK */
+
+    .ui-state-highlight, .ui-widget-content .ui-state-highlight, .ui-widget-header .ui-state-highlight {
+        border: 2px dashed #dedede;
+        background: #fff;
+        color: #fff;
+        margin-bottom: 5px;
+        height: 33px;
+    }
+
+    .ui-sortable-handle {
+        -ms-touch-action: none;
+        touch-action: none;
+    }
+
+    .ui-state-default, .ui-widget-content .ui-state-default, .ui-widget-header .ui-state-default {
+        border: 1px solid transparent;
+        background: #41495d; 
+        font-weight: bold; 
+        color: #fff;
+        padding: 0 10px 0 30px;
+        margin-bottom: 5px;
+        height: 33px;    
+        position: relative;
+        cursor: move;
+    }
+
+
+        .ui-state-default:before, .ui-widget-content .ui-state-default:before, .ui-widget-header .ui-state-default:before {
+            content: '';
+            position: absolute;
+            font-family: fontAwesome;
+            left: -1px;
+            top: -1px;
+            height: 33px;
+            line-height: 35px;
+            display: block;
+            background: rgba(0, 0, 0, 0.39);
+            width: 20px;
+            text-align: center;
+            font-weight: 100;
+        }
+
+    .ui-state-default label {
+        margin: 0;
+        line-height: 31px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        width: 100%;    
+        cursor: move;
+    }
+
+
+    ul#answerSortable {
+        padding-left: 0;
+        list-style: none;
+        margin-top: 10px;
+    
+        padding-top: 10px;
+        border-top: 1px solid #dedede;
+}
 
 /* RESPONSIVENESS */
 

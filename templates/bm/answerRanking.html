@@ -1,0 +1,18 @@
+{% extends "bm/answer.html" %}
+{% load i18n %}
+{% load bootstrap %}
+{% load helpers %}
+
+{% block answer_form %}
+	<label class="control-label  " for="id_choice">Your Answer:</label>
+	<span class="add_help">?
+        <span class='add_help_inner'>Lorem ipsum dolor sit amet, consectetur eta adipiscing elit. Pellentasque eu tempor tortor. Aliquam Trisque eros arcu, sed bibendum enim faucibus in. In vulputate blendit lorem ut.</span>
+    </span>
+    <ul id='answerSortable'>
+	    {% for rank in form.ranks %}
+			<li class='ui-state-default ui-sortable-handle'>
+				{% bound_field form rank %}
+			</li>
+		{% endfor %}
+   	</ul>
+{% endblock %}

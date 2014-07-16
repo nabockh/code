@@ -150,7 +150,7 @@ class AnswerMultipleChoiceForm(forms.Form):
 
     def __init__(self, choices, *args, **kwargs):
         super(AnswerMultipleChoiceForm, self).__init__(*args, **kwargs)
-        self.fields['choice'] = forms.MultipleChoiceField(choices=choices, widget=forms.CheckboxSelectMultiple())
+        self.fields['choice'] = forms.MultipleChoiceField(choices=choices, widget=forms.CheckboxSelectMultiple(), label='Your Answer:')
 
 
 class NumericAnswerForm(forms.Form):
@@ -175,12 +175,14 @@ class RangeAnswerForm(forms.Form):
         self.fields['max'] = forms.IntegerField(max_value=max_value)
         self.fields['min'] = forms.IntegerField(min_value=min_value)
 
-
 class RankingAnswerForm(forms.Form):
     def __init__(self, ranks, *args, **kwargs):
         super(RankingAnswerForm, self).__init__(*args, **kwargs)
+        self.ranks = []
         for i, rank in enumerate(ranks):
-            self.fields['rank{0}'.format(rank[0])] = forms.IntegerField(widget=RankingWidget(attrs={'label': rank[1], 'value':i}))
+            field_name = 'rank{0}'.format(rank[0])
+            self.fields[field_name] = forms.IntegerField(widget=RankingWidget(attrs={'label': rank[1], 'value':i}))
+            self.ranks.append(field_name)
 
 
 class DeclineBenchmarkForm(forms.Form):

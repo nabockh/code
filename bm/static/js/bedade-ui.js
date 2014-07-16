@@ -41,11 +41,26 @@ $(function () {
                                           'rate' : $(this).attr('data-score')});
     });
 
+    // Ranking Benchmark functionality
+
+    $( "#answerSortable" ).sortable({
+      placeholder: "ui-state-highlight"
+    });
+    $( "#answerSortable" ).disableSelection();
+
+    $( "#answerSortable" ).on( "sortupdate", function( event, ui ) {
+        $(this).find('li input[type=hidden]').each(function(index){
+            $(this).val(index);
+        });
+    } );
+
     // Layout JS
 
     $('.collapse').collapse({
         toggle: false
     });
+
+    
 
     $('.carousel').carousel({interval: false});
     $(document).on('mouseleave', '.carousel', function() {
