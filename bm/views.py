@@ -11,6 +11,7 @@ from django.core.exceptions import ValidationError
 from django.db import transaction
 from django.http import HttpResponse, HttpResponseNotFound
 from django.shortcuts import redirect
+from django.template.defaultfilters import safe
 from django.utils.decorators import method_decorator
 from django.views.generic import ListView, TemplateView, View
 from django.views.generic.edit import FormView
@@ -352,13 +353,14 @@ class BenchmarkDetailView(TemplateView):
             return self.benchmark
         else:
             bm_id = kwargs['bm_id']
-            self.benchmark = Benchmark.objects.filter(id=bm_id).first()
+            self.benchmark = Benchmark.objects.filter(id=bm_id).select_related('question').first()
             return self.benchmark
 
     def get_context_data(self, **kwargs):
         context = super(BenchmarkDetailView, self).get_context_data(**kwargs)
         benchmark = self.get_benchmark(**kwargs)
         context['benchmark'] = benchmark
+        context['question'] = benchmark.questions.first()
         context['url'] = self.request.META['HTTP_HOST'] + self.request.path
         return context
 

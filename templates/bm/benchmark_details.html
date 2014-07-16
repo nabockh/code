@@ -6,12 +6,14 @@
     <meta property="og:type" content="article" />
     <meta property="og:image" content="{{ STATIC_URL }}img/bdde_logo_wide.png" />
     <meta property="og:url" content="{{ url }}" />
+    <meta property="og:description" content="{{ question.description }}" />
 
     <!-- Twitter Card data -->
     <meta name="twitter:card" content="summary">
     <meta name="twitter:url" content="{{ url }}">
     <meta name="twitter:title" content="{{ benchmark.name }}">
     <meta name="twitter:image" content="{{ STATIC_URL }}img/bdde_logo_wide.png">
+    <meta name="twitter:description" content="{{ question.description }}">
 {% endblock %}
 {% block content %}
 
