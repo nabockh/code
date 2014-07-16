@@ -182,7 +182,8 @@ class BaseBenchmarkAnswerView(FormView):
         benchmark_link = BenchmarkLink.objects.filter(slug=slug).select_related('benchmark', 'benchmark__owner',
                                                                                 'benchmark__question',
                                                                                 'benchmark___industry',
-                                                                                'benchmark__geographic_coverage',).first()
+                                                                                'benchmark__geographic_coverage',
+                                                                                'benchmark__invites').first()
         if not benchmark_link:
             return HttpResponseNotFound()
         benchmark = benchmark_link.benchmark
@@ -199,6 +200,7 @@ class BaseBenchmarkAnswerView(FormView):
     def get_context_data(self, **kwargs):
         context = super(BaseBenchmarkAnswerView, self).get_context_data(**kwargs)
         context['benchmark'] = self.benchmark
+        context['contributors'] = self.benchmark.invites.count()
         return context
 
     def post(self, request, *args, **kwargs):
@@ -256,6 +258,7 @@ class RankingAnswerView(BaseBenchmarkAnswerView):
     def dispatch(self, request, benchmark, *args, **kwargs):
         self.benchmark = benchmark
         return super(BaseBenchmarkAnswerView, self).dispatch(self.request, *args, **kwargs)
+
 
     def get_form_kwargs(self):
         kwargs = super(RankingAnswerView, self).get_form_kwargs()
@@ -353,14 +356,14 @@ class BenchmarkDetailView(TemplateView):
             return self.benchmark
         else:
             bm_id = kwargs['bm_id']
-            self.benchmark = Benchmark.objects.filter(id=bm_id).select_related('question').first()
+            self.benchmark = Benchmark.objects.filter(id=bm_id).select_related('question', 'responses').first()
             return self.benchmark
 
     def get_context_data(self, **kwargs):
         context = super(BenchmarkDetailView, self).get_context_data(**kwargs)
         benchmark = self.get_benchmark(**kwargs)
         context['benchmark'] = benchmark
-        context['question'] = benchmark.questions.first()
+        context['question'] = benchmark.question.first()
         context['url'] = self.request.META['HTTP_HOST'] + self.request.path
         return context
 

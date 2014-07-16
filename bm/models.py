@@ -127,7 +127,7 @@ class Question(models.Model):
         (RANGE, 'Range'),
     )
 
-    benchmark = models.ForeignKey(Benchmark, rel_class=models.OneToOneRel, on_delete=models.CASCADE)
+    benchmark = models.ForeignKey(Benchmark, related_name='question', rel_class=models.OneToOneRel, on_delete=models.CASCADE)
     label = models.CharField(max_length=255)
     description = models.TextField()
     type = models.PositiveSmallIntegerField(choices=TYPES)
@@ -212,6 +212,6 @@ class ResponseRange(models.Model):
 
 
 class BenchmarkRating(models.Model):
-    benchmark = models.ForeignKey(Benchmark, related_name='rating')
+    benchmark = models.ForeignKey(Benchmark, related_name='ratings')
     user = models.ForeignKey(USER_MODEL, null=True)
     rating = models.PositiveSmallIntegerField()
