@@ -18,6 +18,7 @@ def load_extra_data(backend, details,request, response, uid, user, social_user=N
     if not social_profile:
         social_profile = Profile()
         social_profile.user = user
+        social_profile.save()
     social_profile.headline = response.get('headline')
     social_profile.industry = response.get('industry')
     location = Region.objects.filter(code=response.get('location', {}).get('country', {}).get('code')).first()
@@ -48,6 +49,6 @@ def load_extra_data(backend, details,request, response, uid, user, social_user=N
                     company.save()
                 social_profile.company = company
                 break
-        social_profile.location = location
-        social_profile.save()
-        return {'social_profile': social_profile}
+    social_profile.location = location
+    social_profile.save()
+    return {'social_profile': social_profile}
