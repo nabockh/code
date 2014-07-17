@@ -195,10 +195,14 @@ class DeclineBenchmarkForm(forms.Form):
         self.fields['Owner email'] = forms.EmailField(widget=forms.TextInput({'value':email}))
 
 
-class BenchmarkStatisticForm(forms.Form):
+class BenchmarkDetailsForm(forms.Form):
     choices = [
         ('Role', 'Role'), ('Geo', 'Geo'),  ('Country', 'Country'), ('Industry', 'Industry')]
+    choices_2 = [
+        ('Pie', 'Pie'), ('Line', 'Line'),  ('Bell_Curve', 'Bell Curve'), ('Cross', 'Cross')]
 
     def __init__(self, *args, **kwargs):
-        super(BenchmarkStatisticForm, self).__init__(*args, **kwargs)
-        self.fields['Analyse Contributor Pools by:'] = forms.ChoiceField(choices=self.choices, widget=forms.SelectMultiple)
+        super(BenchmarkDetailsForm, self).__init__(*args, **kwargs)
+        self.fields['Benchmark Results'] = forms.ChoiceField(choices=self.choices_2)
+        self.fields['Contributor Data'] = forms.ChoiceField(choices=self.choices)
+

@@ -1,0 +1,8 @@
+{% extends "bm/benchmark_details.html" %}
+{% load i18n %}
+
+{% block graphs %}
+    <form action="" method="post">{% csrf_token %}
+        {{ form }}
+    </form>
+{% endblock %}

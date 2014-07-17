@@ -1,6 +1,6 @@
 from bm.forms import CreateBenchmarkStep12Form, AnswerMultipleChoiceForm, \
     CreateBenchmarkStep3Form, CreateBenchmarkStep4Form, NumericAnswerForm, RangeAnswerForm, RankingAnswerForm, \
-    BenchmarkStatisticForm
+    BenchmarkDetailsForm
 from bm.models import Benchmark, Region, Question, QuestionChoice, QuestionResponse, ResponseChoice, ResponseNumeric, \
     ResponseRange, QuestionRanking, ResponseRanking, BenchmarkInvitation, QuestionOptions, BenchmarkLink, BenchmarkRating
 from core.utils import login_required_ajax
@@ -348,14 +348,18 @@ class WelcomeView(TemplateView):
         return context
 
 
-class BenchmarkDetailView(TemplateView):
-    template_name = 'bm/benchmark_details.html'
+class BenchmarkDetailView(FormView):
+    # form_list = [ContributorDataForm, BenchmarkResultForm]
+    form_class = BenchmarkDetailsForm
+    template_name = 'bm/details_graphs.html'
+    # contributor_form = ContributorDataForm(request.POST)
+    # result_form = BenchmarkResultForm(request.POST)
 
     def get_benchmark(self, **kwargs):
         if hasattr(self, 'benchmark'):
             return self.benchmark
         else:
-            bm_id = kwargs['bm_id']
+            bm_id = self.kwargs['bm_id']
             self.benchmark = Benchmark.objects.filter(id=bm_id).select_related('question', 'responses').first()
             return self.benchmark
 
@@ -369,10 +373,12 @@ class BenchmarkDetailView(TemplateView):
 
     @method_decorator(login_required_ajax)
     def post(self, request, **kwargs):
-        print request.POST.get('rate')
-        if self.request.is_ajax():
+        if 'Stat_graph' in request.POST:
+            count_by = request.POST["Analyse Contributor Pools by:"]
+        elif 'Bm_graph' in request.POST:
+            pass
+        elif self.request.is_ajax():
             with transaction.atomic():
-                # rating = BenchmarkRating()
                 benchmark_id = kwargs['bm_id']
                 benchmark = self.get_benchmark(**kwargs)
                 if BenchmarkRating.objects.filter(benchmark=benchmark, user=benchmark.question.first().responses.first().user):
@@ -388,16 +394,3 @@ class BenchmarkDetailView(TemplateView):
                 else:
                     return HttpResponse(401)
         return HttpResponse(200)
-
-
-class BenchmarkStatisticView(FormView):
-    form_class = BenchmarkStatisticForm
-    template_name = 'bm/statistic.html'
-
-    @method_decorator(login_required)
-    def dispatch(self, request, *args, **kwargs):
-        return super(BenchmarkStatisticView, self).dispatch(request, *args, **kwargs)
-
-    def post(self, request, *args, **kwargs):
-        choice = request.POST['Analyse Contributor Pools by:']
-        return HttpResponse('200')

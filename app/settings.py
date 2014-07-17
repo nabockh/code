@@ -163,7 +163,7 @@ EMAIL_HOST_PASSWORD = os.environ.get('SENDGRID_PASSWORD', 'bedadesmtp')
 DEFAULT_FROM_EMAIL = 'Bedade <info@bedade.com>'
 
 SOCIAL_AUTH_COMPLETE_URL_NAME = 'social_complete'
-FIRST_TIME_USER_REDIRECT_URL = '/'
+FIRST_TIME_USER_REDIRECT_URL = '/dashboard'
 REGISTERED_USER_REDIRECT_URL = '/dashboard'
 
 try:
