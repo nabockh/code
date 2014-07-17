@@ -13,6 +13,7 @@
     <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
     <script src="{{ STATIC_URL }}js/bedade-ui.js"></script>
     <script src="{{ STATIC_URL }}js/jquery-ui.js"></script>
+    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
     <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-53c393074940bc43"></script>
     {% block js %}{% endblock %}
     <title>{% block title %}Bedade{% endblock %}</title>
@@ -22,6 +23,7 @@
 {% block body %}{% endblock %}
 
 <script src="{{ STATIC_URL }}js/jquery.mCustomScrollbar.concat.min.js"></script>
+
 <script>
 		$(window).load(function(){			
 			$(".contact-results, #step3Selected, .statsTable").mCustomScrollbar({

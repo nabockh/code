@@ -1899,10 +1899,11 @@ ul#id_choice li > label {
     padding: 5px 15px;
     background: #eff0f2;
     border-bottom: 1px solid #dedede;
+    border-top: 1px solid #dedede;
 }
 
 .statsTable {
-    height: 158px;
+    max-height: 158px;
 }
     
     .statsTable table {
@@ -1927,7 +1928,16 @@ ul#id_choice li > label {
         width: 15%;
     }
 
-    
+/*  */
+
+#geoStats, #industryStats, #countryStats {
+    display: none;
+}
+
+.statGraph {
+    width: 100%;
+    height: 238px;
+}    
 
 /* RESPONSIVENESS */
 

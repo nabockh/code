@@ -24,10 +24,45 @@ $(function () {
             }
     };
 
+    var statisticViewChange = function() {
+        var statisticViewChange = $('#id_Contributor_Data').find('option:selected').val();
+            if (statisticViewChange == "Role") {
+                $('#roleStats').show();
+                $('#industryStats').hide();
+                $('#countryStats').hide();
+                $('#geoStats').hide();
+            }
+
+            if (statisticViewChange == "Geo") {
+                $('#roleStats').hide();
+                $('#industryStats').hide();
+                $('#countryStats').hide();
+                $('#geoStats').show();
+            }
+
+            if (statisticViewChange == "Country") {
+                $('#roleStats').hide();
+                $('#industryStats').hide();
+                $('#countryStats').show();
+                $('#geoStats').hide();
+            }
+
+            if (statisticViewChange == "Industry") {
+                $('#roleStats').hide();
+                $('#industryStats').show();
+                $('#countryStats').hide();
+                $('#geoStats').hide();
+            }
+    };
+
     sectionStateChangeStep1();
     sectionStateChangeStep3();
+    statisticViewChange();
+    
+
     $( "#id_0-question_type" ).on('change', sectionStateChangeStep1);
     $( "#id_2-question_type" ).on('change', sectionStateChangeStep3);
+    $( "#id_Contributor_Data" ).on('change', statisticViewChange);
 });
 
 
@@ -140,51 +175,3 @@ $(function () {
 
 // End Animate Scroll to # links
 
-// Main Nav behavior on scroll
-
-$( document ).ready(function() {
-    var $document = $(document);
-    var firstOffset = $('.colorblock#how-it-works').offset().top -90;
-    var secondOffset = $('.colorblock#features').offset().top - 90;
-    var thirdOffset = $('.colorblock#examples').offset().top - 90;
-    var fourthOffset = $('.colorblock#about').offset().top - 90;
-    var fifthOffset = $('.colorblock#contact').offset().top - 90;
-
-    $document.on("scroll", function () {
-        if ($document.scrollTop() < firstOffset) {
-            $('.main-nav li#home-link').addClass('active')
-            .siblings().removeClass('active');
-        }
-
-        if ($document.scrollTop() >= firstOffset) {
-            $('.main-nav li#how-link').addClass('active')
-            .siblings().removeClass('active');
-        }
-
-        if ($document.scrollTop() >= secondOffset - 90) {
-             $('.main-nav li#features-link').addClass('active')
-            .siblings().removeClass('active');
-        }
-
-        if ($document.scrollTop() >= thirdOffset - 90) {
-            $('.main-nav li#examples-link').addClass('active')
-            .siblings().removeClass('active');
-        }
-
-        if ($document.scrollTop() >= fourthOffset - 90) {
-            $('.main-nav li#about-link').addClass('active')
-            .siblings().removeClass('active');
-        }
-
-        if ($document.scrollTop() >= fifthOffset - 180) {
-            $('.main-nav li#contacts-link').addClass('active')
-            .siblings().removeClass('active');
-        }
-        console.clear();
-    });
-
-});
-
-
-
-// End Main Nav behavior on scroll

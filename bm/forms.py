@@ -197,12 +197,12 @@ class DeclineBenchmarkForm(forms.Form):
 
 class BenchmarkDetailsForm(forms.Form):
     choices = [
-        ('Role', 'Role'), ('Geo', 'Geo'),  ('Country', 'Country'), ('Industry', 'Industry')]
+        ('Role', 'Role'), ('Geo', 'Geographic'),  ('Country', 'Country'), ('Industry', 'Industry')]
     choices_2 = [
         ('Pie', 'Pie'), ('Line', 'Line'),  ('Bell_Curve', 'Bell Curve'), ('Cross', 'Cross')]
 
     def __init__(self, *args, **kwargs):
         super(BenchmarkDetailsForm, self).__init__(*args, **kwargs)
-        self.fields['Benchmark Results'] = forms.ChoiceField(choices=self.choices_2)
-        self.fields['Contributor Data'] = forms.ChoiceField(choices=self.choices)
+        self.fields['Benchmark_Results'] = forms.ChoiceField(choices=self.choices_2)
+        self.fields['Contributor_Data'] = forms.ChoiceField(choices=self.choices)
 
