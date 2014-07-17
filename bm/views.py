@@ -5,6 +5,7 @@ from bm.models import Benchmark, Region, Question, QuestionChoice, QuestionRespo
     ResponseRange, QuestionRanking, ResponseRanking, BenchmarkInvitation, QuestionOptions, BenchmarkLink, BenchmarkRating
 from core.utils import login_required_ajax
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
 from django.contrib.formtools.wizard.forms import ManagementForm
 from django.contrib.formtools.wizard.views import CookieWizardView
 from django.core.exceptions import ValidationError
@@ -16,6 +17,7 @@ from django.utils.decorators import method_decorator
 from django.views.generic import ListView, TemplateView, View
 from django.views.generic.edit import FormView
 from bm.signals import benchmark_answered
+from django.db.models import Count
 
 
 class BenchmarkCreateWizardView(CookieWizardView):
@@ -349,18 +351,17 @@ class WelcomeView(TemplateView):
 
 
 class BenchmarkDetailView(FormView):
-    # form_list = [ContributorDataForm, BenchmarkResultForm]
     form_class = BenchmarkDetailsForm
     template_name = 'bm/details_graphs.html'
-    # contributor_form = ContributorDataForm(request.POST)
-    # result_form = BenchmarkResultForm(request.POST)
 
     def get_benchmark(self, **kwargs):
         if hasattr(self, 'benchmark'):
             return self.benchmark
         else:
             bm_id = self.kwargs['bm_id']
-            self.benchmark = Benchmark.objects.filter(id=bm_id).select_related('question', 'responses').first()
+            self.benchmark = Benchmark.objects.filter(id=bm_id).select_related('question', 'responses',
+                                                                                'benchmark___industry',
+                                                                                'benchmark__geographic_coverage').first()
             return self.benchmark
 
     def get_context_data(self, **kwargs):
@@ -369,15 +370,52 @@ class BenchmarkDetailView(FormView):
         context['benchmark'] = benchmark
         context['question'] = benchmark.question.first()
         context['url'] = self.request.META['HTTP_HOST'] + self.request.path
+        group_by_headline = QuestionResponse.objects.filter(question=benchmark.question.first()).values('user__social_profile__headline').annotate(count=Count('user__social_profile__headline'))
+        group_by_country = QuestionResponse.objects.filter(question=benchmark.question.first()).values('user__social_profile__location__name').annotate(count=Count('user__social_profile__location__name'))
+        group_by_geo = QuestionResponse.objects.filter(question=benchmark.question.first()).values('user__social_profile__location__parent__name').annotate(count=Count('user__social_profile__location__parent__name'))
+        group_by_industry = QuestionResponse.objects.filter(question=benchmark.question.first()).values('user__social_profile__company___industry__name').annotate(count=Count('user__social_profile__company___industry__name'))
+        for dictionary in group_by_headline:
+            dictionary['role'] = dictionary['user__social_profile__headline']
+            del dictionary['user__social_profile__headline']
+        for dictionary in group_by_geo:
+            dictionary['geo'] = dictionary['user__social_profile__location__parent__name']
+            del dictionary['user__social_profile__location__parent__name']
+        for dictionary in group_by_country:
+            dictionary['country'] = dictionary['user__social_profile__location__name']
+            del dictionary['user__social_profile__location__name']
+        for dictionary in group_by_industry:
+            dictionary['industry'] = dictionary['user__social_profile__company___industry__name']
+            del dictionary['user__social_profile__company___industry__name']
+        headlines = []
+        for item in group_by_headline:
+            first = item['count']
+            second = str(item['role'])
+            headlines.append([second, first])
+        geo = []
+        for item in group_by_geo:
+            first = item['count']
+            second = str(item['geo'])
+            geo.append([second, first])
+        countries = []
+        for item in group_by_country:
+            first = item['count']
+            second = str(item['country'])
+            countries.append([second, first])
+        industries = []
+        for item in group_by_industry:
+            first = item['count']
+            second = str(item['industry'])
+            industries.append([second, first])
+        context['role'] = headlines
+        context['geo'] = geo
+        context['countries'] = countries
+        context['industries'] = industries
+
         return context
 
     @method_decorator(login_required_ajax)
     def post(self, request, **kwargs):
-        if 'Stat_graph' in request.POST:
-            count_by = request.POST["Analyse Contributor Pools by:"]
-        elif 'Bm_graph' in request.POST:
-            pass
-        elif self.request.is_ajax():
+        if self.request.is_ajax():
             with transaction.atomic():
                 benchmark_id = kwargs['bm_id']
                 benchmark = self.get_benchmark(**kwargs)
