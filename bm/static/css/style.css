@@ -1405,6 +1405,34 @@ label.btn.btn-primary.auto-width.pull-right.fix {
     /* letter-spacing: 0.2px; */
 }
 
+.recent-benchmark-link {
+    margin-bottom: 10px;
+}
+    
+    .recent-benchmark-link a {
+        color: #fff;
+        background: #41495d;  
+        padding: 8px 10px;
+        display: block;
+        text-decoration: none;
+        position: relative;
+        transition: background 0.3s;
+    }
+
+        .recent-benchmark-link a:hover {
+            background: #202c45;
+        }
+
+            .recent-benchmark-link a:hover:after {
+                content: '';
+                font-family: fontAwesome;
+                position: absolute;
+                right: 0;
+                width: 30px;
+                text-align: center;
+            }
+
+
 /* Progress bars */
 
 .progress {
@@ -1932,7 +1960,7 @@ ul#id_choice li > label {
     .benchmark.open .benchmark-footer .btn[data-target="#rating"] {
         margin-left: 20px;
         padding: 7px 12px 6px;
-        font-size: 13px;
+        font-size: 12px;
     }
 
     .benchmark.open .benchmark-footer .color-grey {
@@ -1991,6 +2019,7 @@ ul#id_choice li > label {
     width: 334px;
     height: 238px;
     margin: 0 auto;
+    overflow: hidden;
 }
 
 .modal-body-inner {
