@@ -858,7 +858,15 @@ form[role='search'] .btn-search {
     .title-header.answer {
         padding: 7px 20px;
     }
-
+    
+    .title-header select {
+        float: right;
+    
+        background: #fff;
+        color: #4b4b4b;
+        font-weight: normal;
+}
+    
 .benchmark-creation .title-header {
     padding: 6px 60px;
     margin: 0 -60px;

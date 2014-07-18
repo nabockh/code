@@ -31,17 +31,44 @@
             </div>
           </div>
         </header>
-        <div class='user-nav homepage'>
-            <div class='container text-center'>
-                <a href="{% url 'socialauth_begin' backend='linkedin' %}" class="btn sign-in-btn">Sign in with Linkedin</a>
-                <form role="beta-email">
-                    <div class="form-group">
-                      <input type="text" class="form-control" placeholder="EMAIL ADDRESS">
+
+        {% if user.is_authenticated %}
+            <div class='user-nav'>
+                <div class='container'>
+                    <div class='row'>
+                    <div class='col-md-8'>
+                        <div class='hello'>Hello,</div>
+                        <ul class='user-nav-inner'>
+                            <li class='username'>{{ user.first_name }} {{ user.last_name }}</li>
+                            <li class="dropdown">
+                             <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class='fa fa-cogs'></i></a>
+                             <ul class="dropdown-menu" role="menu">
+                                <li><a href="/logout">Sign Out</a></li>
+                             </ul>
+                          </li>
+                            <li><a href='#'><i class='fa fa-unlock'></i></a></li>
+                        </ul>
                     </div>
-                    <button type="submit" class="btn btn-search">Submit</button>
-                  </form>
+                    <div class='col-md-4'>
+                        <a href="/dashboard" class='btn btn-primary pull-right'>Go to Dashboard <i class='fa fa-arrow-circle-right'></i></a>
+                    </div>
+                </div>
+                </div>
             </div>
-        </div>
+        {% else %}
+            <div class='user-nav homepage'>
+                <div class='container text-center'>
+                    <a href="{% url 'socialauth_begin' backend='linkedin' %}" class="btn sign-in-btn">Sign in with Linkedin</a>
+                    <form role="beta-email">
+                        <div class="form-group">
+                          <input type="text" class="form-control" placeholder="EMAIL ADDRESS">
+                        </div>
+                        <button type="submit" class="btn btn-search">Submit</button>
+                      </form>
+                </div>
+            </div>
+        {% endif %}
+        
 {% endblock %}
 {% block content %}
         <div class="colorblock banner" id='banner'>

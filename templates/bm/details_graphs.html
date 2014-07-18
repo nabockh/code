@@ -59,7 +59,7 @@
                         <div class='statsTable'>
                             <table>
                                 <tbody>
-                                    {% for role in geo_percentage %}
+                                    {% for geo in geo_percentage %}
                                         <tr>
                                             <td>{{ geo.0 }}</td>
                                             <td>{{ geo.1 }}</td>
@@ -91,7 +91,7 @@
                         <div class='statsTable'>
                             <table>
                                 <tbody>
-                                    {% for role in industry_percentage %}
+                                    {% for industry in industry_percentage %}
                                         <tr>
                                             <td>{{ industry.0 }}</td>
                                             <td>{{ industry.1 }}</td>
@@ -107,7 +107,7 @@
                         <div class='statsTable'>
                             <table>
                                 <tbody>
-                                    {% for role in countries_percentage %}
+                                    {% for countries in countries_percentage %}
                                         <tr>
                                             <td>{{ countries.0 }}</td>
                                             <td>{{ countries.1 }}</td>
@@ -123,4 +123,47 @@
         </div>
     </div>
     </form>
+
+<script type="text/javascript">
+    var statisticGeoData = {{ geo|safe }};
+    var statisticRoleData = {{ role|safe }};
+    var statisticIndustriesData = {{ industries|safe }};
+    var statisticCountriesData = {{ countries|safe }};
+</script>
+<script type="text/javascript">
+
+    google.load("visualization", "1", {packages:["corechart"]});
+    google.setOnLoadCallback(drawChart);
+    function drawChart() {
+        var roleChartData = google.visualization.arrayToDataTable(statisticRoleData);
+        var geoChartData = google.visualization.arrayToDataTable(statisticGeoData);
+        var countryChartData = google.visualization.arrayToDataTable(statisticCountriesData);
+        var industryChartData = google.visualization.arrayToDataTable(statisticIndustriesData);
+
+        var options = {
+        legend: 'none',
+        pieSliceText: 'label',
+        tooltip: { text: 'percentage', trigger: 'selection' },
+        'width':334,
+        'height':238,
+        slices: {
+            0: {color: '#202C45'},
+            1: {color: '#41495D'},
+            2: {color: '#8592B2'},
+            3: {color: '#98b0b3'},
+            4: {color: '#608a94'},
+            5: {color: '#33626e'}
+          }
+    };
+
+    var roleChart = new google.visualization.PieChart(document.getElementById('roleChart'));
+    var geoChart = new google.visualization.PieChart(document.getElementById('geoChart'));
+    var countryChart = new google.visualization.PieChart(document.getElementById('countryChart'));
+    var industryChart = new google.visualization.PieChart(document.getElementById('industryChart'));
+    roleChart.draw(roleChartData, options);
+    geoChart.draw(geoChartData, options);
+    countryChart.draw(countryChartData, options);
+    industryChart.draw(industryChartData, options);
+    }
+</script>
 {% endblock %}

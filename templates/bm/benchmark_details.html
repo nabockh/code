@@ -119,11 +119,10 @@
             </div>
         </div>
     </div>
-    
+    {% block graphs %}
+
+    {% endblock %}
 </div>
-
-
-
 
 <!-- Modal -->
 <div class="modal fade" id="rating" tabindex="-1" role="dialog" aria-labelledby="ratingLabel" aria-hidden="true">
@@ -149,43 +148,6 @@
   </div>
 </div>
 
-{% block graphs %}
 
-<script type="text/javascript">
-    var statisticGeoData = {{ geo|safe }};
-    var statisticRoleData = {{ role|safe }};
-    var statisticIndustriesData = {{ industries|safe }};
-    var statisticCountriesData = {{ countries|safe }};
-</script>
-<script type="text/javascript">
-
-    google.load("visualization", "1", {packages:["corechart"]});
-    google.setOnLoadCallback(drawChart);
-    function drawChart() {
-        var roleChartData = google.visualization.arrayToDataTable(statisticRoleData);
-        var geoChartData = google.visualization.arrayToDataTable(statisticGeoData);
-        var countryChartData = google.visualization.arrayToDataTable(statisticCountriesData);
-        var industryChartData = google.visualization.arrayToDataTable(statisticIndustriesData);
-
-        var options = {
-        legend: 'none',
-        pieSliceText: 'label',
-        tooltip: { text: 'percentage' }
-    };
-
-    var roleChart = new google.visualization.PieChart(document.getElementById('roleChart'));
-    var geoChart = new google.visualization.PieChart(document.getElementById('geoChart'));
-    var countryChart = new google.visualization.PieChart(document.getElementById('countryChart'));
-    var industryChart = new google.visualization.PieChart(document.getElementById('industryChart'));
-    roleChart.draw(roleChartData, options);
-    geoChart.draw(geoChartData, options);
-    countryChart.draw(countryChartData, options);
-    industryChart.draw(industryChartData, options);
-    }
-</script>
-<form action="" method="post">{% csrf_token %}
-    {{ form }}
-</form>
-{% endblock %}
     
 {% endblock %}
