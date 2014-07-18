@@ -215,3 +215,18 @@ class BenchmarkRating(models.Model):
     benchmark = models.ForeignKey(Benchmark, related_name='ratings')
     user = models.ForeignKey(USER_MODEL, null=True)
     rating = models.PositiveSmallIntegerField()
+
+
+class SeriesStatistic(models.Model):
+    benchmark = models.ForeignKey(Benchmark, on_delete=models.CASCADE, related_name='series_statistic')
+    series = models.CharField(max_length=255)
+    sub_series = models.CharField(max_length=255, blank=True, null=True)
+    value = models.PositiveIntegerField()
+
+
+class NumericStatistic(models.Model):
+    benchmark = models.ForeignKey(Benchmark, on_delete=models.CASCADE, related_name='numeric_statistic')
+    min = models.FloatField()
+    max = models.FloatField()
+    avg = models.FloatField()
+    sd = models.FloatField()
