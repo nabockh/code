@@ -5,7 +5,6 @@ from bm.models import Benchmark, Region, Question, QuestionChoice, QuestionRespo
     ResponseRange, QuestionRanking, ResponseRanking, BenchmarkInvitation, QuestionOptions, BenchmarkLink, BenchmarkRating
 from core.utils import login_required_ajax
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.models import User
 from django.contrib.formtools.wizard.forms import ManagementForm
 from django.contrib.formtools.wizard.views import CookieWizardView
 from django.core.exceptions import ValidationError
@@ -14,10 +13,12 @@ from django.http import HttpResponse, HttpResponseNotFound
 from django.shortcuts import redirect
 from django.template.defaultfilters import safe
 from django.utils.decorators import method_decorator
-from django.views.generic import ListView, TemplateView, View
+from django.views.generic import ListView, TemplateView
 from django.views.generic.edit import FormView
 from bm.signals import benchmark_answered
 from django.db.models import Count
+import StringIO
+import xlsxwriter
 
 
 class BenchmarkCreateWizardView(CookieWizardView):
@@ -456,3 +457,45 @@ class BenchmarkDetailView(FormView):
                 else:
                     return HttpResponse(401)
         return HttpResponse(200)
+
+
+class ExcelDownloadView(BenchmarkDetailView):
+
+    def get(self, *args, **kwargs):
+        bm_id = kwargs['bm_id']
+        benchmark = Benchmark.objects.filter(id=bm_id).select_related('question',
+                                                                        'responses',
+                                                                        'benchmark___industry',
+                                                                        'benchmark__geographic_coverage').first()
+        output = StringIO.StringIO()
+        workbook = xlsxwriter.Workbook(output, {'in_memory': True})
+        question = benchmark.question.first()
+        description = question.description
+        basic_info = [benchmark.name, question.label, description, benchmark.owner.first_name + ' ' +benchmark.owner.last_name]
+        # set info worksheet settings
+        info_worksheet = workbook.add_worksheet('Basic information')
+        graph_worksheet = workbook.add_worksheet('Graphs')
+        col = 1
+        row = 0
+        cell_format = workbook.add_format({'bold': True})
+        info_worksheet.set_column(0, 1, 30)
+        info_worksheet.write(0, 0, 'Benchmark Name:', cell_format)
+        info_worksheet.write(1, 0, 'Question:', cell_format)
+        info_worksheet.write(2, 0, 'Description:', cell_format)
+        info_worksheet.write(3, 0, 'Owner:', cell_format)
+        for info in basic_info:
+            info_worksheet.write(row, col, info)
+            row += 1
+        context = self.get_context_data(**kwargs)
+        workbook.close()
+        output.seek(0)
+        # Graph worksheet settings
+
+
+        response = HttpResponse(output.read(), content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+        response['Content-Disposition'] = 'attachment; filename={0}.xlsx'.format(benchmark.name)
+        return response
+
+    def get_context_data(self, **kwargs):
+        context = super(ExcelDownloadView, self).get_context_data(**kwargs)
+        return context
