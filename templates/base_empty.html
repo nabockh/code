@@ -16,6 +16,42 @@
     <script src="{{ STATIC_URL }}js/jquery-ui.js"></script>
     <script type="text/javascript" src="https://www.google.com/jsapi"></script>
     <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-53c393074940bc43"></script>
+    <script type="text/javascript">
+    
+    google.load("visualization", "1", {packages:["corechart"]});
+      google.setOnLoadCallback(drawChart);
+      function drawChart() {
+        var roleChartData = google.visualization.arrayToDataTable([
+          ['Name', 'How Many Users Chose This'],
+          ['BMW',     65],
+          ['Audi',    35]
+        ]);
+        // var geoChartData = google.visualization.arrayToDataTable(statisticGeoData);
+        // var countryChartData = google.visualization.arrayToDataTable(statisticCountryData);
+        // var industryChartData = google.visualization.arrayToDataTable(statisticIndustryData);
+
+        var options = {
+          legend: 'none',
+          pieSliceText: 'label',
+          tooltip: { text: 'percentage' },
+          slices: {
+            0: {color: '#202C45'},
+            1: {color: '#41495D'},
+            2: {color: '#8592B2'},
+            3: {color: 'transparent' }
+          }
+        };
+
+        var roleChart = new google.visualization.PieChart(document.getElementById('roleChart'));
+        var geoChart = new google.visualization.PieChart(document.getElementById('geoChart'));
+        var countryChart = new google.visualization.PieChart(document.getElementById('countryChart'));
+        var industryChart = new google.visualization.PieChart(document.getElementById('industryChart'));
+        roleChart.draw(roleChartData, options);
+        // geoChart.draw(geoChartData, options);
+        // countryChart.draw(countryChartData, options);
+        // industryChart.draw(industryChartData, options);
+      }
+</script> 
     {% block js %}{% endblock %}
     <title>{% block title %}Bedade{% endblock %}</title>
 </head>
@@ -27,7 +63,7 @@
 
 <script>
 		$(window).load(function(){			
-			$(".contact-results, #step3Selected, .statsTable").mCustomScrollbar({
+			$(".contact-results, #step3Selected, .statsTable, .modal-body-inner").mCustomScrollbar({
 				theme:"minimal"
 			});			
 		});

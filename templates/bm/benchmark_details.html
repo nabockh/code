@@ -266,7 +266,7 @@
     var statisticIndustriesData = "{{ industries|safe }}";
     var statisticCountriesData = "{{ countries|safe }}";
 </script>
-<!-- <script type="text/javascript">
+ <script type="text/javascript">
     
     google.load("visualization", "1", {packages:["corechart"]});
       google.setOnLoadCallback(drawChart);
@@ -291,7 +291,7 @@
         countryChart.draw(countryChartData, options);
         industryChart.draw(industryChartData, options);
       }
-</script> -->
+</script> 
 <form action="" method="post">{% csrf_token %}
     {{ form }}
 </form>

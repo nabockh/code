@@ -1937,7 +1937,12 @@ ul#id_choice li > label {
 .statGraph {
     width: 100%;
     height: 238px;
-}    
+}
+
+.modal-body-inner {
+    max-height: 400px;
+    padding-right: 20px;
+}
 
 /* RESPONSIVENESS */
 
