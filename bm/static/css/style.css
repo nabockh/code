@@ -1988,8 +1988,9 @@ ul#id_choice li > label {
 }
 
 .statGraph {
-    width: 100%;
+    width: 334px;
     height: 238px;
+    margin: 0 auto;
 }
 
 .modal-body-inner {
