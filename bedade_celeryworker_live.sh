@@ -5,4 +5,4 @@ echo "Starting $NAME as `whoami`"
 # Activate the virtual environment
 cd $DJANGODIR
 source ./venv/bin/activate
-exec celery -A app worker -l info
+exec celery -A app worker --beat -l info
