@@ -4,7 +4,13 @@
 {% load helpers %}
 
 {% block answer_form %}
-    
-    {{ form|bootstrap }}
-   
+    <div class='row'>
+    	<div class='col-md-12'>
+    		<div class='styled-form rangeAnswer'>
+		    	<hr>
+		    	{{ form|bootstrap }}
+		    	<hr>
+		   	</div>
+    	</div>
+    </div>
 {% endblock %}

@@ -901,7 +901,9 @@ form[role='search'] .btn-search {
 
     .benchmark-help p span {
         padding-right: 20px;
-    }
+    
+        white-space: nowrap;
+}
 
     .benchmark-help span span.color-teal {
         color: #94a6c3;
@@ -1412,12 +1414,16 @@ label.btn.btn-primary.auto-width.pull-right.fix {
     .recent-benchmark-link a {
         color: #fff;
         background: #41495d;  
-        padding: 8px 10px;
+        padding: 8px 20px 8px 10px;
         display: block;
         text-decoration: none;
         position: relative;
         transition: background 0.3s;
-    }
+    
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+}
 
         .recent-benchmark-link a:hover {
             background: #202c45;
@@ -1790,7 +1796,7 @@ label.btn.btn-primary.answer_btn {
 
 .how-it-works-block {
     margin: 0 -15px;
-    padding: 11px 15px 20px;
+    padding: 11px 20px 20px;
     border-bottom: 1px solid #dedede;
     color: #fff;
     font-size: 12px;
@@ -1841,6 +1847,35 @@ label.btn.btn-primary.answer_btn {
 
 label.control-label[for='id_choice'] {
     margin-top: 20px;
+}
+
+/*.styled-form.numericAnswer {
+    margin-top: 20px;
+}*/
+
+    .styled-form.numericAnswer label {
+        display: none;
+    }
+
+    .styled-form.numericAnswer label.visible {
+        display: inline-block;
+        color: #333;
+    }
+
+    .styled-form.numericAnswer .form-group {
+        margin-bottom: 0;
+    }
+
+    .styled-form.numericAnswer hr, .styled-form.rangeAnswer hr  {
+        margin-top: 20px;
+    }
+
+    .styled-form.rangeAnswer .form-group {
+        width: 50%;
+        float: left;
+        padding-right: 15px;
+    
+        margin-bottom: 0;
 }
 
 ul#id_choice li > label {
@@ -2019,7 +2054,6 @@ ul#id_choice li > label {
     width: 334px;
     height: 238px;
     margin: 0 auto;
-    overflow: hidden;
 }
 
 .modal-body-inner {
