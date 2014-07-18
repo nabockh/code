@@ -106,11 +106,10 @@ class BenchmarkCreateWizardView(CookieWizardView):
     def get_context_data(self, form, **kwargs):
         context = super(BenchmarkCreateWizardView, self).get_context_data(form, **kwargs)
         if self.steps.current == '2':
-            context['selected_contacts'] = self.selected_contacts
+            context['selected_contacts'] = self.selected_contacts if hasattr(self, 'selected_contacts') else []
         return context
 
     def done(self, form_list, **kwargs):
-        step1 = form_list[0]
         step2 = form_list[1]
         step3 = form_list[2]
         with transaction.atomic():
@@ -143,7 +142,7 @@ class BenchmarkCreateWizardView(CookieWizardView):
                 question.options.add(QuestionOptions(step3.cleaned_data.get('units'), step3.cleaned_data.get('max_number_of_decimal')))
 
             step2_data = self.storage.get_step_data('1')
-            for contact in step2.contacts_filtered:
+            for contact in step2.selected_contacts:
                 if step2_data.get('1-selected-{0}-invite'.format(contact.id)):
                     invite = BenchmarkInvitation()
                     invite.sender = benchmark.owner
