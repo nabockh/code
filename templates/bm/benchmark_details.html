@@ -119,129 +119,19 @@
             </div>
         </div>
     </div>
-    <div class='row'>
-        <div class='col-md-7'>
-            <div class='col-md-12 bordered bgwhite margined margin-bot'>
-                <div class='title-header'>
-                    123
-                </div>
-                <div class='row'>
-                    <div class='benchmark open'>
-                        <img src="{{ STATIC_URL }}img/graph-placeholder.png" alt="...">
-                        <div class='benchmark-stats perc-based'>
-                            <div class='single-stat'>
-                                <span class='title'>Min</span>
-                                <span class='value'>0%</span>
-                            </div>
-                            <div class='single-stat'>
-                                <span class='title'>Max</span>
-                                <span class='value'>91%</span>
-                            </div>
-                            <div class='single-stat'>
-                                <span class='title'>Mean</span>
-                                <span class='value'>47%</span>
-                            </div>
-                            <div class='single-stat'>
-                                <span class='title'>Avg</span>
-                                <span class='value'>51%</span>
-                            </div>
-                            <div class='single-stat'>
-                                <span class='title'>SD</span>
-                                <span class='value'>1.4</span>
-                            </div>
-                        </div>
-                        <div class='benchmark-footer text-center'>
-                            <span class='color-blue'><i class='fa fa-user'></i> 125 Contributors</span>
-                            <span class='separator'></span>
-                            <span class='rated-value'>
-                                <div class='fill-value' style='width: 72%;'></div>
-                            </span>
-                            <span class='color-grey'>(17)</span>
-                            <button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#rating">Rate this benchmark <i class='fa fa-star'></i></button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class='col-md-5'>
-            <div class='col-md-12 bordered bgwhite margined margin-bot'>
-                <div class='title-header'>
-                    Contributor data
-                </div>
-                <div class='row'>
-                    <div id='geoStats'>
-                        <div id='geoChart' class='statGraph'></div>
-                        <div class='table-header'>Contributor Geographic:</div>
-                        <div class='statsTable'>
-                            <table>
-                                <tbody>
-                                    <tr>
-                                        <td>data</td>
-                                        <td>%</td>
-                                    </tr>                                    
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                    <div id='roleStats'>
-                        <div id='roleChart' class='statGraph'></div>
-                        <div class='table-header'>Contributor Role:</div>
-                        <div class='statsTable'>
-                            <table>
-                                <tbody>
-                                    <tr>
-                                        <td>data</td>
-                                        <td>%</td>
-                                    </tr>                                    
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                    <div id='industryStats'>
-                        <div id='industryChart' class='statGraph'></div>
-                        <div class='table-header'>Contributor Industry:</div>
-                        <div class='statsTable'>
-                            <table>
-                                <tbody>
-                                    <tr>
-                                        <td>data</td>
-                                        <td>%</td>
-                                    </tr>                                    
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                    <div id='countryStats'>
-                        <div id='countryChart' class='statGraph'></div>
-                        <div class='table-header'>Contributor Country:</div>
-                        <div class='statsTable'>
-                            <table>
-                                <tbody>
-                                    <tr>
-                                        <td>data</td>
-                                        <td>%</td>
-                                    </tr>                                    
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                    
-                </div>
-            </div>
-        </div>
-    </div>
+    
 </div>
 
 
 
 
 <!-- Modal -->
-<div class="modal fade" id="rating" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal fade" id="rating" tabindex="-1" role="dialog" aria-labelledby="ratingLabel" aria-hidden="true">
   <div class="modal-dialog modal-sm">
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true"><i class='fa fa-times-circle'></i></span><span class="sr-only">Close</span></button>
-        <h4 class="modal-title" id="myModalLabel">Rate Benchmark</h4>
+        <h4 class="modal-title" id="rating">Rate Benchmark</h4>
       </div>
       <div class="modal-body">
         <p>Please rate the benchmark <strong>{{ benchmark.name }}</strong> results based on your level of confidence that the data is accurate.</p>
@@ -260,38 +150,39 @@
 </div>
 
 {% block graphs %}
+
 <script type="text/javascript">
-    var statisticGeoData="{{ geo|safe }}";
-    var statisticRoleData = "{{ role|safe }}";
-    var statisticIndustriesData = "{{ industries|safe }}";
-    var statisticCountriesData = "{{ countries|safe }}";
+    var statisticGeoData = {{ geo|safe }};
+    var statisticRoleData = {{ role|safe }};
+    var statisticIndustriesData = {{ industries|safe }};
+    var statisticCountriesData = {{ countries|safe }};
 </script>
- <script type="text/javascript">
-    
+<script type="text/javascript">
+
     google.load("visualization", "1", {packages:["corechart"]});
-      google.setOnLoadCallback(drawChart);
-      function drawChart() {
+    google.setOnLoadCallback(drawChart);
+    function drawChart() {
         var roleChartData = google.visualization.arrayToDataTable(statisticRoleData);
         var geoChartData = google.visualization.arrayToDataTable(statisticGeoData);
-        var countryChartData = google.visualization.arrayToDataTable(statisticCountryData);
-        var industryChartData = google.visualization.arrayToDataTable(statisticIndustryData);
+        var countryChartData = google.visualization.arrayToDataTable(statisticCountriesData);
+        var industryChartData = google.visualization.arrayToDataTable(statisticIndustriesData);
 
         var options = {
-          legend: 'none',
-          pieSliceText: 'label',
-          tooltip: { text: 'percentage' }
-        };
+        legend: 'none',
+        pieSliceText: 'label',
+        tooltip: { text: 'percentage' }
+    };
 
-        var roleChart = new google.visualization.PieChart(document.getElementById('roleChart'));
-        var geoChart = new google.visualization.PieChart(document.getElementById('geoChart'));
-        var countryChart = new google.visualization.PieChart(document.getElementById('countryChart'));
-        var industryChart = new google.visualization.PieChart(document.getElementById('industryChart'));
-        roleChart.draw(roleChartData, options);
-        geoChart.draw(geoChartData, options);
-        countryChart.draw(countryChartData, options);
-        industryChart.draw(industryChartData, options);
-      }
-</script> 
+    var roleChart = new google.visualization.PieChart(document.getElementById('roleChart'));
+    var geoChart = new google.visualization.PieChart(document.getElementById('geoChart'));
+    var countryChart = new google.visualization.PieChart(document.getElementById('countryChart'));
+    var industryChart = new google.visualization.PieChart(document.getElementById('industryChart'));
+    roleChart.draw(roleChartData, options);
+    geoChart.draw(geoChartData, options);
+    countryChart.draw(countryChartData, options);
+    industryChart.draw(industryChartData, options);
+    }
+</script>
 <form action="" method="post">{% csrf_token %}
     {{ form }}
 </form>

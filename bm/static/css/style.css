@@ -1283,6 +1283,7 @@ label.btn.btn-primary.auto-width.pull-right.fix {
     text-transform: none;
     border-radius: 5px;
     margin: 10px 0;
+    float: left;
 }
 
     .btn.sign-in-btn:before {
@@ -1307,7 +1308,51 @@ label.btn.btn-primary.auto-width.pull-right.fix {
         .btn.sign-in-btn:hover:before {
             background: #3C6081;
         }
+    
+    form[role='beta-email'] {
+        float: right;
+        width: 40%;
+    }
+    form[role='beta-email'] .form-group {
+        float: left;
+        width: 80%;
+    
+        margin: 14px 0;
+}
+    form[role='beta-email'] .btn-search {
+        float: left;
+        width: 20%;
+        background: #3d6c78; color: #fff; outline: none; border-radius: 0; text-transform: uppercase; height: 25px; line-height: 12px;  
+        margin: 14px 0; padding: 0 10px; font-weight: 400;
+    }
+    form[role='beta-email'] .form-control {
+        height: 25px; 
+        margin-top: 0; border-radius: 0; box-shadow: none; 
+        max-width: 100%;
+        background: #55798a;
+        border-color: #55798a;
+        color: #fff;
+    }
+    form[role='beta-email'] .btn-search:hover {
+        background: #37535A;
+    }
 
+    form[role='beta-email'] .form-control::-webkit-input-placeholder { /* WebKit browsers */
+        color:    #fff;
+    }
+    form[role='beta-email'] .form-control:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+        color:    #fff;
+        opacity:  1;
+    }
+    form[role='beta-email'] .form-control::-moz-placeholder { /* Mozilla Firefox 19+ */
+        color:    #fff;
+        opacity:  1;
+    }
+    form[role='beta-email'] .form-control:-ms-input-placeholder { /* Internet Explorer 10+ */
+        color:    #fff;
+    }
+    
+    
 .navbar>.container .navbar-brand {
     margin-left: 0;
 }
@@ -1943,6 +1988,11 @@ ul#id_choice li > label {
     max-height: 400px;
     padding-right: 20px;
 }
+
+    .modal-body-inner h4 {
+        color: #608a94;
+        text-transform: uppercase;
+    }
 
 /* RESPONSIVENESS */
 

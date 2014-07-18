@@ -3,6 +3,124 @@
 
 {% block graphs %}
     <form action="" method="post">{% csrf_token %}
-        {{ form }}
+        <div class='row'>
+        <div class='col-md-7'>
+            <div class='col-md-12 bordered bgwhite margined margin-bot'>
+                <div class='title-header'>
+                    Contributor Results {{ form.Contributor_Results }}
+                </div>
+                <div class='row'>
+                    <div class='benchmark open'>
+                        <img src="{{ STATIC_URL }}img/graph-placeholder.png" alt="...">
+                        <div class='benchmark-stats perc-based'>
+                            <div class='single-stat'>
+                                <span class='title'>Min</span>
+                                <span class='value'>0%</span>
+                            </div>
+                            <div class='single-stat'>
+                                <span class='title'>Max</span>
+                                <span class='value'>91%</span>
+                            </div>
+                            <div class='single-stat'>
+                                <span class='title'>Mean</span>
+                                <span class='value'>47%</span>
+                            </div>
+                            <div class='single-stat'>
+                                <span class='title'>Avg</span>
+                                <span class='value'>51%</span>
+                            </div>
+                            <div class='single-stat'>
+                                <span class='title'>SD</span>
+                                <span class='value'>1.4</span>
+                            </div>
+                        </div>
+                        <div class='benchmark-footer text-center'>
+                            <span class='color-blue'><i class='fa fa-user'></i> 125 Contributors</span>
+                            <span class='separator'></span>
+                            <span class='rated-value'>
+                                <div class='fill-value' style='width: 72%;'></div>
+                            </span>
+                            <span class='color-grey'>(17)</span>
+                            <button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#rating">Rate this benchmark <i class='fa fa-star'></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class='col-md-5'>
+            <div class='col-md-12 bordered bgwhite margined margin-bot'>
+                <div class='title-header'>
+                    Contributor data {{ form.Contributor_Data }}
+                </div>
+                <div class='row'>
+                    <div id='geoStats'>
+                        <div id='geoChart' class='statGraph'></div>
+                        <div class='table-header'>Contributor Geographic:</div>
+                        <div class='statsTable'>
+                            <table>
+                                <tbody>
+                                    {% for role in geo_percentage %}
+                                        <tr>
+                                            <td>{{ geo.0 }}</td>
+                                            <td>{{ geo.1 }}</td>
+                                        </tr>
+                                    {% endfor %}                                    
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div id='roleStats'>
+                        <div id='roleChart' class='statGraph'></div>
+                        <div class='table-header'>Contributor Role:</div>
+                        <div class='statsTable'>
+                            <table>
+                                <tbody>
+                                    {% for role in role_percentage %}
+                                        <tr>
+                                            <td>{{ role.0 }}</td>
+                                            <td>{{ role.1 }}</td>
+                                        </tr>
+                                    {% endfor %}                                    
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div id='industryStats'>
+                        <div id='industryChart' class='statGraph'></div>
+                        <div class='table-header'>Contributor Industry:</div>
+                        <div class='statsTable'>
+                            <table>
+                                <tbody>
+                                    {% for role in industry_percentage %}
+                                        <tr>
+                                            <td>{{ industry.0 }}</td>
+                                            <td>{{ industry.1 }}</td>
+                                        </tr>
+                                    {% endfor %}                                    
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div id='countryStats'>
+                        <div id='countryChart' class='statGraph'></div>
+                        <div class='table-header'>Contributor Country:</div>
+                        <div class='statsTable'>
+                            <table>
+                                <tbody>
+                                    {% for role in countries_percentage %}
+                                        <tr>
+                                            <td>{{ countries.0 }}</td>
+                                            <td>{{ countries.1 }}</td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
     </form>
 {% endblock %}
