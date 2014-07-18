@@ -2037,11 +2037,15 @@ ul#id_choice li > label {
     }
 
     .statsTable table td:first-child {
-        width: 85%;
+        width: 80%;
 
     }
     .statsTable table td:last-child {
-        width: 15%;
+        width: 20%;
+    }
+    
+    .statsTable table td:last-child:after {
+        content: '%';
     }
 
 /*  */
