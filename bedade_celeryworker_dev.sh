@@ -10,4 +10,4 @@ source ./venv/bin/activate
 # C_FORCE_ROOT env variable should be set in this case
 # change this in production environment 
 export C_FORCE_ROOT=1
-exec celery -A app worker -l info
+exec celery -A app worker --beat -l info
