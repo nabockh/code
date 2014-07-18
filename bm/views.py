@@ -405,11 +405,36 @@ class BenchmarkDetailView(FormView):
             first = item['count']
             second = str(item['industry'])
             industries.append([second, first])
-        context['role'] = headlines
-        context['geo'] = geo
-        context['countries'] = countries
-        context['industries'] = industries
+        context['role'] = list(headlines)
+        context['role'].insert(0, ['role', 'count'])
+        context['geo'] = list(geo)
+        context['geo'].insert(0, ['geo', 'count'])
+        context['countries'] = list(countries)
+        context['countries'].insert(0, ['countries', 'count'])
+        context['industries'] = list(industries)
+        context['industries'].insert(0, ['industries', 'count'])
 
+        # Count percentage in aggregated lists
+        countries_percentage = list(countries)
+        sum_country = sum([each[1] for each in countries_percentage])
+        for item in countries_percentage:
+            item[1] = round(float(item[1])/sum_country*100)
+        geo_percentage = list(geo)
+        sum_geo = sum([each[1] for each in geo_percentage])
+        for item in geo_percentage:
+            item[1] = round(float(item[1])/sum_geo*100)
+        role_percentage = list(headlines)
+        sum_role = sum([each[1] for each in role_percentage])
+        for item in role_percentage:
+            item[1] = round(float(item[1])/sum_role*100)
+        industry_percentage = list(industries)
+        sum_industry = sum([each[1] for each in industry_percentage])
+        for item in industry_percentage:
+            item[1] = round(float(item[1])/sum_industry*100)
+        context['role_percentage'] = role_percentage
+        context['industry_percentage'] = industry_percentage
+        context['geo_percentage'] = geo_percentage
+        context['countries_percentage'] = countries_percentage
         return context
 
     @method_decorator(login_required_ajax)
