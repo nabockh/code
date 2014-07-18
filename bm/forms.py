@@ -24,7 +24,7 @@ class CreateBenchmarkStep12Form(forms.Form):
         super(CreateBenchmarkStep12Form, self).__init__(data=data, *args, **kwargs)
         self.fields['geo'].choices = list(Region.regions.values_list('id', 'name').order_by('name'))
         self.fields['industry'].choices = list(LinkedInIndustry.get_proposal(user.contacts))
-        question_type = int(data and data.get('0-question_type', '1') or '1')
+        question_type = int(data and data.get(kwargs['prefix'] + '-question_type', '1') or '1')
         if question_type == Question.MULTIPLE or question_type == Question.RANKING:
             self.fields['units'].required = False
             self.fields['max_number_of_decimal'].required = False
