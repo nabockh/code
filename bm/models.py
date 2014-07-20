@@ -5,7 +5,8 @@ import math
 from app.settings import BENCHMARK_DURATIONS_DAYS
 from django.contrib.sites.models import Site
 from django.core.urlresolvers import reverse
-from django.db import models, IntegrityError
+from django.db import models, IntegrityError, connection
+from django.db.models import Count, F
 from social.models import LinkedInIndustry
 from social_auth.db.django_models import USER_MODEL
 
@@ -32,6 +33,20 @@ class Region(models.Model):
         return self.name
 
 
+class BenchmarkValidManager(models.Manager):
+    def get_queryset(self):
+        return super(BenchmarkValidManager, self).get_queryset()\
+            .annotate(responses_count=Count('question__responses'))\
+            .filter(approved=True, responses_count__gte=F('min_numbers_of_responses'))
+
+
+class BenchmarkPendingManager(models.Manager):
+    def get_queryset(self):
+        return super(BenchmarkPendingManager, self).get_queryset()\
+            .annotate(responses_count=Count('question__responses'))\
+            .filter(end_date__gt=datetime.now())
+
+
 class Benchmark(models.Model):
     name = models.CharField(max_length=45)
     start_date = models.DateField(auto_now_add=True)
@@ -42,6 +57,10 @@ class Benchmark(models.Model):
     _industry = models.ForeignKey(LinkedInIndustry, db_column="industry_id", blank=True, null=True, db_constraint=False, on_delete=models.SET_NULL)
     approved = models.NullBooleanField(blank=True)
     popular = models.BooleanField(default=False)
+
+    objects = models.Manager()
+    valid = BenchmarkValidManager()
+    pending = BenchmarkPendingManager()
 
     def __init__(self, *args, **kwargs):
         super(Benchmark, self).__init__(*args, **kwargs)
@@ -71,6 +90,12 @@ class Benchmark(models.Model):
         count_without_email = self.invites.filter(recipient___email__isnull=True, recipient__user_id__isnull=True).count()
         days_to_sent_via_linkedin = math.ceil(float(count_without_email)/100)
         self.end_date = datetime.now() + timedelta(days=days_to_sent_via_linkedin+BENCHMARK_DURATIONS_DAYS)
+
+    def aggregate(self):
+        cursor = connection.cursor()
+        result = cursor.callproc('benchmark_aggregate', (self.id,))
+        cursor.close()
+        return result
 
     class Meta:
         verbose_name = 'Pending Benchmark'
@@ -222,6 +247,10 @@ class SeriesStatistic(models.Model):
     series = models.CharField(max_length=255)
     sub_series = models.CharField(max_length=255, blank=True, null=True)
     value = models.PositiveIntegerField()
+
+    def __unicode__(self):
+        return '{0}-{1}: {2}'.format(self.series, self.sub_series, self.value) if self.sub_series else \
+               '{0}: {1}'.format(self.series, self.value)
 
 
 class NumericStatistic(models.Model):

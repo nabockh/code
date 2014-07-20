@@ -153,6 +153,8 @@ class BenchmarkCreateWizardView(CookieWizardView):
                     benchmark.invites.add(invite)
 
             link = benchmark.create_link()
+            benchmark.calculate_deadline()
+            benchmark.save()
 
         return HttpResponse(link)
 

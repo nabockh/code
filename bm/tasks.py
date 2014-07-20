@@ -92,3 +92,9 @@ def send_reminders():
         contacts = Contact.objects.raw(query, [benchmark.id])
         Contact.send_mail(benchmark.owner, subject, body, contacts)
 
+
+@periodic_task(run_every=crontab(minute=1, hour=0))
+def benchmark_aggregate():
+    benchmarks = Benchmark.valid.filter(end_date=datetime.now())
+    for benchmark in benchmarks:
+        benchmark.aggregate()
