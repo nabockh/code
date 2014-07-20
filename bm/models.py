@@ -3,10 +3,12 @@ from datetime import datetime, timedelta
 import uuid
 import math
 from app.settings import BENCHMARK_DURATIONS_DAYS
+from bm.utils import BmQuerySet
 from django.contrib.sites.models import Site
 from django.core.urlresolvers import reverse
 from django.db import models, IntegrityError, connection
 from django.db.models import Count, F
+from django.db.models.aggregates import Min
 from social.models import LinkedInIndustry
 from social_auth.db.django_models import USER_MODEL
 
@@ -31,6 +33,12 @@ class Region(models.Model):
 
     def __unicode__(self):
         return self.name
+
+
+class BenchmarkManager(models.Manager):
+    def get_queryset(self):
+        return BmQuerySet(self.model, using=self._db)\
+            .annotate(question_type=Min('question__type'))
 
 
 class BenchmarkValidManager(models.Manager):
@@ -58,13 +66,17 @@ class Benchmark(models.Model):
     approved = models.NullBooleanField(blank=True)
     popular = models.BooleanField(default=False)
 
-    objects = models.Manager()
+    objects = BenchmarkManager()
     valid = BenchmarkValidManager()
     pending = BenchmarkPendingManager()
 
     def __init__(self, *args, **kwargs):
         super(Benchmark, self).__init__(*args, **kwargs)
         self.already_approved = bool(self.approved)
+
+    def select_class(self):
+        if self.question_type == 1:
+            self.__class__ = BenchmarkMultiple
 
     @property
     def industry(self):
@@ -97,9 +109,26 @@ class Benchmark(models.Model):
         cursor.close()
         return result
 
+    @property
+    def charts(self):
+        return {}
+
+
+class BenchmarkMultiple(Benchmark):
+
     class Meta:
-        verbose_name = 'Pending Benchmark'
-        # app_label = 'asx'
+        proxy = True
+        verbose_name = 'Benchmark Multiple'
+
+    @property
+    def charts(self):
+        series = self.series_statistic.values('series', 'value')
+        series = [[str(s['series']), s['value']] for s in series]
+        series.insert(0, ['series', 'count'])
+        return {
+            'pie': series,
+            'column': series,
+        }
 
 
 class BenchmarkInvitation(models.Model):
