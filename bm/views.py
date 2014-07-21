@@ -174,6 +174,20 @@ class BenchmarkHistoryView(ListView):
         return Benchmark.objects.filter(owner=self.request.user).order_by(order_by).select_related('question')
 
 
+class BenchmarkSearchView(ListView):
+    template_name = 'bm/history.html'
+    paginate_by = 10
+    context_object_name = 'benchmark'
+
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs):
+        return super(BenchmarkSearchView, self).dispatch(request, *args, **kwargs)
+
+    def get_queryset(self):
+        order_by = self.request.GET.get('order_by', 'name')
+        return Benchmark.valid.order_by(order_by).select_related('question')
+
+
 class BaseBenchmarkAnswerView(FormView):
     success_url = '/thanks/'
     benchmark = None
@@ -366,6 +380,11 @@ class BenchmarkDetailView(FormView):
                                                                                 'benchmark___industry',
                                                                                 'benchmark__geographic_coverage').first()
             return self.benchmark
+
+    def get_form_kwargs(self):
+        kwargs = super(BenchmarkDetailView, self).get_form_kwargs()
+        kwargs['benchmark'] = self.get_benchmark()
+        return kwargs
 
     def get_context_data(self, **kwargs):
         context = super(BenchmarkDetailView, self).get_context_data(**kwargs)

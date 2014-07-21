@@ -148,6 +148,8 @@ class BenchmarkMultiple(Benchmark):
         proxy = True
         verbose_name = 'Benchmark Multiple'
 
+    available_charts = [('Pie', 'Pie Chart'), ('Column', 'Column Chart')]
+
     @property
     def charts(self):
         series = self.series_statistic.values('series', 'value')
@@ -164,6 +166,8 @@ class BenchmarkRanking(Benchmark):
     class Meta:
         proxy = True
         verbose_name = 'Benchmark Ranking'
+
+    available_charts = [('Pie', 'Pie Chart'), ('Column', 'Column Chart')]
 
     @property
     def charts(self):
@@ -185,6 +189,8 @@ class BenchmarkNumeric(Benchmark):
         proxy = True
         verbose_name = 'Benchmark Open Number'
 
+    available_charts = [('Pie', 'Pie Chart'), ('Column', 'Column Chart'), ('Bell_Curve', 'Bell Curve Chart')]
+
     @property
     def charts(self):
         series = self.series_statistic.values('series', 'sub_series', 'value').order_by('id')
@@ -201,6 +207,8 @@ class BenchmarkRange(Benchmark):
     class Meta:
         proxy = True
         verbose_name = 'Benchmark Range'
+
+    available_charts = [('Pie', 'Pie Chart'), ('Column', 'Column Chart'), ('Line', 'Line Chart')]
 
     @property
     def charts(self):
