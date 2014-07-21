@@ -1,3 +1,4 @@
+from bm.models import Benchmark
 from django.contrib.auth.decorators import login_required
 from django.core.mail import send_mail
 from django.http import HttpResponseRedirect
@@ -41,6 +42,9 @@ class DashboardView(TemplateView):
     def get_context_data(self,*args, **kwargs):
         context = super(DashboardView, self).get_context_data(*args, **kwargs)
         context['user'] = self.request.user
+        context['benchmarks'] = {
+            'pending': Benchmark.pending.filter(owner=self.request.user)
+        }
         return context
 
 

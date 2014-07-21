@@ -74,6 +74,9 @@ class Benchmark(models.Model):
         super(Benchmark, self).__init__(*args, **kwargs)
         self.already_approved = bool(self.approved)
 
+    def __unicode__(self):
+        return self.name
+
     def select_class(self):
         if self.question_type == 1:
             self.__class__ = BenchmarkMultiple
@@ -86,8 +89,15 @@ class Benchmark(models.Model):
     def industry(self, value):
         self._industry = LinkedInIndustry.get(code=value) if str(value).isdigit() else LinkedInIndustry.get(value)
 
-    def __unicode__(self):
-        return self.name
+    @property
+    def days_left(self):
+        delta = self.end_date - datetime.now().date()
+        return delta.days
+
+    @property
+    def progress(self):
+        if hasattr(self, 'responses_count'):
+            return min(int(round(self.responses_count/self.min_numbers_of_responses*100)), 100)
 
     def create_link(self):
         link = BenchmarkLink()
