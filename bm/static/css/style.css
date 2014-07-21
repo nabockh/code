@@ -1325,22 +1325,38 @@ label.btn.btn-primary.auto-width.pull-right.fix {
             background: #3C6081;
         }
     
+    
+
+    .btn-invite {
+        width: 100%;
+        text-align: left;
+    }
+
+    .btn-invite:after {
+        content: "\f0e0";
+        font-family: fontawesome;
+        float: right;
+    }
+
+
     form[role='beta-email'] {
         float: right;
         width: 40%;
     }
+
     form[role='beta-email'] .form-group {
         float: left;
-        width: 80%;
-    
+        width: 80%;    
         margin: 14px 0;
-}
+    }
+
     form[role='beta-email'] .btn-search {
         float: left;
         width: 20%;
         background: #3d6c78; color: #fff; outline: none; border-radius: 0; text-transform: uppercase; height: 25px; line-height: 12px;  
         margin: 14px 0; padding: 0 10px; font-weight: 400;
     }
+
     form[role='beta-email'] .form-control {
         height: 25px; 
         margin-top: 0; border-radius: 0; box-shadow: none; 
@@ -1478,7 +1494,11 @@ label.btn.btn-primary.auto-width.pull-right.fix {
         margin-bottom: 5px;
         line-height: 21px;
         font-size: 14px;
-    }
+    
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+}
 
     .dashboard-progress-block p.info {
         line-height: 18px;
