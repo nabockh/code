@@ -123,6 +123,20 @@ class Benchmark(models.Model):
     def charts(self):
         return {}
 
+    def calc_average_rating(self):
+        all_ratings = BenchmarkRating.objects.filter(benchmark=self)
+        if all_ratings:
+            rating_digits = [rating.rating for rating in all_ratings]
+            average = float(sum(rating_digits))/len(rating_digits)
+        else:
+            average = 0
+        return average
+
+    @property
+    def contributors(self):
+        return self.question.first().responses.count()
+
+
 
 class BenchmarkMultiple(Benchmark):
 
@@ -279,7 +293,6 @@ class BenchmarkRating(models.Model):
     benchmark = models.ForeignKey(Benchmark, related_name='ratings')
     user = models.ForeignKey(USER_MODEL, null=True)
     rating = models.PositiveSmallIntegerField()
-
 
 class SeriesStatistic(models.Model):
     benchmark = models.ForeignKey(Benchmark, on_delete=models.CASCADE, related_name='series_statistic')

@@ -1,3 +1,4 @@
+import json
 from bm.forms import CreateBenchmarkStep12Form, AnswerMultipleChoiceForm, \
     CreateBenchmarkStep3Form, CreateBenchmarkStep4Form, NumericAnswerForm, RangeAnswerForm, RankingAnswerForm, \
     BenchmarkDetailsForm
@@ -446,18 +447,21 @@ class BenchmarkDetailView(FormView):
             with transaction.atomic():
                 benchmark_id = kwargs['bm_id']
                 benchmark = self.get_benchmark(**kwargs)
-                if BenchmarkRating.objects.filter(benchmark=benchmark, user=benchmark.question.first().responses.first().user):
-                    rating = BenchmarkRating.objects.filter(benchmark=benchmark, user=request.user).first()
-                    rating.rating = request.POST.get('rate')
-                    rating.user = request.user
-                    rating.save()
-                elif benchmark.question.first().responses.first().user == request.user:
-                    rating = BenchmarkRating()
-                    rating.rating = request.POST.get('rate')
-                    rating.benchmark_id = benchmark_id
-                    rating.user = request.user
-                    rating.save()
-                    benchmark.ratings.add(rating)
+                # if BenchmarkRating.objects.filter(benchmark=benchmark, user=benchmark.question.first().responses.first().user):
+                if Benchmark.objects.filter(id=benchmark.id, question__responses__user=self.request.user):
+                    if BenchmarkRating.objects.filter(benchmark=benchmark, user=request.user).first():
+                        rating = BenchmarkRating.objects.filter(benchmark=benchmark, user=request.user).first()
+                        rating.rating = request.POST.get('rate')
+                        rating.user = request.user
+                        rating.save()
+                        benchmark.ratings.add(rating)
+                    else:
+                        rating = BenchmarkRating()
+                        rating.rating = request.POST.get('rate')
+                        rating.benchmark_id = benchmark_id
+                        rating.user = request.user
+                        rating.save()
+                        benchmark.ratings.add(rating)
                 else:
                     return HttpResponse(401)
         return HttpResponse(200)
