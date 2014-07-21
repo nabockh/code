@@ -1411,23 +1411,15 @@ label.btn.btn-primary.auto-width.pull-right.fix {
     margin-bottom: 10px;
 }
     
-    .recent-benchmark-link a {
-        color: #fff;
-        background: #41495d;  
-        padding: 8px 20px 8px 10px;
+    .recent-benchmark-link a {  
         display: block;
         text-decoration: none;
         position: relative;
         transition: background 0.3s;
-    
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
-}
-
-        .recent-benchmark-link a:hover {
-            background: #202c45;
-        }
+    }
 
             .recent-benchmark-link a:hover:after {
                 content: '';
@@ -2045,9 +2037,11 @@ ul#id_choice li > label {
     }
 
     .statsTable table td:first-child {
-        width: 80%;
-
-    }
+        width: 80%;    
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+}
     .statsTable table td:last-child {
         width: 20%;
     }
@@ -2059,6 +2053,10 @@ ul#id_choice li > label {
 /*  */
 
 #geoStats, #industryStats, #countryStats {
+    display: none;
+}
+
+#columnChartHolder, #lineChartHolder, #bellcurveChartHolder {
     display: none;
 }
 

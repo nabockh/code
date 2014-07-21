@@ -24,6 +24,37 @@ $(function () {
             }
     };
 
+    var chartTypeChange = function() {
+        var chartTypeChange = $('#id_Benchmark_Results').find('option:selected').val();
+            if (chartTypeChange == "Pie") {
+                $('#donutChartHolder').show();
+                $('#columnChartHolder').hide();
+                $('#bellcurveChartHolder').hide();
+                $('#lineChartHolder').hide();
+            }
+
+            if (chartTypeChange == "Column") {
+                $('#donutChartHolder').hide();
+                $('#columnChartHolder').show();
+                $('#bellcurveChartHolder').hide();
+                $('#lineChartHolder').hide();
+            }
+
+            if (chartTypeChange == "Bell_Curve") {
+                $('#donutChartHolder').hide();
+                $('#columnChartHolder').hide();
+                $('#bellcurveChartHolder').show();
+                $('#lineChartHolder').hide();
+            }
+
+            if (chartTypeChange == "Line") {
+                $('#donutChartHolder').hide();
+                $('#columnChartHolder').hide();
+                $('#bellcurveChartHolder').hide();
+                $('#lineChartHolder').show();
+            }
+    };
+
     var statisticViewChange = function() {
         var statisticViewChange = $('#id_Contributor_Data').find('option:selected').val();
             if (statisticViewChange == "Role") {
@@ -58,11 +89,15 @@ $(function () {
     sectionStateChangeStep1();
     sectionStateChangeStep3();
     statisticViewChange();
+    chartTypeChange();
     
 
     $( "#id_0-question_type" ).on('change', sectionStateChangeStep1);
     $( "#id_2-question_type" ).on('change', sectionStateChangeStep3);
     $( "#id_Contributor_Data" ).on('change', statisticViewChange);
+    $( "#id_Benchmark_Results" ).on('change', chartTypeChange);
+
+    
 
 
     
@@ -92,6 +127,7 @@ $(function () {
         var csrf = document.cookie.match(/csrftoken=([\w]+)/);        
         $.post(window.location.pathname, {'csrfmiddlewaretoken' : csrf? csrf[1] : null,
                                           'rate' : $(this).attr('data-score')});
+        location.reload();
     });
 
     // Ranking Benchmark functionality

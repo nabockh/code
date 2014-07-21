@@ -199,7 +199,7 @@ class BenchmarkDetailsForm(forms.Form):
     choices = [
         ('Role', 'Role'), ('Geo', 'Geographic'),  ('Country', 'Country'), ('Industry', 'Industry')]
     choices_2 = [
-        ('Pie', 'Pie'), ('Line', 'Line'),  ('Bell_Curve', 'Bell Curve'), ('Cross', 'Cross')]
+        ('Pie', 'Pie Chart'), ('Column', 'Column Chart'), ('Bell_Curve', 'Bell Curve Chart'), ('Line', 'Line Chart')]
 
     def __init__(self, *args, **kwargs):
         super(BenchmarkDetailsForm, self).__init__(*args, **kwargs)
