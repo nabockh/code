@@ -449,13 +449,15 @@ class BenchmarkDetailView(FormView):
                 if BenchmarkRating.objects.filter(benchmark=benchmark, user=benchmark.question.first().responses.first().user):
                     rating = BenchmarkRating.objects.filter(benchmark=benchmark, user=request.user).first()
                     rating.rating = request.POST.get('rate')
+                    rating.user = request.user
                     rating.save()
                 elif benchmark.question.first().responses.first().user == request.user:
                     rating = BenchmarkRating()
                     rating.rating = request.POST.get('rate')
                     rating.benchmark_id = benchmark_id
+                    rating.user = request.user
                     rating.save()
-                    benchmark.rating.add(rating)
+                    benchmark.ratings.add(rating)
                 else:
                     return HttpResponse(401)
         return HttpResponse(200)
