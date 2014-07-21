@@ -108,7 +108,7 @@
             <div class='col-md-9'>
                 <p>{{ benchmark.question.first.description }}</p>
                 <p class='info'>
-                    <span><strong>Submitted by: </strong><span class='color-teal'>{{ benchmark.owner }}</span></span>
+                    <span><strong>Submitted by: </strong><span class='color-teal'>{{ benchmark.owner.first_name }} {{ benchmark.owner.last_name }}</span></span>
                     <span><strong>Industry: </strong>{{ benchmark.industry }}</span>
                     <span><strong>Geography: </strong>{{ benchmark.geographic_coverage.first.name }}</span>
                     <span><strong>Published: </strong>{{ benchmark.start_date }}</span>

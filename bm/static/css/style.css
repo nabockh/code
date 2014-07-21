@@ -69,6 +69,11 @@ ul.errorlist {
     color: #5D828B;
 }
 
+.text-teal {
+    color: #608a94;    
+}
+
+
 .text-do-wrap {
     white-space: normal !important;
     overflow: visible !important;
@@ -903,9 +908,8 @@ form[role='search'] .btn-search {
 
     .benchmark-help p span {
         padding-right: 20px;
-    
         white-space: nowrap;
-}
+    }
 
     .benchmark-help span span.color-teal {
         color: #94a6c3;
@@ -1367,7 +1371,7 @@ label.btn.btn-primary.auto-width.pull-right.fix {
     
 .navbar>.container .navbar-brand {
     margin-left: 0;
-    max-width: 130px;
+    max-width: 128px;
 }
 
     .navbar-brand img {
@@ -1665,7 +1669,8 @@ label.btn.btn-primary.auto-width.pull-right.fix {
     .rated-value .fill-value {
         height: 13px;
         background-image: url('../img/stars_filled.png');
-    }
+    
+}
 
 .rating {
   unicode-bidi: bidi-override;
@@ -1757,6 +1762,72 @@ label.btn.btn-primary.auto-width.pull-right.fix {
     display: inline-block;
     line-height: 36px;
     cursor: pointer;
+}
+
+/* TABLE */
+
+table.results {
+    width: 100%;
+    border: 1px solid #dedede;
+    font-size: 12px;
+    font-weight: 400;
+}
+
+table.results thead {
+    background: #333;
+}
+
+table.results thead th a {
+    color: #fff;
+    text-decoration: none;
+    display: block;
+    text-transform: uppercase;
+    font-weight: bold;
+    font-size: 12px;
+}
+
+table.results thead th {
+    padding: 5px 15px;
+    white-space: nowrap;
+}
+
+table.results tbody td {
+    padding: 10px 15px;
+    vertical-align: top;
+    line-height: 16px;
+}
+
+table.results tbody td.participants {
+    text-align: center;
+}
+
+table.results tbody td.benchmark {
+    width: 33.333333%;
+}
+
+    table.results tbody td.benchmark .benchmark_query {
+        margin-top: 5px;
+    }
+
+table.results tbody td.date, table.results tbody td.owner, table.results tbody td.participants, table.results tbody td.rating {
+    width: 16.66666667%;
+}
+
+table.results thead th a:hover:after {
+    content: "\f0dd";
+    font-family: fontawesome;
+    vertical-align: top;
+    line-height: 20px;
+    padding-left: 5px;
+}
+
+tr.benchmark {
+    background: #fff;
+    border-bottom: 1px solid #dedede;
+}
+
+tr.benchmark:nth-child(even) {
+    background: #eff0f2;
 }
 
 /* 5 columns fix */
@@ -2065,6 +2136,11 @@ ul#id_choice li > label {
 
 #columnChartHolder, #lineChartHolder, #bellcurveChartHolder {
     display: none;
+
+}
+
+#columnChartHolder, #lineChartHolder, #bellcurveChartHolder, #donutChartHolder {
+    min-height: 238px;
 }
 
 .statGraph {

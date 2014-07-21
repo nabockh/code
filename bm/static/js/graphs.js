@@ -61,10 +61,22 @@ google.load("visualization", "1", {packages:["corechart"]});
             height: 238,
             chartArea: { 
                 left: 45, 
-                top: 25, 
+                top: 35, 
                 width: "85%", 
-                height: "90%" 
+                height: "65%" 
+            },
+            colors: [
+                '#202C45',
+                '#41495D',
+                '#8592B2',
+                '#98b0b3',
+                '#608a94',
+                '#33626e'
+            ],
+            bar: {
+                groupWidth: 30
             }
+
         };
 
     var donutChart = new google.visualization.PieChart(document.getElementById('donutChart'));
