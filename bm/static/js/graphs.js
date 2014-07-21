@@ -74,7 +74,7 @@ google.load("visualization", "1", {packages:["corechart"]});
                 '#33626e'
             ],
             bar: {
-                groupWidth: 30
+                groupWidth: 50
             }
 
         };
