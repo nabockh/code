@@ -35,12 +35,12 @@
                             </div>
                         </div>
                         <div class='benchmark-footer text-center'>
-                            <span class='color-blue'><i class='fa fa-user'></i> 125 Contributors</span>
+                            <span class='color-blue'><i class='fa fa-user'></i> {{ benchmark.contributors }} Contributors</span>
                             <span class='separator'></span>
                             <span class='rated-value'>
-                                <div class='fill-value' style='width: 72%;'></div>
+                                <div class='fill-value' style='width: {% widthratio 100 benchmark.calc_average_rating 1 %}%'></div>
                             </span>
-                            <span class='color-grey'>(17)</span>
+                            <span class='color-grey'>({{ benchmark.calc_average_rating }})</span>
                             <a href='#' class="btn btn-primary btn-lg" data-toggle="modal" data-target="#rating">Rate this benchmark <i class='fa fa-star'></i></a>
                         </div>
                     </div>
