@@ -63,7 +63,25 @@ $(function () {
     $( "#id_0-question_type" ).on('change', sectionStateChangeStep1);
     $( "#id_2-question_type" ).on('change', sectionStateChangeStep3);
     $( "#id_Contributor_Data" ).on('change', statisticViewChange);
+
+
+    
+    $( ".dashboard-progress-block .progress .progress-bar" ).each(function() {
+        var dataProgress = $(this).attr('aria-valuenow');
+        if (dataProgress <= 33) {
+            $(this).parents('.dashboard-progress-block').addClass('one-third');
+        }
+
+        else if (dataProgress >= 66) {
+            $(this).parents('.dashboard-progress-block').addClass('three-third');
+        }
+
+        else {
+            $(this).parents('.dashboard-progress-block').addClass('two-third');   
+        }
+    });    
 });
+
 
 
 

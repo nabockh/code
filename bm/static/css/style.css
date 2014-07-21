@@ -1486,28 +1486,36 @@ label.btn.btn-primary.auto-width.pull-right.fix {
             font-weight: bold;
         }
 
-    .dashboard-progress-block:nth-of-type(3n+1) .progress-bar {
-        background-color: #202c45;
+    .dashboard-progress-block.one-third .progress-bar {
+        background: #8ba7ae;
     }
 
-    .dashboard-progress-block:nth-of-type(3n+1) p.info > span {
-        color: #202c45;
+    .dashboard-progress-block.one-third p.info > span {
+        color: #8ba7ae;
     }
-
-    .dashboard-progress-block:nth-of-type(3n+2) .progress-bar {
-        background-color: #8592b2;
+   
+    .dashboard-progress-block.two-third .progress-bar {
+        background: #8592b2;
     }
-
-    .dashboard-progress-block:nth-of-type(3n+2) p.info > span {
+    
+    .dashboard-progress-block.two-third p.info > span {
         color: #8592b2;
     }
 
-    .dashboard-progress-block:nth-of-type(3n+3) .progress-bar {
-        background-color: #608a94;
+    .dashboard-progress-block.three-third .progress-bar {
+        background: #202c45;
     }
 
-    .dashboard-progress-block:nth-of-type(3n+3) p.info > span {
-        color: #608a94;
+    .dashboard-progress-block.three-third p.info > span {
+        color: #202c45;
+    }
+   
+    .progress-bar[aria-valuenow="0"] {
+        padding-right: 0;
+        padding-left: 10px;
+        background: none;
+        color: #4b4b4b;
+        box-shadow: none;
     }
 
 /* SLIDER */
