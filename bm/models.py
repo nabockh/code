@@ -97,7 +97,7 @@ class Benchmark(models.Model):
     @property
     def progress(self):
         if hasattr(self, 'responses_count'):
-            return min(int(round(self.responses_count/self.min_numbers_of_responses*100)), 100)
+            return min(int(round(float(self.responses_count)/self.min_numbers_of_responses*100)), 100)
 
     def create_link(self):
         link = BenchmarkLink()
