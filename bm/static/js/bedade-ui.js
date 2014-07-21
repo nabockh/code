@@ -69,15 +69,15 @@ $(function () {
     $( ".dashboard-progress-block .progress .progress-bar" ).each(function() {
         var dataProgress = $(this).attr('aria-valuenow');
         if (dataProgress <= 33) {
-            $(this).addClass('one-third');
+            $(this).parents('.dashboard-progress-block').addClass('one-third');
         }
 
         else if (dataProgress >= 66) {
-            $(this).addClass('three-third');
+            $(this).parents('.dashboard-progress-block').addClass('three-third');
         }
 
         else {
-            $(this).addClass('two-third');   
+            $(this).parents('.dashboard-progress-block').addClass('two-third');   
         }
     });    
 });
