@@ -501,7 +501,11 @@ class ExcelDownloadView(BenchmarkDetailView):
         basic_info = [benchmark.name, question.label, description, benchmark.owner.first_name + ' ' +benchmark.owner.last_name]
         # set info worksheet settings
         info_worksheet = workbook.add_worksheet('Basic information')
-        graph_worksheet = workbook.add_worksheet('Graphs')
+        countries_worksheet = workbook.add_worksheet('Countries')
+        industry_worksheet = workbook.add_worksheet('Industry')
+        role_worksheet = workbook.add_worksheet('Role')
+        geo_worksheet = workbook.add_worksheet('Geo')
+        contributor_worksheet = workbook.add_worksheet('Contributor Stats')
         col = 1
         row = 0
         cell_format = workbook.add_format({'bold': True})
@@ -514,10 +518,122 @@ class ExcelDownloadView(BenchmarkDetailView):
             info_worksheet.write(row, col, info)
             row += 1
         context = self.get_context_data(**kwargs)
+
+        # Graph worksheet settings
+        # Countries stat data worksheet
+        chart = workbook.add_chart({'type': 'pie'})
+        countries_stat = context['countries_percentage']
+        countries_worksheet.set_column(0, 1, 30)
+        countries_data = [
+            [countrie[0] for countrie in countries_stat],
+            [countrie[1] for countrie in countries_stat],
+        ]
+        countries_worksheet.write_column('A1', countries_data[0])
+        countries_worksheet.write_column('B1', countries_data[1])
+        chart.add_series({
+            'categories': '=Countries!$A$1:$A${0}'.format(len(countries_stat)),
+            'values':     '=Countries!$B$1:$B${0}'.format(len(countries_stat)),
+        })
+        chart.set_chartarea({
+            'border': {'color': 'black'},
+            'fill':   {'color': 'white'}
+        })
+        countries_worksheet.insert_chart('C3', chart)
+
+        # industry stat data worksheet
+        chart = workbook.add_chart({'type': 'pie'})
+        industry_worksheet.set_column(0, 1, 30)
+        industry_stat = context['industry_percentage']
+        industry_data = [
+            [industry[0] for industry in industry_stat],
+            [industry[1] for industry in industry_stat],
+        ]
+        industry_worksheet.write_column('A1', industry_data[0])
+        industry_worksheet.write_column('B1', industry_data[1])
+        chart.add_series({
+            'categories': '=Industry!$A$1:$A${0}'.format(len(industry_stat)),
+            'values':     '=Industry!$B$1:$B${0}'.format(len(industry_stat)),
+        })
+        chart.set_chartarea({
+            'border': {'color': 'black'},
+            'fill':   {'color': 'white'}
+        })
+        industry_worksheet.insert_chart('C3', chart)
+
+        # role stat data worksheet
+        chart = workbook.add_chart({'type': 'pie'})
+        role_worksheet.set_column(0, 1, 30)
+        role_stat = context['role_percentage']
+        role_data = [
+            [role[0] for role in role_stat],
+            [role[1] for role in role_stat],
+        ]
+        role_worksheet.write_column('A1', role_data[0])
+        role_worksheet.write_column('B1', role_data[1])
+        chart.add_series({
+            'categories': '=Role!$A$1:$A${0}'.format(len(role_stat)),
+            'values':     '=Role!$B$1:$B${0}'.format(len(role_stat)),
+        })
+        chart.set_chartarea({
+            'border': {'color': 'black'},
+            'fill':   {'color': 'white'}
+        })
+        role_worksheet.insert_chart('C3', chart)
+
+        # Geo stat data worksheet
+        chart = workbook.add_chart({'type': 'pie'})
+        geo_worksheet.set_column(0, 1, 30)
+        geo_stat = context['geo_percentage']
+        geo_data = [
+            [geo[0] for geo in geo_stat],
+            [geo[1] for geo in geo_stat],
+        ]
+        geo_worksheet.write_column('A1', geo_data[0])
+        geo_worksheet.write_column('B1', geo_data[1])
+        chart.add_series({
+            'categories': '=Geo!$A$1:$A${0}'.format(len(geo_stat)),
+            'values':     '=Geo!$B$1:$B${0}'.format(len(geo_stat)),
+        })
+        chart.set_chartarea({
+            'border': {'color': 'black'},
+            'fill':   {'color': 'white'}
+        })
+        geo_worksheet.insert_chart('C3', chart)
+
+        #Contributor results charts
+        # question_type = benchmark.question.first().type
+        # if question_type == 1:
+        #     contributor_results = benchmark.charts['pie'][1:]
+        #     chart = workbook.add_chart({'type': 'pie'})
+        # elif question_type == 2:
+        #     contributor_results = benchmark.charts['column']
+        #     chart = workbook.add_chart({'type': 'column'})
+        # elif question_type == 3:
+        #     contributor_results = benchmark.charts['pie'][1:]
+        #     chart = workbook.add_chart({'type': 'pie'})
+        # elif question_type == 4:
+        #     contributor_results = benchmark.charts['pie'][1:]
+        #     chart = workbook.add_chart({'type': 'pie'})
+        #
+        # contributor_worksheet.set_column(0, 1, 30)
+        # i = 1
+        # for result in contributor_results:
+        #     contributor_worksheet.write_row('A{0}'.format(i), result)
+        #     i+=1
+        #
+        # chart.add_series({
+        #     'categories': '=Contributor Stats!$A$2:$A${0}'.format(len(contributor_results)),
+        #     'values':     '=Contributor Stats!$B$2:$D${0}'.format(len(contributor_results)),
+        # })
+        #
+        # chart.set_chartarea({
+        #     'border': {'color': 'black'},
+        #     'fill':   {'color': 'white'}
+        # })
+        # contributor_worksheet.insert_chart('E3', chart)
+
         workbook.close()
         output.seek(0)
-        # Graph worksheet settings
-
 
         response = HttpResponse(output.read(), content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
         response['Content-Disposition'] = 'attachment; filename={0}.xlsx'.format(benchmark.name)
