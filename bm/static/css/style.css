@@ -446,9 +446,11 @@ input.btn.full-width {
     }
 
         .colorblock.footer p.bigger {
-            font-size: 38px;
             margin: 0 0 10px;
-            line-height: 38px;
+        }
+        
+        .colorblock.footer p.bigger img {
+            width: 130px;
         }
 
         .colorblock.footer .lrg {
@@ -1365,7 +1367,12 @@ label.btn.btn-primary.auto-width.pull-right.fix {
     
 .navbar>.container .navbar-brand {
     margin-left: 0;
+    max-width: 130px;
 }
+
+    .navbar-brand img {
+        width: 100%;
+    }
 
 /* DASHBOARD */
 
