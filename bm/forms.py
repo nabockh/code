@@ -175,6 +175,7 @@ class RangeAnswerForm(forms.Form):
         self.fields['max'] = forms.IntegerField(max_value=max_value)
         self.fields['min'] = forms.IntegerField(min_value=min_value)
 
+
 class RankingAnswerForm(forms.Form):
     def __init__(self, ranks, *args, **kwargs):
         super(RankingAnswerForm, self).__init__(*args, **kwargs)
@@ -198,11 +199,9 @@ class DeclineBenchmarkForm(forms.Form):
 class BenchmarkDetailsForm(forms.Form):
     choices = [
         ('Role', 'Role'), ('Geo', 'Geographic'),  ('Country', 'Country'), ('Industry', 'Industry')]
-    choices_2 = [
-        ('Pie', 'Pie Chart'), ('Column', 'Column Chart'), ('Bell_Curve', 'Bell Curve Chart'), ('Line', 'Line Chart')]
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, benchmark, *args, **kwargs):
         super(BenchmarkDetailsForm, self).__init__(*args, **kwargs)
-        self.fields['Benchmark_Results'] = forms.ChoiceField(choices=self.choices_2)
+        self.fields['Benchmark_Results'] = forms.ChoiceField(choices=benchmark.available_charts)
         self.fields['Contributor_Data'] = forms.ChoiceField(choices=self.choices)
 
