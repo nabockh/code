@@ -214,7 +214,7 @@ class BenchmarkRange(Benchmark):
         return {
             'pie': series1,
             'column': series1,
-            'xy': series2,
+            'line': series2,
         }
 
 
