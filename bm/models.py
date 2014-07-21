@@ -1,9 +1,8 @@
-from copy import copy
 from datetime import datetime, timedelta
 import uuid
 import math
 from app.settings import BENCHMARK_DURATIONS_DAYS
-from bm.utils import BmQuerySet
+from bm.utils import BmQuerySet, ArrayAgg
 from django.contrib.sites.models import Site
 from django.core.urlresolvers import reverse
 from django.db import models, IntegrityError, connection
@@ -78,8 +77,14 @@ class Benchmark(models.Model):
         return self.name
 
     def select_class(self):
-        if self.question_type == 1:
+        if self.question_type == Question.MULTIPLE:
             self.__class__ = BenchmarkMultiple
+        elif self.question_type == Question.RANKING:
+            self.__class__ = BenchmarkRanking
+        elif self.question_type == Question.NUMERIC:
+            self.__class__ = BenchmarkNumeric
+        elif self.question_type == Question.RANGE:
+            self.__class__ = BenchmarkRange
 
     @property
     def industry(self):
@@ -137,7 +142,6 @@ class Benchmark(models.Model):
         return self.question.first().responses.count()
 
 
-
 class BenchmarkMultiple(Benchmark):
 
     class Meta:
@@ -152,6 +156,65 @@ class BenchmarkMultiple(Benchmark):
         return {
             'pie': series,
             'column': series,
+        }
+
+
+class BenchmarkRanking(Benchmark):
+
+    class Meta:
+        proxy = True
+        verbose_name = 'Benchmark Ranking'
+
+    @property
+    def charts(self):
+        series1 = self.series_statistic.values('series', 'sub_series', 'value').order_by('series')
+        series1 = [[str(s['series'] + '-' + s['sub_series']), s['value']] for s in series1]
+        series1.insert(0, ['series', 'count'])
+        series2 = self.series_statistic.values('series').annotate(count=ArrayAgg('value')).order_by('series')
+        series2 = [[str(s['series'])] + s['count'][::-1] for s in series2]
+        series2.insert(0, ['series'] + range(1, len(s['count']) + 1))
+        return {
+            'pie': series1,
+            'column': series2,
+        }
+
+
+class BenchmarkNumeric(Benchmark):
+
+    class Meta:
+        proxy = True
+        verbose_name = 'Benchmark Open Number'
+
+    @property
+    def charts(self):
+        series = self.series_statistic.values('series', 'sub_series', 'value').order_by('id')
+        series = [[str(s['series'] + '-' + s['sub_series']), s['value']] for s in series]
+        series.insert(0, ['series', 'count'])
+        return {
+            'pie': series,
+            'column': series,
+        }
+
+
+class BenchmarkRange(Benchmark):
+
+    class Meta:
+        proxy = True
+        verbose_name = 'Benchmark Range'
+
+    @property
+    def charts(self):
+        series = self.series_statistic.values('series', 'sub_series', 'value').order_by('id')
+        series1 = [[str(s['series'] + '-' + s['sub_series']), s['value']] for s in series]
+        series1.insert(0, ['series', 'count'])
+        series2 = [['series', 'count']]
+        for s in series:
+            series2.append([s['series'], s['value']])
+            series2.append([s['sub_series'], s['value']])
+        return {
+            'pie': series1,
+            'column': series1,
+            'line': series2,
         }
 
 
