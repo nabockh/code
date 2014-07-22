@@ -158,7 +158,7 @@ class BenchmarkCreateWizardView(CookieWizardView):
             benchmark.calculate_deadline()
             benchmark.save()
 
-        return HttpResponse(link)
+        return redirect('bm_dashboard')
 
 
 class BenchmarkHistoryView(ListView):
@@ -190,7 +190,7 @@ class BenchmarkSearchView(ListView):
 
 
 class BaseBenchmarkAnswerView(FormView):
-    success_url = '/thanks/'
+    success_url = '/dashboard'
     benchmark = None
 
     # def __init__(self, *args, **kwargs):
