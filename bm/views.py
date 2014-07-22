@@ -373,6 +373,7 @@ class BenchmarkDetailView(FormView):
     template_name = 'bm/details_graphs.html'
 
     def get_benchmark(self, **kwargs):
+
         if hasattr(self, 'benchmark'):
             return self.benchmark
         else:
@@ -493,6 +494,7 @@ class BenchmarkAggregateView(BenchmarkDetailView):
         self.get_benchmark().aggregate()
         return HttpResponse('Done')
 
+
 class ExcelDownloadView(BenchmarkDetailView):
 
     def get(self, *args, **kwargs):
@@ -607,38 +609,73 @@ class ExcelDownloadView(BenchmarkDetailView):
         })
         geo_worksheet.insert_chart('C3', chart)
 
-        #Contributor results charts
-        # question_type = benchmark.question.first().type
-        # if question_type == 1:
-        #     contributor_results = benchmark.charts['pie'][1:]
-        #     chart = workbook.add_chart({'type': 'pie'})
-        # elif question_type == 2:
-        #     contributor_results = benchmark.charts['column']
-        #     chart = workbook.add_chart({'type': 'column'})
-        # elif question_type == 3:
-        #     contributor_results = benchmark.charts['pie'][1:]
-        #     chart = workbook.add_chart({'type': 'pie'})
-        # elif question_type == 4:
-        #     contributor_results = benchmark.charts['pie'][1:]
-        #     chart = workbook.add_chart({'type': 'pie'})
-        #
-        # contributor_worksheet.set_column(0, 1, 30)
-        # i = 1
-        # for result in contributor_results:
-        #     contributor_worksheet.write_row('A{0}'.format(i), result)
-        #     i+=1
-        #
-        # chart.add_series({
-        #     'categories': '=Contributor Stats!$A$2:$A${0}'.format(len(contributor_results)),
-        #     'values':     '=Contributor Stats!$B$2:$D${0}'.format(len(contributor_results)),
-        # })
-        #
-        # chart.set_chartarea({
-        #     'border': {'color': 'black'},
-        #     'fill':   {'color': 'white'}
-        # })
-        # contributor_worksheet.insert_chart('E3', chart)
-
+        # Contributor results charts
+        question_type = benchmark.question.first().type
+        if question_type == 1:
+            contributor_results = benchmark.charts['pie'][1:]
+            chart = workbook.add_chart({'type': 'pie'})
+        elif question_type == 2:
+            contributor_results = benchmark.charts['column']
+            chart = workbook.add_chart({'type': 'column'})
+        elif question_type == 3:
+            contributor_results = benchmark.charts['pie']
+            chart = workbook.add_chart({'type': 'bell'})
+        elif question_type == 5:
+            contributor_results = benchmark.charts['line']
+            chart = workbook.add_chart({'type': 'line'})
+        contributor_worksheet.set_column(0, 1, 30)
+        if question_type == 1:
+            data = [
+                [x[0] for x in contributor_results],
+                [x[1] for x in contributor_results]
+            ]
+            headings = ['Series', 'Count']
+            contributor_worksheet.write_column('A1', data[0])
+            contributor_worksheet.write_column('B1', data[1])
+            chart.add_series({
+                'categories': '=Contributor Stats!$A$1:$A${0}'.format(len(contributor_results)),
+                'values':     '=Contributor Stats!$B$1:$B${0}'.format(len(contributor_results)),
+            })
+            chart.set_chartarea({
+                'border': {'color': 'black'},
+                'fill':   {'color': 'white'}
+            })
+            contributor_worksheet.insert_chart('F3', chart)
+        elif question_type == 2:
+            i = 1
+            for result in contributor_results:
+                contributor_worksheet.write_row('A{0}'.format(i), result)
+                i+=1
+            chart.add_series({'categories': '=Contributor Stats!$A$1:$A$4'.format(len(contributor_results))})
+            chart.add_series({'values': '=Contributor Stats!$B$2:$B${0}'.format(len(contributor_results))})
+            chart.add_series({'values': '=Contributor Stats!$C$2:$C${0}'.format(len(contributor_results))})
+            chart.add_series({'values': '=Contributor Stats!$D$2:$D${0}'.format(len(contributor_results))})
+            chart.set_title ({'name': benchmark.name})
+            chart.set_chartarea({
+                'border': {'color': 'black'},
+                'fill':   {'color': 'white'}
+            })
+            contributor_worksheet.insert_chart('F3', chart)
+        elif question_type == 3:
+            pass
+        elif question_type == 5:
+            data = [
+                [x[0] for x in contributor_results[1:]],
+                [x[1] for x in contributor_results[1:]]
+            ]
+            headings = ['Series', 'Count']
+            contributor_worksheet.write_row('A1', headings)
+            contributor_worksheet.write_column('A2', data[0])
+            contributor_worksheet.write_column('B2', data[1])
+            chart.add_series({
+                'categories': '=Contributor Stats!$A$2:$A${0}'.format(len(contributor_results)),
+                'values':     '=Contributor Stats!$B$2:$B${0}'.format(len(contributor_results)),
+            })
+            chart.set_chartarea({
+                'border': {'color': 'black'},
+                'fill':   {'color': 'white'}
+            })
+            contributor_worksheet.insert_chart('F3', chart)
         workbook.close()
         output.seek(0)
 

@@ -106,7 +106,7 @@
                 </p>
             </div>
             <div class='col-md-3'>
-                <a href='details/excel' data-export='excel'>Export Results to Excel</a>
+                <a href='{% url 'bm_excel' benchmark.id %}' data-export='excel'>Export Results to Excel</a>
             </div>
         </div>
     </div>
@@ -116,12 +116,12 @@
 </div>
 
 <!-- Modal -->
-<div class="modal fade" id="rating" tabindex="-1" role="dialog" aria-labelledby="ratingLabel" aria-hidden="true">
+<div class="modal fade" id="rating" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-sm">
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true"><i class='fa fa-times-circle'></i></span><span class="sr-only">Close</span></button>
-        <h4 class="modal-title" id="rating">Rate Benchmark</h4>
+        <h4 class="modal-title" id="myModalLabel">Rate Benchmark</h4>
       </div>
       <div class="modal-body">
         <p>Please rate the benchmark <strong>{{ benchmark.name }}</strong> results based on your level of confidence that the data is accurate.</p>
