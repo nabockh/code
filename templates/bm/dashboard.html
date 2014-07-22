@@ -74,10 +74,15 @@
                                 {% for benchmark in history|slice:":5" %}
                                   <div class='recent-benchmark-link'>
                                     <a href='{{ benchmark.link }}' title='{{ benchmark.name }}'>{{ benchmark.name }}</a>
-                                </div>
-                                {% endfor %}                          
+                                 </div>
+
+                                {% empty %}
+                                <div><strong>You have no benchmark in your history.</strong></div>
+                                <div><a href='/benchmark/create'>Gether the data you need <i class="fa fa-arrow-circle-right"></i></a></div>
+
+                                {% endfor %}                       
                                 <hr>
-                                <a class='pull-right' href='#'><i class='fa fa-list'> View All</i></a>
+                                <a class='pull-right' href='/benchmark/history'><i class='fa fa-list'> View All</i></a>
                             </div>
                         </div>
                       </div>
@@ -93,7 +98,7 @@
                             <div class="panel-body">
                                 {% for benchmark in benchmarks.pending %}
                                 <div class="dashboard-progress-block">
-                                    <p class="title">{{ benchmark.name }}</p>
+                                    <p class="title" title='{{ benchmark.name }}'>{{ benchmark.name }}</p>
                                     <p class="info">
                                         <span>{{ benchmark.responses_count }} of {{ benchmark.min_numbers_of_responses }}</span>
                                          Responces Recieved | 
@@ -106,11 +111,16 @@
                                         </div>
                                     </div>
                                 </div>
+
+                                {% empty %}
+                                <div><strong>You have no open benchmarks.</strong></div>
+                                <div><a href='/benchmark/create'>Gether the data you need <i class="fa fa-arrow-circle-right"></i></a></div>
                                 {% endfor %}
                             </div>
                         </div>
                       </div>
                     </div>
+                    <a href="#" class="btn btn-primary btn-invite">Invite a collegue to join bedade</a>
                 </div>
                 <div class='col-md-7'>
                     <div class='col-md-12 bordered bgwhite margin-bot'>

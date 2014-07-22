@@ -1325,22 +1325,38 @@ label.btn.btn-primary.auto-width.pull-right.fix {
             background: #3C6081;
         }
     
+    
+
+    .btn-invite {
+        width: 100%;
+        text-align: left;
+    }
+
+    .btn-invite:after {
+        content: "\f0e0";
+        font-family: fontawesome;
+        float: right;
+    }
+
+
     form[role='beta-email'] {
         float: right;
         width: 40%;
     }
+
     form[role='beta-email'] .form-group {
         float: left;
-        width: 80%;
-    
+        width: 80%;    
         margin: 14px 0;
-}
+    }
+
     form[role='beta-email'] .btn-search {
         float: left;
         width: 20%;
         background: #3d6c78; color: #fff; outline: none; border-radius: 0; text-transform: uppercase; height: 25px; line-height: 12px;  
         margin: 14px 0; padding: 0 10px; font-weight: 400;
     }
+
     form[role='beta-email'] .form-control {
         height: 25px; 
         margin-top: 0; border-radius: 0; box-shadow: none; 
@@ -1478,7 +1494,11 @@ label.btn.btn-primary.auto-width.pull-right.fix {
         margin-bottom: 5px;
         line-height: 21px;
         font-size: 14px;
-    }
+    
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+}
 
     .dashboard-progress-block p.info {
         line-height: 18px;
@@ -1766,6 +1786,7 @@ label.btn.btn-primary.auto-width.pull-right.fix {
 
 /* TABLE */
 
+
 table.results {
     width: 100%;
     border: 1px solid #dedede;
@@ -1791,6 +1812,18 @@ table.results thead th {
     white-space: nowrap;
 }
 
+
+.search-table {
+    max-height: 500px;
+    overflow: hidden;
+    border: 1px solid #dedede;
+    border-top: none;
+}
+
+    .search-table table {
+        border: none;
+    }
+
 table.results tbody td {
     padding: 10px 15px;
     vertical-align: top;
@@ -1801,7 +1834,7 @@ table.results tbody td.participants {
     text-align: center;
 }
 
-table.results tbody td.benchmark {
+table.results tbody td.benchmark, table.results thead th.benchmark {
     width: 33.333333%;
 }
 
@@ -1809,16 +1842,22 @@ table.results tbody td.benchmark {
         margin-top: 5px;
     }
 
-table.results tbody td.date, table.results tbody td.owner, table.results tbody td.participants, table.results tbody td.rating {
+table.results tbody td.date, table.results tbody td.owner, table.results tbody td.participants, table.results tbody td.rating,
+table.results thead th.date, table.results thead th.owner, table.results thead th.participants, table.results thead th.rating {
     width: 16.66666667%;
 }
 
-table.results thead th a:hover:after {
+table.results thead th a:after {
     content: "\f0dd";
+    color: #333;
     font-family: fontawesome;
     vertical-align: top;
     line-height: 20px;
     padding-left: 5px;
+}
+
+table.results thead th a:hover:after {
+    color: #fff;
 }
 
 tr.benchmark {

@@ -15,7 +15,7 @@
                 </div>
                 <nav class="collapse navbar-collapse bs-navbar-collapse" role="navigation">
                     <ul class='main-nav text-center dashboard-nav'>
-                      <li><a href="#">Dashboard</a></li>
+                      <li><a href="/dashboard">Dashboard</a></li>
                       <li class="dropdown active">
                          <a href="#" class="dropdown-toggle" data-toggle="dropdown">Benchmarks <span class="caret"></span></a>
                          <ul class="dropdown-menu" role="menu">
@@ -62,21 +62,24 @@
             <div class='col-md-12'>
                 <table class='results'>
                     <thead>
-                      <th><a href="?order_by=start_date">Publication Date</a></th>
-                      <th><a href="?order_by=name">Benchmark</a></th>
-                      <th><a href="?order_by=owner">Creator</a></th>
-                      <th><a href="?order_by=participants">Participants</a></th>
-                      <th><a href="?order_by=rating">Rating</a></th>
+                      <th class='date'><a href="?order_by=start_date">Publication Date</a></th>
+                      <th class='benchmark'><a href="?order_by=name">Benchmark</a></th>
+                      <th class='owner '><a href="?order_by=owner">Creator</a></th>
+                      <th class='participants text-center'><a href="?order_by=participants">Participants</a></th>
+                      <th class='rating-field'><a href="?order_by=rating">Rating</a></th>
                     </thead>
+                </table>
+                <div class='search-table'>
+                  <table class='results'>
                     <tbody>                      
                         {% for benchmark in object_list %}
                             <tr class="benchmark">
                                 <td class='date'>{{ benchmark.start_date }}</td>
                                 <td class='benchmark'>
-                                  <div class='text-teal'><strong>{{ benchmark.name }}</strong></div>
+                                  <div class='text-teal'><strong><a href='/benchmark/{{ benchmark.id }}/details'>{{ benchmark.name }}</a></strong></div>
                                   <div class='benchmark_query'>{{ benchmark.question.first.description }}</div>
                                 </td>
-                                <td class='text-teal'>{{ benchmark.owner.first_name }} {{ benchmark.owner.last_name }}</td>
+                                <td class='owner text-teal'>{{ benchmark.owner.first_name }} {{ benchmark.owner.last_name }}</td>
                                 <td class='participants'>{{ benchmark.contributors }}</td>
                                 <td class='rating-field'>
                                   <span class='rated-value'>
@@ -91,6 +94,7 @@
                         {% endfor %}
                     </tbody>
                 </table>
+              </div>
             </div>
         </div>
     </div>
