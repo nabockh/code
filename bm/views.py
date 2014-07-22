@@ -119,6 +119,7 @@ class BenchmarkCreateWizardView(CookieWizardView):
             benchmark.name = step3.cleaned_data['name']
             benchmark.owner = self.request.user
             benchmark.industry = step3.cleaned_data['industry']
+            benchmark.min_numbers_of_responses = step3.cleaned_data['minimum_number_of_answers']
             region = Region.objects.get(pk=step3.cleaned_data['geo'])
             benchmark.save()
             benchmark.geographic_coverage.add(region)
