@@ -1,12 +1,16 @@
 CREATE OR REPLACE FUNCTION benchmark_aggregate(IN bm_id INTEGER)
-  RETURNS VOID AS $$
+  RETURNS INTEGER AS $$
 DECLARE
   type_               INTEGER;
+  from_               INTEGER;
+  to_                 INTEGER;
   rank                VARCHAR;
   position            INTEGER;
   avaliable_ranks     VARCHAR [];
   avaliable_positions INTEGER [];
   aggregated_rank     RECORD;
+  v_groups_count      INTEGER;
+  v_groups_step       INTEGER;
   point1              INTEGER;
   point2              INTEGER;
   count1              INTEGER;
@@ -119,20 +123,51 @@ BEGIN
   END IF;
   IF type_ = 3
   THEN
+    SELECT
+      bm_id as "benchmark_id",
+      min("rn".value),
+      max("rn".value),
+      avg("rn".value),
+      stddev("rn".value)
+    INTO a_point
+    FROM "bm_responsenumeric" AS "rn"
+      INNER JOIN "bm_questionresponse" ON "bm_questionresponse"."id" = "rn"."response_id"
+      INNER JOIN "bm_question" ON "bm_question"."id" = "bm_questionresponse"."question_id"
+      INNER JOIN "bm_benchmark" ON "bm_benchmark"."id" = "bm_question"."benchmark_id"
+    WHERE "bm_benchmark"."id" = bm_id;
     INSERT INTO "bm_numericstatistic" ("benchmark_id", "min", "max", "avg", "sd")
+      VALUES (
+        a_point.benchmark_id, a_point.min, a_point.max, a_point.avg, a_point.stddev
+      );
+    v_groups_count := 3;
+    from_ := a_point.min;
+    to_ := a_point.max - from_;
+    IF to_/v_groups_count = 1 THEN
+      v_groups_count := 2;
+    END IF;
+    to_ := to_ + (v_groups_count - to_%v_groups_count);
+    v_groups_step := CEIL(to_/v_groups_count::float)::INTEGER;
+    INSERT INTO "bm_seriesstatistic" ("benchmark_id", "series", "value")
       (
+        WITH ranges AS (
+          SELECT
+            s::text||'-'||(s + v_groups_step - 1)::text as "range",
+            s as "r_min",
+            s + v_groups_step - 1 as "r_max"
+          FROM generate_series(from_, to_, v_groups_step) AS s)
         SELECT
           bm_id,
-          min("rn".value),
-          max("rn".value),
-          avg("rn".value),
-          stddev("rn".value)
-        FROM "bm_responsenumeric" AS "rn"
+          r.range,
+          count(rn.value)
+        FROM ranges r
+          INNER JOIN bm_responsenumeric rn ON rn.value BETWEEN r.r_min AND r.r_max
           INNER JOIN "bm_questionresponse" ON "bm_questionresponse"."id" = "rn"."response_id"
           INNER JOIN "bm_question" ON "bm_question"."id" = "bm_questionresponse"."question_id"
           INNER JOIN "bm_benchmark" ON "bm_benchmark"."id" = "bm_question"."benchmark_id"
         WHERE "bm_benchmark"."id" = bm_id
+        GROUP BY r.range
       );
+
   END IF;
   IF type_ = 5
   THEN
@@ -159,5 +194,6 @@ BEGIN
     INSERT INTO "bm_seriesstatistic" ("benchmark_id", "series", "sub_series", "value")
     VALUES (bm_id, point1, point2, count2);
   END IF;
+  RETURN bm_id;
 END;
 $$ LANGUAGE plpgsql;

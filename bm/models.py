@@ -194,11 +194,13 @@ class BenchmarkNumeric(Benchmark):
     @property
     def charts(self):
         series = self.series_statistic.values('series', 'sub_series', 'value').order_by('id')
-        series = [[str(s['series'] + '-' + s['sub_series']), s['value']] for s in series]
+        series = [[str(s['series']), s['value']] for s in series]
         series.insert(0, ['series', 'count'])
+        bell_curve = self.numeric_statistic.values('min', 'max', 'avg', 'sd').first()
         return {
             'pie': series,
             'column': series,
+            'bell_curve': bell_curve
         }
 
 
