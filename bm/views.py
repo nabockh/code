@@ -486,6 +486,12 @@ class BenchmarkDetailView(FormView):
         return HttpResponse(200)
 
 
+class BenchmarkAggregateView(BenchmarkDetailView):
+
+    def get(self, *args, **kwargs):
+        self.get_benchmark().aggregate()
+        return HttpResponse('Done')
+
 class ExcelDownloadView(BenchmarkDetailView):
 
     def get(self, *args, **kwargs):
