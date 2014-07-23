@@ -6,9 +6,9 @@ from django.db.models.sql.aggregates import Aggregate
 class BmQuerySet(QuerySet):
 
     def iterator(self):
-        obj = super(BmQuerySet, self).iterator().next()
-        obj.select_class()
-        yield obj
+        for obj in super(BmQuerySet, self).iterator():
+            obj.select_class()
+            yield obj
 
 
 class ArrayAggSql(Aggregate):
