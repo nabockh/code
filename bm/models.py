@@ -77,14 +77,16 @@ class Benchmark(models.Model):
         return self.name
 
     def select_class(self):
-        if self.question_type == Question.MULTIPLE:
-            self.__class__ = BenchmarkMultiple
-        elif self.question_type == Question.RANKING:
-            self.__class__ = BenchmarkRanking
-        elif self.question_type == Question.NUMERIC:
-            self.__class__ = BenchmarkNumeric
-        elif self.question_type == Question.RANGE:
-            self.__class__ = BenchmarkRange
+        from bm.admin import BenchmarkPending
+        if not isinstance(self, BenchmarkPending):
+            if self.question_type == Question.MULTIPLE:
+                self.__class__ = BenchmarkMultiple
+            elif self.question_type == Question.RANKING:
+                self.__class__ = BenchmarkRanking
+            elif self.question_type == Question.NUMERIC:
+                self.__class__ = BenchmarkNumeric
+            elif self.question_type == Question.RANGE:
+                self.__class__ = BenchmarkRange
 
     @property
     def industry(self):
