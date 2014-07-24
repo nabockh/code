@@ -26,7 +26,7 @@ class HomeView(TemplateView):
             recipient_list = User.objects.filter(is_superuser=True).values_list('email', flat=True)
             if recipient_list:
                 send_mail('Customer feedback', comments, last_name + '' + first_name, recipient_list)
-            return HttpResponseRedirect('/thanks/')
+            return HttpResponseRedirect('/')
         else:
             form = ContactForm()
         return render(request, 'core/home.html', {'form': form})
