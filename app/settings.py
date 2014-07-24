@@ -50,6 +50,15 @@ SITE_ID = 1
 # Application definition
 
 INSTALLED_APPS = (
+    'cms',  # django CMS itself
+    'mptt',  # utilities for implementing a modified pre-order traversal tree
+    'menus',  # helper for model independent hierarchical website navigation
+    'south',  # intelligent schema and data migrations
+    'sekizai',  # for javascript and css management
+    'djangocms_admin_style',
+    'djangocms_text_ckeditor',
+    'cmsplugin_cascade',
+
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -64,6 +73,7 @@ INSTALLED_APPS = (
     'core',
     'bm',
     'formadmin',
+    'bootstrap3',
 )
 
 INSTALLED_APPS += ('django_jenkins',)
@@ -80,6 +90,21 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'social_auth.middleware.SocialAuthExceptionMiddleware',
+    'cms.middleware.page.CurrentPageMiddleware',
+    'cms.middleware.user.CurrentUserMiddleware',
+    'cms.middleware.toolbar.ToolbarMiddleware',
+    'cms.middleware.language.LanguageCookieMiddleware',
+)
+
+TEMPLATE_CONTEXT_PROCESSORS = (
+    'django.contrib.auth.context_processors.auth',
+    'django.contrib.messages.context_processors.messages',
+    'django.core.context_processors.i18n',
+    'django.core.context_processors.request',
+    'django.core.context_processors.media',
+    'django.core.context_processors.static',
+    'cms.context_processors.cms_settings',
+    'sekizai.context_processors.sekizai',
 )
 
 ROOT_URLCONF = 'app.urls'
@@ -100,7 +125,11 @@ DATABASES = {
 # Internationalization
 # https://docs.djangoproject.com/en/1.6/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'en'
+
+LANGUAGES = [
+    ('en', 'English'),
+]
 
 TIME_ZONE = 'UTC'
 
@@ -117,9 +146,26 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATIC_ROOT = 'static/'
 
+MEDIA_ROOT = os.path.join(BASE_DIR, "media")
+MEDIA_URL = "/media/"
+
 TEMPLATE_DIRS = (
     os.path.join(BASE_DIR,  'templates'),
 )
+
+CMS_TEMPLATES = (
+    ('base.html', 'Base'),
+    ('layout/two_column_5_7.html', 'Two Columns 5-7'),
+    ('layout/two_column_7_5.html', 'Two Columns 7-5'),
+)
+
+CMS_PLACEHOLDER_CONF = {
+    'Page Content': {
+        'plugins': ['BootstrapContainerPlugin'],
+    },
+}
+
+CMS_CASCADE_PLUGINS = ('bootstrap3',)
 
 CACHES = {
     'default': {

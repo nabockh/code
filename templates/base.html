@@ -1,7 +1,11 @@
 {% extends "base_empty.html" %}
+{% load cms_tags %}
 
 {% block body %}
         {% block navigation %}{% endblock %}
+        <div class="container">
+            {% placeholder "Top Content" %}
+        </div>
         {% block content %}{% endblock %}
         {% block footer %}
             <div class="colorblock footer">

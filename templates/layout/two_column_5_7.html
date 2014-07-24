@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+{% load cms_tags %}
+
+{% block content %}
+    <div class="container margined">
+        <div class='row'>
+                <div class='col-md-5'>{% placeholder "Column 5" %}</div>
+                <div class='col-md-7'>{% placeholder "Column 7" %}</div>
+        </div>
+    </div>
+{% endblock %}

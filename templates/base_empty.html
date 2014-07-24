@@ -1,3 +1,4 @@
+{% load cms_tags sekizai_tags %}
 <!DOCTYPE html>
 <html>
 <head lang="en">
@@ -6,6 +7,7 @@
     {% block meta_tags %}
     {% endblock %}
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css"/>
+    {% render_block "css" %}
     <link rel="stylesheet" href="{{ STATIC_URL }}css/style.css"/>
     <link rel="stylesheet" href="{{ STATIC_URL }}css/jquery.mCustomScrollbar.css"/>
     <link rel="stylesheet" href="{{ STATIC_URL }}css/font-awesome.min.css"/>    
@@ -16,14 +18,14 @@
     <script src="{{ STATIC_URL }}js/jquery-ui.js"></script>
     <script type="text/javascript" src="https://www.google.com/jsapi"></script>
     <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-53c393074940bc43"></script>
-    
+
     {% block js %}{% endblock %}
     <title>{% block title %}Bedade{% endblock %}</title>
 </head>
 <body>
-    
+{% cms_toolbar %}
 {% block body %}{% endblock %}
-
+{% render_block "js" %}
 <script src="{{ STATIC_URL }}js/jquery.mCustomScrollbar.concat.min.js"></script>
 
 <script>
