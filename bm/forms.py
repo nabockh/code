@@ -160,7 +160,7 @@ class NumericAnswerForm(forms.Form):
         super(NumericAnswerForm, self).__init__(*args, **kwargs)
         number = decimals['number_of_decimal']
         value = (pow(10, number) - 1)
-        self.fields['numeric_box'] = forms.IntegerField(max_value=value)
+        self.fields['numeric_box'] = forms.IntegerField(max_value=value, min_value=-value)
 
 
 class RangeAnswerForm(forms.Form):
@@ -172,8 +172,9 @@ class RangeAnswerForm(forms.Form):
         number = decimals['number_of_decimal']
         max_value = (pow(10, number) - 1)
         min_value = (-(pow(10, number) - 1))
-        self.fields['max'] = forms.IntegerField(max_value=max_value)
-        self.fields['min'] = forms.IntegerField(min_value=min_value)
+        self.fields['max'] = forms.IntegerField(max_value=max_value, min_value=min_value)
+        self.fields['min'] = forms.IntegerField(max_value=max_value, min_value=min_value)
+
 
 
 class RankingAnswerForm(forms.Form):

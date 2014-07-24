@@ -15,6 +15,34 @@ from django.template.defaulttags import url
 from django.utils.decorators import method_decorator
 from django.views.generic import FormView
 
+from django.contrib.auth.admin import UserAdmin
+from django.contrib.auth.models import User
+
+admin.site.unregister(User)
+
+
+class CustomUserAdmin(UserAdmin):
+    filter_horizontal = ('user_permissions', 'groups')
+    save_on_top = True
+    list_display = ('username', 'email', 'first_name', 'last_name', 'is_staff', 'last_login')
+
+    def response_change(self, request, obj):
+        if '_send_mail' in request.POST:
+            return HttpResponseRedirect('/admin/send_mail/%s' % obj.id)
+        else:
+            return super(CustomUserAdmin, self).response_change(request, obj)
+
+# Need view to handle form submittion
+
+    def get_urls(self):
+        urls = super(CustomUserAdmin, self).get_urls()
+        my_urls = patterns('',
+            (r'^send_mail/(\d+)$', DeclineView.as_view())
+        )
+        print url
+        return my_urls + urls
+
+admin.site.register(User, CustomUserAdmin)
 
 class ReadOnlyAdminMixin:
 
