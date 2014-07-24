@@ -172,7 +172,11 @@ class BenchmarkHistoryView(ListView):
 
     def get_queryset(self):
         order_by = self.request.GET.get('order_by', 'name')
-        return Benchmark.objects.filter(owner=self.request.user).order_by(order_by).select_related('question')
+        if order_by == 'rating':
+            order_by = 'ratings'
+        elif order_by == 'participants':
+            order_by = '-responses_count'
+        return Benchmark.valid.filter(owner=self.request.user).order_by(order_by).select_related('question')
 
 
 class BenchmarkSearchView(ListView):
