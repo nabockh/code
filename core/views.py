@@ -34,6 +34,7 @@ class HomeView(TemplateView):
 
 class DashboardView(TemplateView):
     template_name = 'bm/dashboard.html'
+    context_object_name = 'benchmark'
 
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
@@ -42,6 +43,7 @@ class DashboardView(TemplateView):
     def get_context_data(self,*args, **kwargs):
         context = super(DashboardView, self).get_context_data(*args, **kwargs)
         context['user'] = self.request.user
+        context['history'] = Benchmark.objects.filter(owner=self.request.user).order_by('end_date')
         context['benchmarks'] = {
             'pending': Benchmark.pending.filter(owner=self.request.user)
         }
