@@ -505,16 +505,20 @@ class ExcelDownloadView(BenchmarkDetailView):
                                                                         'benchmark__geographic_coverage').first()
         output = StringIO.StringIO()
         workbook = xlsxwriter.Workbook(output, {'in_memory': True})
+        bold = workbook.add_format({'bold': True})
         question = benchmark.question.first()
         description = question.description
-        basic_info = [benchmark.name, question.label, description, benchmark.owner.first_name + ' ' +benchmark.owner.last_name]
+        owner = benchmark.owner.first_name + ' ' +benchmark.owner.last_name
+        basic_info = [benchmark.name, question.label, description]
+        if owner:
+            basic_info.append(owner)
         # set info worksheet settings
         info_worksheet = workbook.add_worksheet('Basic information')
+        contributor_worksheet = workbook.add_worksheet('Contributor Stats')
         countries_worksheet = workbook.add_worksheet('Countries')
         industry_worksheet = workbook.add_worksheet('Industry')
         role_worksheet = workbook.add_worksheet('Role')
         geo_worksheet = workbook.add_worksheet('Geo')
-        contributor_worksheet = workbook.add_worksheet('Contributor Stats')
         col = 1
         row = 0
         cell_format = workbook.add_format({'bold': True})
@@ -537,11 +541,13 @@ class ExcelDownloadView(BenchmarkDetailView):
             [countrie[0] for countrie in countries_stat],
             [countrie[1] for countrie in countries_stat],
         ]
-        countries_worksheet.write_column('A1', countries_data[0])
-        countries_worksheet.write_column('B1', countries_data[1])
+        headings = ['Country', 'Percentage %']
+        countries_worksheet.write_row('A1', headings, bold)
+        countries_worksheet.write_column('A2', countries_data[0])
+        countries_worksheet.write_column('B2', countries_data[1])
         chart.add_series({
-            'categories': '=Countries!$A$1:$A${0}'.format(len(countries_stat)),
-            'values':     '=Countries!$B$1:$B${0}'.format(len(countries_stat)),
+            'categories': '=Countries!$A$2:$A${0}'.format(len(countries_stat)),
+            'values':     '=Countries!$B$2:$B${0}'.format(len(countries_stat)),
         })
         chart.set_chartarea({
             'border': {'color': 'black'},
@@ -557,11 +563,13 @@ class ExcelDownloadView(BenchmarkDetailView):
             [industry[0] for industry in industry_stat],
             [industry[1] for industry in industry_stat],
         ]
-        industry_worksheet.write_column('A1', industry_data[0])
-        industry_worksheet.write_column('B1', industry_data[1])
+        headings = ['Industry', 'Percentage %']
+        industry_worksheet.write_row('A1', headings, bold)
+        industry_worksheet.write_column('A2', industry_data[0])
+        industry_worksheet.write_column('B2', industry_data[1])
         chart.add_series({
-            'categories': '=Industry!$A$1:$A${0}'.format(len(industry_stat)),
-            'values':     '=Industry!$B$1:$B${0}'.format(len(industry_stat)),
+            'categories': '=Industry!$A$2:$A${0}'.format(len(industry_stat)),
+            'values':     '=Industry!$B$2:$B${0}'.format(len(industry_stat)),
         })
         chart.set_chartarea({
             'border': {'color': 'black'},
@@ -577,11 +585,13 @@ class ExcelDownloadView(BenchmarkDetailView):
             [role[0] for role in role_stat],
             [role[1] for role in role_stat],
         ]
-        role_worksheet.write_column('A1', role_data[0])
-        role_worksheet.write_column('B1', role_data[1])
+        headings = ['Role', 'Percentage %']
+        role_worksheet.write_row('A1', headings, bold)
+        role_worksheet.write_column('A2', role_data[0])
+        role_worksheet.write_column('B2', role_data[1])
         chart.add_series({
-            'categories': '=Role!$A$1:$A${0}'.format(len(role_stat)),
-            'values':     '=Role!$B$1:$B${0}'.format(len(role_stat)),
+            'categories': '=Role!$A$2:$A${0}'.format(len(role_stat)),
+            'values':     '=Role!$B$2:$B${0}'.format(len(role_stat)),
         })
         chart.set_chartarea({
             'border': {'color': 'black'},
@@ -597,11 +607,13 @@ class ExcelDownloadView(BenchmarkDetailView):
             [geo[0] for geo in geo_stat],
             [geo[1] for geo in geo_stat],
         ]
-        geo_worksheet.write_column('A1', geo_data[0])
-        geo_worksheet.write_column('B1', geo_data[1])
+        headings = ['Geo', 'Percentage %']
+        geo_worksheet.write_row('A1', headings, bold)
+        geo_worksheet.write_column('A2', geo_data[0])
+        geo_worksheet.write_column('B2', geo_data[1])
         chart.add_series({
-            'categories': '=Geo!$A$1:$A${0}'.format(len(geo_stat)),
-            'values':     '=Geo!$B$1:$B${0}'.format(len(geo_stat)),
+            'categories': '=Geo!$A$2:$A${0}'.format(len(geo_stat)),
+            'values':     '=Geo!$B$2:$B${0}'.format(len(geo_stat)),
         })
         chart.set_chartarea({
             'border': {'color': 'black'},
@@ -618,8 +630,8 @@ class ExcelDownloadView(BenchmarkDetailView):
             contributor_results = benchmark.charts['column']
             chart = workbook.add_chart({'type': 'column'})
         elif question_type == 3:
-            contributor_results = benchmark.charts['pie']
-            chart = workbook.add_chart({'type': 'bell'})
+            contributor_results = benchmark.charts['bell_curve']
+            chart = workbook.add_chart({'type': 'scatter'})
         elif question_type == 5:
             contributor_results = benchmark.charts['line']
             chart = workbook.add_chart({'type': 'line'})
@@ -629,18 +641,25 @@ class ExcelDownloadView(BenchmarkDetailView):
                 [x[0] for x in contributor_results],
                 [x[1] for x in contributor_results]
             ]
-            headings = ['Series', 'Count']
-            contributor_worksheet.write_column('A1', data[0])
-            contributor_worksheet.write_column('B1', data[1])
+            suma = sum(data[1])
+            percents = []
+            for item in data[1]:
+                percents.append(round((float(item)/suma)*100))
+            headings = ['Answer', 'Percentage %']
+            contributor_worksheet.write_row('A1', headings, bold)
+            contributor_worksheet.write_column('A2', data[0])
+            contributor_worksheet.write_column('B2', percents)
             chart.add_series({
-                'categories': '=Contributor Stats!$A$1:$A${0}'.format(len(contributor_results)),
-                'values':     '=Contributor Stats!$B$1:$B${0}'.format(len(contributor_results)),
+                'categories': '=Contributor Stats!$A$2:$A${0}'.format(len(contributor_results) + 1),
+                'values':     '=Contributor Stats!$B$2:$B${0}'.format(len(contributor_results) + 1),
+                'data_labels': {'percentage': True}
             })
             chart.set_chartarea({
                 'border': {'color': 'black'},
                 'fill':   {'color': 'white'}
             })
             contributor_worksheet.insert_chart('F3', chart)
+
         elif question_type == 2:
             i = 1
             for result in contributor_results:
@@ -657,19 +676,57 @@ class ExcelDownloadView(BenchmarkDetailView):
             })
             contributor_worksheet.insert_chart('F3', chart)
         elif question_type == 3:
-            pass
+            data = [
+                contributor_results.keys(),
+                contributor_results.values()
+            ]
+            headings = ['Property', 'Value']
+            contributor_worksheet.write_row('A1', headings, bold)
+            contributor_worksheet.write_column('A2', data[0])
+            contributor_worksheet.write_column('B2', data[1])
+
+            min = contributor_results['min']
+            max = contributor_results['max']
+            avg = contributor_results['avg']
+            first_step = avg - (3*avg)
+            last_step = avg + (3*avg)
+            step = (last_step - first_step)/5
+            steps = [first_step]
+            while steps[-1] < last_step:
+                steps.append(first_step + step)
+                step += 1
+            steps_count = len(steps)
+            contributor_worksheet.write_column('A8', steps)
+            contributor_worksheet.write_array_formula('B8:B%s' % steps_count, '{=NORMDIST(A7:A%s,$B$3,$B$4,0)}' % steps_count)
+
+            chart.add_series({
+                'name':         benchmark.name,
+                'categories': "='Contributor Stats'!A7:A%s" % steps_count,
+                'values': "='Contributor Stats'!B7:B%s" % steps_count,
+                'line': {'dash_type': 'solid', 'width': 1, 'color': 'red'}
+
+            })
+
+            chart.set_chartarea({
+                'border': {'color': 'black'},
+                'fill':   {'color': 'white'}
+            })
+
+            contributor_worksheet.insert_chart('F3', chart)
         elif question_type == 5:
             data = [
                 [x[0] for x in contributor_results[1:]],
                 [x[1] for x in contributor_results[1:]]
             ]
             headings = ['Series', 'Count']
-            contributor_worksheet.write_row('A1', headings)
+            contributor_worksheet.write_row('A1', headings, bold)
             contributor_worksheet.write_column('A2', data[0])
             contributor_worksheet.write_column('B2', data[1])
             chart.add_series({
-                'categories': '=Contributor Stats!$A$2:$A${0}'.format(len(contributor_results)),
-                'values':     '=Contributor Stats!$B$2:$B${0}'.format(len(contributor_results)),
+                'name':         benchmark.name,
+                'categories': "='Contributor Stats'!A2:A%s" % (len(contributor_results)),
+                'values':     "='Contributor Stats'!B2:B%s" % (len(contributor_results)),
+                'line': {'dash_type': 'solid'}
             })
             chart.set_chartarea({
                 'border': {'color': 'black'},
