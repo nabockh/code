@@ -1,19 +1,21 @@
 google.load("visualization", "1", {packages:["corechart"]});
     google.setOnLoadCallback(drawChart);
     function drawChart() {
+        var donutChartData = google.visualization.arrayToDataTable(mainChartData.pie);
+        var columnChartData = google.visualization.arrayToDataTable(mainChartData.column);
+        var lineChartData = google.visualization.arrayToDataTable(mainChartData.line);
+
         var roleChartData = google.visualization.arrayToDataTable(statisticRoleData);
         var geoChartData = google.visualization.arrayToDataTable(statisticGeoData);
         var countryChartData = google.visualization.arrayToDataTable(statisticCountriesData);
         var industryChartData = google.visualization.arrayToDataTable(statisticIndustriesData);
-        var donutChartData = google.visualization.arrayToDataTable(mainChartData.pie);
-        var columnChartData = google.visualization.arrayToDataTable(mainChartData.column);
 
         var statsOptions = {
             legend: 'none',
             pieSliceText: 'none',
             tooltip: { text: 'percentage' },
-            'width':334,
-            'height':238,
+            // 'width':334,
+            // 'height':238,
             slices: {
                 0: {color: '#202C45'},
                 1: {color: '#41495D'},
@@ -23,10 +25,10 @@ google.load("visualization", "1", {packages:["corechart"]});
                 5: {color: '#33626e'}
             },
             chartArea: { 
-                left: 20, 
-                top: 20, 
+                // left: 20, 
+                // top: 20, 
                 width: "90%", 
-                height: "80%" 
+                height: "90%" 
             }
         };
         
@@ -35,8 +37,8 @@ google.load("visualization", "1", {packages:["corechart"]});
             legend: 'none',
             pieSliceText: 'label',
             tooltip: { text: 'percentage' },
-            'width': 480,
-            'height':480,
+            // 'width': 480,
+            // 'height':480,
             slices: {
                 0: {color: '#202C45'},
                 1: {color: '#41495D'},
@@ -46,8 +48,8 @@ google.load("visualization", "1", {packages:["corechart"]});
                 5: {color: '#33626e'}
             },
             chartArea: { 
-                left: 25, 
-                top: 25, 
+                // left: 25, 
+                // top: 25, 
                 width: "90%", 
                 height: "90%" 
             }
@@ -57,11 +59,11 @@ google.load("visualization", "1", {packages:["corechart"]});
         var columnOptions = {
             legend: { position: "none" },
             hAxis: {title: 'none'},
-            width: 480,
-            height: 238,
+            // width: 480,
+            // height: 238,
             chartArea: { 
-                left: 45, 
-                top: 35, 
+                // left: 45, 
+                // top: 35, 
                 width: "85%", 
                 height: "65%" 
             },
@@ -79,8 +81,14 @@ google.load("visualization", "1", {packages:["corechart"]});
 
         };
 
+        var lineOptions = {
+            curveType: 'function',
+            legend: { position: 'none' }
+        };
+
     var donutChart = new google.visualization.PieChart(document.getElementById('donutChart'));
     var columnChart = new google.visualization.ColumnChart(document.getElementById('columnChart'));
+    // var lineChart = new google.visualization.LineChart(document.getElementById('lineChart'));
 
     var roleChart = new google.visualization.PieChart(document.getElementById('roleChart'));
     var geoChart = new google.visualization.PieChart(document.getElementById('geoChart'));
@@ -93,6 +101,7 @@ google.load("visualization", "1", {packages:["corechart"]});
     // main charts
     donutChart.draw(donutChartData, donutOptions);
     columnChart.draw(columnChartData, columnOptions);
+    // lineChart.draw(lineChartData, lineOptions);
 
 
     // stat charts

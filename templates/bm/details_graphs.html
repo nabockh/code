@@ -12,38 +12,38 @@
                 <div class='row'>
                     <div class='benchmark open'>
                         <div id='donutChartHolder'>
-                            <div id='donutChart'></div>
+                            <div id='donutChart' class='bigChart'></div>
                         </div>
                         <div id='columnChartHolder'>
-                            <div id='columnChart'></div>
+                            <div id='columnChart' class='bigChart'></div>
                         </div>
                         <div id='bellcurveChartHolder'>
-                            <div id='bellcurveChart'></div>
+                            <div id='bellcurveChart' class='bigChart'></div>
+                            <div class='benchmark-stats perc-based'>
+                                <div class='single-stat'>
+                                    <span class='title'>Min</span>
+                                    <span class='value'>0%</span>
+                                </div>
+                                <div class='single-stat'>
+                                    <span class='title'>Max</span>
+                                    <span class='value'>91%</span>
+                                </div>
+                                <div class='single-stat'>
+                                    <span class='title'>Mean</span>
+                                    <span class='value'>47%</span>
+                                </div>
+                                <div class='single-stat'>
+                                    <span class='title'>Avg</span>
+                                    <span class='value'>51%</span>
+                                </div>
+                                <div class='single-stat'>
+                                    <span class='title'>SD</span>
+                                    <span class='value'>1.4</span>
+                                </div>
+                            </div>
                         </div>
                         <div id='lineChartHolder'>
-                            <div id='lineChartChart'></div>
-                        </div>
-                        <div class='benchmark-stats perc-based'>
-                            <div class='single-stat'>
-                                <span class='title'>Min</span>
-                                <span class='value'>0%</span>
-                            </div>
-                            <div class='single-stat'>
-                                <span class='title'>Max</span>
-                                <span class='value'>91%</span>
-                            </div>
-                            <div class='single-stat'>
-                                <span class='title'>Mean</span>
-                                <span class='value'>47%</span>
-                            </div>
-                            <div class='single-stat'>
-                                <span class='title'>Avg</span>
-                                <span class='value'>51%</span>
-                            </div>
-                            <div class='single-stat'>
-                                <span class='title'>SD</span>
-                                <span class='value'>1.4</span>
-                            </div>
+                            <div id='lineChart' class='bigChart'></div>
                         </div>
                         <div class='benchmark-footer text-center'>
                             <span class='color-blue'><i class='fa fa-user'></i> {{ benchmark.contributors }} Contributors</span>

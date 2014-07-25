@@ -73,7 +73,7 @@
                             <div class="panel-body">                                
                                 {% for benchmark in history|slice:":5" %}
                                   <div class='recent-benchmark-link'>
-                                    <a href='{{ benchmark.link }}' title='{{ benchmark.name }}'>{{ benchmark.name }}</a>
+                                    <a href='/benchmark/{{ benchmark.id }}' title='{{ benchmark.name }}'>{{ benchmark.name }}</a>
                                  </div>
 
                                 {% empty %}

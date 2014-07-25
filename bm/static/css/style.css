@@ -37,6 +37,35 @@ ul.errorlist {
     font-size: 11px;
 }
 
+img {
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-drag: none;
+    -webkit-user-drag: none;
+    -moz-user-drag: none;
+    max-width: 100%;
+}
+
+h1.not-found {
+    font-size: 100px;
+    font-weight: 900;
+    color: #41495d;
+    margin: 220px auto 0;
+}
+
+.not-found-text {
+    color: #41495d;
+    font-size: 30px;
+    line-height: 35px;
+    text-transform: uppercase;
+    font-weight: 100;
+}
+
+.not-found-img {
+    margin-bottom: 20px;
+}
+
 .mobile {
     display: none;
 }
@@ -1308,7 +1337,7 @@ label.btn.btn-primary.auto-width.pull-right.fix {
         left: 0;
         width: 35px;
         background: #426E97;
-        line-height: 34px;
+        line-height: 35px;
         top: 0;
         font-weight: bold;
         font-size: 1.8rem;
@@ -1446,7 +1475,9 @@ label.btn.btn-primary.auto-width.pull-right.fix {
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
-    }
+    
+        padding-right: 25px;
+}
 
             .recent-benchmark-link a:hover:after {
                 content: '';
@@ -2179,12 +2210,30 @@ ul#id_choice li > label {
 }
 
 #columnChartHolder, #lineChartHolder, #bellcurveChartHolder, #donutChartHolder {
-    min-height: 238px;
+    /* min-height: 238px; */
 }
 
 .statGraph {
     width: 334px;
     height: 238px;
+    margin: 0 auto;
+    overflow: hidden;
+}
+
+.bigChart {
+    height: 228px;
+    overflow: hidden;
+}
+
+#donutChart.bigChart {
+    height: 300px;
+}
+
+.bigChart > div {
+    margin: 10px auto 0;
+}
+
+#donutChart.bigChart > div {
     margin: 0 auto;
 }
 
@@ -2465,6 +2514,39 @@ ul#id_choice li > label {
     }
     .bm-search-btn {
         margin-left: 25%;
+    }
+
+    .open-benchmark-container {
+        margin-left: 20px;
+        margin-right: 20px;
+        padding: 0 30px;
+    }
+
+    .ob-header {
+        margin: 0 -30px;
+        padding: 10px 30px;
+    }
+
+    .open-benchmark-container .benchmark-help {
+        margin: 0 -30px;
+    }
+    
+    .open-benchmark-container .benchmark-help p span {
+        width: 45%;
+        display: inline-block;
+    }
+
+    h1.not-found {
+        margin: 20px auto;
+        text-align: center;
+    }
+    
+    .not-found-text {
+        text-align: center;
+    }
+    
+    .not-found-img {
+        margin-bottom: 50px;    
     }
 }
 
