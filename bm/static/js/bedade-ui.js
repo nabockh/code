@@ -121,6 +121,13 @@ $(function () {
 
 
 $(function () {
+
+    // Tooltips
+
+    $('.add_help').on('click', function() {
+       $(this).children('.add_help_inner').toggleClass('visible');
+    });
+
     // Rating Functionality
 
     $('.rating').on('click', '[data-score]', function() {

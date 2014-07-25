@@ -1114,7 +1114,7 @@ label.btn.btn-primary.auto-width.pull-right.fix {
                 margin-left: -12px;
             }
 
-        .add_help:hover > .add_help_inner {
+        .add_help_inner.visible {
             display: block;
         }
 
