@@ -2,6 +2,7 @@
 {% load i18n %}
 {% load bootstrap %}
 {% load helpers %}
+{% load cms_tags %}
 
 {% block js %}
 {{ wizard.form.media }}
@@ -79,7 +80,12 @@
             <div class='step_descr'>Review &amp; Send</div>
         </div>
     </div>
-    <div class='benchmark-help'>This space is reserved for instructional text. Should try to keep it pretty succinct but helpful. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed pellentesque tincidunt est, id lacinia orci lacinia eu. Aenean dignissim rutrum velit in faucibus. Nam non odio non neque porttitor dignissim in sed enim. Nunc facilisis ac mauris at eleifend. Maecenas pulvinar erat vestibulum odio aliquet suscipit. Nam venenatis nec lorem vel cursus.</div>
+    <div class='benchmark-help'>
+    {% static_placeholder "bm_create_help_text" or %}
+    This space is reserved for instructional text. Should try to keep it pretty succinct but helpful. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed pellentesque tincidunt est, id lacinia orci lacinia eu. Aenean dignissim rutrum velit in faucibus. Nam non odio non neque porttitor dignissim in sed enim. Nunc facilisis ac mauris at eleifend. Maecenas pulvinar erat vestibulum odio aliquet suscipit. Nam venenatis nec lorem vel cursus.
+    {% endstatic_placeholder %}
+    </div>
+
 {% elif wizard.steps.step1 == 2 %}
     <div class='creation_steps'>
         <div class='cr_step one done'>
@@ -116,7 +122,11 @@
             <div class='step_descr'>Review &amp; Send</div>
         </div>
     </div>
-    <div class='benchmark-help'>This space is reserved for instructional text. Should try to keep it pretty succinct but helpful. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed pellentesque tincidunt est, id lacinia orci lacinia eu. Aenean dignissim rutrum velit in faucibus. Nam non odio non neque porttitor dignissim in sed enim. Nunc facilisis ac mauris at eleifend. Maecenas pulvinar erat vestibulum odio aliquet suscipit. Nam venenatis nec lorem vel cursus.</div>
+    <div class='benchmark-help'>
+        {% static_placeholder "bm_create_step3_text" or %}
+        This space is reserved for instructional text. Should try to keep it pretty succinct but helpful. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed pellentesque tincidunt est, id lacinia orci lacinia eu. Aenean dignissim rutrum velit in faucibus. Nam non odio non neque porttitor dignissim in sed enim. Nunc facilisis ac mauris at eleifend. Maecenas pulvinar erat vestibulum odio aliquet suscipit. Nam venenatis nec lorem vel cursus.
+        {% endstatic_placeholder %}
+    </div>
 {% endif %}
     <div class="margined no-bottom">
         <div class='row'>            
@@ -147,7 +157,11 @@
                                     <div class='col-md-12'>
                                         <label for="id_0-question_text">Query Details</label>
                                         <span class="add_help">?
-                                            <span class='add_help_inner'>Lorem ipsum dolor sit amet, consectetur eta adipiscing elit. Pellentasque eu tempor tortor. Aliquam Trisque eros arcu, sed bibendum enim faucibus in. In vulputate blendit lorem ut.</span>
+                                            <span class='add_help_inner'>
+                                                {% static_placeholder "bm_create_query_details" or %}
+                                                Lorem ipsum dolor sit amet, consectetur eta adipiscing elit. Pellentasque eu tempor tortor. Aliquam Trisque eros arcu, sed bibendum enim faucibus in. In vulputate blendit lorem ut.
+                                                {% endstatic_placeholder %}
+                                            </span>
                                         </span>
                                         {{ form.question_text }}
                                         {{ form.question_text.errors }}
@@ -182,7 +196,11 @@
                                             <div class='col-md-6'>
                                                 <label for="id_0-units">Units</label>
                                                 <span class="add_help">?
-                                                    <span class='add_help_inner'>Lorem ipsum dolor sit amet, consectetur eta adipiscing elit. Pellentasque eu tempor tortor. Aliquam Trisque eros arcu, sed bibendum enim faucibus in. In vulputate blendit lorem ut.</span>
+                                                    <span class='add_help_inner'>
+                                                        {% static_placeholder "bm_create_units_tooltip" or %}
+                                                        Lorem ipsum dolor sit amet, consectetur eta adipiscing elit. Pellentasque eu tempor tortor. Aliquam Trisque eros arcu, sed bibendum enim faucibus in. In vulputate blendit lorem ut.
+                                                        {% endstatic_placeholder %}
+                                                    </span>
                                                 </span>
                                                 {{ form.units }}
                                                 {{ form.units.errors }}
@@ -190,7 +208,11 @@
                                             <div class='col-md-6'>
                                                 <label for="id_0-max_number_of_decimal">maximum number of decimals</label>
                                                 <span class="add_help">?
-                                                    <span class='add_help_inner'>Lorem ipsum dolor sit amet, consectetur eta adipiscing elit. Pellentasque eu tempor tortor. Aliquam Trisque eros arcu, sed bibendum enim faucibus in. In vulputate blendit lorem ut.</span>
+                                                    <span class='add_help_inner'>
+                                                        {% static_placeholder "bm_create_max_dec_tooltip" or %}
+                                                        Lorem ipsum dolor sit amet, consectetur eta adipiscing elit. Pellentasque eu tempor tortor. Aliquam Trisque eros arcu, sed bibendum enim faucibus in. In vulputate blendit lorem ut.
+                                                        {% endstatic_placeholder %}
+                                                    </span>
                                                 </span>
                                                 {{ form.max_number_of_decimal }}
                                                 {{ form.max_number_of_decimal.errors }}
@@ -202,7 +224,11 @@
                                             <div class='col-md-8 normal-padding'>
                                                 <label for="id_1-minimum_number_of_answers">Minimum responses required to validate benchmark</label>
                                                 <span class="add_help">?
-                                                    <span class='add_help_inner'>Lorem ipsum dolor sit amet, consectetur eta adipiscing elit. Pellentasque eu tempor tortor. Aliquam Trisque eros arcu, sed bibendum enim faucibus in. In vulputate blendit lorem ut.</span>
+                                                    <span class='add_help_inner'>
+                                                        {% static_placeholder "bm_create_min_ans_tooltip" or %}
+                                                        Lorem ipsum dolor sit amet, consectetur eta adipiscing elit. Pellentasque eu tempor tortor. Aliquam Trisque eros arcu, sed bibendum enim faucibus in. In vulputate blendit lorem ut.
+                                                        {% endstatic_placeholder %}
+                                                    </span>
                                                 </span>
                                             </div>
                                             <div class='col-md-4'>
@@ -217,17 +243,21 @@
                                 <div class='tips'>
                                     <p class='label-like'>BENCHMARK TIPS...</p>
                                     <hr>
-                                    
+                                    {% static_placeholder "bm_create_tips_text" or %}
                                     <p class='title'>Get Maximum Responses TO YOUR BENCHMARK QUERY</p>
                                     <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer suscipit, dui in mattis venenatis, purus lectus dictum quam, et vehicula nunc risus nec orci.</p>
                                     <p class='title'>THIS IS ANOTHER BENCHMARK TIP TO HELP PEOPLE SUCCEED</p>
                                     <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer suscipit, dui in mattis venenatis, purus lectus dictum quam, et vehicula nunc risus nec orci.</p>
+                                    {% endstatic_placeholder %}
                                 </div>
                             </div>
                         {% elif wizard.steps.step1 == 2 %}
                             <div class='benchmark-help search'>
                                 <div class='row'>
-                                    <div class='col-md-12'>Use the search fields below to narrow your network to those most relevant to your benchmark. You will be able to preview &amp; edit your list before publishing.</div>
+                                    <div class='col-md-12'>
+                                        {% static_placeholder "bm_create_step2_text" or %}
+                                        Use the search fields below to narrow your network to those most relevant to your benchmark. You will be able to preview &amp; edit your list before publishing.</div>
+                                        {% endstatic_placeholder %}
                                 </div>
                                 <div class='row contacts-search'>
                                     <div class="col-md-5ths col-xs-6">
@@ -275,7 +305,11 @@
                                                     <div class='col-md-2 col-xs-2 text-center'>Add</div>
                                                     <div class='col-md-2 col-xs-2 text-center'>Share 
                                                         <span class="add_help">?
-                                                            <span class='add_help_inner'>Lorem ipsum dolor sit amet, consectetur eta adipiscing elit. Pellentasque eu tempor tortor. Aliquam Trisque eros arcu, sed bibendum enim faucibus in. In vulputate blendit lorem ut.</span>
+                                                            <span class='add_help_inner'>
+                                                                {% static_placeholder "bm_create_share_tooltip" or %}
+                                                                Lorem ipsum dolor sit amet, consectetur eta adipiscing elit. Pellentasque eu tempor tortor. Aliquam Trisque eros arcu, sed bibendum enim faucibus in. In vulputate blendit lorem ut.
+                                                                {% endstatic_placeholder %}
+                                                            </span>
                                                         </span>
                                                     </div>
                                                 </div>
@@ -328,7 +362,11 @@
                                                     <div class='col-md-2 col-xs-2 text-center'>Add</div>
                                                     <div class='col-md-2 col-xs-2 text-center'>Share 
                                                         <span class="add_help">?
-                                                            <span class='add_help_inner'>Lorem ipsum dolor sit amet, consectetur eta adipiscing elit. Pellentasque eu tempor tortor. Aliquam Trisque eros arcu, sed bibendum enim faucibus in. In vulputate blendit lorem ut.</span>
+                                                            <span class='add_help_inner'>
+                                                                {% static_placeholder "bm_create_share_tooltip" or %}
+                                                                Lorem ipsum dolor sit amet, consectetur eta adipiscing elit. Pellentasque eu tempor tortor. Aliquam Trisque eros arcu, sed bibendum enim faucibus in. In vulputate blendit lorem ut.
+                                                                {% endstatic_placeholder %}
+                                                            </span>
                                                         </span>
                                                     </div>
                                                 </div>
@@ -361,7 +399,11 @@
                                                     <div class='col-md-2 col-xs-2 text-center'>
                                                         Share
                                                         <span class="add_help">?
-                                                            <span class='add_help_inner'>Lorem ipsum dolor sit amet, consectetur eta adipiscing elit. Pellentasque eu tempor tortor. Aliquam Trisque eros arcu, sed bibendum enim faucibus in. In vulputate blendit lorem ut.</span>
+                                                            <span class='add_help_inner'>
+                                                                {% static_placeholder "bm_create_share_tooltip" or %}
+                                                                Lorem ipsum dolor sit amet, consectetur eta adipiscing elit. Pellentasque eu tempor tortor. Aliquam Trisque eros arcu, sed bibendum enim faucibus in. In vulputate blendit lorem ut.
+                                                                {% endstatic_placeholder %}
+                                                            </span>
                                                         </span>
                                                     </div>
                                                     <div class='col-md-2 col-xs-2 text-center'>
@@ -412,7 +454,11 @@
                                     <div class='col-md-12'>
                                         <label for="id_2-question_text">Query Details</label>
                                         <span class="add_help">?
-                                            <span class='add_help_inner'>Lorem ipsum dolor sit amet, consectetur eta adipiscing elit. Pellentasque eu tempor tortor. Aliquam Trisque eros arcu, sed bibendum enim faucibus in. In vulputate blendit lorem ut.</span>
+                                            <span class='add_help_inner'>
+                                                {% static_placeholder "bm_create_query_details" or %}
+                                                Lorem ipsum dolor sit amet, consectetur eta adipiscing elit. Pellentasque eu tempor tortor. Aliquam Trisque eros arcu, sed bibendum enim faucibus in. In vulputate blendit lorem ut.
+                                                {% endstatic_placeholder %}
+                                            </span>
                                         </span>
                                         {{ form.question_text }}
                                         {{ form.question_text.errors }}
@@ -461,7 +507,11 @@
                                             <div class='col-md-8 normal-padding'>
                                                 <label for="id_2-minimum_number_of_answers">Minimum responses required to validate benchmark</label>
                                                 <span class="add_help">?
-                                                    <span class='add_help_inner'>Lorem ipsum dolor sit amet, consectetur eta adipiscing elit. Pellentasque eu tempor tortor. Aliquam Trisque eros arcu, sed bibendum enim faucibus in. In vulputate blendit lorem ut.</span>
+                                                    <span class='add_help_inner'>
+                                                        {% static_placeholder "bm_create_min_ans_tooltip" or %}
+                                                        Lorem ipsum dolor sit amet, consectetur eta adipiscing elit. Pellentasque eu tempor tortor. Aliquam Trisque eros arcu, sed bibendum enim faucibus in. In vulputate blendit lorem ut.
+                                                        {% endstatic_placeholder %}
+                                                    </span>
                                                 </span>
                                             </div>
                                             <div class='col-md-4'>
@@ -473,7 +523,11 @@
                                     <div class='col-md-12'>
                                         <label for="id_2-additional_comments">Write a short overview to explain the purpose of yourquery</label>
                                         <span class="add_help">?
-                                                    <span class='add_help_inner'>Lorem ipsum dolor sit amet, consectetur eta adipiscing elit. Pellentasque eu tempor tortor. Aliquam Trisque eros arcu, sed bibendum enim faucibus in. In vulputate blendit lorem ut.</span>
+                                                    <span class='add_help_inner'>
+                                                        {% static_placeholder "bm_create_explain_tooltip" or %}
+                                                        Lorem ipsum dolor sit amet, consectetur eta adipiscing elit. Pellentasque eu tempor tortor. Aliquam Trisque eros arcu, sed bibendum enim faucibus in. In vulputate blendit lorem ut.
+                                                        {% endstatic_placeholder %}
+                                                    </span>
                                                 </span>
                                         {{ form.additional_comments }}
                                         {{ form.additional_comments.errors }}

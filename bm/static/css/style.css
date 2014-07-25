@@ -91,6 +91,11 @@ ul.errorlist {
     right: 0;
     box-shadow: 0 3px 5px rgba(0, 0, 0, 0.34);
     z-index: 9;
+    -webkit-transition: margin 0.2s;
+    transition: margin 0.2s;
+}
+.cms-toolbar-expanded .navbar-default{
+    margin-top: 30px;
 }
 
 .navbar-default .navbar-brand {

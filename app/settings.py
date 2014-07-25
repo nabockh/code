@@ -57,7 +57,11 @@ INSTALLED_APPS = (
     'sekizai',  # for javascript and css management
     'djangocms_admin_style',
     'djangocms_text_ckeditor',
+    'djangocms_file',
     'cmsplugin_cascade',
+    'filer',
+    'cmsplugin_filer_file',
+    'cmsplugin_filer_image',
 
     'django.contrib.admin',
     'django.contrib.auth',
