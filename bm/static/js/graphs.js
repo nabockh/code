@@ -82,26 +82,25 @@ google.load("visualization", "1", {packages:["corechart"]});
         };
 
         var lineOptions = {
-            curveType: 'function',
-            legend: { position: 'none' }
+            legend: 'none',
+            colors: ['#8592B2'],
+            lineWidth: 3
         };
+
 
     var donutChart = new google.visualization.PieChart(document.getElementById('donutChart'));
     var columnChart = new google.visualization.ColumnChart(document.getElementById('columnChart'));
-    // var lineChart = new google.visualization.LineChart(document.getElementById('lineChart'));
+    var lineChart = new google.visualization.ScatterChart(document.getElementById('lineChart'));
 
     var roleChart = new google.visualization.PieChart(document.getElementById('roleChart'));
     var geoChart = new google.visualization.PieChart(document.getElementById('geoChart'));
     var countryChart = new google.visualization.PieChart(document.getElementById('countryChart'));
     var industryChart = new google.visualization.PieChart(document.getElementById('industryChart'));
 
-    
-    //     chart.draw(data, options);
-
     // main charts
     donutChart.draw(donutChartData, donutOptions);
     columnChart.draw(columnChartData, columnOptions);
-    // lineChart.draw(lineChartData, lineOptions);
+    lineChart.draw(lineChartData, lineOptions);
 
 
     // stat charts

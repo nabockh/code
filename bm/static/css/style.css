@@ -37,6 +37,36 @@ ul.errorlist {
     font-size: 11px;
 }
 
+img {
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-drag: none;
+    -webkit-user-drag: none;
+    -moz-user-drag: none;
+    max-width: 100%;
+}
+
+h1.not-found {
+    font-size: 100px;
+    font-weight: 900;
+    color: #41495d;
+    margin: 220px auto 0;
+}
+
+.not-found-text {
+    color: #41495d;
+    font-size: 30px;
+    line-height: 35px;
+    text-transform: uppercase;
+    font-weight: 100;
+}
+
+.not-found-img {
+    margin-bottom: 20px;
+}
+
+
 .mobile {
     display: none;
 }
@@ -2511,6 +2541,19 @@ ul#id_choice li > label {
     .open-benchmark-container .benchmark-help p span {
         width: 45%;
         display: inline-block;
+    }
+
+    h1.not-found {
+        margin: 20px auto;
+        text-align: center;
+    }
+    
+    .not-found-text {
+        text-align: center;
+    }
+    
+    .not-found-img {
+        margin-bottom: 50px;    
     }
 }
 
