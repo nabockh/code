@@ -37,35 +37,6 @@ ul.errorlist {
     font-size: 11px;
 }
 
-img {
-    user-select: none;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    user-drag: none;
-    -webkit-user-drag: none;
-    -moz-user-drag: none;
-    max-width: 100%;
-}
-
-h1.not-found {
-    font-size: 100px;
-    font-weight: 900;
-    color: #41495d;
-    margin: 220px auto 0;
-}
-
-.not-found-text {
-    color: #41495d;
-    font-size: 30px;
-    line-height: 35px;
-    text-transform: uppercase;
-    font-weight: 100;
-}
-
-.not-found-img {
-    margin-bottom: 20px;
-}
-
 .mobile {
     display: none;
 }
@@ -176,16 +147,20 @@ ul.main-nav {
     }
     
         ul.main-nav .dropdown-menu {
-            top: 50px;
-            left: 0;
+            top: 52px;
+            left: auto;
+            right: 0;
             border-radius: 0;
             padding: 0;        
             min-width: 110px;
-        }
+        
+            border-top: none;
+            box-shadow: 0 -5px #41495d;
+}
 
             ul.main-nav .dropdown-menu:before {
                 position: absolute;
-                content: '';
+                /* content: ''; */
                 width: 0px; 
                 height: 0px; 
                 border-left: 10px solid transparent; 
@@ -198,7 +173,7 @@ ul.main-nav {
 
             ul.main-nav .dropdown-menu:after {
                 position: absolute;
-                content: '';
+                /* content: ''; */
                 width: 0px; 
                 height: 0px; 
                 border-left: 9px solid transparent; 
@@ -211,7 +186,9 @@ ul.main-nav {
             
                 ul.main-nav .dropdown-menu>li>a {
                     padding: 5px 20px;
-                }
+                
+                    box-shadow: 0 1px #dedede;
+}
     
 /* End Main Nav */
 
@@ -2534,19 +2511,6 @@ ul#id_choice li > label {
     .open-benchmark-container .benchmark-help p span {
         width: 45%;
         display: inline-block;
-    }
-
-    h1.not-found {
-        margin: 20px auto;
-        text-align: center;
-    }
-    
-    .not-found-text {
-        text-align: center;
-    }
-    
-    .not-found-img {
-        margin-bottom: 50px;    
     }
 }
 

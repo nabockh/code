@@ -20,6 +20,7 @@
                          <a href="#" class="dropdown-toggle" data-toggle="dropdown">Benchmarks <span class="caret"></span></a>
                          <ul class="dropdown-menu" role="menu">
                             <li><a href="{% url 'bm_create' %}">Create</a></li>
+                            <li><a href="#">My Benchmark History</a></li>
                          </ul>
                       </li>
                       <li><a href="#">Support</a></li>
@@ -38,13 +39,7 @@
                         <div class='hello'>Hello,</div>
                         <ul class='user-nav-inner'>
                             <li class='username'>{{ user.first_name }} {{ user.last_name }}</li>
-                            <li class="dropdown">
-                             <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class='fa fa-cogs'></i></a>
-                             <ul class="dropdown-menu" role="menu">
-                                <li><a href="/logout">Sign Out</a></li>
-                             </ul>
-                          </li>
-                            <li><a href='#'><i class='fa fa-unlock'></i></a></li>
+                            <li><a href='/logout' title='Log Out'><i class='fa fa-unlock'></i></a></li>
                         </ul>
                     </div>
                     <div class='col-md-4'>
@@ -76,7 +71,7 @@
                             <tr class="benchmark">
                                 <td class='date'>{{ benchmark.start_date }}</td>
                                 <td class='benchmark'>
-                                  <div class='text-teal'><strong><a href='/benchmark/{{ benchmark.id }}/details'>{{ benchmark.name }}</a></strong></div>
+                                  <div class='text-teal'><strong><a href='/benchmark/{{ benchmark.id }}'>{{ benchmark.name }}</a></strong></div>
                                   <div class='benchmark_query'>{{ benchmark.question.first.description }}</div>
                                 </td>
                                 <td class='owner text-teal'>{{ benchmark.owner.first_name }} {{ benchmark.owner.last_name }}</td>
