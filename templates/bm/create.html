@@ -27,6 +27,7 @@
                          <a href="#" class="dropdown-toggle" data-toggle="dropdown">Benchmarks <span class="caret"></span></a>
                          <ul class="dropdown-menu" role="menu">
                             <li><a href="#">Create</a></li>
+                            <li><a href="/benchmark/history">My Benchmark History</a></li>
                          </ul>
                       </li>
                       <li><a href="#">Support</a></li>
@@ -46,13 +47,7 @@
                         <div class='hello'>Hello,</div>
                         <ul class='user-nav-inner'>
                             <li class='username'>{{ user.first_name }} {{ user.last_name }}</li>
-                            <li class="dropdown">
-                             <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class='fa fa-cogs'></i></a>
-                             <ul class="dropdown-menu" role="menu">
-                                <li><a href="/logout">Sign Out</a></li>
-                             </ul>
-                          </li>
-                            <li><a href='#'><i class='fa fa-unlock'></i></a></li>
+                            <li><a href='/logout' title='Log Out'><i class='fa fa-unlock'></i></a></li>
                         </ul>
                     </div>
                     <div class='col-md-4 col-xs-6'>
@@ -76,7 +71,7 @@
         <div class='cr_step two'>
             <div class='step_image'></div>
             <div class='step_title'>Step 2:</div>
-            <div class='step_descr'>Select Contacts</div>
+            <div class='step_descr'>Add Contacts</div>
         </div>
         <div class='cr_step three'>
             <div class='step_image'></div>
@@ -95,7 +90,7 @@
         <div class='cr_step two active'>
             <div class='step_image'></div>
             <div class='step_title'>Step 2:</div>
-            <div class='step_descr'>Select Contacts</div>
+            <div class='step_descr'>Add Contacts</div>
         </div>
         <div class='cr_step three'>
             <div class='step_image'></div>
@@ -113,7 +108,7 @@
         <div class='cr_step two done'>
             <div class='step_image'></div>
             <div class='step_title'>Step 2:</div>
-            <div class='step_descr'>Select Contacts</div>
+            <div class='step_descr'>Add Contacts</div>
         </div>
         <div class='cr_step three active'>
             <div class='step_image'></div>
@@ -186,11 +181,17 @@
                                         <div class='row'>
                                             <div class='col-md-6'>
                                                 <label for="id_0-units">Units</label>
+                                                <span class="add_help">?
+                                                    <span class='add_help_inner'>Lorem ipsum dolor sit amet, consectetur eta adipiscing elit. Pellentasque eu tempor tortor. Aliquam Trisque eros arcu, sed bibendum enim faucibus in. In vulputate blendit lorem ut.</span>
+                                                </span>
                                                 {{ form.units }}
                                                 {{ form.units.errors }}
                                             </div>
                                             <div class='col-md-6'>
                                                 <label for="id_0-max_number_of_decimal">maximum number of decimals</label>
+                                                <span class="add_help">?
+                                                    <span class='add_help_inner'>Lorem ipsum dolor sit amet, consectetur eta adipiscing elit. Pellentasque eu tempor tortor. Aliquam Trisque eros arcu, sed bibendum enim faucibus in. In vulputate blendit lorem ut.</span>
+                                                </span>
                                                 {{ form.max_number_of_decimal }}
                                                 {{ form.max_number_of_decimal.errors }}
                                             </div>
@@ -271,7 +272,7 @@
                                             <div class="title-header inner">
                                                 <div class='row'>
                                                     <div class='col-md-8 col-xs-8'>Contact</div>
-                                                    <div class='col-md-2 col-xs-2 text-center'>Select</div>
+                                                    <div class='col-md-2 col-xs-2 text-center'>Add</div>
                                                     <div class='col-md-2 col-xs-2 text-center'>Share 
                                                         <span class="add_help">?
                                                             <span class='add_help_inner'>Lorem ipsum dolor sit amet, consectetur eta adipiscing elit. Pellentasque eu tempor tortor. Aliquam Trisque eros arcu, sed bibendum enim faucibus in. In vulputate blendit lorem ut.</span>
@@ -324,7 +325,7 @@
                                             <div class="title-header inner">
                                                 <div class='row'>
                                                     <div class='col-md-8 col-xs-8'>Recommended Contacts</div>
-                                                    <div class='col-md-2 col-xs-2 text-center'>Select</div>
+                                                    <div class='col-md-2 col-xs-2 text-center'>Add</div>
                                                     <div class='col-md-2 col-xs-2 text-center'>Share 
                                                         <span class="add_help">?
                                                             <span class='add_help_inner'>Lorem ipsum dolor sit amet, consectetur eta adipiscing elit. Pellentasque eu tempor tortor. Aliquam Trisque eros arcu, sed bibendum enim faucibus in. In vulputate blendit lorem ut.</span>
@@ -364,7 +365,7 @@
                                                         </span>
                                                     </div>
                                                     <div class='col-md-2 col-xs-2 text-center'>
-                                                        Deselect
+                                                        Remove
                                                     </div>
                                                 </div>
                                             </div>
