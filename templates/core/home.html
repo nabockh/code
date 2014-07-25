@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load bootstrap %}
+{% load cms_tags %}
 {% block navigation %}
 
         <header class="navbar navbar-default bs-docs-nav" id="top" role="banner">
@@ -67,26 +68,42 @@
 {% block content %}
         <div class="colorblock banner" id='banner'>
             <div class='container text-center'>
-                <span class='big-title'>Better Data. <br> Better Decisions.<br></span>
-                <span class='help-text'>Benchmark Intelligence from the wisdom <br> of <i>your</i> professional network.</span>                
+                <span class='big-title'>
+                {% static_placeholder "home_big_title" or %}
+                    Better Data. <br> Better Decisions.
+                {% endstatic_placeholder %}<br>
+                </span>
+                <span class='help-text'>
+                {% static_placeholder "home_small_title" or %}
+                    Benchmark Intelligence from the wisdom <br> of <i>your</i> professional network.
+                {% endstatic_placeholder %}
+                </span>
             </div>
         </div>
         <div class="colorblock" id='how-it-works'>
             <div class='container'>
                 <span class='big-title text-center'>How it works</span>
+                {% static_placeholder "home_how_it_works" or %}
                 <p>Bedade aggregates data from experts for your use. You know your industry, the data you need, and who has the right knowledge. Bedade is a platform to exchange that knowledge. You choose your target contributors, type your question and watch the results roll in. Get better data quicker. Extract data from within your network to make comparisons and benchmarks, instead of relying on guesstimates or expensive data sources. Anonymously shared data from your trusted contacts will provide insight for your critical decisions. <a href='#'>View the Diagram</a></p>
+                {% endstatic_placeholder %}
                 <div class='row'>
                     <div class="col-md-4 how-it-works">
                         <div class='title fa-cogs'>Create Custom <br>Benchmark Surveys</div>
+                        {% static_placeholder "home_bm_survays" or %}
                         <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc sagittis pellentesque erat, in eleifend lorem ipsum metus lorem ipsum dolor tempus non.</p>
+                        {% endstatic_placeholder %}
                     </div>
                     <div class="col-md-4 how-it-works">
                         <div class='title fa-comments'>Get Trusted Data from <br>Your Professional Network</div>
+                        {% static_placeholder "home_get_trusted_data" or %}
                         <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc sagittis pellentesque erat, in eleifend lorem ipsum metus lorem ipsum dolor tempus non.</p>
+                        {% endstatic_placeholder %}
                     </div>
                     <div class="col-md-4 how-it-works">
                         <div class='title fa-tasks'>Compare and Analyze<br>to Make Better Decisions</div>
+                        {% static_placeholder "home_compare_and_analize" or %}
                         <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc sagittis pellentesque erat, in eleifend lorem ipsum metus lorem ipsum dolor tempus non.</p>
+                        {% endstatic_placeholder %}
                     </div>
                 </div>
             </div>
@@ -96,17 +113,21 @@
                 <div class='row'>
                     <div class='col-md-4 features mobile'><span class='big-title text-center'>Features</span></div>
                     <div class='col-md-4 features text-right'>
+                        {% static_placeholder "home_features_left" or %}
                         <div class='title'>Pertinent Data from<br>Exports in <i>Your</i> Network</div>
                         <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc sagittis lorem viva.</p>
                         <div class='title'>Safe, Secure, and<br>Completely Anonymous</div>
                         <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc sagittis lorem viva.</p>
+                        {% endstatic_placeholder %}
                     </div>
                     <div class='col-md-4 features non-mobile'><span class='big-title text-center'>Features</span></div>
                     <div class='col-md-4 features text-left'>
+                        {% static_placeholder "home_features_right" or %}
                         <div class='title'>Easy Question Creation<br>with Timely Responses</div>
                         <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc sagittis lorem viva lorem ipsum vivamus consectetuer.</p>
                         <div class='title'>Repeatable for Times Series</div>
                         <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc sagittis lorem ipsum.</p>
+                        {% endstatic_placeholder %}
                     </div>
                 </div>                
             </div>
@@ -114,7 +135,9 @@
         <div class="colorblock" id='examples'>
             <div class='container'>
                 <span class='big-title text-center'>Examples</span>
+                {% static_placeholder "home_examples_text" or %}
                 <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut euismod vel neque vel ullamcorper. Morbi vel placerat lorem. Integer lacinia vulputate ligula id consectetur. Vivamus commodo nibh in ultricies varius. Quisque semper pellentesque rutrum. Fusce semper porta massa, congue egestas nunc accumsan sollicitudin. Fusce sagittis leo vitae nunc fermentum vestibulum. Donec vel euismod velit. Fusce luctus metus vitae justo semper, vitae auctor urna consequat. Nunc eget lacus sed magna tincidunt mattis. Proin viverra luctus quam, et congue mauris ornare eu.</p>                
+                {% endstatic_placeholder %}
                 <div class='clearfix'>
                     <div class='row'>
                         <div class="example-block benchmark">
@@ -154,6 +177,7 @@
         <div class="colorblock about" id='about'>
             <div class='container text-center about-container'>
                 <span class='big-title text-center decored'>About</span>
+                {% static_placeholder "home_about_text" or %}
                 <div class='row'>
                      <div class='col-md-6'>
                         <p class='first-about-block'>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut euismod vel neque vel ullamcorper. Morbi vel placerat lorem. Integer lacinia vulputate ligula id consectetur. Vivamus commodo nibh in ultricies varius. Quisque semper pellentesque rutrum. Fusce semper porta massa, congue egestas nunc accumsan sollicitudin. Fusce sagittis leo vitae nunc fermentum vestibulum. Donec vel euismod velit. Fusce luctus metus vitae justo semper, vitae auctor urna consequat. Nunc eget lacus sed magna tincidunt mattis. Proin viverra luctus quam, et congue mauris ornare eu.</p>
@@ -162,14 +186,16 @@
                         <p>Pellentesque velit libero, dignissim vel est sed, sodales faucibus augue. Curabitur id faucibus eros. Aliquam erat volutpat. Ut eu sodales nisi. Nullam vitae elit ante. Vestibulum sed molestie lectus. In laoreet feugiat enim vel feugiat. In imperdiet bibendum dui, at accumsan felis. Quisque placerat porttitor neque, a dictum lacus adipiscing nec. Nulla in faucibus dolor, a ultrices augue.
                         <br><br><strong>This is a potential call to action</strong></p>
                      </div>
-                </div>                
+                </div>
+                {% endstatic_placeholder %}
             </div>
         </div>
         <div class="colorblock contacts" id='contact'>
             <div class='container'>
                 <span class='big-title text-center'>Contact</span>
+                {% static_placeholder "home_contact_text" or %}
                 <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut euismod vel neque vel ullamcorper. Morbi vel placerat lorem. Integer lacinia vulputate ligula id consectetur. Vivamus commodo nibh in ultricies varius. Quisque semper pellentesque rutrum. Fusce semper porta massa, congue egestas nunc accumsan sollicitudin. Fusce sagittis leo vitae nunc fermentum vestibulum. Donec vel euismod velit. Fusce luctus metus vitae justo semper, vitae auctor urna consequat. Nunc eget lacus sed magna tincidunt mattis. Proin viverra luctus quam, et congue mauris ornare eu.</p>
-                
+                {% endstatic_placeholder %}
                 <div class='row'>
                     <div class='col-md-9'>
                         <form action="" method="post" class='styled-form'>
@@ -199,12 +225,14 @@
                     <div class='col-md-3 lined-right'>
                         <div class='contact-info'>
                             <div class='title'>Contact Details</div>
+                            {% static_placeholder "home_contact_details" or %}
                             <p>Bedade Inc.</p>
                             <p>50 California Street</p>
                             <p>San Francisco, CA USA</p>
                             <p style='margin-bottom:40px;'><a href="#">Get Directions</a></p>
                             <p>+1.415.275.0280</p>
                             <p><a href='@mailto:contact@bedade.com'>contact@bedade.com</a></p>
+                            {% endstatic_placeholder %}
                         </div>
                     </div>
                 </div>
@@ -227,6 +255,7 @@
               </div>
               <div class="modal-body">
                 <div class='modal-body-inner'>
+                    {% static_placeholder "home_faq" or %}
                     <h4>How can i use Bedade to reach people beyond my direct contacts?</h4>
                     <p>You can access secondary connections by giving the permission to your contacts to forward your query to their own relevant contacts.</p>
                     <br>
@@ -252,6 +281,7 @@
 
                     <p>Aenean sed urna vel quam viverra posuere. Cras posuere, lacus nec tincidunt adipiscing, sapien nisl facilisis nulla, sed interdum leo enim ut mi. Phasellus sit amet ipsum sit amet nibh fringilla cursus pharetra rhoncus nulla. Donec vel rhoncus orci, eu viverra velit. Praesent convallis nec massa a dictum. Praesent luctus ipsum sit amet nisl consectetur malesuada. Nullam suscipit ipsum libero, at egestas arcu scelerisque et. Donec nec rutrum magna, vitae suscipit mauris. Nam dapibus diam non nisl tristique condimentum. Mauris luctus diam diam, tristique euismod odio condimentum vitae. Mauris vel lorem enim. Nam eget risus ut eros bibendum elementum ornare nec risus.
                     </p>
+                    {% endstatic_placeholder %}
                 </div>
               </div>
             </div>

@@ -39,7 +39,6 @@ class CustomUserAdmin(UserAdmin):
         my_urls = patterns('',
             (r'^send_mail/(\d+)$', DeclineView.as_view())
         )
-        print url
         return my_urls + urls
 
 admin.site.register(User, CustomUserAdmin)
@@ -105,7 +104,6 @@ class BenchmarkPendingAdmin(ReadOnlyAdminMixin, admin.ModelAdmin):
         my_urls = patterns('',
             (r'^decline(\d+)$', DeclineView.as_view())
         )
-        print url
         return my_urls + urls
 
 

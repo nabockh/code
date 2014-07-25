@@ -1,0 +1,17 @@
+{% load cms_tags %}
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h4 class="panel-title">
+            <a data-toggle="collapse" data-parent="#accordion-{{ instance.parent.id }}" href="#panel-{{ instance.id }}" {% if instance.collapsed %}class='collapsed'{% endif %}>
+                {{ instance.title }}
+            </a>
+        </h4>
+    </div>
+    <div id="panel-{{ instance.id }}" class="panel-collapse {% if instance.collapsed %}collapse{% endif %}">
+        <div class="panel-body">
+            {% for plugin in instance.child_plugin_instances %}
+                 {% render_plugin plugin %}
+            {% endfor %}
+        </div>
+    </div>
+</div>
