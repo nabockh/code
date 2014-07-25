@@ -221,8 +221,8 @@ class BenchmarkRange(Benchmark):
         series1.insert(0, ['series', 'count'])
         series2 = [['series', 'count']]
         for s in series:
-            series2.append([s['series'], s['value']])
-            series2.append([s['sub_series'], s['value']])
+            series2.append([int(s['series']), s['value']])
+            series2.append([int(s['sub_series']), s['value']])
         return {
             'pie': series1,
             'column': series1,
