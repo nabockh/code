@@ -197,6 +197,15 @@ class DeclineBenchmarkForm(forms.Form):
         self.fields['Owner email'] = forms.EmailField(widget=forms.TextInput({'value':email}))
 
 
+class SendMailForm(forms.Form):
+    def __init__(self, user, *args, **kwargs):
+        super(SendMailForm, self).__init__(*args, **kwargs)
+        self.fields['User'] = forms.CharField(widget=forms.TextInput({'value': user}))
+        self.fields['To'] = forms.EmailField(widget=forms.TextInput({'value': user.email}))
+        self.fields['Subject'] = forms.CharField()
+        self.fields['Email_text'] = forms.CharField(widget=forms.Textarea())
+
+
 class BenchmarkDetailsForm(forms.Form):
     choices = [
         ('Role', 'Role'), ('Geo', 'Geographic'),  ('Country', 'Country'), ('Industry', 'Industry')]
