@@ -1,4 +1,5 @@
 from bm.admin import BenchmarkPending
+from django.contrib.auth.models import User
 from django.core.mail import send_mail
 from django.db.models.signals import post_save, pre_save
 from django.dispatch import Signal
@@ -29,8 +30,25 @@ def calculate_deadline(instance, **kwargs):
         if not instance.already_approved and instance.approved:
             instance.calculate_deadline()
 
+
 @receiver(post_save, sender=BenchmarkPending)
 def check_for_approve(instance, **kwargs):
     if not instance.already_approved and bool(instance.approved):
         instance.already_approved = True
         send_invites.delay(instance.id)
+
+
+@receiver(pre_save, sender=Benchmark, dispatch_uid='nope')
+def check_new_bm_created(instance, **kwargs):
+    """
+    send alert to all Superusers users
+    """
+    if instance.pk is None:
+        owner = instance.owner
+        recipient_list = User.objects.filter(is_superuser=True).values_list('email', flat=True)
+        template = loader.get_template('alerts/new_benchmark.html')
+        context = Context({
+            'owner_name': owner.first_name + ' ' + owner.last_name,
+            'benchmark': instance.name,
+        })
+        send_mail('New Benchmark created', template.render(context), None, recipient_list)

@@ -32,14 +32,11 @@ class CustomUserAdmin(UserAdmin):
         else:
             return super(CustomUserAdmin, self).response_change(request, obj)
 
-# Need view to handle form submittion
-
     def get_urls(self):
         urls = super(CustomUserAdmin, self).get_urls()
         my_urls = patterns('',
             (r'^^(?P<user_id>\d+)/send_mail$', SendMail.as_view())
         )
-        print my_urls + urls
         return my_urls + urls
 
 
