@@ -135,6 +135,7 @@
     </div>
     </form>
 
+
 <script type="text/javascript">
     var statisticGeoData = {{ geo|safe }};
     var statisticRoleData = {{ role|safe }};
@@ -142,5 +143,29 @@
     var statisticCountriesData = {{ countries|safe }};
     var mainChartData = {{ benchmark.charts|safe }};
 </script>
-<script src="{{ STATIC_URL }}js/graphs.js"></script>
+
+<!-- {% if 'Pie' in benchmark.charts_allowed %}
+
+{% endif %}
+
+{% if 'Column' in benchmark.charts_allowed %}
+
+{% endif %}
+
+{% if 'Line' in benchmark.charts_allowed %}
+
+{% endif %}
+
+{% if 'Bell_Curve' in benchmark.charts_allowed %}
+
+{% endif %} -->
+
+
+<script src="{{ STATIC_URL }}js/graphs/pie.js"></script>
+<script src="{{ STATIC_URL }}js/graphs/column.js"></script>
+<script src="{{ STATIC_URL }}js/graphs/line.js"></script>
+<script src="{{ STATIC_URL }}js/graphs/bellcurve.js"></script>
+<script src="{{ STATIC_URL }}js/graphs/stats.js"></script>
+
+
 {% endblock %}

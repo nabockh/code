@@ -44,15 +44,15 @@
             <div class='user-nav'>
                 <div class='container'>
                     <div class='row'>
-                    <div class='col-md-8 col-xs-6'>
+                    <div class='col-md-8 col-xs-9'>
                         <div class='hello'>Hello,</div>
                         <ul class='user-nav-inner'>
-                            <li class='username'>{{ user.first_name }} {{ user.last_name }}</li>
+                            <li class='username'>{{ user.first_name }} {{ user.last_name }}</li>                            
                             <li><a href='/logout' title='Log Out'><i class='fa fa-unlock'></i></a></li>
                         </ul>
                     </div>
-                    <div class='col-md-4 col-xs-6'>
-                        <a href="{% url 'bm_create' %}" class='btn btn-primary pull-right'>Create new benchmark <i class='fa fa-plus-circle'></i></a>
+                    <div class='col-md-4 col-xs-3'>
+                        <a href="{% url 'bm_create' %}" class='btn btn-primary pull-right icon-only'><span class='non-mobile'>Create new benchmark</span> <i class='fa fa-plus-circle'></i></a>
                     </div>
                 </div>
                 </div>
@@ -612,4 +612,6 @@
     </div>
     
 </div>
+    <!-- Support Modal -->
+    {% include 'core/contact_form.html' %}
 {% endblock %}

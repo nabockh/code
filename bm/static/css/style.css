@@ -1369,9 +1369,12 @@ label.btn.btn-primary.auto-width.pull-right.fix {
     
 
     .btn-invite {
-        width: 100%;
+        width: auto;
         text-align: left;
-    }
+    
+        display: block;
+        margin: 0 1px 25px;
+}
 
     .btn-invite:after {
         content: "\f0e0";
@@ -2445,6 +2448,10 @@ ul#id_choice li > label {
     .search-fields .form-group {
         margin: 0;
         width: 90%;
+    }
+
+    .icon-only.btn.pull-right .fa {
+        padding-left: 0;
     }
 
     .search-fields form[role='search'] .form-control {

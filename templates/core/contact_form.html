@@ -1,0 +1,44 @@
+<div class="modal fade" id="support" tabindex="-1" role="dialog" aria-labelledby="supportLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true"><i class='fa fa-times-circle'></i></span><span class="sr-only">Close</span></button>
+            <h4 class="modal-title" id="supportLabel">Support</h4>
+          </div>
+          <div class="modal-body">
+            <div class='modal-body-inner'>
+                <h4>Got Questions?</h4>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed condimentum posuere libero, ut accumsan enim dapibus nec. Quisque hendrerit sollicitudin elit, non elementum est.</p>
+                <h4>Contact Us!</h4>
+                <div class='row'>
+                  <div class='col-md-12'>
+                      <form action="" method="post" class='styled-form'>
+                          {% csrf_token %}
+                          {{ form.non_field_errors }}
+                          <div class='row'>
+                              <div class="col-md-6">
+                                  {{ form.first_name.errors }}
+                                  <label for="first_name">First Name</label>
+                                  {{ form.first_name }}
+                                  {{ form.last_name.errors }}
+                                  <label for="last_name">Last Name</label>
+                                  {{ form.last_name }}
+                                  {{ form.email.errors }}
+                                  <label for="email">Email Address</label>
+                                  {{ form.email }}
+                              </div>
+                              <div class='col-md-6'>
+                                  {{ form.comment.errors }}
+                                  <label for="comment">Message</label>
+                                  {{ form.comment }}
+                                  <input type="submit" value="Submit" />
+                              </div>
+                          </div>                            
+                      </form>
+                  </div>
+              </div>
+            </div>
+          </div>
+        </div>
+    </div>
+</div>

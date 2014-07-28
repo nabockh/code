@@ -246,7 +246,7 @@ class BaseBenchmarkAnswerView(FormView):
 
 class MultipleChoiceAnswerView(BaseBenchmarkAnswerView):
     form_class = AnswerMultipleChoiceForm
-    template_name = 'bm/answerMultiple.html'
+    template_name = 'bm/answer/Multiple.html'
 
     def dispatch(self, request, benchmark, *args, **kwargs):
         self.benchmark = benchmark
@@ -277,7 +277,7 @@ class MultipleChoiceAnswerView(BaseBenchmarkAnswerView):
 
 class RankingAnswerView(BaseBenchmarkAnswerView):
     form_class = RankingAnswerForm
-    template_name = 'bm/answerRanking.html'
+    template_name = 'bm/answer/Ranking.html'
 
     def dispatch(self, request, benchmark, *args, **kwargs):
         self.benchmark = benchmark
@@ -308,7 +308,7 @@ class RankingAnswerView(BaseBenchmarkAnswerView):
 
 class RangeAnswerView(BaseBenchmarkAnswerView):
     form_class = RangeAnswerForm
-    template_name = 'bm/answerRange.html'
+    template_name = 'bm/answer/Range.html'
 
     def dispatch(self, request, benchmark, *args, **kwargs):
         self.benchmark = benchmark
@@ -337,7 +337,7 @@ class RangeAnswerView(BaseBenchmarkAnswerView):
 
 class NumericAnswerView(BaseBenchmarkAnswerView):
     form_class = NumericAnswerForm
-    template_name = 'bm/answerNumeric.html'
+    template_name = 'bm/answer/Numeric.html'
 
     def dispatch(self, request, benchmark, *args, **kwargs):
         self.benchmark = benchmark
