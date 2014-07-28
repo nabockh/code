@@ -5,7 +5,7 @@
 {% if show_save_as_new %}<input type="submit" value="{% trans 'Save as new' %}" name="_saveasnew" {{ onclick_attrib }}/>{%endif%}
 {% if show_save_and_add_another %}<input type="submit" value="{% trans 'Save and add another' %}" name="_addanother" {{ onclick_attrib }}/>{% endif %}
 {% if not show_save_and_continue %}<input type="submit" value="{% trans 'Save and continue editing' %}" name="_continue" {{ onclick_attrib }}/>{% endif %}
-
+{% if opts.object_name == 'User' %}<input type="submit" value="{% trans 'Send Mail' %}" name="_send_mail" {{ onclick_attrib }}/>{% endif %}
 {% if opts.verbose_name == 'Pending Benchmark' %}<input type="submit" value="{% trans 'Decline' %}" name="_decline" {{ onclick_attrib }}/>{% endif %}
 {% if opts.verbose_name == 'Pending Benchmark' %}<input type="submit" value="{% trans 'Approve' %}" name="_approve" {{ onclick_attrib }}/>{% endif %}
 </div>

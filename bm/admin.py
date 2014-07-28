@@ -1,4 +1,4 @@
-from bm.forms import DeclineBenchmarkForm
+from bm.forms import DeclineBenchmarkForm, SendMailForm
 from django.conf.urls import patterns
 from django.contrib import admin
 
@@ -10,8 +10,8 @@ from django.core import urlresolvers
 from django.core.mail import send_mail
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
+from django.shortcuts import render
 from django.template import loader, Context
-from django.template.defaulttags import url
 from django.utils.decorators import method_decorator
 from django.views.generic import FormView
 
@@ -28,20 +28,55 @@ class CustomUserAdmin(UserAdmin):
 
     def response_change(self, request, obj):
         if '_send_mail' in request.POST:
-            return HttpResponseRedirect('/admin/send_mail/%s' % obj.id)
+            return HttpResponseRedirect('/admin/auth/user/%s/send_mail' % obj.id)
         else:
             return super(CustomUserAdmin, self).response_change(request, obj)
-
-# Need view to handle form submittion
 
     def get_urls(self):
         urls = super(CustomUserAdmin, self).get_urls()
         my_urls = patterns('',
-            (r'^send_mail/(\d+)$', DeclineView.as_view())
+            (r'^^(?P<user_id>\d+)/send_mail$', SendMail.as_view())
         )
         return my_urls + urls
 
+
+class SendMail(FormView):
+    template_name = 'admin/send_mail_form.html'
+    form_class = SendMailForm
+
+    @method_decorator(staff_member_required)
+    def dispatch(self, *args, **kwargs):
+        return super(SendMail, self).dispatch(*args, **kwargs)
+
+    def get_form_kwargs(self):
+        kwargs = super(SendMail, self).get_form_kwargs()
+        user = User.objects.get(id=self.kwargs['user_id'])
+        kwargs['user'] = user
+        return kwargs
+
+    def post(self, *args, **kwargs):
+        template_name = 'admin/send_mail_form.html'
+        form_class = self.get_form_class()
+        form = self.get_form(form_class)
+        if form.is_valid():
+                template = loader.get_template('alerts/email_to_user.html')
+                user = form.cleaned_data['User']
+                email = form.cleaned_data['To']
+                email_body = form.cleaned_data['Email_text']
+                subject = form.cleaned_data['Subject']
+                recipient_list = [email]
+                context = Context({
+                    'user': user,
+                    'email_body': email_body
+                })
+                send_mail(subject, template.render(context), None, recipient_list)
+                return HttpResponseRedirect('/admin/auth/user')
+        else:
+            form = self.get_form(form_class)
+        return render(self.request, template_name, {'form': form})
+
 admin.site.register(User, CustomUserAdmin)
+
 
 class ReadOnlyAdminMixin:
 
@@ -141,9 +176,9 @@ class DeclineView(FormView):
                 reason = form.cleaned_data['reason']
                 recipient_list = [email]
                 context = Context({
-                'owner': owner,
-                'benchmark': benchmark,
-                'reason': reason,
+                    'owner': owner,
+                    'benchmark': benchmark,
+                    'reason': reason,
                 })
                 send_mail('Declined Benchmark', template.render(context), None, recipient_list)
                 return HttpResponseRedirect('/admin/bm/benchmarkpending/')

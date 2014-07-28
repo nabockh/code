@@ -143,6 +143,10 @@ class Benchmark(models.Model):
     def contributors(self):
         return self.question.first().responses.count()
 
+    @property
+    def charts_allowed(self):
+        return [name for name, title in self.available_charts]
+
 
 class BenchmarkMultiple(Benchmark):
 
