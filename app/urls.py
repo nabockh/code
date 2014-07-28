@@ -11,9 +11,8 @@ urlpatterns = patterns(
     url(r'^', include('social_auth.urls')),
     url(r'^social/', include('social.urls')),
     url(r'^', include('core.urls')),
-    url(r'^', include('cms.urls')),
     url(r'^benchmark/', include('bm.urls')),
-
+    url(r'^', include('cms.urls')),
 )
 
 if settings.DEBUG:

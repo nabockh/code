@@ -11,6 +11,7 @@
                 </div>
                 <div class='row'>
                     <div class='benchmark open'>
+                        {% if 'Pie' in benchmark.charts_allowed %}
                         <div id='donutChartHolder'>
                             <div id='donutChart' class='bigChart'></div>
                         </div>
@@ -42,6 +43,7 @@
                                 </div>
                             </div>
                         </div>
+                        {% endif %}
                         <div id='lineChartHolder'>
                             <div id='lineChart' class='bigChart'></div>
                         </div>
