@@ -10,9 +10,8 @@ from django.core import urlresolvers
 from django.core.mail import send_mail
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
-from django.shortcuts import render_to_response
+from django.shortcuts import render
 from django.template import loader, Context
-from django.template.defaulttags import url
 from django.utils.decorators import method_decorator
 from django.views.generic import FormView
 
@@ -77,7 +76,7 @@ class SendMail(FormView):
                 return HttpResponseRedirect('/admin/auth/user')
         else:
             form = self.get_form(form_class)
-        return render_to_response(template_name, {'form': form})
+        return render(self.request, template_name, {'form': form})
 
 admin.site.register(User, CustomUserAdmin)
 
