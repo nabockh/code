@@ -53,7 +53,7 @@ def deploy_local():
     drop_db()
     create_db()
     local("python manage.py syncdb --noinput")
-    # local("python manage.py migrate")
+    local("python manage.py migrate")
     create_superuser()
     local("python manage.py runserver")
     # local("python manage.py collectstatic --noinput")
@@ -127,8 +127,8 @@ def deploy():
         print(green("Syncing the database..."))
         sudo("source %s/venv/bin/activate && python manage.py syncdb" % path, user=env.appuser)
 
-        # print(green("Migrating the database..."))
-        # run("source %s/venv/bin/activate && python manage.py migrate" % path)
+        print(green("Migrating the database..."))
+        run("source %s/venv/bin/activate && python manage.py migrate" % path)
 
         print(green("Restarting celery worker..."))
         run("sudo supervisorctl restart %s" % process_worker)
