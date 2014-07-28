@@ -1,8 +1,336 @@
 {% extends 'base.html' %}
+{% load bootstrap %}
+{% load cms_tags %}
+{% block navigation %}
 
+        <header class="navbar navbar-default bs-docs-nav" id="top" role="banner">
+          <div class="container top-navbar">
+            <div class="navbar-header">
+              <button class="navbar-toggle" type="button" data-toggle="collapse" data-target=".bs-navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              <a class="navbar-brand" href="/"><img src='{{ STATIC_URL }}/img/bdde_logo.png'/></a>
+            </div>
+            <nav class="collapse navbar-collapse bs-navbar-collapse" role="navigation">
+                <ul class='main-nav text-center'>
+                  <li id='home-link' class='active'><a href="#banner">Home</a></li>
+                  <li id='how-link'><a href="#how-it-works">How it works</a></li>
+                  <li id='features-link'><a href="#features">Features</a></li>
+                  <li id='examples-link'><a href="#examples">Examples</a></li>
+                  <li id='about-link'><a href="#about">About</a></li>
+                  <li id='contacts-link'><a href="#contact">Contact</a></li>
+                  <li id='faq-link'><a href="#" data-toggle="modal" data-target="#faq">FaQ</a></li>
+                </ul>             
+            </nav>
+            <div class='social-btns pull-right'>
+                <a href="#"><i class='fa fa-linkedin'></i></a>
+                <a href="#"><i class='fa fa-twitter'></i></a>
+                <a href="#"><i class='fa fa-facebook'></i></a>
+            </div>
+          </div>
+        </header>
+
+        {% if user.is_authenticated %}
+            <div class='user-nav'>
+                <div class='container'>
+                    <div class='row'>
+                    <div class='col-md-8'>
+                        <div class='hello'>Hello,</div>
+                        <ul class='user-nav-inner'>
+                            <li class='username'>{{ user.first_name }} {{ user.last_name }}</li>
+                            <li><a href='/logout' title='Log Out'><i class='fa fa-unlock'></i></a></li>
+                        </ul>
+                    </div>
+                    <div class='col-md-4'>
+                        <a href="/dashboard" class='btn btn-primary pull-right'>Go to Dashboard <i class='fa fa-arrow-circle-right'></i></a>
+                    </div>
+                </div>
+                </div>
+            </div>
+        {% else %}
+            <div class='user-nav homepage'>
+                <div class='container text-center'>
+                    <a href="{% url 'socialauth_begin' backend='linkedin' %}" class="btn sign-in-btn">Sign in with Linkedin</a>
+                    <form role="beta-email">
+                        <div class="form-group">
+                          <input type="text" class="form-control" placeholder="EMAIL ADDRESS">
+                        </div>
+                        <button type="submit" class="btn btn-search">Submit</button>
+                      </form>
+                </div>
+            </div>
+        {% endif %}
+        
+{% endblock %}
 {% block content %}
-    {% if user.is_authenticated %}
-        <!-- <p><strong>Welcome: {{ user.first_name }} {{ user.last_name }}</strong></p> -->
-        <!-- <p><a href="{% url 'in_contacts_import' %}" class="btn btn-primary btn-sm">Import contacts</a></p> -->
-    {% endif %}
+        <div class="colorblock banner" id='banner'>
+            <div class='container text-center'>
+                <span class='big-title'>
+                {% static_placeholder "home_big_title" or %}
+                    Better Data. <br> Better Decisions.
+                {% endstatic_placeholder %}<br>
+                </span>
+                <span class='help-text'>
+                {% static_placeholder "home_small_title" or %}
+                    Benchmark Intelligence from the wisdom <br> of <i>your</i> professional network.
+                {% endstatic_placeholder %}
+                </span>
+            </div>
+        </div>
+        <div class="colorblock" id='how-it-works'>
+            <div class='container'>
+                <span class='big-title text-center'>How it works</span>
+                {% static_placeholder "home_how_it_works" or %}
+                <p>Bedade aggregates data from experts for your use. You know your industry, the data you need, and who has the right knowledge. Bedade is a platform to exchange that knowledge. You choose your target contributors, type your question and watch the results roll in. Get better data quicker. Extract data from within your network to make comparisons and benchmarks, instead of relying on guesstimates or expensive data sources. Anonymously shared data from your trusted contacts will provide insight for your critical decisions. <a href='#'>View the Diagram</a></p>
+                {% endstatic_placeholder %}
+                <div class='row'>
+                    <div class="col-md-4 how-it-works">
+                        <div class='title fa-cogs'>Create Custom <br>Benchmark Surveys</div>
+                        {% static_placeholder "home_bm_survays" or %}
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc sagittis pellentesque erat, in eleifend lorem ipsum metus lorem ipsum dolor tempus non.</p>
+                        {% endstatic_placeholder %}
+                    </div>
+                    <div class="col-md-4 how-it-works">
+                        <div class='title fa-comments'>Get Trusted Data from <br>Your Professional Network</div>
+                        {% static_placeholder "home_get_trusted_data" or %}
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc sagittis pellentesque erat, in eleifend lorem ipsum metus lorem ipsum dolor tempus non.</p>
+                        {% endstatic_placeholder %}
+                    </div>
+                    <div class="col-md-4 how-it-works">
+                        <div class='title fa-tasks'>Compare and Analyze<br>to Make Better Decisions</div>
+                        {% static_placeholder "home_compare_and_analize" or %}
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc sagittis pellentesque erat, in eleifend lorem ipsum metus lorem ipsum dolor tempus non.</p>
+                        {% endstatic_placeholder %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="colorblock features" id='features'>
+            <div class='container text-center'>
+                <div class='row'>
+                    <div class='col-md-4 features mobile'><span class='big-title text-center'>Features</span></div>
+                    <div class='col-md-4 features text-right'>
+                        {% static_placeholder "home_features_left" or %}
+                        <div class='title'>Pertinent Data from<br>Exports in <i>Your</i> Network</div>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc sagittis lorem viva.</p>
+                        <div class='title'>Safe, Secure, and<br>Completely Anonymous</div>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc sagittis lorem viva.</p>
+                        {% endstatic_placeholder %}
+                    </div>
+                    <div class='col-md-4 features non-mobile'><span class='big-title text-center'>Features</span></div>
+                    <div class='col-md-4 features text-left'>
+                        {% static_placeholder "home_features_right" or %}
+                        <div class='title'>Easy Question Creation<br>with Timely Responses</div>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc sagittis lorem viva lorem ipsum vivamus consectetuer.</p>
+                        <div class='title'>Repeatable for Times Series</div>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc sagittis lorem ipsum.</p>
+                        {% endstatic_placeholder %}
+                    </div>
+                </div>                
+            </div>
+        </div>
+        <div class="colorblock" id='examples'>
+            <div class='container'>
+                <span class='big-title text-center'>Examples</span>
+                {% static_placeholder "home_examples_text" or %}
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut euismod vel neque vel ullamcorper. Morbi vel placerat lorem. Integer lacinia vulputate ligula id consectetur. Vivamus commodo nibh in ultricies varius. Quisque semper pellentesque rutrum. Fusce semper porta massa, congue egestas nunc accumsan sollicitudin. Fusce sagittis leo vitae nunc fermentum vestibulum. Donec vel euismod velit. Fusce luctus metus vitae justo semper, vitae auctor urna consequat. Nunc eget lacus sed magna tincidunt mattis. Proin viverra luctus quam, et congue mauris ornare eu.</p>                
+                {% endstatic_placeholder %}
+                <div class='clearfix'>
+                    <div class='row'>
+                        <div class="example-block benchmark">
+                            <div class="big-icon"></div>
+                            <div class="title">Benchmark</div>
+                            <p>Comparison of planned IT spending to the everage spend around compliance for a new regulation.</p>
+                        </div>
+                        <div class="example-block market-trending">
+                            <div class="big-icon"></div>
+                            <div class="title"> Market Trending</div>
+                            <p>Measure multiple data sets against each other.</p>
+                        </div>
+                        <div class="example-block market-share">
+                            <div class="big-icon"></div>
+                            <div class="title">Market Share</div>
+                            <p>Comparison of company sales, size and market compared to competitors.</p>
+                        </div>
+                        <div class="example-block market-size">
+                            <div class="big-icon"></div>
+                            <div class="title">Market Size</div>
+                            <p>Create benchmarks to collect the subsegments of your specific markets.</p>
+                        </div>
+                        <div class="example-block historical-series">
+                            <div class="big-icon"></div>
+                            <div class="title">Historical Series</div>
+                            <p>Create automatic recurring benchmarks that calculate new data points over specific intervals.</p>
+                        </div>
+                        <div class="example-block adoption-rate">
+                            <div class="big-icon"></div>
+                            <div class="title">Adoption Rate</div>
+                            <p>Compare your data against the aggregate of your peers.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="colorblock about" id='about'>
+            <div class='container text-center about-container'>
+                <span class='big-title text-center decored'>About</span>
+                {% static_placeholder "home_about_text" or %}
+                <div class='row'>
+                     <div class='col-md-6'>
+                        <p class='first-about-block'>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut euismod vel neque vel ullamcorper. Morbi vel placerat lorem. Integer lacinia vulputate ligula id consectetur. Vivamus commodo nibh in ultricies varius. Quisque semper pellentesque rutrum. Fusce semper porta massa, congue egestas nunc accumsan sollicitudin. Fusce sagittis leo vitae nunc fermentum vestibulum. Donec vel euismod velit. Fusce luctus metus vitae justo semper, vitae auctor urna consequat. Nunc eget lacus sed magna tincidunt mattis. Proin viverra luctus quam, et congue mauris ornare eu.</p>
+                     </div>
+                     <div class='col-md-6'>
+                        <p>Pellentesque velit libero, dignissim vel est sed, sodales faucibus augue. Curabitur id faucibus eros. Aliquam erat volutpat. Ut eu sodales nisi. Nullam vitae elit ante. Vestibulum sed molestie lectus. In laoreet feugiat enim vel feugiat. In imperdiet bibendum dui, at accumsan felis. Quisque placerat porttitor neque, a dictum lacus adipiscing nec. Nulla in faucibus dolor, a ultrices augue.
+                        <br><br><strong>This is a potential call to action</strong></p>
+                     </div>
+                </div>
+                {% endstatic_placeholder %}
+            </div>
+        </div>
+        <div class="colorblock contacts" id='contact'>
+            <div class='container'>
+                <span class='big-title text-center'>Contact</span>
+                {% static_placeholder "home_contact_text" or %}
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut euismod vel neque vel ullamcorper. Morbi vel placerat lorem. Integer lacinia vulputate ligula id consectetur. Vivamus commodo nibh in ultricies varius. Quisque semper pellentesque rutrum. Fusce semper porta massa, congue egestas nunc accumsan sollicitudin. Fusce sagittis leo vitae nunc fermentum vestibulum. Donec vel euismod velit. Fusce luctus metus vitae justo semper, vitae auctor urna consequat. Nunc eget lacus sed magna tincidunt mattis. Proin viverra luctus quam, et congue mauris ornare eu.</p>
+                {% endstatic_placeholder %}
+                <div class='row'>
+                    <div class='col-md-9'>
+                        <form action="" method="post" class='styled-form'>
+                            {% csrf_token %}
+                            {{ form.non_field_errors }}
+                            <div class='row'>
+                                <div class="col-md-6">
+                                    {{ form.first_name.errors }}
+                                    <label for="first_name">First Name</label>
+                                    {{ form.first_name }}
+                                    {{ form.last_name.errors }}
+                                    <label for="last_name">Last Name</label>
+                                    {{ form.last_name }}
+                                    {{ form.email.errors }}
+                                    <label for="email">Email Address</label>
+                                    {{ form.email }}
+                                </div>
+                                <div class='col-md-6'>
+                                    {{ form.comment.errors }}
+                                    <label for="comment">Message</label>
+                                    {{ form.comment }}
+                                    <input type="submit" value="Submit" />
+                                </div>
+                            </div>                            
+                        </form>
+                    </div>
+                    <div class='col-md-3 lined-right'>
+                        <div class='contact-info'>
+                            <div class='title'>Contact Details</div>
+                            {% static_placeholder "home_contact_details" or %}
+                            <p>Bedade Inc.</p>
+                            <p>50 California Street</p>
+                            <p>San Francisco, CA USA</p>
+                            <p style='margin-bottom:40px;'><a href="#">Get Directions</a></p>
+                            <p>+1.415.275.0280</p>
+                            <p><a href='@mailto:contact@bedade.com'>contact@bedade.com</a></p>
+                            {% endstatic_placeholder %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="colorblock map">
+            <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d3152.8253615926615!2d-122.3973606!3d37.794132299999994!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8085806168b6716f%3A0xc7a13d7472243442!2s50+California+St!5e0!3m2!1suk!2sua!4v1403699515076" width="100%" height="250px" frameborder="0" style="border:0" disableDefaultUI: true></iframe>
+        </div>
+
+
+
+        <!-- FAQ Modal -->
+        <div class="modal fade" id="faq" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true"><i class='fa fa-times-circle'></i></span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" id="FAQLabel">Frequently asked questions</h4>
+              </div>
+              <div class="modal-body">
+                <div class='modal-body-inner'>
+                    {% static_placeholder "home_faq" or %}
+                    <h4>How can i use Bedade to reach people beyond my direct contacts?</h4>
+                    <p>You can access secondary connections by giving the permission to your contacts to forward your query to their own relevant contacts.</p>
+                    <br>
+                    <h4>How can i ensure my contacts reply?</h4>
+                    <p>You are in control. In order to ensure maximum participation you should:</p>
+                    <ul>
+                        <li>Ask a question that you would be willing to answer yourself</li>
+                        <li>Carefully select the contacts that you want to invite to answer</li>
+                        <li>Select contacts whith whom you have already build trust and confidence</li>
+                        <li>Select contacts that have sufficient knowledge to answer your query</li>
+                    </ul>
+                    <br>
+                    <h4>Will they know i'm asking the question or will the question be anonymous?</h4>
+                    <p>To ensure maximum level of participation, your contacts will know that you are asking this question. This level of trust ensures your contacts to know who is asking for their insights.</p>
+
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed condimentum posuere libero, ut accumsan enim dapibus nec. Quisque hendrerit sollicitudin elit, non elementum est. Sed pellentesque sem a urna bibendum, placerat congue lacus porta. Nam scelerisque diam ut posuere posuere. Donec a nisl sit amet enim luctus egestas. Mauris quis ligula eu risus dictum aliquam eu quis nibh. Ut orci massa, malesuada et dictum vel, ornare eu orci. Mauris condimentum dolor quis semper ullamcorper. Sed at sem eget magna fringilla hendrerit at vel felis. Cras et venenatis nulla. Nam a est quis erat luctus tempor id vel metus.</p>
+
+                    <p>Nullam faucibus ante eu posuere sollicitudin. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Morbi sit amet mattis libero. Donec cursus nulla id posuere sollicitudin. Integer metus tortor, molestie nec aliquet sit amet, varius eu tellus. Pellentesque non nisl massa. Donec accumsan varius commodo. Nunc viverra massa lorem, eu aliquam lacus blandit vel. Vivamus fermentum augue lorem, vitae viverra lacus lobortis eu. Sed volutpat elementum ultricies. Proin interdum quam nec magna tincidunt dignissim. Vestibulum sit amet vestibulum magna. Vivamus ultricies lacus at massa pulvinar tristique. Nam pulvinar nunc ac libero aliquet, vel sodales est interdum. Integer at leo et mi rutrum dignissim quis eu dui.</p>
+
+                    <p>Vivamus nec condimentum justo. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Aenean pharetra elit vitae tempor posuere. Mauris nec magna porttitor, porttitor nibh a, pharetra lectus. Phasellus congue imperdiet nunc, luctus sagittis nibh adipiscing eu. Vestibulum bibendum blandit quam eget vehicula. Sed venenatis dui id erat posuere vestibulum.</p>
+
+                    <p>Nam eu mi adipiscing, lobortis est eget, fringilla quam. Cras a dui posuere, fermentum velit a, volutpat sem. Morbi a pellentesque neque. Nulla et enim cursus, commodo nisl sit amet, tempor leo. Integer vel tempus ligula, non aliquet risus. Donec sed velit consequat, vehicula velit vel, rhoncus nulla. Nam aliquet dui sed viverra imperdiet. Aenean sed eleifend tellus. Integer viverra venenatis porta.</p>
+
+                    <p>Aenean sed urna vel quam viverra posuere. Cras posuere, lacus nec tincidunt adipiscing, sapien nisl facilisis nulla, sed interdum leo enim ut mi. Phasellus sit amet ipsum sit amet nibh fringilla cursus pharetra rhoncus nulla. Donec vel rhoncus orci, eu viverra velit. Praesent convallis nec massa a dictum. Praesent luctus ipsum sit amet nisl consectetur malesuada. Nullam suscipit ipsum libero, at egestas arcu scelerisque et. Donec nec rutrum magna, vitae suscipit mauris. Nam dapibus diam non nisl tristique condimentum. Mauris luctus diam diam, tristique euismod odio condimentum vitae. Mauris vel lorem enim. Nam eget risus ut eros bibendum elementum ornare nec risus.
+                    </p>
+                    {% endstatic_placeholder %}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <script type="text/javascript">
+            // Main Nav behavior on scroll
+
+            $( document ).ready(function() {
+                var $document = $(document);
+                var firstOffset = $('.colorblock#how-it-works').offset().top -90;
+                var secondOffset = $('.colorblock#features').offset().top - 90;
+                var thirdOffset = $('.colorblock#examples').offset().top - 90;
+                var fourthOffset = $('.colorblock#about').offset().top - 90;
+                var fifthOffset = $('.colorblock#contact').offset().top - 90;
+
+                $document.on("scroll", function () {
+                    if ($document.scrollTop() < firstOffset) {
+                        $('.main-nav li#home-link').addClass('active')
+                        .siblings().removeClass('active');
+                    }
+
+                    if ($document.scrollTop() >= firstOffset) {
+                        $('.main-nav li#how-link').addClass('active')
+                        .siblings().removeClass('active');
+                    }
+
+                    if ($document.scrollTop() >= secondOffset - 90) {
+                         $('.main-nav li#features-link').addClass('active')
+                        .siblings().removeClass('active');
+                    }
+
+                    if ($document.scrollTop() >= thirdOffset - 90) {
+                        $('.main-nav li#examples-link').addClass('active')
+                        .siblings().removeClass('active');
+                    }
+
+                    if ($document.scrollTop() >= fourthOffset - 90) {
+                        $('.main-nav li#about-link').addClass('active')
+                        .siblings().removeClass('active');
+                    }
+
+                    if ($document.scrollTop() >= fifthOffset - 180) {
+                        $('.main-nav li#contacts-link').addClass('active')
+                        .siblings().removeClass('active');
+                    }
+                    console.clear();
+                });
+            });
+        </script>
 {% endblock %}

@@ -1,4 +1,5 @@
 from fabric.api import *
+from fabric.api import settings as fabric_settings
 from fabric.colors import green, red
 from fabric.contrib import django
 import psycopg2
@@ -52,7 +53,7 @@ def deploy_local():
     drop_db()
     create_db()
     local("python manage.py syncdb --noinput")
-    # local("python manage.py migrate")
+    local("python manage.py migrate")
     create_superuser()
     local("python manage.py runserver")
     # local("python manage.py collectstatic --noinput")
@@ -67,6 +68,8 @@ def demo_server():
     env.user = "root"
     # Set the password [NOT RECOMMENDED]
     env.password = "rauuayhbngvv"
+    env.appuser = "bedade"
+    env.djlocalsettings = 'local_settings_demo.py'
 
 
 def qa_server():
@@ -77,41 +80,55 @@ def qa_server():
     env.user = "root"
     # Set the password [NOT RECOMMENDED]
     env.password = "iwomtvopmrbk"
+    env.appuser = "root"
+    env.djlocalsettings = 'local_settings_qa.py'
+    env.branch = "dev"
+
 
 
 def prod_server():
     """Production server configuration Ubuntu 14.04 x32"""
     # The IP of your server
-    env.host_string = '107.170.123.130'
+    env.host_string = '107.170.118.177'
     # Set the username
     env.user = "root"
     # Set the password [NOT RECOMMENDED]
-    env.password = "muzcnhhsqpep"
-    env.branch = "master"
+    env.password = "tlhqoqchpppn"
+    env.appuser = "bedade"
+    env.djlocalsettings = 'local_settings.py'
+    # env.branch = "dev"
 
 
 def deploy():
     # path to the directory on the server where your vhost is set up
-    path = "/root/projects/bedade"
+    path = "/webapps/bedade/bedade"
     # name of the application process
     process_web = "bedade_web"
     process_worker = "bedade_celeryworker"
+    
+    if hasattr(env, 'branch'):
+        branch = env.branch
+    else:
+        branch = "master"
 
     print(red("Beginning Deploy:"))
     with cd("%s" % path):
         run("pwd")
+        sudo('find . -name "*.pyc" -exec rm -rf {} \;')
         print(green("Pulling master from GitHub..."))
-        run("git pull origin master")
+        sudo("git pull origin %s && git checkout %s" % (branch, branch), user=env.appuser)
+        # sudo("git pull origin master", user=env.appuser)
         print(green("Installing requirements..."))
-        run("source %s/venv/bin/activate && pip install -r requirements.txt" % path)
+        sudo("source %s/venv/bin/activate && pip install -r requirements.txt" % path, user=env.appuser)
         print(green("Collecting static files..."))
-        run("source %s/venv/bin/activate && python manage.py collectstatic --noinput" % path)
+        sudo("source %s/venv/bin/activate && python manage.py collectstatic --noinput" % path, user=env.appuser)
         # print(green("Creating the database..."))
         # run("sudo -u postgres createdb %s" % dbsettings['NAME'])
         print(green("Syncing the database..."))
-        run("source %s/venv/bin/activate && python manage.py syncdb" % path)
-        # print(green("Migrating the database..."))
-        # run("source %s/venv/bin/activate && python manage.py migrate" % path)
+        sudo("source %s/venv/bin/activate && python manage.py syncdb" % path, user=env.appuser)
+
+        print(green("Migrating the database..."))
+        run("source %s/venv/bin/activate && python manage.py migrate" % path)
 
         print(green("Restarting celery worker..."))
         run("sudo supervisorctl restart %s" % process_worker)
@@ -128,6 +145,7 @@ def deploy():
 def bootstrap():
     # before running bootstrap it's needed to generate ssh key
     # and add it to deployment keys in bitbucket repo settings
+    path = '/webapps/bedade/'
     run("aptitude     update")
     run("aptitude  -y upgrade")
     run("aptitude  -y install python-virtualenv")
@@ -146,13 +164,17 @@ def bootstrap():
 
     run("aptitude  -y install rabbitmq-server")
 
-    run("mkdir projects")
-    with cd("projects"):
+    run("mkdir -p %s" % path)
+    with cd(path):
         run("git clone git@bitbucket.org:Perfectial/bedade.git")
         with cd("bedade"):
+            run("git config core.fileMode false")
             run("virtualenv venv")
-            sudo("chmod a+x bedade_web_dev.sh")
-            sudo("chmod a+x bedade_celeryworker_dev.sh")
+            put('bedade_web_dev.sh', 'bedade_web.sh')
+            sudo("chmod a+x bedade_web.sh")
+            put('bedade_celeryworker_dev.sh', 'bedade_celeryworker.sh')
+            sudo("chmod a+x bedade_celeryworker.sh")
+            put(env.djlocalsettings, 'local_settings.py')
 
     for conf in ['bedade_web.conf', 'bedade_celeryworker.conf']:
         put('jenkins_scripts/%s' % conf, '/etc/supervisor/conf.d/%s' % conf)
@@ -161,8 +183,71 @@ def bootstrap():
     sudo("supervisorctl update")
 
 
+def bootstrap_live():
+    # before running bootstrap it's needed to generate ssh key
+    # and add it to deployment keys in bitbucket repo settings
+    path = '/webapps/bedade/'
+    run("aptitude     update")
+    run("aptitude  -y upgrade")
+    run("aptitude  -y install python-virtualenv")
+    sudo("aptitude -y install python-dev")
+    sudo("aptitude -y install supervisor")
+    run("aptitude  -y install git")
+    # install postgres
+    sudo("aptitude -y install postgresql postgresql-contrib-9.3")
+    run("aptitude  -y install postgresql-server-dev-9.3")
+
+    sudo("groupadd --system webapps")
+    sudo("useradd --system --gid webapps --shell /bin/bash --home /webapps/bedade bedade")
+    
+    run("sudo -u postgres createuser bedade")
+    run("sudo -u postgres createdb --owner bedade %s" % dbsettings['NAME'])    
+
+    run("aptitude  -y install rabbitmq-server")
+    sudo("aptitude -y install nginx")
+    sudo("service nginx start")
+
+    sudo("mkdir -p %s" % path)
+    # with fabric_settings(sudo_user="bedade"):
+    with cd(path):
+        run("git clone git@bitbucket.org:Perfectial/bedade.git")
+        with cd("bedade"):
+            run("git config core.fileMode false")
+            run("virtualenv venv")
+            put('bedade_web_live.sh', 'bedade_web.sh')
+            sudo("chmod a+x bedade_web.sh")
+            put('bedade_celeryworker_live.sh', 'bedade_celeryworker.sh')
+            sudo("chmod a+x bedade_celeryworker.sh")
+            put(env.djlocalsettings, 'local_settings.py')  
+            sudo("mkdir logs") 
+
+    put('jenkins_scripts/bedade_web_live.conf', 
+        '/etc/supervisor/conf.d/%s' % 'bedade_web.conf')
+    put('jenkins_scripts/bedade_celeryworker_live.conf', 
+        '/etc/supervisor/conf.d/%s' % 'bedade_celeryworker.conf')
+
+    put("nginx.conf", "/etc/nginx/sites-available/bedade")
+    sudo("ln -s /etc/nginx/sites-available/bedade /etc/nginx/sites-enabled/bedade")
+
+    sudo("chown -R bedade:webapps /webapps/bedade")
+    sudo("chmod -R g+w /webapps/bedade")
+
+    run("unlink /etc/nginx/sites-enabled/default")
+    sudo("supervisorctl reread")
+    sudo("supervisorctl update")
+    sudo("service nginx restart")
+
 def ssh_create():
     run("ssh-keygen")
     run("ssh-agent /bin/bash")
     run("ssh-add ~/.ssh/id_rsa")
     # run("cat ~/.ssh/id_rsa.pub")
+
+
+def deploy_settings():
+    # path to the directory on the server where your vhost is set up
+    path = "/webapps/bedade/bedade"
+    with cd("%s" % path):
+        run("pwd")
+        put('local_settings_demo.py', 'local_settings.py')
+

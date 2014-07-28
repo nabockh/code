@@ -1,29 +1,615 @@
 {% extends "base.html" %}
 {% load i18n %}
 {% load bootstrap %}
+{% load helpers %}
+{% load cms_tags %}
 
 {% block js %}
 {{ wizard.form.media }}
 {% endblock %}
 
+{% block navigation %}
+
+          <header class="navbar navbar-default bs-docs-nav" id="top" role="banner">
+              <div class="container top-navbar">
+                <div class="navbar-header">
+                  <button class="navbar-toggle" type="button" data-toggle="collapse" data-target=".bs-navbar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                  </button>
+                  <a class="navbar-brand" href="/"><img src='{{ STATIC_URL }}/img/bdde_logo.png'/></a>
+                </div>
+                <nav class="collapse navbar-collapse bs-navbar-collapse" role="navigation">
+                    <ul class='main-nav text-center dashboard-nav'>
+                      <li><a href="/dashboard">Dashboard</a></li>
+                      <li class="dropdown active">
+                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">Benchmarks <span class="caret"></span></a>
+                         <ul class="dropdown-menu" role="menu">
+                            <li><a href="#">Create</a></li>
+                            <li><a href="/benchmark/history">My Benchmark History</a></li>
+                         </ul>
+                      </li>
+                      <li><a href="#">Support</a></li>
+
+                    </ul>
+                    {% include 'core/search_form.html' %}
+
+                </nav>
+
+              </div>
+            </header>
+
+            <div class='user-nav'>
+                <div class='container'>
+                    <div class='row'>
+                    <div class='col-md-8 col-xs-6'>
+                        <div class='hello'>Hello,</div>
+                        <ul class='user-nav-inner'>
+                            <li class='username'>{{ user.first_name }} {{ user.last_name }}</li>
+                            <li><a href='/logout' title='Log Out'><i class='fa fa-unlock'></i></a></li>
+                        </ul>
+                    </div>
+                    <div class='col-md-4 col-xs-6'>
+                        <a href="{% url 'bm_create' %}" class='btn btn-primary pull-right'>Create new benchmark <i class='fa fa-plus-circle'></i></a>
+                    </div>
+                </div>
+                </div>
+            </div>
+    {% endblock %}
+
 {% block content %}
-<p>Step {{ wizard.steps.step1 }} of {{ wizard.steps.count }}</p>
-<form action="" method="post">{% csrf_token %}
-<table>
-{{ wizard.management_form }}
-{% if wizard.form.forms %}
-    {{ wizard.form.management_form }}
-    {% for form in wizard.form.forms %}
-        {{ form }}
-    {% endfor %}
-{% else %}
-    {{ wizard.form|bootstrap }}
+<div class='container bordered bgwhite benchmark-creation margined'>
+    <div class='title-header'>Create a new benchmark</div>
+{% if wizard.steps.step1 == 1 %}
+    <div class='creation_steps'>
+        <div class='cr_step one active'>
+            <div class='step_image'></div>
+            <div class='step_title'>Step 1:</div>
+            <div class='step_descr'>Define your Query</div>
+        </div>
+        <div class='cr_step two'>
+            <div class='step_image'></div>
+            <div class='step_title'>Step 2:</div>
+            <div class='step_descr'>Add Contacts</div>
+        </div>
+        <div class='cr_step three'>
+            <div class='step_image'></div>
+            <div class='step_title'>Step 3:</div>
+            <div class='step_descr'>Review &amp; Send</div>
+        </div>
+    </div>
+    <div class='benchmark-help'>
+    {% static_placeholder "bm_create_help_text" or %}
+    This space is reserved for instructional text. Should try to keep it pretty succinct but helpful. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed pellentesque tincidunt est, id lacinia orci lacinia eu. Aenean dignissim rutrum velit in faucibus. Nam non odio non neque porttitor dignissim in sed enim. Nunc facilisis ac mauris at eleifend. Maecenas pulvinar erat vestibulum odio aliquet suscipit. Nam venenatis nec lorem vel cursus.
+    {% endstatic_placeholder %}
+    </div>
+
+{% elif wizard.steps.step1 == 2 %}
+    <div class='creation_steps'>
+        <div class='cr_step one done'>
+            <div class='step_image'></div>
+            <div class='step_title'>Step 1:</div>
+            <div class='step_descr'>Define your Query</div>
+        </div>
+        <div class='cr_step two active'>
+            <div class='step_image'></div>
+            <div class='step_title'>Step 2:</div>
+            <div class='step_descr'>Add Contacts</div>
+        </div>
+        <div class='cr_step three'>
+            <div class='step_image'></div>
+            <div class='step_title'>Step 3:</div>
+            <div class='step_descr'>Review &amp; Send</div>
+        </div>
+    </div>
+{% elif wizard.steps.step1 == 3 %}
+    <div class='creation_steps'>
+        <div class='cr_step one done'>
+            <div class='step_image'></div>
+            <div class='step_title'>Step 1:</div>
+            <div class='step_descr'>Define your Query</div>
+        </div>
+        <div class='cr_step two done'>
+            <div class='step_image'></div>
+            <div class='step_title'>Step 2:</div>
+            <div class='step_descr'>Add Contacts</div>
+        </div>
+        <div class='cr_step three active'>
+            <div class='step_image'></div>
+            <div class='step_title'>Step 3:</div>
+            <div class='step_descr'>Review &amp; Send</div>
+        </div>
+    </div>
+    <div class='benchmark-help'>
+        {% static_placeholder "bm_create_step3_text" or %}
+        This space is reserved for instructional text. Should try to keep it pretty succinct but helpful. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed pellentesque tincidunt est, id lacinia orci lacinia eu. Aenean dignissim rutrum velit in faucibus. Nam non odio non neque porttitor dignissim in sed enim. Nunc facilisis ac mauris at eleifend. Maecenas pulvinar erat vestibulum odio aliquet suscipit. Nam venenatis nec lorem vel cursus.
+        {% endstatic_placeholder %}
+    </div>
 {% endif %}
-</table>
-{% if wizard.steps.prev %}
-<button name="wizard_goto_step" type="submit" value="{{ wizard.steps.first }}">{% trans "first step" %}</button>
-<button name="wizard_goto_step" type="submit" value="{{ wizard.steps.prev }}">{% trans "prev step" %}</button>
-{% endif %}
-<input type="submit" value="{% trans "submit" %}"/>
-</form>
+    <div class="margined no-bottom">
+        <div class='row'>            
+                <form action="" method="post" class='styled-form'>{% csrf_token %}
+                    <table>
+                    {{ wizard.management_form }}
+                    {% if wizard.form.forms %}
+                        {{ wizard.form.management_form }}
+                        {% for form in wizard.form.forms %}
+                            {{ form }}
+                        {% endfor %}
+                    {% else %}
+                        {% if wizard.steps.step1 == 1 %}
+                            <div class='col-md-8 lined-left'>
+                                <div class='row'>
+                                    <div class='col-md-12'>
+                                        <label for="id_0-name">Query Name</label>
+                                        <span class="add_info">(ie 'IT SaaS Costs')</span>
+                                        {{ form.name }}
+                                        {{ form.name.errors }}
+                                    </div>
+                                    <div class='col-md-12'>
+                                        <label for="id_0-question_label">Your Query</label>
+                                        <span class="add_info">(ie 'What is your annual Marketing budget for SaaS services')</span>
+                                        {{ form.question_label }}
+                                        {{ form.question_label.errors }}
+                                    </div>
+                                    <div class='col-md-12'>
+                                        <label for="id_0-question_text">Query Details</label>
+                                        <span class="add_help">?
+                                            <span class='add_help_inner'>
+                                                {% static_placeholder "bm_create_query_details" or %}
+                                                Lorem ipsum dolor sit amet, consectetur eta adipiscing elit. Pellentasque eu tempor tortor. Aliquam Trisque eros arcu, sed bibendum enim faucibus in. In vulputate blendit lorem ut.
+                                                {% endstatic_placeholder %}
+                                            </span>
+                                        </span>
+                                        {{ form.question_text }}
+                                        {{ form.question_text.errors }}
+                                    </div>
+                                    <div class='col-md-12'>
+                                        <div class='row'>
+                                            <div class='col-md-4'>
+                                                <label for="industry">Industry</label>
+                                                {{ form.industry }}
+                                                {{ form.industry.errors }}
+                                            </div>
+                                            <div class='col-md-4'>
+                                                <label for="geo">Location</label>
+                                                {{ form.geo }}
+                                                {{ form.geo.errors }}
+                                            </div>
+                                            <div class='col-md-4'>
+                                                <label for="question_type">Type of Answer</label>
+                                                {{ form.question_type }}
+                                                {{ form.question_type.errors }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class='col-md-12' id='answer_options'>
+                                        <label for="id_0-answer_options">Answer Options</label>
+                                        <span class="add_info">(Enter each choice on a seperate line)</span>
+                                        {{ form.answer_options }}
+                                        {{ form.answer_options.errors }}
+                                    </div>
+                                    <div class='col-md-12' id='units_maxDecimals'>
+                                        <div class='row'>
+                                            <div class='col-md-6'>
+                                                <label for="id_0-units">Units</label>
+                                                <span class="add_help">?
+                                                    <span class='add_help_inner'>
+                                                        {% static_placeholder "bm_create_units_tooltip" or %}
+                                                        Lorem ipsum dolor sit amet, consectetur eta adipiscing elit. Pellentasque eu tempor tortor. Aliquam Trisque eros arcu, sed bibendum enim faucibus in. In vulputate blendit lorem ut.
+                                                        {% endstatic_placeholder %}
+                                                    </span>
+                                                </span>
+                                                {{ form.units }}
+                                                {{ form.units.errors }}
+                                            </div>
+                                            <div class='col-md-6'>
+                                                <label for="id_0-max_number_of_decimal">maximum number of decimals</label>
+                                                <span class="add_help">?
+                                                    <span class='add_help_inner'>
+                                                        {% static_placeholder "bm_create_max_dec_tooltip" or %}
+                                                        Lorem ipsum dolor sit amet, consectetur eta adipiscing elit. Pellentasque eu tempor tortor. Aliquam Trisque eros arcu, sed bibendum enim faucibus in. In vulputate blendit lorem ut.
+                                                        {% endstatic_placeholder %}
+                                                    </span>
+                                                </span>
+                                                {{ form.max_number_of_decimal }}
+                                                {{ form.max_number_of_decimal.errors }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class='col-md-12'>
+                                        <div class='row'>
+                                            <div class='col-md-8 normal-padding'>
+                                                <label for="id_1-minimum_number_of_answers">Minimum responses required to validate benchmark</label>
+                                                <span class="add_help">?
+                                                    <span class='add_help_inner'>
+                                                        {% static_placeholder "bm_create_min_ans_tooltip" or %}
+                                                        Lorem ipsum dolor sit amet, consectetur eta adipiscing elit. Pellentasque eu tempor tortor. Aliquam Trisque eros arcu, sed bibendum enim faucibus in. In vulputate blendit lorem ut.
+                                                        {% endstatic_placeholder %}
+                                                    </span>
+                                                </span>
+                                            </div>
+                                            <div class='col-md-4'>
+                                                {{ form.minimum_number_of_answers }}
+                                                {{ form.minimum_number_of_answers.errors }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>                                
+                            </div>
+                            <div class='col-md-4'>
+                                <div class='tips'>
+                                    <p class='label-like'>BENCHMARK TIPS...</p>
+                                    <hr>
+                                    {% static_placeholder "bm_create_tips_text" or %}
+                                    <p class='title'>Get Maximum Responses TO YOUR BENCHMARK QUERY</p>
+                                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer suscipit, dui in mattis venenatis, purus lectus dictum quam, et vehicula nunc risus nec orci.</p>
+                                    <p class='title'>THIS IS ANOTHER BENCHMARK TIP TO HELP PEOPLE SUCCEED</p>
+                                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer suscipit, dui in mattis venenatis, purus lectus dictum quam, et vehicula nunc risus nec orci.</p>
+                                    {% endstatic_placeholder %}
+                                </div>
+                            </div>
+                        {% elif wizard.steps.step1 == 2 %}
+                            <div class='benchmark-help search'>
+                                <div class='row'>
+                                    <div class='col-md-12'>
+                                        {% static_placeholder "bm_create_step2_text" or %}
+                                        Use the search fields below to narrow your network to those most relevant to your benchmark. You will be able to preview &amp; edit your list before publishing.</div>
+                                        {% endstatic_placeholder %}
+                                </div>
+                                <div class='row contacts-search'>
+                                    <div class="col-md-5ths col-xs-6">
+                                        <label for="id_1-industry">Industry</label>
+                                        {{ form.industry }}
+                                        {{ form.industry.errors }}
+                                    </div>
+                                    <div class="col-md-5ths col-xs-6">
+                                        <label for="id_1-geo">Geography</label>
+                                        {{ form.geo }}
+                                        {{ form.geo.errors }}
+                                    </div>
+                                    <div class="col-md-5ths col-xs-6">
+                                        <label for="id_1-role">Role</label>
+                                        {{ form.role }}
+                                        {{ form.role.errors }}
+                                    </div>
+                                    <div class="col-md-5ths col-xs-6">
+                                        <label for="id_1-name">Name</label>
+                                        {{ form.name }}
+                                        {{ form.name.errors }}
+                                    </div>
+                                    <div class="col-md-5ths col-xs-6 bm-search-btn">
+                                        <button id='save_and_wizard_goto_step' name="save_and_wizard_goto_step" type="submit" class="btn btn-primary full-width hidden" value="1"><i class='fa fa-search'></i></button>
+                                        <label for='save_and_wizard_goto_step' class='btn btn-primary full-width'><i class='fa fa-search'></i></label>
+                                    </div>
+                                </div>
+                                <div class='row'>
+                                    <div class='col-md-12 tabulation'>
+                                        <ul class="nav nav-tabs" role="tablist" id='searchTabs'>
+                                          <li {% if not active_tab or active_tab == 1 %}class="active"{% endif %}><a href="#results">Search results</a></li>
+                                          <li class='tab-recommended {% if active_tab == 2 %}active{% endif %}'><a href="#recommended">Recommendations</a></li>
+                                          <li {% if active_tab == 3 %}class="active"{% endif %}><a href="#selected">Selected Contacts</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class='row'>
+                                <div class="tab-content">
+                                    <div class="tab-pane {% if not active_tab or active_tab == 1 %}active{% endif %}" id="results">
+                                        <div class='col-md-8 lined-left margined'>
+                                            <div class="title-header inner">
+                                                <div class='row'>
+                                                    <div class='col-md-8 col-xs-8'>Contact</div>
+                                                    <div class='col-md-2 col-xs-2 text-center'>Add</div>
+                                                    <div class='col-md-2 col-xs-2 text-center'>Share 
+                                                        <span class="add_help">?
+                                                            <span class='add_help_inner'>
+                                                                {% static_placeholder "bm_create_share_tooltip" or %}
+                                                                Lorem ipsum dolor sit amet, consectetur eta adipiscing elit. Pellentasque eu tempor tortor. Aliquam Trisque eros arcu, sed bibendum enim faucibus in. In vulputate blendit lorem ut.
+                                                                {% endstatic_placeholder %}
+                                                            </span>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class='contact-results'>
+                                                {% for contact in wizard.form.contacts_filtered %}
+                                                    <div class='single-contact' data-contact-id='{{ contact.id }}'>
+                                                        <div class='row'>
+                                                            <div class='col-md-8 col-xs-8'>
+                                                                <label for='id_1-contact-{{contact.id}}-invite'>{{ contact }}</label>
+                                                                <p title='{{ contact.headline }}'>{{ contact.headline }}</p>
+                                                                <p class='grey' title='{{ contact.location.name }} &middot; {{ contact.company.industry }}'>{{ contact.location.name }} &middot; {{ contact.company.industry }}</p>
+                                                            </div>
+                                                            <div class='col-md-2 col-xs-2'>
+                                                                {% bound_field wizard.form contact.invite_element %}
+                                                            </div>
+                                                            <div class='col-md-2 col-xs-2'>
+                                                                {% bound_field wizard.form contact.secondary_element %}
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                {% endfor %}
+                                            </div>                                    
+                                        </div>
+                                        <div class='col-md-4 margined'>
+                                            <div class='tips'>
+                                                <p class='label-like'>We Recommend...</p>
+                                                <hr>
+                                                <div class='suggested-contacts'>
+                                                    {% for contact in wizard.form.suggested_contacts|slice:":3" %}
+                                                        <div class='suggested-contact'>
+                                                            <div class='row'>
+                                                                <div class='col-md-12'>
+                                                                    <label for='id_1-suggested-{{contact.id}}-invite'>{{ contact }}</label>
+                                                                    <p title='{{ contact.headline }}'>{{ contact.headline }}</p>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    {% endfor %} 
+                                                </div>
+                                                <a class='tab-switcher' href='#recommended'>See All Recommendations →</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="tab-pane {% if active_tab == 2 %}active{% endif %}" id="recommended">
+                                        <div class='col-md-12 margined'>
+                                            <div class="title-header inner">
+                                                <div class='row'>
+                                                    <div class='col-md-8 col-xs-8'>Recommended Contacts</div>
+                                                    <div class='col-md-2 col-xs-2 text-center'>Add</div>
+                                                    <div class='col-md-2 col-xs-2 text-center'>Share 
+                                                        <span class="add_help">?
+                                                            <span class='add_help_inner'>
+                                                                {% static_placeholder "bm_create_share_tooltip" or %}
+                                                                Lorem ipsum dolor sit amet, consectetur eta adipiscing elit. Pellentasque eu tempor tortor. Aliquam Trisque eros arcu, sed bibendum enim faucibus in. In vulputate blendit lorem ut.
+                                                                {% endstatic_placeholder %}
+                                                            </span>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class='contact-results'>
+                                                {% for contact in wizard.form.suggested_contacts %}
+                                                    <div class='single-contact' data-contact-id='{{ contact.id }}'>
+                                                        <div class='row'>
+                                                            <div class='col-md-8 col-xs-8'>
+                                                                <label for='id_1-suggested-{{contact.id}}-invite'>{{ contact }}</label>
+                                                                <p title='{{ contact.headline }}'>{{ contact.headline }}</p>
+                                                            </div>
+                                                            <div class='col-md-2 col-xs-2'>
+                                                                {% bound_field wizard.form contact.invite_element %}
+                                                            </div>
+                                                            <div class='col-md-2 col-xs-2'>
+                                                                {% bound_field wizard.form contact.secondary_element %}
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                {% endfor %}
+                                            </div>                                    
+                                        </div>
+                                    </div>
+                                    <div class="tab-pane {% if active_tab == 3 %}active{% endif %}" id="selected">
+                                        <div class='col-md-12 margined'>
+                                            <div class="title-header inner">
+                                                <div class='row'>
+                                                    <div class='col-md-8 col-xs-8'>Selected Contacts</div>
+                                                    <div class='col-md-2 col-xs-2 text-center'>
+                                                        Share
+                                                        <span class="add_help">?
+                                                            <span class='add_help_inner'>
+                                                                {% static_placeholder "bm_create_share_tooltip" or %}
+                                                                Lorem ipsum dolor sit amet, consectetur eta adipiscing elit. Pellentasque eu tempor tortor. Aliquam Trisque eros arcu, sed bibendum enim faucibus in. In vulputate blendit lorem ut.
+                                                                {% endstatic_placeholder %}
+                                                            </span>
+                                                        </span>
+                                                    </div>
+                                                    <div class='col-md-2 col-xs-2 text-center'>
+                                                        Remove
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class='contact-results'>
+                                                {% for contact in wizard.form.selected_contacts %}
+                                                    <div class='single-contact' data-contact-id='{{ contact.id }}'>
+                                                        <div class='row'>
+                                                            <div class='col-md-8 col-xs-8'>
+                                                                <label>{{ contact }}</label>
+                                                                <p title='{{ contact.headline }}'>{{ contact.headline }}</p>
+                                                            </div>
+                                                            <div class='col-md-2 col-xs-2'>
+                                                                {% bound_field wizard.form contact.secondary_element %}
+                                                            </div>
+                                                            <div class='col-md-2 col-xs-2 text-center'>
+                                                                <span class='hidden'>{% bound_field wizard.form contact.invite_element %}</span>
+                                                                <span class='deselect-btn'><i class='fa fa-times'></i></span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                {% endfor %}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                            </div>
+                        {% elif wizard.steps.step1 == 3 %}
+                            <div class='col-md-8 lined-left'>
+                                <input id="id_benchmark_create_wizard_view-current_step" name="benchmark_create_wizard_view-current_step" type="hidden" value="2">
+                                <div class='row'>
+                                    <div class='col-md-12'>
+                                        <label for="id_2-name">Query Name</label>
+                                        <span class="add_info">(ie 'IT SaaS Costs')</span>
+                                        {{ form.name }}
+                                        {{ form.name.errors }}
+                                    </div>
+                                    <div class='col-md-12'>
+                                        <label for="id_2-question_label">Your Query</label>
+                                        <span class="add_info">(ie 'What is your annual Marketing budget for SaaS services')</span>
+                                        {{ form.question_label }}
+                                        {{ form.question_label.errors }}
+                                    </div>
+                                    <div class='col-md-12'>
+                                        <label for="id_2-question_text">Query Details</label>
+                                        <span class="add_help">?
+                                            <span class='add_help_inner'>
+                                                {% static_placeholder "bm_create_query_details" or %}
+                                                Lorem ipsum dolor sit amet, consectetur eta adipiscing elit. Pellentasque eu tempor tortor. Aliquam Trisque eros arcu, sed bibendum enim faucibus in. In vulputate blendit lorem ut.
+                                                {% endstatic_placeholder %}
+                                            </span>
+                                        </span>
+                                        {{ form.question_text }}
+                                        {{ form.question_text.errors }}
+                                    </div>
+                                    <div class='col-md-12'>
+                                        <div class='row'>
+                                            <div class='col-md-4'>
+                                                <label for="industry">Industry</label>
+                                                {{ form.industry }}
+                                                {{ form.industry.errors }}
+                                            </div>
+                                            <div class='col-md-4'>
+                                                <label for="geo">Location</label>
+                                                {{ form.geo }}
+                                                {{ form.geo.errors }}
+                                            </div>
+                                            <div class='col-md-4'>
+                                                <label for="question_type">Type of Answer</label>
+                                                {{ form.question_type }}
+                                                {{ form.question_type.errors }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class='col-md-12' id='answer_options_step3'>
+                                        <label for="id_2-answer_options">Answer Options</label>
+                                        <span class="add_info">(Enter each choice on a seperate line)</span>
+                                        {{ form.answer_options }}
+                                        {{ form.answer_options.errors }}
+                                    </div>
+                                    <div class='col-md-12' id='units_maxDecimals_step3'>
+                                        <div class='row'>
+                                            <div class='col-md-6'>
+                                                <label for="id_2-units">Units</label>
+                                                {{ form.units }}
+                                                {{ form.units.errors }}
+                                            </div>
+                                            <div class='col-md-6'>
+                                                <label for="id_2-max_number_of_decimal">maximum number of decimals</label>
+                                                {{ form.max_number_of_decimal }}
+                                                {{ form.max_number_of_decimal.errors }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class='col-md-12'>
+                                        <div class='row'>
+                                            <div class='col-md-8 normal-padding'>
+                                                <label for="id_2-minimum_number_of_answers">Minimum responses required to validate benchmark</label>
+                                                <span class="add_help">?
+                                                    <span class='add_help_inner'>
+                                                        {% static_placeholder "bm_create_min_ans_tooltip" or %}
+                                                        Lorem ipsum dolor sit amet, consectetur eta adipiscing elit. Pellentasque eu tempor tortor. Aliquam Trisque eros arcu, sed bibendum enim faucibus in. In vulputate blendit lorem ut.
+                                                        {% endstatic_placeholder %}
+                                                    </span>
+                                                </span>
+                                            </div>
+                                            <div class='col-md-4'>
+                                                {{ form.minimum_number_of_answers }}
+                                                {{ form.minimum_number_of_answers.errors }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class='col-md-12'>
+                                        <label for="id_2-additional_comments">Write a short overview to explain the purpose of yourquery</label>
+                                        <span class="add_help">?
+                                                    <span class='add_help_inner'>
+                                                        {% static_placeholder "bm_create_explain_tooltip" or %}
+                                                        Lorem ipsum dolor sit amet, consectetur eta adipiscing elit. Pellentasque eu tempor tortor. Aliquam Trisque eros arcu, sed bibendum enim faucibus in. In vulputate blendit lorem ut.
+                                                        {% endstatic_placeholder %}
+                                                    </span>
+                                                </span>
+                                        {{ form.additional_comments }}
+                                        {{ form.additional_comments.errors }}
+                                    </div>
+                                </div>                                
+                            </div>
+                            <div class='col-md-4'>
+                                <div class='tips'>
+                                    <p class='label-like'>Selected Contacts</p>
+                                    <hr>
+                                    <div id='step3Selected'>
+                                        {% for contact in selected_contacts %}
+                                            <div class='single-contact' data-contact-id='{{ contact.id }}'>
+                                                <div class='row'>
+                                                    <div class='col-md-12'>
+                                                        <label>{{ contact }}</label>
+                                                        <p class='text-do-wrap' title='{{ contact.headline }}'>{{ contact.headline }}</p>
+                                                    </div>
+                                                    
+                                                    {% if contact.allow_secondary %}
+                                                        <div class='col-md-12'>
+                                                            <input class='pre-checked' type='checkbox' checked='checked' disabled />
+                                                            <span class='grey'>Allow Sharing</span>
+                                                        </div>
+                                                    {% else %}
+                                                        <div class='col-md-12'>
+                                                            <input class='pre-checked' type='checkbox'disabled />
+                                                            <span class='grey'>Allow Sharing</span>
+                                                        </div>
+                                                    {% endif %}
+                                                    
+                                                </div>
+                                            </div>
+                                        {% endfor %}
+                                        <label for="go_back" class="link-like"><i class="fa fa-cog"></i> Edit</label> 
+                                    </div>
+                                    
+                                </div>
+                            </div>
+                        {% endif %}
+                    {% endif %}
+                    </table>
+
+                    <div class='btn-holder'>
+                        {% if wizard.steps.step1 == 1 %}
+                            <a href="/dashboard" class='btn btn-default auto-width'>Cancel</a>
+                        {% else %}
+                        {% endif %}
+                        {% if wizard.steps.prev %}
+                            {% if wizard.steps.step1 == 1 %}
+                            {% else %}
+                                <button id='go_back' name="wizard_goto_step" type="submit" value="{{ wizard.steps.prev }}" class="btn btn-default auto-width continue-btn hidden">{% trans "go back" %}</button>
+                                <label for='go_back' class='btn btn-default auto-width'><i class='fa fa-arrow-circle-o-left'></i> Go Back</label>
+                            >
+                            {% endif %}
+
+                            {% if wizard.steps.step1 == 3 %}
+                                <label for='saveAndFinishLater' class='btn btn-default auto-width'> Save &amp; Finish later</label>
+                            {% endif %}
+
+                        {% endif %}
+                        {% if wizard.steps.step1 == 3 %}
+                            <input id='bm-submit' type="submit" class="btn btn-primary auto-width continue-btn hidden" value="{% trans "Send invitations" %}"/>
+                            <label for='bm-submit' class='btn btn-primary auto-width pull-right'> Send Invitations <i class='fa fa-arrow-circle-o-right'></i></label>
+                        {% else %}
+
+                            <input id='bm-submit' type="submit" class="btn btn-primary auto-width continue-btn hidden" value="{% trans "Continue" %}"/>
+                            <label for='bm-submit' class='btn btn-primary auto-width pull-right'> Continue <i class='fa fa-arrow-circle-o-right'></i></label> 
+                            {% if wizard.steps.step1 == 2 %}
+                                <input id='add_selected' name="add_selected" type="submit" class="btn btn-primary auto-width continue-btn hidden" value="1"/>   
+                                <label for='add_selected' class='btn btn-primary auto-width pull-right fix'> Add selected</label> 
+
+                            {% endif %}
+                        {% endif %}
+                    </div>
+                </form>
+            </div>
+            
+        </div>
+
+        
+    </div>
+    
+</div>
 {% endblock %}

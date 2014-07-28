@@ -1,0 +1,16 @@
+{% extends "bm/answer.html" %}
+{% load i18n %}
+{% load bootstrap %}
+{% load helpers %}
+
+{% block answer_form %}
+    <div class='row'>
+    	<div class='col-md-12'>
+    		<div class='styled-form rangeAnswer'>
+		    	<hr>
+		    	{{ form|bootstrap }}
+		    	<hr>
+		   	</div>
+    	</div>
+    </div>
+{% endblock %}

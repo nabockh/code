@@ -1,0 +1,323 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% if user.is_authenticated %}
+
+    {% block navigation %}
+            <header class="navbar navbar-default bs-docs-nav" id="top" role="banner">
+              <div class="container top-navbar">
+                <div class="navbar-header">
+                  <button class="navbar-toggle" type="button" data-toggle="collapse" data-target=".bs-navbar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                  </button>
+                  <a class="navbar-brand" href="/"><img src='{{ STATIC_URL }}/img/bdde_logo.png'/></a>
+                </div>
+                <nav class="collapse navbar-collapse bs-navbar-collapse" role="navigation">
+                    <ul class='main-nav text-center dashboard-nav'>
+                      <li class='active'><a href="#">Dashboard</a></li>
+                      <li class="dropdown">
+                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">Benchmarks <span class="caret"></span></a>
+                         <ul class="dropdown-menu" role="menu">
+                            <li><a href="{% url 'bm_create' %}">Create</a></li>
+                            <li><a href="/benchmark/history">My Benchmark History</a></li>
+                         </ul>
+                      </li>
+                      <li><a href="#">Support</a></li>
+
+                    </ul>
+                    {% include 'core/search_form.html' %}
+
+                </nav>
+
+              </div>
+            </header>
+            <div class='user-nav'>
+                <div class='container'>
+                    <div class='row'>
+                    <div class='col-md-8'>
+                        <div class='hello'>Hello,</div>
+                        <ul class='user-nav-inner'>
+                            <li class='username'>{{ user.first_name }} {{ user.last_name }}</li>                            
+                            <li><a href='/logout' title='Log Out'><i class='fa fa-unlock'></i></a></li>
+                        </ul>
+                    </div>
+                    <div class='col-md-4'>
+                        <a href="{% url 'bm_create' %}" class='btn btn-primary pull-right'>Create new benchmark <i class='fa fa-plus-circle'></i></a>
+                    </div>
+                </div>
+                </div>
+            </div>
+    {% endblock %}
+    {% block content %}
+        <div class='container margined'>
+            <div class='row'>
+                <div class='col-md-5'>
+                    <div class="panel-group" id="accordion">
+                      <div class="panel panel-default">
+                        <div class="panel-heading">
+                          <h4 class="panel-title">
+                            <a data-toggle="collapse" data-parent="#accordion" href="#myBenchmarkHistory" class='collapsed'>
+                              My Benchmark History
+                            </a>
+                          </h4>
+                        </div>
+                        <div id="myBenchmarkHistory" class="panel-collapse collapse">
+                            <div class="panel-body">                                
+                                {% for benchmark in history|slice:":5" %}
+                                  <div class='recent-benchmark-link'>
+                                    <a href='/benchmark/{{ benchmark.id }}' title='{{ benchmark.name }}'>{{ benchmark.name }}</a>
+                                 </div>
+
+                                {% empty %}
+                                <div><strong>You have no benchmark in your history.</strong></div>
+                                <div><a href='/benchmark/create'>Gether the data you need <i class="fa fa-arrow-circle-right"></i></a></div>
+
+                                {% endfor %}                       
+                                <hr>
+                                <a class='pull-right' href='/benchmark/history'><i class='fa fa-list'> View All</i></a>
+                            </div>
+                        </div>
+                      </div>
+                      <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h4 class="panel-title">
+                                <a data-toggle="collapse" data-parent="#accordion" href="#myOpenBenchmarks" class='collapsed test'>
+                                My Open Benchmarks
+                                </a>
+                            </h4>
+                        </div>
+                        <div id="myOpenBenchmarks" class="panel-collapse collapse">
+                            <div class="panel-body">
+                                {% for benchmark in benchmarks.pending %}
+                                <div class="dashboard-progress-block">
+                                    <p class="title" title='{{ benchmark.name }}'>{{ benchmark.name }}</p>
+                                    <p class="info">
+                                        <span>{{ benchmark.responses_count }} of {{ benchmark.min_numbers_of_responses }}</span>
+                                         Responces Recieved | 
+                                         <span>{{ benchmark.days_left }} </span>
+                                          Days Left
+                                    </p>
+                                    <div class="progress">
+                                        <div class="progress-bar" role="progressbar" aria-valuenow="{{ benchmark.progress }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ benchmark.progress }}%;">
+                                        {{ benchmark.progress }}%
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {% empty %}
+                                <div><strong>You have no open benchmarks.</strong></div>
+                                <div><a href='/benchmark/create'>Gether the data you need <i class="fa fa-arrow-circle-right"></i></a></div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                      </div>
+                    </div>
+                    <a href="#" class="btn btn-primary btn-invite">Invite a collegue to join bedade</a>
+                </div>
+                <div class='col-md-7'>
+                    <div class='col-md-12 bordered bgwhite margin-bot'>
+                        <div class='title-header'>My Recent Benchmarks</div>
+                        <div class='row'>
+                          <div class='benchmark'>
+                            <div id="myRecentBenchmarks" class="carousel slide" data-ride="carousel">
+                              <!-- Wrapper for slides -->
+                              <div class="carousel-inner">
+                                <div class="item active">
+                                  <div class='title' title='IT Spending for MiFID'>IT Spending for MiFID</div>
+                                  <img src="{{ STATIC_URL }}img/graph-placeholder.png" alt="...">
+                                  <div class='benchmark-stats perc-based'>
+                                    <div class='single-stat'>
+                                      <span class='title'>Min</span>
+                                      <span class='value'>0%</span>
+                                    </div>
+                                    <div class='single-stat'>
+                                      <span class='title'>Max</span>
+                                      <span class='value'>91%</span>
+                                    </div>
+                                    <div class='single-stat'>
+                                      <span class='title'>Mean</span>
+                                      <span class='value'>47%</span>
+                                    </div>
+                                    <div class='single-stat'>
+                                      <span class='title'>Avg</span>
+                                      <span class='value'>51%</span>
+                                    </div>
+                                    <div class='single-stat'>
+                                      <span class='title'>SD</span>
+                                      <span class='value'>1.4</span>
+                                    </div>
+                                  </div>
+                                  <div class='benchmark-footer text-center'>
+                                    <span class='color-blue'><i class='fa fa-user'></i> 125 Contributors</span>
+                                    <span class='separator'></span>
+                                    <span class='rated-value'>
+                                      <div class='fill-value' style='width: 72%;'></div>
+                                    </span>
+                                    <span class='color-grey'>(17)</span>
+                                  </div>
+                                </div>
+                                <div class="item">
+                                  <div class='title' title='Electronic Training in Chinese Government Bonds'>Electronic Training in Chinese Government Bonds</div>
+                                  <img src="{{ STATIC_URL }}img/graph-placeholder1.png" alt="...">
+                                  <div class='benchmark-stats val-based'>
+                                    <div class='single-stat'>
+                                      <span class='title'>Min</span>
+                                      <span class='value'>5.2</span>
+                                    </div>
+                                    <div class='single-stat'>
+                                      <span class='title'>Max</span>
+                                      <span class='value'>8.0</span>
+                                    </div>
+                                    <div class='single-stat'>
+                                      <span class='title'>Mean</span>
+                                      <span class='value'>7.5</span>
+                                    </div>
+                                    <div class='single-stat'>
+                                      <span class='title'>Avg</span>
+                                      <span class='value'>6.1</span>
+                                    </div>
+                                    <div class='single-stat'>
+                                      <span class='title'>SD</span>
+                                      <span class='value'>0.2</span>
+                                    </div>
+                                  </div>
+                                  <div class='benchmark-footer text-center'>
+                                    <span class='color-blue'><i class='fa fa-user'></i> 48 Contributors</span>
+                                    <span class='separator'></span>
+                                    <span class='rated-value'>
+                                      <div class='fill-value' style='width: 35%;'></div>
+                                    </span>
+                                    <span class='color-grey'>(2)</span>
+                                  </div>
+                                  
+                                </div>
+                              </div>
+
+                              <!-- Controls -->
+                              <div class='recent-benchmark-controls'>
+                                <a class="left carousel-control" href="#myRecentBenchmarks" role="button" data-slide="prev">
+                                  <i class='fa fa-caret-left'></i>
+                                </a>
+                                <a class="right carousel-control" href="#myRecentBenchmarks" role="button" data-slide="next">
+                                  <i class='fa fa-caret-right'></i>
+                                </a>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                    </div>
+                    <div class='col-md-12 bordered bgwhite'>
+                        <div class='title-header'>Popular Comunity Benchmarks</div>
+                        <div class='row'>
+                          <div class='benchmark'>
+                            <div id="popularComunityBenchmarks" class="carousel slide" data-ride="carousel">
+                              <!-- Wrapper for slides -->
+                              <div class="carousel-inner">
+                                <div class="item active">
+                                  <div class='title' title='Electronic Training in Chinese Government Bonds'>Electronic Training in Chinese Government Bonds</div>
+                                  <img src="{{ STATIC_URL }}img/graph-placeholder1.png" alt="...">
+                                  <div class='benchmark-stats val-based'>
+                                    <div class='single-stat'>
+                                      <span class='title'>Min</span>
+                                      <span class='value'>5.2</span>
+                                    </div>
+                                    <div class='single-stat'>
+                                      <span class='title'>Max</span>
+                                      <span class='value'>8.0</span>
+                                    </div>
+                                    <div class='single-stat'>
+                                      <span class='title'>Mean</span>
+                                      <span class='value'>7.5</span>
+                                    </div>
+                                    <div class='single-stat'>
+                                      <span class='title'>Avg</span>
+                                      <span class='value'>6.1</span>
+                                    </div>
+                                    <div class='single-stat'>
+                                      <span class='title'>SD</span>
+                                      <span class='value'>0.2</span>
+                                    </div>
+                                  </div>
+                                  <div class='benchmark-footer text-center'>
+                                    <span class='color-blue'><i class='fa fa-user'></i> 48 Contributors</span>
+                                    <span class='separator'></span>
+                                    <span class='rated-value'>
+                                      <div class='fill-value' style='width: 32%;'></div>
+                                    </span>
+                                    <span class='color-grey'>(2)</span>
+                                  </div>                                  
+                                </div>
+                                <div class="item">
+                                  <div class='title' title='IT Spending for MiFID'>IT Spending for MiFID</div>
+                                  <img src="{{ STATIC_URL }}img/graph-placeholder.png" alt="...">
+                                  <div class='benchmark-stats perc-based'>
+                                    <div class='single-stat'>
+                                      <span class='title'>Min</span>
+                                      <span class='value'>0%</span>
+                                    </div>
+                                    <div class='single-stat'>
+                                      <span class='title'>Max</span>
+                                      <span class='value'>91%</span>
+                                    </div>
+                                    <div class='single-stat'>
+                                      <span class='title'>Mean</span>
+                                      <span class='value'>47%</span>
+                                    </div>
+                                    <div class='single-stat'>
+                                      <span class='title'>Avg</span>
+                                      <span class='value'>51%</span>
+                                    </div>
+                                    <div class='single-stat'>
+                                      <span class='title'>SD</span>
+                                      <span class='value'>1.4</span>
+                                    </div>
+                                  </div>
+                                  <div class='benchmark-footer text-center'>
+                                    <span class='color-blue'><i class='fa fa-user'></i> 125 Contributors</span>
+                                    <span class='separator'></span>
+                                    <span class='rated-value'>
+                                      <div class='fill-value' style='width: 90%;'></div>
+                                    </span>
+                                    <span class='color-grey'>(17)</span>
+                                  </div>
+                                </div>
+                              </div>
+
+                              <!-- Controls -->
+                              <div class='recent-benchmark-controls'>
+                                <a class="left carousel-control" href="#popularComunityBenchmarks" role="button" data-slide="prev">
+                                  <i class='fa fa-caret-left'></i>
+                                </a>
+                                <a class="right carousel-control" href="#popularComunityBenchmarks" role="button" data-slide="next">
+                                  <i class='fa fa-caret-right'></i>
+                                </a>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endblock %}
+
+
+{% else %}
+
+
+<!-- Redirect to homepage -->
+
+<script>
+    setTimeout(function() {
+        window.location.href = "/";
+    }, 500);
+</script>
+
+<!-- End Redirect -->
+
+
+{% endif %}
+                               

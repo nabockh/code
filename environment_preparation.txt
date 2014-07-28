@@ -34,6 +34,7 @@ sudo chmod a+x bedade_celeryworker_dev.sh
 
 nano /etc/supervisor/conf.d/bedade_web.conf
 [program:bedade_web]
+
 command = /root/projects/bedade/bedade_web_dev.sh
 user = root
 stdout_logfile = /root/projects/bedade/supervisor.log

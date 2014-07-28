@@ -1,0 +1,10 @@
+{% extends "bm/dashboard.html" %}
+{% load i18n %}
+
+{% block content %}
+    <form action="" method="post">{% csrf_token %}
+        {{ form }}
+    <input type="submit" value="{% trans "submit" %}"/>
+    </form>
+
+{% endblock %}

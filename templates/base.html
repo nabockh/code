@@ -1,52 +1,88 @@
 {% extends "base_empty.html" %}
-
-{% block navigation %}
-    <nav class="navbar navbar-default" role="navigation">
-      <div class="container-fluid">
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-2">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a class="navbar-brand" href="#">BEDADE</a>
-        </div>
-        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
-          {% if not user.is_authenticated %}
-            <a href="{% url 'socialauth_begin' backend='linkedin' %}" class="btn sign-in-btn pull-right">Sign in with Linkedin</a>
-                <!-- <a href="{% url 'socialauth_begin' backend='linkedin' %}" class="btn btn-primary btn-sm">Sign up</a> -->
-          {% else %}
-              <!-- <a href="/logout" class="btn btn-primary pull-right sign-out">Sign out</a> -->
-              <div class='dropdown-container pull-right'>
-                  <span class="nav-username">{{ user.first_name }} {{ user.last_name }} <span class='nav-username-dropdown'><span class='glyphicon glyphicon-cog'></span>
-                  <ul>
-                    <li><a href="{% url 'in_contacts_import' %}">Import contacts</a></li>
-                    <li><a href="/logout">Sign out</a></li>                    
-                  </ul>   
-                  </span>    
-                            
-              </div>
-
-          {% endif %}
-          <form class="navbar-form navbar-right" role="search">
-            <div class="form-group">
-              <input type="text" class="form-control search-field" placeholder="Search">
-              <button type="submit" class="btn btn-default search-btn"><span class="glyphicon glyphicon-search"></span></button>
-            </div>            
-          </form>          
-        </div>
-      </div>
-    </nav>
-{% endblock %}
+{% load cms_tags %}
 
 {% block body %}
-    <div class="container">
-        <div class="authentication">
-            
+        {% block navigation %}{% endblock %}
+        <div class="container">
+            {% placeholder "Top Content" %}
         </div>
-        {% block content %}
+        {% block content %}{% endblock %}
+        {% block footer %}
+            <div class="colorblock footer">
+                    <div class='container'>
+                      <div class='row'>
+                          <div class="col-md-4">
+                            <p class='bigger'><img src='{{ STATIC_URL }}/img/bdde_logo_white.png'/></p>
+                            <span class='dec lrg'>Better Decisions. Better Data.</span>
+                          </div>
+                          <div class="col-md-8">
+                            {% static_placeholder "footer_text" or %}
+                            <p class='dec'>Our goal is to get you better data, and in the process connect you to like minded experts.</p>
+                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc sagittis pellentesque erat, in eleifend lorem ipsum metus lorem ipsum dolor tempus non. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus enim tortor, vulputate et elit in, pellentesque elementum risus. Nam eros nunc, gravida id orci in, aliquet lacinia nisl. <br><br>
+                            {% endstatic_placeholder %}
+                            Copyright 2014 Bedade, Inc. All Rights Reserved. <a href="#" data-toggle="modal" data-target="#privacy">Privacy</a> <span class='dec'>|</span> <a href="#" data-toggle="modal" data-target="#legal">Legal</a></p>
+                          </div>
+                      </div>
+                      
+                    </div>
+                </div>
+                <!-- FAQ Modal -->
+        <div class="modal fade" id="legal" tabindex="-1" role="dialog" aria-labelledby="legalLabel" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true"><i class='fa fa-times-circle'></i></span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" id="legalLabel">Legal</h4>
+              </div>
+              <div class="modal-body">
+                <div class='modal-body-inner'>
+                    {% static_placeholder "footer_legal_text" or %}
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed condimentum posuere libero, ut accumsan enim dapibus nec. Quisque hendrerit sollicitudin elit, non elementum est. Sed pellentesque sem a urna bibendum, placerat congue lacus porta. Nam scelerisque diam ut posuere posuere. Donec a nisl sit amet enim luctus egestas. Mauris quis ligula eu risus dictum aliquam eu quis nibh. Ut orci massa, malesuada et dictum vel, ornare eu orci. Mauris condimentum dolor quis semper ullamcorper. Sed at sem eget magna fringilla hendrerit at vel felis. Cras et venenatis nulla. Nam a est quis erat luctus tempor id vel metus.</p>
 
+                    <p>Nullam faucibus ante eu posuere sollicitudin. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Morbi sit amet mattis libero. Donec cursus nulla id posuere sollicitudin. Integer metus tortor, molestie nec aliquet sit amet, varius eu tellus. Pellentesque non nisl massa. Donec accumsan varius commodo. Nunc viverra massa lorem, eu aliquam lacus blandit vel. Vivamus fermentum augue lorem, vitae viverra lacus lobortis eu. Sed volutpat elementum ultricies. Proin interdum quam nec magna tincidunt dignissim. Vestibulum sit amet vestibulum magna. Vivamus ultricies lacus at massa pulvinar tristique. Nam pulvinar nunc ac libero aliquet, vel sodales est interdum. Integer at leo et mi rutrum dignissim quis eu dui.</p>
+
+                    <p>Vivamus nec condimentum justo. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Aenean pharetra elit vitae tempor posuere. Mauris nec magna porttitor, porttitor nibh a, pharetra lectus. Phasellus congue imperdiet nunc, luctus sagittis nibh adipiscing eu. Vestibulum bibendum blandit quam eget vehicula. Sed venenatis dui id erat posuere vestibulum.</p>
+
+                    <p>Nam eu mi adipiscing, lobortis est eget, fringilla quam. Cras a dui posuere, fermentum velit a, volutpat sem. Morbi a pellentesque neque. Nulla et enim cursus, commodo nisl sit amet, tempor leo. Integer vel tempus ligula, non aliquet risus. Donec sed velit consequat, vehicula velit vel, rhoncus nulla. Nam aliquet dui sed viverra imperdiet. Aenean sed eleifend tellus. Integer viverra venenatis porta.</p>
+
+                    <p>Aenean sed urna vel quam viverra posuere. Cras posuere, lacus nec tincidunt adipiscing, sapien nisl facilisis nulla, sed interdum leo enim ut mi. Phasellus sit amet ipsum sit amet nibh fringilla cursus pharetra rhoncus nulla. Donec vel rhoncus orci, eu viverra velit. Praesent convallis nec massa a dictum. Praesent luctus ipsum sit amet nisl consectetur malesuada. Nullam suscipit ipsum libero, at egestas arcu scelerisque et. Donec nec rutrum magna, vitae suscipit mauris. Nam dapibus diam non nisl tristique condimentum. Mauris luctus diam diam, tristique euismod odio condimentum vitae. Mauris vel lorem enim. Nam eget risus ut eros bibendum elementum ornare nec risus.
+                    </p>
+                    {% endstatic_placeholder %}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- FAQ Modal -->
+        <div class="modal fade" id="privacy" tabindex="-1" role="dialog" aria-labelledby="privacyLabel" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true"><i class='fa fa-times-circle'></i></span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" id="privacyLabel">Privacy</h4>
+              </div>
+              <div class="modal-body">
+                <div class='modal-body-inner'>
+                    {% static_placeholder "footer_privacy_text" or %}
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed condimentum posuere libero, ut accumsan enim dapibus nec. Quisque hendrerit sollicitudin elit, non elementum est. Sed pellentesque sem a urna bibendum, placerat congue lacus porta. Nam scelerisque diam ut posuere posuere. Donec a nisl sit amet enim luctus egestas. Mauris quis ligula eu risus dictum aliquam eu quis nibh. Ut orci massa, malesuada et dictum vel, ornare eu orci. Mauris condimentum dolor quis semper ullamcorper. Sed at sem eget magna fringilla hendrerit at vel felis. Cras et venenatis nulla. Nam a est quis erat luctus tempor id vel metus.</p>
+
+                    <p>Nullam faucibus ante eu posuere sollicitudin. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Morbi sit amet mattis libero. Donec cursus nulla id posuere sollicitudin. Integer metus tortor, molestie nec aliquet sit amet, varius eu tellus. Pellentesque non nisl massa. Donec accumsan varius commodo. Nunc viverra massa lorem, eu aliquam lacus blandit vel. Vivamus fermentum augue lorem, vitae viverra lacus lobortis eu. Sed volutpat elementum ultricies. Proin interdum quam nec magna tincidunt dignissim. Vestibulum sit amet vestibulum magna. Vivamus ultricies lacus at massa pulvinar tristique. Nam pulvinar nunc ac libero aliquet, vel sodales est interdum. Integer at leo et mi rutrum dignissim quis eu dui.</p>
+
+                    <p>Vivamus nec condimentum justo. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Aenean pharetra elit vitae tempor posuere. Mauris nec magna porttitor, porttitor nibh a, pharetra lectus. Phasellus congue imperdiet nunc, luctus sagittis nibh adipiscing eu. Vestibulum bibendum blandit quam eget vehicula. Sed venenatis dui id erat posuere vestibulum.</p>
+
+                    <p>Nam eu mi adipiscing, lobortis est eget, fringilla quam. Cras a dui posuere, fermentum velit a, volutpat sem. Morbi a pellentesque neque. Nulla et enim cursus, commodo nisl sit amet, tempor leo. Integer vel tempus ligula, non aliquet risus. Donec sed velit consequat, vehicula velit vel, rhoncus nulla. Nam aliquet dui sed viverra imperdiet. Aenean sed eleifend tellus. Integer viverra venenatis porta.</p>
+
+                    <p>Aenean sed urna vel quam viverra posuere. Cras posuere, lacus nec tincidunt adipiscing, sapien nisl facilisis nulla, sed interdum leo enim ut mi. Phasellus sit amet ipsum sit amet nibh fringilla cursus pharetra rhoncus nulla. Donec vel rhoncus orci, eu viverra velit. Praesent convallis nec massa a dictum. Praesent luctus ipsum sit amet nisl consectetur malesuada. Nullam suscipit ipsum libero, at egestas arcu scelerisque et. Donec nec rutrum magna, vitae suscipit mauris. Nam dapibus diam non nisl tristique condimentum. Mauris luctus diam diam, tristique euismod odio condimentum vitae. Mauris vel lorem enim. Nam eget risus ut eros bibendum elementum ornare nec risus.
+                    </p>
+                    {% endstatic_placeholder %}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
         {% endblock %}
-    </div>
 {% endblock %}
+
+
+
