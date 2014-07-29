@@ -45,7 +45,8 @@ class DashboardView(TemplateView):
         context['user'] = self.request.user
         context['history'] = Benchmark.objects.filter(owner=self.request.user).order_by('end_date')
         context['benchmarks'] = {
-            'pending': Benchmark.pending.filter(owner=self.request.user)
+            'pending': Benchmark.pending.filter(owner=self.request.user),
+            'popular': Benchmark.valid.filter(popular=True)
         }
         return context
 

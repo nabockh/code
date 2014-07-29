@@ -209,6 +209,9 @@
                     <div class='title-header'>Popular Comunity Benchmarks</div>
                     <div class='row'>
                       <div class='benchmark'>
+                        {% for benchmark in benchmarks.popular %}
+                            <p>{{ benchmark }}</p>
+                        {% endfor %}
                         <div id="popularComunityBenchmarks" class="carousel slide" data-ride="carousel">
                           <!-- Wrapper for slides -->
                           <div class="carousel-inner">

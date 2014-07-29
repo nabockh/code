@@ -40,7 +40,7 @@ class BenchmarkManager(models.Manager):
             .annotate(question_type=Min('question__type'))
 
 
-class BenchmarkValidManager(models.Manager):
+class BenchmarkValidManager(BenchmarkManager):
     def get_queryset(self):
         return super(BenchmarkValidManager, self).get_queryset()\
             .annotate(responses_count=Count('question__responses'))\
