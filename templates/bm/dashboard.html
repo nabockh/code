@@ -99,7 +99,11 @@
                             <div class="dashboard-progress-block">
                                 <p class="title" title='{{ benchmark.name }}'>{{ benchmark.name }}</p>
                                 <p class="info">
-                                    <span>{{ benchmark.responses_count }} of {{ benchmark.min_numbers_of_responses }}</span>
+                                    <span>
+                                        {{ benchmark.responses_count }}
+                                        {% if benchmark.responses_count <= benchmark.min_numbers_of_responses %}
+                                        of {{ benchmark.min_numbers_of_responses }}</span>
+                                        {% endif %}
                                      Responces Recieved | 
                                      <span>{{ benchmark.days_left }} </span>
                                       Days Left
