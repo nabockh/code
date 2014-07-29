@@ -1612,6 +1612,15 @@ label.btn.btn-primary.auto-width.pull-right.fix {
     text-overflow: ellipsis;
 }
 
+    .carousel-inner>.item > .title > a {
+        color: inherit;
+        text-decoration: none;
+    }
+
+        .carousel-inner>.item > .title > a:hover {
+            color: #608a94;
+        }
+
 .carousel-inner>.item>img {
     margin: 0 auto;
 }
@@ -1631,7 +1640,7 @@ label.btn.btn-primary.auto-width.pull-right.fix {
     }
 
 .benchmark-stats .single-stat {
-    width: 20%;
+    width: 25%;
     display: block;
     float: left;
     padding: 20px 0;
@@ -1667,10 +1676,6 @@ label.btn.btn-primary.auto-width.pull-right.fix {
 }
 
 .benchmark-stats.perc-based .single-stat:nth-child(4) {
-    background: #9aa6c4;
-}
-
-.benchmark-stats.perc-based .single-stat:nth-child(5) {
     background: #b0b7b8;
 }
 
@@ -1719,6 +1724,7 @@ label.btn.btn-primary.auto-width.pull-right.fix {
     margin: 0 auto;
     padding: 5px 0 3px;
     font-size: 13px;
+    background: #eff0f2;
 }
 
 /* RATING STARS */
@@ -2153,7 +2159,6 @@ ul#id_choice li > label {
 
 .benchmark.open .benchmark-footer {
     padding: 10px;
-    background: #eff0f2;
 }
     .benchmark.open .benchmark-footer .btn[data-target="#rating"] {
         margin-left: 20px;

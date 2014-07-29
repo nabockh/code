@@ -13,4 +13,13 @@ google.load("visualization", "1", {packages:["corechart"]});
 
     // main charts
     bellcurveChart.draw(bellcurveChartData, bellcurveOptions);
-}
+};
+
+
+$(function () {
+    $("#minVal").text(mainChartData.bell_curve.min + '%');
+    $("#maxVal").text(mainChartData.bell_curve.max + '%');
+    $("#avgVal").text(mainChartData.bell_curve.avg + '%');
+    var sd = mainChartData.bell_curve.sd.toFixed(1); 
+    $("#sdVal").text(sd);
+});

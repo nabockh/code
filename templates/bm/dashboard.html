@@ -129,75 +129,67 @@
                         <div id="myRecentBenchmarks" class="carousel slide" data-ride="carousel">
                           <!-- Wrapper for slides -->
                           <div class="carousel-inner">
-                            <div class="item active">
-                              <div class='title' title='IT Spending for MiFID'>IT Spending for MiFID</div>
-                              <img src="{{ STATIC_URL }}img/graph-placeholder.png" alt="...">
-                              <div class='benchmark-stats perc-based'>
-                                <div class='single-stat'>
-                                  <span class='title'>Min</span>
-                                  <span class='value'>0%</span>
-                                </div>
-                                <div class='single-stat'>
-                                  <span class='title'>Max</span>
-                                  <span class='value'>91%</span>
-                                </div>
-                                <div class='single-stat'>
-                                  <span class='title'>Mean</span>
-                                  <span class='value'>47%</span>
-                                </div>
-                                <div class='single-stat'>
-                                  <span class='title'>Avg</span>
-                                  <span class='value'>51%</span>
-                                </div>
-                                <div class='single-stat'>
-                                  <span class='title'>SD</span>
-                                  <span class='value'>1.4</span>
-                                </div>
+                            {% for benchmark in history|slice:":5" %}
+                              <div class="item">
+                                <div class='title' title='{{ benchmark.name }}'><a href='/benchmark/{{ benchmark.id }}'>{{ benchmark.name }}</a></div>
+                                {% if benchmark.question_type == 1 %}
+                                  <div id='donutChart' class='bigChart'></div>
+                                  <script type="text/javascript">
+                                      var mainChartData = {{ benchmark.charts|safe }};
+                                  </script>
+                                  <script src="{{ STATIC_URL }}js/graphs/pie.js"></script>
+                                {% elif benchmark.question_type == 2 %}
+                                  <div id='columnChart' class='bigChart'></div>
+                                  <script type="text/javascript">
+                                      var mainChartData = {{ benchmark.charts|safe }};
+                                  </script>
+                                  <script src="{{ STATIC_URL }}js/graphs/column.js"></script>
+                                {% elif benchmark.question_type == 3 %}
+                                  <div id='bellcurveChart' class='bigChart'></div>
+                                  <div class='benchmark-stats perc-based'>
+                                    <div class='single-stat'>
+                                        <span class='title'>Min</span>
+                                        <span class='value' id='minVal'></span>
+                                    </div>
+                                    <div class='single-stat'>
+                                        <span class='title'>Max</span>
+                                        <span class='value' id='maxVal'></span>
+                                    </div>
+                                    <div class='single-stat'>
+                                        <span class='title'>Avg</span>
+                                        <span class='value' id='avgVal'></span>
+                                    </div>
+                                    <div class='single-stat'>
+                                        <span class='title'>SD</span>
+                                        <span class='value' id='sdVal'></span>
+                                    </div>
+                                  </div>
+                                  <script type="text/javascript">
+                                      var mainChartData = {{ benchmark.charts|safe }};
+                                  </script>
+                                  <script src="{{ STATIC_URL }}js/graphs/bellcurve.js"></script>
+                                {% elif benchmark.question_type == 5 %}
+                                  <div id='lineChart' class='bigChart'></div>
+                                  <script type="text/javascript">
+                                      var mainChartData = {{ benchmark.charts|safe }};
+                                  </script>
+                                  <script src="{{ STATIC_URL }}js/graphs/line.js"></script>
+                                {% endif %}
+                                
+                                <div class='benchmark-footer text-center'>
+                                  <span class='color-blue'><i class='fa fa-user'></i> {{ benchmark.contributors }} Contributors</span>
+                                  <span class='separator'></span>
+                                  <span class='rated-value'>
+                                      <div class='fill-value' style='width: {% widthratio benchmark.calc_average_rating 5 100 %}%'></div>
+                                  </span>
+                                  <span class='color-grey'>({{ benchmark.calc_average_rating }})</span>
+                               </div>
                               </div>
-                              <div class='benchmark-footer text-center'>
-                                <span class='color-blue'><i class='fa fa-user'></i> 125 Contributors</span>
-                                <span class='separator'></span>
-                                <span class='rated-value'>
-                                  <div class='fill-value' style='width: 72%;'></div>
-                                </span>
-                                <span class='color-grey'>(17)</span>
-                              </div>
-                            </div>
-                            <div class="item">
-                              <div class='title' title='Electronic Training in Chinese Government Bonds'>Electronic Training in Chinese Government Bonds</div>
-                              <img src="{{ STATIC_URL }}img/graph-placeholder1.png" alt="...">
-                              <div class='benchmark-stats val-based'>
-                                <div class='single-stat'>
-                                  <span class='title'>Min</span>
-                                  <span class='value'>5.2</span>
-                                </div>
-                                <div class='single-stat'>
-                                  <span class='title'>Max</span>
-                                  <span class='value'>8.0</span>
-                                </div>
-                                <div class='single-stat'>
-                                  <span class='title'>Mean</span>
-                                  <span class='value'>7.5</span>
-                                </div>
-                                <div class='single-stat'>
-                                  <span class='title'>Avg</span>
-                                  <span class='value'>6.1</span>
-                                </div>
-                                <div class='single-stat'>
-                                  <span class='title'>SD</span>
-                                  <span class='value'>0.2</span>
-                                </div>
-                              </div>
-                              <div class='benchmark-footer text-center'>
-                                <span class='color-blue'><i class='fa fa-user'></i> 48 Contributors</span>
-                                <span class='separator'></span>
-                                <span class='rated-value'>
-                                  <div class='fill-value' style='width: 35%;'></div>
-                                </span>
-                                <span class='color-grey'>(2)</span>
-                              </div>
-                              
-                            </div>
+                            {% empty %}
+                            
+                            <p>Derp</p>
+
+                            {% endfor %} 
                           </div>
 
                           <!-- Controls -->
@@ -233,10 +225,6 @@
                                   <span class='value'>8.0</span>
                                 </div>
                                 <div class='single-stat'>
-                                  <span class='title'>Mean</span>
-                                  <span class='value'>7.5</span>
-                                </div>
-                                <div class='single-stat'>
                                   <span class='title'>Avg</span>
                                   <span class='value'>6.1</span>
                                 </div>
@@ -265,10 +253,6 @@
                                 <div class='single-stat'>
                                   <span class='title'>Max</span>
                                   <span class='value'>91%</span>
-                                </div>
-                                <div class='single-stat'>
-                                  <span class='title'>Mean</span>
-                                  <span class='value'>47%</span>
                                 </div>
                                 <div class='single-stat'>
                                   <span class='title'>Avg</span>

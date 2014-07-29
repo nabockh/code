@@ -97,9 +97,7 @@ $(function () {
     $( "#id_Contributor_Data" ).on('change', statisticViewChange);
     $( "#id_Benchmark_Results" ).on('change', chartTypeChange);
 
-    
-
-
+    $('#myRecentBenchmarks .item:first-child').addClass('active');
     
     $( ".dashboard-progress-block .progress .progress-bar" ).each(function() {
         var dataProgress = $(this).attr('aria-valuenow');
