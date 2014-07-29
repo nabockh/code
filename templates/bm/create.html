@@ -567,6 +567,23 @@
                                     
                                 </div>
                             </div>
+
+                            <!-- FAQ Modal -->
+                            <div class="modal fade" id="preview" tabindex="-1" role="dialog" aria-labelledby="previewLabel" aria-hidden="true">
+                              <div class="modal-dialog">
+                                <div class="modal-content">
+                                  <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true"><i class='fa fa-times-circle'></i></span><span class="sr-only">Close</span></button>
+                                    <h4 class="modal-title" id="prviewLabel">Email Preview</h4>
+                                  </div>
+                                  <div class="modal-body">
+                                    <div class='modal-body-inner'>
+                                        <!-- Insert Email Preview Here -->
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
                         {% endif %}
                     {% endif %}
                     </table>
@@ -584,21 +601,18 @@
                             >
                             {% endif %}
 
-                            {% if wizard.steps.step1 == 3 %}
-                                <label for='saveAndFinishLater' class='btn btn-default auto-width'> Save &amp; Finish later</label>
-                            {% endif %}
-
                         {% endif %}
                         {% if wizard.steps.step1 == 3 %}
                             <input id='bm-submit' type="submit" class="btn btn-primary auto-width continue-btn hidden" value="{% trans "Send invitations" %}"/>
                             <label for='bm-submit' class='btn btn-primary auto-width pull-right'> Send Invitations <i class='fa fa-arrow-circle-o-right'></i></label>
+                            <label class="btn btn-primary auto-width pull-right fix" data-toggle="modal" data-target="#preview">Email Preview <i class='fa fa-eye'></i></label>
                         {% else %}
 
                             <input id='bm-submit' type="submit" class="btn btn-primary auto-width continue-btn hidden" value="{% trans "Continue" %}"/>
                             <label for='bm-submit' class='btn btn-primary auto-width pull-right'> Continue <i class='fa fa-arrow-circle-o-right'></i></label> 
                             {% if wizard.steps.step1 == 2 %}
                                 <input id='add_selected' name="add_selected" type="submit" class="btn btn-primary auto-width continue-btn hidden" value="1"/>   
-                                <label for='add_selected' class='btn btn-primary auto-width pull-right fix'> Add selected</label> 
+                                <label for='add_selected' class='btn btn-primary auto-width pull-right fix'>Add selected <i class='fa fa-plus'></i></label> 
 
                             {% endif %}
                         {% endif %}
