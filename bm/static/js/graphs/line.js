@@ -6,7 +6,11 @@ google.load("visualization", "1", {packages:["corechart"]});
         var lineOptions = {
             legend: 'none',
             colors: ['#8592B2'],
-            lineWidth: 3
+            lineWidth: 3,
+            chartArea: { 
+                width: "90%", 
+                height: "90%" 
+            }
         };
 
     var lineChart = new google.visualization.ScatterChart(document.getElementById('lineChart'))

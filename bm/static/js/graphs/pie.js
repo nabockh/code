@@ -8,9 +8,9 @@ google.load("visualization", "1", {packages:["corechart"]});
 
         var results = {};
 
-        var deltaR = ((endColor.r + startColor.r) / slices);
-        var deltaG = ((endColor.g + startColor.g) / slices);
-        var deltaB = ((endColor.g + startColor.g) / slices);
+        var deltaR = ((endColor.r - startColor.r) / slices);
+        var deltaG = ((endColor.g - startColor.g) / slices);
+        var deltaB = ((endColor.g - startColor.g) / slices);
 
         for (var i = 0; i < slices; i++){
         var r = Math.round(startColor.r + deltaR * i);
