@@ -1,4 +1,6 @@
+from app.settings import MESSAGE_FIRST_ANSWER
 from bm.admin import BenchmarkPending
+from django.contrib import messages
 from django.contrib.auth.models import User
 from django.core.mail import send_mail
 from django.db.models.signals import post_save, pre_save
@@ -12,9 +14,9 @@ benchmark_answered = Signal(providing_args=['user',])
 
 
 @receiver(benchmark_answered)
-def send_welcome_alert(sender, **kwargs):
-    if not QuestionResponse.objects.filter(user=kwargs['user']).count() > 1:
-        user = kwargs['user']
+def send_welcome_alert(sender, request, user, **kwargs):
+    if not QuestionResponse.objects.filter(user=user).count() > 1:
+        messages.add_message(request, MESSAGE_FIRST_ANSWER, 'Hello')
         user_email = user.email
         recipient_list = [user_email]
         template = loader.get_template('alerts/welcome_alert_email.txt')
@@ -51,4 +53,4 @@ def check_new_bm_created(instance, **kwargs):
             'owner_name': owner.first_name + ' ' + owner.last_name,
             'benchmark': instance.name,
         })
-        send_mail('New Benchmark created', template.render(context), None, recipient_list)
+        send_mail('New Benchmark has been created', template.render(context), None, recipient_list)

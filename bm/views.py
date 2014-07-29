@@ -236,9 +236,7 @@ class BaseBenchmarkAnswerView(FormView):
         form = self.get_form(form_class)
         if form.is_valid():
             result = self.form_valid(form)
-            benchmark_answered.send(sender=self.__class__, user=request.user)
-            if not QuestionResponse.objects.filter(user=request.user).count() > 1:
-                return redirect('/benchmark/welcome')
+            benchmark_answered.send(sender=self.__class__, request=request, user=request.user)
             return result
         else:
             return self.form_invalid(form)
@@ -358,7 +356,6 @@ class NumericAnswerView(BaseBenchmarkAnswerView):
                 bm_response_numeric = ResponseNumeric()
                 bm_response_numeric.value = form.cleaned_data['numeric_box']
                 question_response.data_numeric.add(bm_response_numeric)
-            print form.cleaned_data['numeric_box']
 
         return super(NumericAnswerView, self).form_valid(form)
 

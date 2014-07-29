@@ -48,6 +48,13 @@
             </div>
         </div>
 {% endblock %}
+{% block messages %}
+    {% if messages %}
+        {% for message in messages %}
+            {% if message.tags == 'first_answer' %}{{ message }}{% endif %}>
+        {% endfor %}
+    {% endif %}
+{% endblock %}
 {% block content %}
     <div class='container margined'>
         <div class='row'>
