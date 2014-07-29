@@ -114,9 +114,13 @@ def deploy():
     print(red("Beginning Deploy:"))
     with cd("%s" % path):
         run("pwd")
+        sudo("echo $USER")
+
         sudo('find . -name "*.pyc" -exec rm -rf {} \;')
         print(green("Pulling master from GitHub..."))
-        sudo("git pull origin %s && git checkout %s" % (branch, branch), user=env.appuser)
+        # run("su %s" % (env.appuser,))
+        # sudo("echo $USER")
+        run('su %s -c "git pull origin %s && git checkout %s"' % (env.appuser, branch, branch))
         # sudo("git pull origin master", user=env.appuser)
         print(green("Installing requirements..."))
         sudo("source %s/venv/bin/activate && pip install -r requirements.txt" % path, user=env.appuser)
@@ -128,7 +132,7 @@ def deploy():
         sudo("source %s/venv/bin/activate && python manage.py syncdb" % path, user=env.appuser)
 
         print(green("Migrating the database..."))
-        run("source %s/venv/bin/activate && python manage.py migrate" % path)
+        run('su %s -c "source %s/venv/bin/activate && python manage.py migrate"' % (env.appuser, path))
 
         print(green("Restarting celery worker..."))
         run("sudo supervisorctl restart %s" % process_worker)
