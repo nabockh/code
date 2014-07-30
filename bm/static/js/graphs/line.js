@@ -1,19 +1,20 @@
-google.load("visualization", "1", {packages:["corechart"]});
-    google.setOnLoadCallback(drawChart);
-    function drawChart() {
-        var lineChartData = google.visualization.arrayToDataTable(mainChartData.line);
+function drawLineChart(chartData, divId) {
+    if (typeof google == 'undefined') {
+        throw new Exception();
+    }
+    var lineChartData = google.visualization.arrayToDataTable(chartData);
 
-        var lineOptions = {
-            legend: 'none',
-            colors: ['#8592B2'],
-            lineWidth: 3,
-            chartArea: { 
-                width: "90%", 
-                height: "90%" 
-            }
-        };
+    var lineOptions = {
+        legend: 'none',
+        colors: ['#8592B2'],
+        lineWidth: 3,
+        chartArea: { 
+            width: "90%", 
+            height: "80%" 
+        }
+    };
 
-    var lineChart = new google.visualization.ScatterChart(document.getElementById('lineChart'))
+    var lineChart = new google.visualization.ScatterChart(document.getElementById(divId))
 
     // main charts
     lineChart.draw(lineChartData, lineOptions);

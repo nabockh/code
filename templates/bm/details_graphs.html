@@ -134,36 +134,49 @@
     </form>
 
 
+<script src="{{ STATIC_URL }}js/graphs/pie.js"></script>
+<script src="{{ STATIC_URL }}js/graphs/column.js"></script>
+<script src="{{ STATIC_URL }}js/graphs/line.js"></script>
+<script src="{{ STATIC_URL }}js/graphs/bellcurve.js"></script>
+<script src="{{ STATIC_URL }}js/graphs/stats.js"></script>
+
 <script type="text/javascript">
     var statisticGeoData = {{ geo|safe }};
     var statisticRoleData = {{ role|safe }};
     var statisticIndustriesData = {{ industries|safe }};
     var statisticCountriesData = {{ countries|safe }};
     var mainChartData = {{ benchmark.charts|safe }};
+
+
+    {% if 'Pie' in benchmark.charts_allowed %}
+        drawPieChart(mainChartData.pie, 'donutChart');
+    {% endif %}
+
+    {% if 'Column' in benchmark.charts_allowed %}
+        drawColumnChart(mainChartData.column, 'columnChart');
+    {% endif %}
+
+    {% if 'Line' in benchmark.charts_allowed %}
+        drawLineChart(mainChartData.line, 'lineChart');
+    {% endif %}
+
+    {% if 'Bell_Curve' in benchmark.charts_allowed %}
+        $(function () {
+            $("#minVal").text(mainChartData.bell_curve.min + '%');
+            $("#maxVal").text(mainChartData.bell_curve.max + '%');
+            $("#avgVal").text(mainChartData.bell_curve.avg + '%');
+            var sd = mainChartData.bell_curve.sd.toFixed(1); 
+            $("#sdVal").text(sd);
+        });
+        drawBellcurveChart(mainChartData.bell_curve, 'bellcurveChart');
+
+
+    {% endif %}  
+    
 </script>
 
-<!-- {% if 'Pie' in benchmark.charts_allowed %}
-
-{% endif %}
-
-{% if 'Column' in benchmark.charts_allowed %}
-
-{% endif %}
-
-{% if 'Line' in benchmark.charts_allowed %}
-
-{% endif %}
-
-{% if 'Bell_Curve' in benchmark.charts_allowed %}
-
-{% endif %} -->
 
 
-<script src="{{ STATIC_URL }}js/graphs/pie.js"></script>
-<script src="{{ STATIC_URL }}js/graphs/column.js"></script>
-<script src="{{ STATIC_URL }}js/graphs/line.js"></script>
-<script src="{{ STATIC_URL }}js/graphs/bellcurve.js"></script>
-<script src="{{ STATIC_URL }}js/graphs/stats.js"></script>
 
 
 {% endblock %}
