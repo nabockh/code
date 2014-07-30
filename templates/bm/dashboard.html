@@ -51,7 +51,28 @@
 {% block messages %}
     {% if messages %}
         {% for message in messages %}
-            {% if message.tags == 'first_answer' %}{{ message }}{% endif %}>
+            {% if message.tags == 'first_answer' %}{{ message }}
+              <!-- Welcome Modal -->
+              <div class="modal visible fade" id="firstAnswered" tabindex="-1" role="dialog" aria-labelledby="firstAnsweredLabel" aria-hidden="false">
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true"><i class='fa fa-times-circle'></i></span><span class="sr-only">Close</span></button>
+                      <h4 class="modal-title" id="firstAnsweredLabel">Frequently asked questions</h4>
+                    </div>
+                    <div class="modal-body">
+                      <div class='modal-body-inner'>
+                          <p><strong>Welcome on board, {{ user.first_name }}!</strong></p>
+                          <p>Bedade is a ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque ut adipiscing erat. Fusce gravida euismod mollis. Nulla aliquet cursus pulvinar. Nulla lacinia dignissim sapien ut hendrerit. Ready to get started?</p>
+                          
+                          <a href="/" class='btn btn-primary pull-right icon-only'><span class='non-mobile'>Take a tour and see</span> how it works... <i class='fa fa-info-circle'></i></a>
+                          <a href="{% url 'bm_create' %}" class='btn btn-primary pull-right icon-only'>Create your <span class='non-mobile'>first</span> benchmark <i class='fa fa-plus-circle'></i></a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            {% endif %}>
         {% endfor %}
     {% endif %}
 {% endblock %}
@@ -77,7 +98,7 @@
 
                             {% empty %}
                             <div><strong>You have no benchmark in your history.</strong></div>
-                            <div><a href='/benchmark/create'>Gether the data you need <i class="fa fa-arrow-circle-right"></i></a></div>
+                            <div><a href='{% url 'bm_create' %}'>Gether the data you need <i class="fa fa-arrow-circle-right"></i></a></div>
 
                             {% endfor %}                       
                             <hr>
@@ -134,12 +155,11 @@
                         <div id="myRecentBenchmarks" class="carousel slide" data-ride="carousel">
                           <!-- Wrapper for slides -->
                           <div class="carousel-inner">
-                            {% for benchmark in benchmarks.recent %}
+                            {% for benchmark in benchmarks.recent|slice:":5" %}
                               <div class="item">
-{#                              TODO: hardcoded link below#}
                                 <div class='title' title='{{ benchmark.name }}'><a href='/benchmark/{{ benchmark.id }}'>{{ benchmark.name }}</a></div>
                                 {% if benchmark.question_type == 1 %}
-                                  <div id='donutChart-{{ benchmark.id }}' class='bigChart'></div>
+                                  <div id='donutChart-{{ benchmark.id }}' class='bigChart donut'></div>
                                   <script src="{{ STATIC_URL }}js/graphs/pie.js"></script>
                                   <script type="text/javascript">
                                       var mainChartData_{{ benchmark.id }} = {{ benchmark.charts|safe }};
@@ -156,7 +176,7 @@
 
 
                                 {% elif benchmark.question_type == 3 %}
-                                  <div id='bellcurveChart-{{ benchmark.id }}' class='bigChart'>
+                                  <div id='bellcurveChart-{{ benchmark.id }}' class='bigChart'></div>
                                   <div class='benchmark-stats perc-based'>
                                     <div class='single-stat'>
                                         <span class='title'>Min</span>
@@ -175,7 +195,7 @@
                                         <span class='value' id='sdVal-{{ benchmark.id }}'></span>
                                     </div>
                                   </div>
-                                  </div>
+                                  
                                   <script src="{{ STATIC_URL }}js/graphs/bellcurve.js"></script>
                                   <script type="text/javascript">
                                       var mainChartData_{{ benchmark.id }} = {{ benchmark.charts|safe }};
@@ -212,7 +232,7 @@
                               </div>
                             {% empty %}
                             
-                            <p>Derp</p>
+                              <p>Derp</p>
 
                             {% endfor %} 
                           </div>
@@ -234,74 +254,81 @@
                     <div class='title-header'>Popular Comunity Benchmarks</div>
                     <div class='row'>
                       <div class='benchmark'>
-                        {% for benchmark in benchmarks.popular %}
-                            <p>{{ benchmark }}</p>
-                        {% endfor %}
+                        
                         <div id="popularComunityBenchmarks" class="carousel slide" data-ride="carousel">
                           <!-- Wrapper for slides -->
                           <div class="carousel-inner">
-                            <div class="item active">
-                              <div class='title' title='Electronic Training in Chinese Government Bonds'>Electronic Training in Chinese Government Bonds</div>
-                              <img src="{{ STATIC_URL }}img/graph-placeholder1.png" alt="...">
-                              <div class='benchmark-stats val-based'>
-                                <div class='single-stat'>
-                                  <span class='title'>Min</span>
-                                  <span class='value'>5.2</span>
-                                </div>
-                                <div class='single-stat'>
-                                  <span class='title'>Max</span>
-                                  <span class='value'>8.0</span>
-                                </div>
-                                <div class='single-stat'>
-                                  <span class='title'>Avg</span>
-                                  <span class='value'>6.1</span>
-                                </div>
-                                <div class='single-stat'>
-                                  <span class='title'>SD</span>
-                                  <span class='value'>0.2</span>
-                                </div>
-                              </div>
-                              <div class='benchmark-footer text-center'>
-                                <span class='color-blue'><i class='fa fa-user'></i> 48 Contributors</span>
-                                <span class='separator'></span>
-                                <span class='rated-value'>
-                                  <div class='fill-value' style='width: 32%;'></div>
-                                </span>
-                                <span class='color-grey'>(2)</span>
-                              </div>                                  
-                            </div>
+                            {% for benchmark in benchmarks.popular %}
                             <div class="item">
-                              <div class='title' title='IT Spending for MiFID'>IT Spending for MiFID</div>
-                              <img src="{{ STATIC_URL }}img/graph-placeholder.png" alt="...">
-                              <div class='benchmark-stats perc-based'>
-                                <div class='single-stat'>
-                                  <span class='title'>Min</span>
-                                  <span class='value'>0%</span>
-                                </div>
-                                <div class='single-stat'>
-                                  <span class='title'>Max</span>
-                                  <span class='value'>91%</span>
-                                </div>
-                                <div class='single-stat'>
-                                  <span class='title'>Avg</span>
-                                  <span class='value'>51%</span>
-                                </div>
-                                <div class='single-stat'>
-                                  <span class='title'>SD</span>
-                                  <span class='value'>1.4</span>
-                                </div>
-                              </div>
-                              <div class='benchmark-footer text-center'>
-                                <span class='color-blue'><i class='fa fa-user'></i> 125 Contributors</span>
-                                <span class='separator'></span>
-                                <span class='rated-value'>
-                                  <div class='fill-value' style='width: 90%;'></div>
-                                </span>
-                                <span class='color-grey'>(17)</span>
-                              </div>
-                            </div>
-                          </div>
+                                <div class='title' title='{{ benchmark.name }}'><a href='/benchmark/{{ benchmark.id }}'>{{ benchmark.name }}</a></div>
+                                {% if benchmark.question_type == 1 %}
+                                  <div id='donutChart_popular-{{ benchmark.id }}' class='bigChart donut'></div>
+                                  <script type="text/javascript">
+                                      var mainChartData_popular_{{ benchmark.id }} = {{ benchmark.charts|safe }};
+                                      drawPieChart(mainChartData_popular_{{ benchmark.id }}.pie, 'donutChart_popular-{{ benchmark.id }}');
+                                  </script>
 
+                                  {% elif benchmark.question_type == 2 %}
+                                    <div id='columnChart_popular-{{ benchmark.id }}' class='bigChart'></div>
+                                    <script type="text/javascript">
+                                        var mainChartData_popular_{{ benchmark.id }} = {{ benchmark.charts|safe }};
+                                        drawColumnChart(mainChartData_popular_{{ benchmark.id }}.column, 'columnChart_popular-{{ benchmark.id }}');
+                                    </script>
+
+
+                                  {% elif benchmark.question_type == 3 %}
+                                    <div id='bellcurveChart_popular-{{ benchmark.id }}' class='bigChart'></div>
+                                    <div class='benchmark-stats perc-based'>
+                                      <div class='single-stat'>
+                                          <span class='title'>Min</span>
+                                          <span class='value' id='minVal_popular-{{ benchmark.id }}'></span>
+                                      </div>
+                                      <div class='single-stat'>
+                                          <span class='title'>Max</span>
+                                          <span class='value' id='maxVal_popular-{{ benchmark.id }}'></span>
+                                      </div>
+                                      <div class='single-stat'>
+                                          <span class='title'>Avg</span>
+                                          <span class='value' id='avgVal_popular-{{ benchmark.id }}'></span>
+                                      </div>
+                                      <div class='single-stat'>
+                                          <span class='title'>SD</span>
+                                          <span class='value' id='sdVal_popular-{{ benchmark.id }}'></span>
+                                      </div>
+                                    </div>                                  
+                                    
+                                    <script type="text/javascript">
+                                        var mainChartData_popular_{{ benchmark.id }} = {{ benchmark.charts|safe }};
+
+                                        $(function () {
+                                            $("#minVal_popular-{{ benchmark.id }}").text(mainChartData_popular_{{ benchmark.id }}.bell_curve.min + '%');
+                                            $("#maxVal_popular-{{ benchmark.id }}").text(mainChartData_popular_{{ benchmark.id }}.bell_curve.max + '%');
+                                            $("#avgVal_popular-{{ benchmark.id }}").text(mainChartData_popular_{{ benchmark.id }}.bell_curve.avg + '%');
+                                            var sd = mainChartData_popular_{{ benchmark.id }}.bell_curve.sd.toFixed(1); 
+                                            $("#sdVal_popular-{{ benchmark.id }}").text(sd);
+                                        });
+                                        drawBellcurveChart(mainChartData_popular_{{ benchmark.id }}.bell_curve, 'bellcurveChart_popular-{{ benchmark.id }}');
+                                    </script>
+
+                                  {% elif benchmark.question_type == 5 %}
+                                    <div id='lineChart_popular-{{ benchmark.id }}' class='bigChart'></div>
+                                    <script type="text/javascript">
+                                        var mainChartData_popular_{{ benchmark.id }} = {{ benchmark.charts|safe }};
+                                        drawLineChart(mainChartData_popular_{{ benchmark.id }}.line, 'lineChart_popular-{{ benchmark.id }}');
+                                    </script>                                  
+                                  {% endif %}
+                                  
+                                  <div class='benchmark-footer text-center'>
+                                    <span class='color-blue'><i class='fa fa-user'></i> {{ benchmark.contributors }} Contributors</span>
+                                    <span class='separator'></span>
+                                    <span class='rated-value'>
+                                        <div class='fill-value' style='width: {% widthratio benchmark.calc_average_rating 5 100 %}%'></div>
+                                    </span>
+                                    <span class='color-grey'>({{ benchmark.calc_average_rating }})</span>
+                                 </div>
+                                </div>
+                              {% endfor %}
+                          </div>
                           <!-- Controls -->
                           <div class='recent-benchmark-controls'>
                             <a class="left carousel-control" href="#popularComunityBenchmarks" role="button" data-slide="prev">
@@ -313,14 +340,12 @@
                           </div>
                         </div>
                       </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+                  </div>
+              </div>
+          </div>
+      </div>
     </div>
 
     <!-- Support Modal -->
     {% include 'core/contact_form.html' %}
 {% endblock %}
-
-                           

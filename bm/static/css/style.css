@@ -2229,10 +2229,6 @@ ul#id_choice li > label {
 
 }
 
-#columnChartHolder, #lineChartHolder, #bellcurveChartHolder, #donutChartHolder {
-    /* min-height: 238px; */
-}
-
 .statGraph {
     width: 334px;
     height: 238px;
@@ -2245,7 +2241,7 @@ ul#id_choice li > label {
     overflow: hidden;
 }
 
-#donutChart.bigChart {
+#donutChart.bigChart, .bigChart.donut {
     height: 300px;
 }
 
@@ -2253,7 +2249,7 @@ ul#id_choice li > label {
     margin: 10px auto 0;
 }
 
-#donutChart.bigChart > div {
+#donutChart.bigChart > div, .bigChart.donut > div {
     margin: 0 auto;
 }
 

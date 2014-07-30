@@ -1,7 +1,6 @@
-function pieGradient(){
+function pieGradient(slices){
     var startColor = { r : 32, g : 44, b : 69};
     var endColor = { r : 96, g : 138, b : 148};
-    var slices = mainChartData.pie.length;
 
     var results = {};
 
@@ -32,7 +31,7 @@ function drawPieChart(chartData, divId) {
         legend: 'none',
         pieSliceText: 'label',
         tooltip: { text: 'percentage' },
-        slices: pieGradient(),
+        slices: pieGradient(chartData.length),
         chartArea: { 
             width: "90%", 
             height: "90%" 

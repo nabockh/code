@@ -100,6 +100,7 @@ $(function () {
     $( "#id_Benchmark_Results" ).on('change', chartTypeChange);
 
     $('#myRecentBenchmarks .item:first-child').addClass('active');
+    $('#popularComunityBenchmarks .item:first-child').addClass('active');
     
     $( ".dashboard-progress-block .progress .progress-bar" ).each(function() {
         var dataProgress = $(this).attr('aria-valuenow');

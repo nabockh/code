@@ -1,4 +1,4 @@
-function columnGradient(){
+function columnGradient(slices){
     var startColor = { r : 32, g : 44, b : 69};
     var endColor = { r : 96, g : 138, b : 148};
     var slices = mainChartData.column.length;
@@ -28,12 +28,11 @@ function drawColumnChart(chartData, divId) {
 
     var columnOptions = {
         legend: { position: "none" },
-        hAxis: {title: 'none'},
         chartArea: {  
             width: "85%", 
             height: "65%" 
         },
-        colors: columnGradient(),
+        colors: columnGradient(chartData.length),
         bar: {
             groupWidth: 50
         }
