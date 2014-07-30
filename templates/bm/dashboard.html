@@ -126,47 +126,66 @@
                               <div class="item">
                                 <div class='title' title='{{ benchmark.name }}'><a href='/benchmark/{{ benchmark.id }}'>{{ benchmark.name }}</a></div>
                                 {% if benchmark.question_type == 1 %}
-                                  <div id='donutChart' class='bigChart'></div>
-                                  <script type="text/javascript">
-                                      var mainChartData = {{ benchmark.charts|safe }};
-                                  </script>
+                                  <div id='donutChart-{{ benchmark.id }}' class='bigChart'></div>
                                   <script src="{{ STATIC_URL }}js/graphs/pie.js"></script>
-                                {% elif benchmark.question_type == 2 %}
-                                  <div id='columnChart' class='bigChart'></div>
                                   <script type="text/javascript">
-                                      var mainChartData = {{ benchmark.charts|safe }};
+                                      var mainChartData_{{ benchmark.id }} = {{ benchmark.charts|safe }};
+                                      drawPieChart(mainChartData_{{ benchmark.id }}.pie, 'donutChart-{{ benchmark.id }}');
                                   </script>
+
+                                {% elif benchmark.question_type == 2 %}
+                                  <div id='columnChart-{{ benchmark.id }}' class='bigChart'></div>
                                   <script src="{{ STATIC_URL }}js/graphs/column.js"></script>
+                                  <script type="text/javascript">
+                                      var mainChartData_{{ benchmark.id }} = {{ benchmark.charts|safe }};
+                                      drawColumnChart(mainChartData_{{ benchmark.id }}.column, 'columnChart-{{ benchmark.id }}');
+                                  </script>
+
+
                                 {% elif benchmark.question_type == 3 %}
-                                  <div id='bellcurveChart' class='bigChart'></div>
+                                  <div id='bellcurveChart-{{ benchmark.id }}' class='bigChart'>
                                   <div class='benchmark-stats perc-based'>
                                     <div class='single-stat'>
                                         <span class='title'>Min</span>
-                                        <span class='value' id='minVal'></span>
+                                        <span class='value' id='minVal-{{ benchmark.id }}'></span>
                                     </div>
                                     <div class='single-stat'>
                                         <span class='title'>Max</span>
-                                        <span class='value' id='maxVal'></span>
+                                        <span class='value' id='maxVal-{{ benchmark.id }}'></span>
                                     </div>
                                     <div class='single-stat'>
                                         <span class='title'>Avg</span>
-                                        <span class='value' id='avgVal'></span>
+                                        <span class='value' id='avgVal-{{ benchmark.id }}'></span>
                                     </div>
                                     <div class='single-stat'>
                                         <span class='title'>SD</span>
-                                        <span class='value' id='sdVal'></span>
+                                        <span class='value' id='sdVal-{{ benchmark.id }}'></span>
                                     </div>
                                   </div>
-                                  <script type="text/javascript">
-                                      var mainChartData = {{ benchmark.charts|safe }};
-                                  </script>
+                                  </div>
                                   <script src="{{ STATIC_URL }}js/graphs/bellcurve.js"></script>
-                                {% elif benchmark.question_type == 5 %}
-                                  <div id='lineChart' class='bigChart'></div>
                                   <script type="text/javascript">
-                                      var mainChartData = {{ benchmark.charts|safe }};
+                                      var mainChartData_{{ benchmark.id }} = {{ benchmark.charts|safe }};
+
+                                      $(function () {
+                                          $("#minVal-{{ benchmark.id }}").text(mainChartData_{{ benchmark.id }}.bell_curve.min + '%');
+                                          $("#maxVal-{{ benchmark.id }}").text(mainChartData_{{ benchmark.id }}.bell_curve.max + '%');
+                                          $("#avgVal-{{ benchmark.id }}").text(mainChartData_{{ benchmark.id }}.bell_curve.avg + '%');
+                                          var sd = mainChartData_{{ benchmark.id }}.bell_curve.sd.toFixed(1); 
+                                          $("#sdVal-{{ benchmark.id }}").text(sd);
+                                      });
+                                      drawBellcurveChart(mainChartData_{{ benchmark.id }}.bell_curve, 'bellcurveChart-{{ benchmark.id }}');
                                   </script>
+                                  
+
+
+                                {% elif benchmark.question_type == 5 %}
+                                  <div id='lineChart-{{ benchmark.id }}' class='bigChart'></div>
                                   <script src="{{ STATIC_URL }}js/graphs/line.js"></script>
+                                  <script type="text/javascript">
+                                      var mainChartData_{{ benchmark.id }} = {{ benchmark.charts|safe }};
+                                      drawLineChart(mainChartData_{{ benchmark.id }}.line, 'lineChart-{{ benchmark.id }}');
+                                  </script>                                  
                                 {% endif %}
                                 
                                 <div class='benchmark-footer text-center'>

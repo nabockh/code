@@ -1,4 +1,6 @@
-    
+google.load("visualization", "1", {packages:["corechart"]});
+// google.setOnLoadCallback(drawChart);
+        
 $(function () {
     var sectionStateChangeStep1 = function() {
         var selectedStep1 = $('#id_0-question_type').find('option:selected').val();
@@ -132,7 +134,10 @@ $(function () {
         var csrf = document.cookie.match(/csrftoken=([\w]+)/);        
         $.post(window.location.pathname, {'csrfmiddlewaretoken' : csrf? csrf[1] : null,
                                           'rate' : $(this).attr('data-score')});
-        location.reload();
+
+        setTimeout(function () {
+            location.reload();
+        }, 1000);
     });
 
     // Ranking Benchmark functionality
