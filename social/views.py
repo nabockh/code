@@ -46,7 +46,7 @@ def complete_process(request, backend, *args, **kwargs):
             # in authenticate process
             treshold = 10  # seconds
             if not redirect_value:
-                if (request.user.last_login - request.user.date_joined).total_seconds() < treshold:
+                if is_new:
                     first_time_user_login.send(sender=request.user, user=request.user)
                     redirect_value = FIRST_TIME_USER_REDIRECT_URL
                 else:

@@ -111,6 +111,12 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'sekizai.context_processors.sekizai',
 )
 
+MESSAGE_STORAGE = 'django.contrib.messages.storage.cookie.CookieStorage'
+MESSAGE_FIRST_ANSWER = 50
+MESSAGE_TAGS = {
+    MESSAGE_FIRST_ANSWER: 'first_answer',
+}
+
 ROOT_URLCONF = 'app.urls'
 
 WSGI_APPLICATION = 'app.wsgi.application'

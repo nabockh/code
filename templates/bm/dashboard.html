@@ -48,6 +48,13 @@
             </div>
         </div>
 {% endblock %}
+{% block messages %}
+    {% if messages %}
+        {% for message in messages %}
+            {% if message.tags == 'first_answer' %}{{ message }}{% endif %}>
+        {% endfor %}
+    {% endif %}
+{% endblock %}
 {% block content %}
     <div class='container margined'>
         <div class='row'>
@@ -92,8 +99,13 @@
                             <div class="dashboard-progress-block">
                                 <p class="title" title='{{ benchmark.name }}'>{{ benchmark.name }}</p>
                                 <p class="info">
-                                    <span>{{ benchmark.responses_count }} of {{ benchmark.min_numbers_of_responses }}</span>
-                                     Responces Recieved | 
+                                    <span>
+                                        {{ benchmark.responses_count }}
+                                        {% if benchmark.responses_count <= benchmark.min_numbers_of_responses %}
+                                        of {{ benchmark.min_numbers_of_responses }}
+                                        {% endif %}
+                                     </span>
+                                     Responces Recieved |
                                      <span>{{ benchmark.days_left }} </span>
                                       Days Left
                                 </p>
@@ -122,8 +134,9 @@
                         <div id="myRecentBenchmarks" class="carousel slide" data-ride="carousel">
                           <!-- Wrapper for slides -->
                           <div class="carousel-inner">
-                            {% for benchmark in history|slice:":5" %}
+                            {% for benchmark in benchmarks.recent %}
                               <div class="item">
+{#                              TODO: hardcoded link below#}
                                 <div class='title' title='{{ benchmark.name }}'><a href='/benchmark/{{ benchmark.id }}'>{{ benchmark.name }}</a></div>
                                 {% if benchmark.question_type == 1 %}
                                   <div id='donutChart-{{ benchmark.id }}' class='bigChart'></div>
@@ -221,6 +234,9 @@
                     <div class='title-header'>Popular Comunity Benchmarks</div>
                     <div class='row'>
                       <div class='benchmark'>
+                        {% for benchmark in benchmarks.popular %}
+                            <p>{{ benchmark }}</p>
+                        {% endfor %}
                         <div id="popularComunityBenchmarks" class="carousel slide" data-ride="carousel">
                           <!-- Wrapper for slides -->
                           <div class="carousel-inner">

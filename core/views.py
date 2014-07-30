@@ -1,3 +1,4 @@
+from datetime import datetime
 from bm.models import Benchmark
 from django.contrib.auth.decorators import login_required
 from django.core.mail import send_mail
@@ -27,8 +28,6 @@ class HomeView(TemplateView):
             if recipient_list:
                 send_mail('Customer feedback', comments, last_name + '' + first_name, recipient_list)
             return HttpResponseRedirect('/')
-        else:
-            form = ContactForm()
         return render(request, 'core/home.html', {'form': form})
 
 
@@ -43,11 +42,28 @@ class DashboardView(TemplateView):
     def get_context_data(self,*args, **kwargs):
         context = super(DashboardView, self).get_context_data(*args, **kwargs)
         context['user'] = self.request.user
-        context['history'] = Benchmark.objects.filter(owner=self.request.user).order_by('end_date')
+        context['history'] = Benchmark.objects.filter(owner=self.request.user).order_by('-end_date')[:5]
         context['benchmarks'] = {
-            'pending': Benchmark.pending.filter(owner=self.request.user)
+            'pending': Benchmark.pending.filter(owner=self.request.user),
+            'recent': Benchmark.valid.filter(owner=self.request.user, end_date__lte=datetime.now()).order_by('-end_date')[:5],
+            'popular': Benchmark.valid.filter(popular=True)
         }
+        context['form'] = ContactForm()
         return context
+
+    def post(self, request, *args, **kwargs):
+        form = ContactForm(request.POST)
+        if form.is_valid():
+            first_name = form.cleaned_data['first_name']
+            last_name = form.cleaned_data['last_name']
+            comments = form.cleaned_data['comment']
+            recipient_list = User.objects.filter(is_superuser=True).values_list('email', flat=True)
+            if recipient_list:
+                send_mail('Customer feedback', comments, last_name + '' + first_name, recipient_list)
+            return HttpResponseRedirect('/dashboard')
+        # else:
+        #     form = ContactForm()
+        return render(request, 'bm/dashboard.html', {'form': form})
 
 
 class ThankYouView(TemplateView):

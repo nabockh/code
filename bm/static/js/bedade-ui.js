@@ -239,3 +239,32 @@ $(function () {
 
 // End Animate Scroll to # links
 
+// Script for Ajax Email Preview on 3-rd step of BM creation
+$(document).off("click","label.btn-primary");
+$(document).on("click","label.btn-primary",function(){
+    var csrf = document.cookie.match(/csrftoken=([\w]+)/);
+    var data = $('.styled-form').serialize();
+    var request = $.ajax({
+            url: window.location.pathname,
+            type: 'post',
+            'csrfmiddlewaretoken' : csrf? csrf[1] : null,
+            'data': data
+    });
+
+    // callback handler that will be called on success
+        request.done(function (response, textStatus, jqXHR){
+            $('.modal-body').html(response);
+            // log a message to the console
+            console.log(response);
+        });
+
+        // callback handler that will be called on failure
+        request.fail(function (jqXHR, textStatus, errorThrown){
+            // log the error to the console
+            console.error(
+                "The following error occured: "+
+                textStatus, errorThrown
+            );
+        });
+
+    });
