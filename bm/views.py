@@ -192,12 +192,12 @@ class BenchmarkCreateWizardView(CookieWizardView):
 
             step2_data = self.storage.get_step_data('1')
             for contact in step2.selected_contacts:
-                if step2_data.get('1-selected-{0}-invite'.format(contact.id)):
+                if step3.data.get(contact.invite_element):
                     invite = BenchmarkInvitation()
                     invite.sender = benchmark.owner
                     invite.recipient = contact
                     invite.status = '0' #not send
-                    invite.is_allowed_to_forward_invite = bool(step2_data.get('1-selected-{0}-secondary'.format(contact.id)))
+                    invite.is_allowed_to_forward_invite = bool(step3.data.get(contact.secondary_element))
                     benchmark.invites.add(invite)
 
             link = benchmark.create_link()
