@@ -8,10 +8,13 @@ from core.utils import login_required_ajax
 from django.contrib.auth.decorators import login_required
 from django.contrib.formtools.wizard.forms import ManagementForm
 from django.contrib.formtools.wizard.views import CookieWizardView
+from django.contrib.sites.models import Site
 from django.core.exceptions import ValidationError
+from django.core.urlresolvers import reverse
 from django.db import transaction
 from django.http import HttpResponse, HttpResponseNotFound
 from django.shortcuts import redirect
+from django.template import loader, Context
 from django.template.defaultfilters import safe
 from django.utils.decorators import method_decorator
 from django.views.generic import ListView, TemplateView
@@ -84,6 +87,47 @@ class BenchmarkCreateWizardView(CookieWizardView):
                 return self.render_next_step(form)
         return self.render(form)
 
+    def render_done(self, form, **kwargs):
+        """
+        This method gets called when all forms passed. The method should also
+        re-validate all steps to prevent manipulation. If any form don't
+        validate, `render_revalidation_failure` should get called.
+        If everything is fine call `done`.
+        """
+        final_form_list = []
+        # walk through the form list and try to validate the data again.
+        for form_key in self.get_form_list():
+            form_obj = self.get_form(step=form_key,
+                data=self.storage.get_step_data(form_key),
+                files=self.storage.get_step_files(form_key))
+            if not form_obj.is_valid():
+                return self.render_revalidation_failure(form_key, form_obj, **kwargs)
+            final_form_list.append(form_obj)
+
+        # render the done view and reset the wizard before returning the
+        # response. This is needed to prevent from rendering done with the
+        # same data twice.
+        if self.request.is_ajax():
+            benchmark = self.done(final_form_list, preview=True, **kwargs)
+            return self.render_email_preview(benchmark)
+
+        done_response = self.done(final_form_list, **kwargs)
+
+        self.storage.reset()
+        return done_response
+
+
+    def render_email_preview(self, benchmark):
+        template = loader.get_template('alerts/invite.html')
+        # TODO: http is hardcoded
+        benchmark.link ='http://{0}{1}'.format(Site.objects.get_current().domain, reverse('bm_answer', kwargs={'slug': 'slug'}))
+        context = Context({
+            'benchmark': benchmark,
+        })
+        response = HttpResponse(template.render(context))
+        return response
+
+
     def render_goto_step(self, goto_step, **kwargs):
         """
         This method gets called when the current step has to be changed.
@@ -111,7 +155,7 @@ class BenchmarkCreateWizardView(CookieWizardView):
             context['selected_contacts'] = self.selected_contacts if hasattr(self, 'selected_contacts') else []
         return context
 
-    def done(self, form_list, **kwargs):
+    def done(self, form_list, preview=False, **kwargs):
         step2 = form_list[1]
         step3 = form_list[2]
         with transaction.atomic():
@@ -121,6 +165,8 @@ class BenchmarkCreateWizardView(CookieWizardView):
             benchmark.industry = step3.cleaned_data['industry']
             benchmark.min_numbers_of_responses = step3.cleaned_data['minimum_number_of_answers']
             region = Region.objects.get(pk=step3.cleaned_data['geo'])
+            if preview:
+                return benchmark
             benchmark.save()
             benchmark.geographic_coverage.add(region)
 
