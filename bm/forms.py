@@ -1,4 +1,5 @@
 import re
+from bm.validators import multiple_choice_validator
 from bm.models import Question, Region
 from django import forms
 from bm.widgets import RankingWidget
@@ -14,7 +15,7 @@ class CreateBenchmarkStep12Form(forms.Form):
     question_label = forms.CharField(max_length=255)
     question_text = forms.CharField(widget=forms.Textarea())
     question_type = forms.ChoiceField(choices=Question.TYPES)
-    answer_options = forms.CharField(widget=forms.Textarea())
+    answer_options = forms.CharField(widget=forms.Textarea(), validators=[multiple_choice_validator])
     units = forms.CharField(max_length=50)
     max_number_of_decimal = forms.IntegerField(min_value=1, max_value=6)
     additional_comments = forms.CharField(widget=forms.Textarea(), required=False)
