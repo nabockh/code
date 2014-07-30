@@ -1,14 +1,16 @@
 from __future__ import absolute_import
 import itertools
-from bm.models import Benchmark
+from bm.models import Benchmark, BenchmarkInvitation
 from datetime import datetime, timedelta
 from celery import shared_task
+from django.core.mail import send_mail
+from django.db.models import F
 from django.template.loader import get_template
 from social.models import Contact
 from django.template import loader, Context
 from celery.schedules import crontab
 from celery.task import periodic_task
-
+from django.db.models import Count, Avg
 
 INVITE_SUBJECT = 'You has been invited to benchmark'
 
@@ -47,7 +49,6 @@ def send_invites(benchmark_id):
             invite.save()
         if len(invites_without_email) > 100:
             send_invites.apply_async(benchmark_id, countdown=86400)
-
 
 
 @periodic_task(run_every=crontab(minute=0, hour=0))
@@ -98,3 +99,25 @@ def benchmark_aggregate():
     benchmarks = Benchmark.valid.filter(end_date=datetime.now())
     for benchmark in benchmarks:
         benchmark.aggregate()
+
+
+@periodic_task(run_every=crontab(minute=0, hour=0))
+def check_benchmark_results():
+    # get finished benchmarks with invites status 1 or 2
+    finished_benchmarks = Benchmark.valid.filter(end_date__lte=datetime.now(), invites__status__range=[1, 2])
+    if finished_benchmarks:
+        for benchmark in finished_benchmarks:
+            subject = "Benchmark results"
+            context = Context({'benchmark_name': benchmark.name,
+                               'benchmark_link': benchmark.link,
+                               })
+            body = get_template('alerts/benchmark_results.html').render(context)
+            contacts = Contact.objects.filter(invites__benchmark__id=benchmark.id)\
+                .annotate(responses_count=Count('invites__benchmark__question__responses'))\
+                .filter(responses_count__gte=1)
+            contacts_ids = [contact.id for contact in contacts]
+            recipients = [contact.email for contact in contacts]
+            recipients.append(benchmark.owner.email)
+            if contacts_ids:
+                send_mail(subject, body, None, recipients)
+                BenchmarkInvitation.objects.filter(recipient__id__in=contacts_ids).update(status=3)
