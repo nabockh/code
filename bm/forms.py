@@ -43,9 +43,11 @@ class CreateBenchmarkStep3Form(forms.Form):
         regions = [('', '------')]
         regions.extend(list(Region.regions.values_list('id', 'name').order_by('name')))
         self.fields['geo'].choices = regions
+        self.fields['geo'].initial = step0data.get('0-geo')
         industries = [('', '------')]
         industries.extend(list(LinkedInIndustry.get_proposal(user.contacts)))
         self.fields['industry'].choices = industries
+        self.fields['industry'].initial = step0data.get('0-industry')
         if self.is_valid():
             contact_filter = {}
             name_filter = None
