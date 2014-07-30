@@ -3,7 +3,7 @@ from django.utils.translation import ugettext_lazy as _
 
 
 class MultipleChoiceValidator(object):
-    message = _('At least two options should be.')
+    message = _('At least two options should be for this type of answer.')
     code = 'invalid'
 
     def __call__(self, value):

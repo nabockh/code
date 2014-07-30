@@ -192,12 +192,12 @@ class BenchmarkCreateWizardView(CookieWizardView):
 
             step2_data = self.storage.get_step_data('1')
             for contact in step2.selected_contacts:
-                if step2_data.get('1-selected-{0}-invite'.format(contact.id)):
+                if step3.data.get(contact.invite_element):
                     invite = BenchmarkInvitation()
                     invite.sender = benchmark.owner
                     invite.recipient = contact
                     invite.status = '0' #not send
-                    invite.is_allowed_to_forward_invite = bool(step2_data.get('1-selected-{0}-secondary'.format(contact.id)))
+                    invite.is_allowed_to_forward_invite = bool(step3.data.get(contact.secondary_element))
                     benchmark.invites.add(invite)
 
             link = benchmark.create_link()
@@ -735,16 +735,18 @@ class ExcelDownloadView(BenchmarkDetailView):
             min = contributor_results['min']
             max = contributor_results['max']
             avg = contributor_results['avg']
-            first_step = avg - (3*avg)
-            last_step = avg + (3*avg)
-            step = (last_step - first_step)/5
+            sd = contributor_results['sd']
+
+            step = 6*sd/50
+            first_step = avg-(3*sd)
             steps = [first_step]
-            while steps[-1] < last_step:
-                steps.append(first_step + step)
-                step += 1
-            steps_count = len(steps)
+            i = 0
+            while i <= 50:
+                steps.append(round(steps[i]+step))
+                i += 1
+            steps_count = len(steps) + 7
             contributor_worksheet.write_column('A8', steps)
-            contributor_worksheet.write_array_formula('B8:B%s' % steps_count, '{=NORMDIST(A7:A%s,$B$3,$B$4,0)}' % steps_count)
+            contributor_worksheet.write_array_formula('B8:B%s' % steps_count, '{=NORMDIST(A8:A%s,$B$3,$B$4,0)}' % steps_count)
 
             chart.add_series({
                 'name':         benchmark.name,
