@@ -113,7 +113,11 @@ class Benchmark(models.Model):
 
     @property
     def link(self):
-        return self.links.first()
+        return self.links.first() if not self._link else self._link
+
+    @link.setter
+    def link(self, value):
+        self._link = value
 
     def calculate_deadline(self):
         count_without_email = self.invites.filter(recipient___email__isnull=True, recipient__user_id__isnull=True).count()
@@ -266,6 +270,7 @@ class BenchmarkLink(models.Model):
                 break
 
     def __unicode__(self):
+        # TODO: http is hardcoded
         return 'http://{0}{1}'.format(Site.objects.get_current().domain, reverse('bm_answer', kwargs=dict(slug=self.slug)))
 
 
@@ -373,6 +378,7 @@ class BenchmarkRating(models.Model):
     user = models.ForeignKey(USER_MODEL, null=True)
     rating = models.PositiveSmallIntegerField()
 
+
 class SeriesStatistic(models.Model):
     benchmark = models.ForeignKey(Benchmark, on_delete=models.CASCADE, related_name='series_statistic')
     series = models.CharField(max_length=255)
@@ -390,3 +396,4 @@ class NumericStatistic(models.Model):
     max = models.FloatField()
     avg = models.FloatField()
     sd = models.FloatField()
+
