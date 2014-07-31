@@ -119,12 +119,12 @@
                   <div class="panel panel-default">
                     <div class="panel-heading">
                         <h4 class="panel-title">
-                            <a data-toggle="collapse" data-parent="#accordion" href="#myOpenBenchmarks" class='collapsed test'>
+                            <a data-toggle="collapse" data-parent="#accordion" href="#myOpenBenchmarks" class=''>
                             My Open Benchmarks
                             </a>
                         </h4>
                     </div>
-                    <div id="myOpenBenchmarks" class="panel-collapse collapse">
+                    <div id="myOpenBenchmarks" class="panel-collapse collapse in">
                         <div class="panel-body">
                             {% for benchmark in benchmarks.pending %}
                             <div class="dashboard-progress-block">
@@ -151,7 +151,7 @@
                             <div><strong>You have no open benchmarks.</strong></div>
                             <div><a href='/benchmark/create'>Gether the data you need <i class="fa fa-arrow-circle-right"></i></a></div>
                             {% endfor %}
-                        </div>
+                        </div>                        
                     </div>
                   </div>
                 </div>
