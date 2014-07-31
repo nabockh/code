@@ -4,6 +4,7 @@ from bm.forms import CreateBenchmarkStep12Form, AnswerMultipleChoiceForm, \
     BenchmarkDetailsForm
 from bm.models import Benchmark, Region, Question, QuestionChoice, QuestionResponse, ResponseChoice, ResponseNumeric, \
     ResponseRange, QuestionRanking, ResponseRanking, BenchmarkInvitation, QuestionOptions, BenchmarkLink, BenchmarkRating
+from core.forms import ContactForm
 from core.utils import login_required_ajax
 from django.contrib.auth.decorators import login_required
 from django.contrib.formtools.wizard.forms import ManagementForm
@@ -153,6 +154,7 @@ class BenchmarkCreateWizardView(CookieWizardView):
         context = super(BenchmarkCreateWizardView, self).get_context_data(form, **kwargs)
         if self.steps.current == '2':
             context['selected_contacts'] = self.selected_contacts if hasattr(self, 'selected_contacts') else []
+        context['contact_form'] = ContactForm()
         return context
 
     def done(self, form_list, preview=False, **kwargs):
@@ -211,6 +213,11 @@ class BenchmarkHistoryView(ListView):
     template_name = 'bm/history.html'
     paginate_by = 10
     context_object_name = 'benchmark'
+
+    def get_context_data(self, **kwargs):
+        data = super(BenchmarkHistoryView, self).get_context_data(**kwargs)
+        data['contact_form'] = ContactForm()
+        return data
 
     @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
@@ -271,6 +278,7 @@ class BaseBenchmarkAnswerView(FormView):
         context = super(BaseBenchmarkAnswerView, self).get_context_data(**kwargs)
         context['benchmark'] = self.benchmark
         context['contributors'] = self.benchmark.invites.count()
+        context['contact_form'] = ContactForm()
         return context
 
     def post(self, request, *args, **kwargs):
