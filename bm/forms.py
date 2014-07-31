@@ -191,13 +191,13 @@ class RankingAnswerForm(forms.Form):
 
 
 class DeclineBenchmarkForm(forms.Form):
-    reason = forms.CharField(widget=forms.Textarea())
+    reason = forms.CharField(widget=forms.Textarea(), required=True)
 
     def __init__(self, benchmark, owner, email, *args, **kwargs):
         super(DeclineBenchmarkForm, self).__init__(*args, **kwargs)
-        self.fields['Benchmark name'] = forms.CharField(widget=forms.TextInput({'value': benchmark}))
-        self.fields['Benchmark owner'] = forms.CharField(widget=forms.TextInput({'value': owner}))
-        self.fields['Owner email'] = forms.EmailField(widget=forms.TextInput({'value':email}))
+        self.fields['Benchmark name'] = forms.CharField(widget=forms.TextInput({'value': benchmark, 'readonly': 'readonly'}), )
+        self.fields['Benchmark owner'] = forms.CharField(widget=forms.TextInput({'value': owner, 'readonly': 'readonly'}))
+        self.fields['Owner email'] = forms.EmailField(widget=forms.TextInput({'value':email, 'readonly': 'readonly'}))
 
 
 class SendMailForm(forms.Form):

@@ -20,7 +20,7 @@ from django.template.defaultfilters import safe
 from django.utils.decorators import method_decorator
 from django.views.generic import ListView, TemplateView
 from django.views.generic.edit import FormView
-from bm.signals import benchmark_answered
+from bm.signals import benchmark_answered, benchmark_created
 from django.db.models import Count
 import StringIO
 import xlsxwriter
@@ -125,7 +125,7 @@ class BenchmarkCreateWizardView(CookieWizardView):
         context = Context({
             'benchmark': benchmark,
         })
-        response = HttpResponse(template.render(context))
+        response = HttpResponse("<pre>" + template.render(context) + '</pre>')
         return response
 
 
@@ -205,7 +205,7 @@ class BenchmarkCreateWizardView(CookieWizardView):
             link = benchmark.create_link()
             benchmark.calculate_deadline()
             benchmark.save()
-
+            benchmark_created.send(sender=self.__class__, request=self.request, benchmark=benchmark)
         return redirect('bm_dashboard')
 
 

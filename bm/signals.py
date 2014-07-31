@@ -11,7 +11,7 @@ from bm.models import QuestionResponse, Benchmark
 from bm.tasks import send_invites
 
 benchmark_answered = Signal(providing_args=['user',])
-
+benchmark_created = Signal(providing_args=['benchmark',])
 
 @receiver(benchmark_answered)
 def send_welcome_alert(sender, request, user, **kwargs):
@@ -40,17 +40,26 @@ def check_for_approve(instance, **kwargs):
         send_invites.delay(instance.id)
 
 
-@receiver(pre_save, sender=Benchmark, dispatch_uid='nope')
-def check_new_bm_created(instance, **kwargs):
+@receiver(benchmark_created)
+def check_new_bm_created(sender, request, benchmark, **kwargs):
     """
     send alert to all Superusers users
     """
-    if instance.pk is None:
-        owner = instance.owner
-        recipient_list = User.objects.filter(is_superuser=True).values_list('email', flat=True)
-        template = loader.get_template('alerts/new_benchmark.html')
-        context = Context({
-            'owner_name': owner.first_name + ' ' + owner.last_name,
-            'benchmark': instance.name,
-        })
-        send_mail('New Benchmark has been created', template.render(context), None, recipient_list)
+    question = benchmark.question.first()
+    if question.type == 1:
+        type = 'Multiple'
+    elif question.type == 2:
+        type = 'Ranking'
+    elif question.type == 3:
+        type = 'Numeric'
+    elif question.type == 5:
+        type = 'Range'
+    owner = benchmark.owner
+    recipient_list = User.objects.filter(is_superuser=True).values_list('email', flat=True)
+    template = loader.get_template('alerts/new_benchmark.html')
+    context = Context({
+        'owner_name': owner.first_name + ' ' + owner.last_name,
+        'benchmark': benchmark.name,
+        'type': type
+    })
+    send_mail('New Benchmark has been created', template.render(context), None, recipient_list)

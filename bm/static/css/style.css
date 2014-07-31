@@ -711,9 +711,10 @@ input.btn.full-width, .btn.full-width {
 .styled-form label {
     display: block;
     font-weight: 500;
-    color: #364468;
+    /*color: #364468;*/
     margin-bottom: 0px;
 }
+
 .styled-form input, .styled-form textarea, .styled-form select {
     width: 100%;
     padding: 6px;
@@ -2617,4 +2618,9 @@ ul#id_choice li > label {
         text-overflow: ellipsis;
         white-space: nowrap;
     }
+}
+
+/* Error text in form color */
+.error {
+   color: red;
 }
