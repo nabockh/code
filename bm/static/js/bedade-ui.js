@@ -269,3 +269,45 @@ $(document).on("click","label.btn-primary",function(){
         });
 
     });
+
+// Ajax post on Contact Form
+$(document).off("submit","form.contact_form");
+$(document).on("submit","form.contact_form", function(e){
+        e.preventDefault();
+        var csrf = document.cookie.match(/csrftoken=([\w]+)/);
+        console.log("submit start");
+         $.ajax({
+            type: 'post',
+            url: $(this).attr('action'),
+            'csrfmiddlewaretoken' : csrf? csrf[1] : null,
+            data: $('.styled-form').serialize(),
+            success: function(){
+                $('#support').modal('toggle');
+                $("form.styled-form")[0].reset();
+            }
+
+        });
+});
+
+$(function () {
+
+    $("#contact_form").validate({ // initialize the plugin
+
+        rules: {
+            email: {
+                required: true,
+                email: true
+            },
+            first_name: {
+                required: true
+            },
+            last_name: {
+                required: true
+            },
+            comment: {
+                minlength: 5,
+                required: true
+            }
+        }
+    });
+});
