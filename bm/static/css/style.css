@@ -54,6 +54,10 @@ h1.not-found {
     margin: 220px auto 0;
 }
 
+.or-separator {
+    padding: 8px 0;
+}
+
 .not-found-text {
     color: #41495d;
     font-size: 30px;
@@ -406,7 +410,7 @@ span.nav-username-dropdown {
     height: 80px;
 }
 
-input.btn.full-width {
+input.btn.full-width, .btn.full-width {
     width: 100%;
 }
 
@@ -1364,22 +1368,34 @@ label.btn.btn-primary.auto-width.pull-right.fix {
 
         .btn.sign-in-btn:hover:before {
             background: #3C6081;
-        }
+        }    
     
-    
-
     .btn-invite {
+        background: #425380;
+    }
+
+    .btn-invite, .btn-tour, .btn-create {
         width: auto;
-        text-align: left;
-    
+        text-align: left;    
         display: block;
         margin: 0 1px 25px;
-}
+    }
+
+    .btn-invite:after, .btn-tour:after, .btn-create:after {
+        font-family: fontawesome;
+        float: right;
+    }
 
     .btn-invite:after {
         content: "\f0e0";
-        font-family: fontawesome;
-        float: right;
+    }
+
+    .btn-tour:after {
+        content: "\f05a";
+    }
+
+    .btn-create:after {
+        content: "\f055";
     }
 
 

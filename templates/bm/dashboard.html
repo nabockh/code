@@ -54,29 +54,39 @@
             {% if message.tags == 'first_answer' %}{{ message }}
               <!-- Welcome Modal -->
               <div class="modal visible fade" id="firstAnswered" tabindex="-1" role="dialog" aria-labelledby="firstAnsweredLabel" aria-hidden="false">
-                <div class="modal-dialog">
+                <div class="modal-dialog modal-lg">
                   <div class="modal-content">
                     <div class="modal-header">
                       <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true"><i class='fa fa-times-circle'></i></span><span class="sr-only">Close</span></button>
-                      <h4 class="modal-title" id="firstAnsweredLabel">Frequently asked questions</h4>
+                      <h4 class="modal-title" id="firstAnsweredLabel">Welcome to Bedade</h4>
                     </div>
                     <div class="modal-body">
                       <div class='modal-body-inner'>
                           <p><strong>Welcome on board, {{ user.first_name }}!</strong></p>
                           <p>Bedade is a ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque ut adipiscing erat. Fusce gravida euismod mollis. Nulla aliquet cursus pulvinar. Nulla lacinia dignissim sapien ut hendrerit. Ready to get started?</p>
-                          
-                          <a href="/" class='btn btn-primary pull-right icon-only'><span class='non-mobile'>Take a tour and see</span> how it works... <i class='fa fa-info-circle'></i></a>
-                          <a href="{% url 'bm_create' %}" class='btn btn-primary pull-right icon-only'>Create your <span class='non-mobile'>first</span> benchmark <i class='fa fa-plus-circle'></i></a>
+                          <div class='row'>
+                            <div class='col-md-5'>
+                              <a href="/" class='btn btn-primary icon-only full-width btn-tour'><span class='non-mobile'>Take a tour and see</span> how it works...</a>
+                            </div>
+                            <div class='col-md-2 text-center or-separator'><strong> - OR - </strong></div>
+                            <div class='col-md-5'>
+                              <a href="{% url 'bm_create' %}" class='btn btn-primary full-width icon-only btn-create'>Create your <span class='non-mobile'>first</span> benchmark...</a>
+                            </div>
+                          </div>                          
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
+              <script type="text/javascript">
+                $('#firstAnswered').modal('show')
+              </script>
             {% endif %}>
         {% endfor %}
     {% endif %}
 {% endblock %}
 {% block content %}
+              
     <div class='container margined'>
         <div class='row'>
             <div class='col-md-5'>
@@ -258,7 +268,7 @@
                         <div id="popularComunityBenchmarks" class="carousel slide" data-ride="carousel">
                           <!-- Wrapper for slides -->
                           <div class="carousel-inner">
-                            {% for benchmark in benchmarks.popular %}
+                            {% for benchmark in benchmarks.popular|slice:":5" %}
                             <div class="item">
                                 <div class='title' title='{{ benchmark.name }}'><a href='/benchmark/{{ benchmark.id }}'>{{ benchmark.name }}</a></div>
                                 {% if benchmark.question_type == 1 %}
