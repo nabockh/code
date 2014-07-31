@@ -48,7 +48,7 @@ class DashboardView(TemplateView):
             'recent': Benchmark.valid.filter(owner=self.request.user, end_date__lte=datetime.now()).order_by('-end_date')[:5],
             'popular': Benchmark.valid.filter(popular=True)
         }
-        context['form'] = ContactForm()
+        context['contact_form'] = ContactForm()
         return context
 
 
