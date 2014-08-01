@@ -113,7 +113,7 @@ class Benchmark(models.Model):
 
     @property
     def link(self):
-        return self.links.first() if not self._link else self._link
+        return self.links.first() if not hasattr(self, '_link') else self._link
 
     @link.setter
     def link(self, value):
