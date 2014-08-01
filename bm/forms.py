@@ -39,8 +39,9 @@ class CreateBenchmarkStep3Form(forms.Form):
     role = forms.CharField(max_length=200, required=False)
     name = forms.CharField(max_length=100, required=False)
 
-    def __init__(self, user, step0data, wizard, *args, **kwargs):
+    def __init__(self, user, step0data, wizard, except_ids=set(), *args, **kwargs):
         super(CreateBenchmarkStep3Form, self).__init__(*args, **kwargs)
+        data = kwargs.get('data') or {}
         regions = [('', '------')]
         regions.extend(list(Region.regions.values_list('id', 'name').order_by('name')))
         self.fields['geo'].choices = regions
@@ -61,8 +62,8 @@ class CreateBenchmarkStep3Form(forms.Form):
                 contact_filter['company___industry__code'] = self.cleaned_data.get('industry')
             if self.cleaned_data.get('geo'):
                 contact_filter['location__parent__id'] = self.cleaned_data.get('geo')
-            self.contacts_filtered = user.contacts.filter(name_filter, **contact_filter) if name_filter else \
-                user.contacts.filter(**contact_filter)
+            self.contacts_filtered = user.contacts.filter(name_filter, **contact_filter).exclude(id__in=except_ids) if name_filter else \
+                user.contacts.filter(**contact_filter).exclude(id__in=except_ids)
             for contact in self.contacts_filtered:
                 self.fields['contact-{0}-invite'.format(contact.id)] = \
                     forms.BooleanField(widget=forms.CheckboxInput(attrs={'class': 'choose-checkbox'}))
@@ -74,7 +75,7 @@ class CreateBenchmarkStep3Form(forms.Form):
             self.add_suggested_contacts(self.cleaned_data.get('geo'), self.cleaned_data.get('industry'))
         else:
             self.add_suggested_contacts(step0data.get('0-geo'), step0data.get('0-industry'))
-        wizard.selected_contacts = self.add_selected_contacts(kwargs.get('data') or {})
+        wizard.selected_contacts = self.add_selected_contacts(data, except_ids)
 
     def add_suggested_contacts(self, geo, industry):
         self.suggested_contacts = Contact.get_suggested(geo, industry)
@@ -86,7 +87,7 @@ class CreateBenchmarkStep3Form(forms.Form):
                 forms.BooleanField(widget=forms.CheckboxInput(attrs={'class': 'share-checkbox'}))
             contact.secondary_element = 'suggested-{0}-secondary'.format(contact.id)
 
-    def add_selected_contacts(self, data):
+    def add_selected_contacts(self, data, except_ids):
         selected_ids = []
         selected_secondary_ids = []
 
@@ -100,18 +101,19 @@ class CreateBenchmarkStep3Form(forms.Form):
 
         if self.is_valid():
             for contact in self.contacts_filtered:
-                    if data.get('1-contact-{0}-invite'.format(contact.id)):
-                        selected_ids.append(contact.id)
-                        if data.get('1-contact-{0}-secondary'.format(contact.id)):
-                            selected_secondary_ids.append(contact.id)
-        for contact in self.suggested_contacts:
-                if data.get('1-suggested-{0}-invite'.format(contact.id)):
+                if data.get('1-contact-{0}-invite'.format(contact.id)):
                     selected_ids.append(contact.id)
-                    if data.get('1-suggested-{0}-secondary'.format(contact.id)):
+                    if data.get('1-contact-{0}-secondary'.format(contact.id)):
                         selected_secondary_ids.append(contact.id)
+        for contact in self.suggested_contacts:
+            if data.get('1-suggested-{0}-invite'.format(contact.id)):
+                selected_ids.append(contact.id)
+                if data.get('1-suggested-{0}-secondary'.format(contact.id)):
+                    selected_secondary_ids.append(contact.id)
 
         selected_ids = set(selected_ids)
         selected_secondary_ids = set(selected_secondary_ids)
+        selected_ids = selected_ids - except_ids
 
         self.selected_contacts = Contact.objects.filter(id__in=selected_ids)
         for contact in self.selected_contacts:
