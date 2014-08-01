@@ -327,3 +327,8 @@ $(function () {
         }
     });
 });
+
+
+$(document).ready(function() {
+    $('.results').dataTable({Info: false, bPaginate: false});
+} );

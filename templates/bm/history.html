@@ -58,15 +58,15 @@
                 <div class='table-responsive'>
                   <table class='results'>
                     <thead>
-                      <th class='date'><a href="?order_by=start_date">Publication Date</a></th>
-                      <th class='benchmark'><a href="?order_by=name">Benchmark</a></th>
-                      <th class='owner '><a href="?order_by=owner">Creator</a></th>
-                      <th class='participants text-center'><a href="?order_by=participants">Participants</a></th>
-                      <th class='rating-field'><a href="?order_by=rating">Rating</a></th>
+                      <th><a href="#">Publication Date</a></th>
+                      <th><a href="#">Benchmark</a></th>
+                      <th><a href="#">Creator</a></th>
+                      <th><a href="#">Participants</a></th>
+                      <th><a href="#">Rating</a></th>
                     </thead>
-                  </table>
+
                   <div class='search-table'>
-                    <table class='results'>
+
                       <tbody>                      
                           {% for benchmark in object_list %}
                               <tr class="benchmark">
@@ -88,7 +88,7 @@
                                 <td class='text-center'><p>No Benchmarks Found.</p></td>
                               </tr>
                           {% endfor %}
-                      </tbody>
+                       </tbody>
                   </table>
                 </div>
               </div>

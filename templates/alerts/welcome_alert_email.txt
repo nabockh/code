@@ -1,4 +1,4 @@
 {% load i18n %}
-{% trans 'Hi,' %} {{ user_name}} {% trans ' !'%}
-{% trans "Thank you for answering Benchmark!" %}
-
+{% trans 'Hi,' %} {{ user_name}} {% trans '!'%}
+Thank you for answering first time Benchmark!
+Try to create your own benchmark on {{ link }}.

@@ -22,6 +22,7 @@ def send_welcome_alert(sender, request, user, **kwargs):
         template = loader.get_template('alerts/welcome_alert_email.txt')
         context = Context({
             'user_name': user.username,
+            'link': request.get_host() + '/benchmark/create'
         })
         send_mail('Welcome', template.render(context), None, recipient_list)
 

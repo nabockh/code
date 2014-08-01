@@ -213,6 +213,7 @@ class BenchmarkHistoryView(ListView):
     template_name = 'bm/history.html'
     paginate_by = 10
     context_object_name = 'benchmark'
+    model = Benchmark
 
     def get_context_data(self, **kwargs):
         data = super(BenchmarkHistoryView, self).get_context_data(**kwargs)
@@ -223,27 +224,17 @@ class BenchmarkHistoryView(ListView):
     def dispatch(self, request, *args, **kwargs):
         return super(BenchmarkHistoryView, self).dispatch(request, *args, **kwargs)
 
-    def get_queryset(self):
-        order_by = self.request.GET.get('order_by', 'name')
-        if order_by == 'rating':
-            order_by = 'ratings'
-        elif order_by == 'participants':
-            order_by = '-responses_count'
-        return Benchmark.valid.filter(owner=self.request.user).order_by(order_by).select_related('question')
 
 
 class BenchmarkSearchView(ListView):
     template_name = 'bm/history.html'
     paginate_by = 10
     context_object_name = 'benchmark'
+    model = Benchmark
 
     @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
         return super(BenchmarkSearchView, self).dispatch(request, *args, **kwargs)
-
-    def get_queryset(self):
-        order_by = self.request.GET.get('order_by', 'name')
-        return Benchmark.valid.order_by(order_by).select_related('question')
 
 
 class BaseBenchmarkAnswerView(FormView):
