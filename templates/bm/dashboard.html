@@ -324,9 +324,9 @@
                                         var mainChartData_popular_{{ benchmark.id }} = {{ benchmark.charts|safe }};
 
                                         $(function () {
-                                            $("#minVal_popular-{{ benchmark.id }}").text(mainChartData_popular_{{ benchmark.id }}.bell_curve.min + '%');
-                                            $("#maxVal_popular-{{ benchmark.id }}").text(mainChartData_popular_{{ benchmark.id }}.bell_curve.max + '%');
-                                            $("#avgVal_popular-{{ benchmark.id }}").text(mainChartData_popular_{{ benchmark.id }}.bell_curve.avg + '%');
+                                            $("#minVal_popular-{{ benchmark.id }}").text(mainChartData_popular_{{ benchmark.id }}.bell_curve.min);
+                                            $("#maxVal_popular-{{ benchmark.id }}").text(mainChartData_popular_{{ benchmark.id }}.bell_curve.max);
+                                            $("#avgVal_popular-{{ benchmark.id }}").text(mainChartData_popular_{{ benchmark.id }}.bell_curve.avg);
                                             var sd = mainChartData_popular_{{ benchmark.id }}.bell_curve.sd.toFixed(1); 
                                             $("#sdVal_popular-{{ benchmark.id }}").text(sd);
                                         });
