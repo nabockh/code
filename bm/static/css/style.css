@@ -498,10 +498,6 @@ input.btn.full-width, .btn.full-width {
         .colorblock.footer p.bigger {
             margin: 0 0 10px;
         }
-        
-        .colorblock.footer p.bigger img {
-            width: 130px;
-        }
 
         .colorblock.footer .lrg {
             font-size: 18px;
@@ -1450,7 +1446,6 @@ label.btn.btn-primary.auto-width.pull-right.fix {
     
 .navbar>.container .navbar-brand {
     margin-left: 0;
-    max-width: 128px;
 }
 
     .navbar-brand img {
