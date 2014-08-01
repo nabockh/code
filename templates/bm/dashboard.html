@@ -214,9 +214,9 @@
                                       var mainChartData_{{ benchmark.id }} = {{ benchmark.charts|safe }};
 
                                       $(function () {
-                                          $("#minVal-{{ benchmark.id }}").text(mainChartData_{{ benchmark.id }}.bell_curve.min + '%');
-                                          $("#maxVal-{{ benchmark.id }}").text(mainChartData_{{ benchmark.id }}.bell_curve.max + '%');
-                                          $("#avgVal-{{ benchmark.id }}").text(mainChartData_{{ benchmark.id }}.bell_curve.avg + '%');
+                                          $("#minVal-{{ benchmark.id }}").text(mainChartData_{{ benchmark.id }}.bell_curve.min);
+                                          $("#maxVal-{{ benchmark.id }}").text(mainChartData_{{ benchmark.id }}.bell_curve.max);
+                                          $("#avgVal-{{ benchmark.id }}").text(mainChartData_{{ benchmark.id }}.bell_curve.avg);
                                           var sd = mainChartData_{{ benchmark.id }}.bell_curve.sd.toFixed(1); 
                                           $("#sdVal-{{ benchmark.id }}").text(sd);
                                       });

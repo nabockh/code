@@ -162,9 +162,9 @@
 
     {% if 'Bell_Curve' in benchmark.charts_allowed %}
         $(function () {
-            $("#minVal").text(mainChartData.bell_curve.min + '%');
-            $("#maxVal").text(mainChartData.bell_curve.max + '%');
-            $("#avgVal").text(mainChartData.bell_curve.avg + '%');
+            $("#minVal").text(mainChartData.bell_curve.min);
+            $("#maxVal").text(mainChartData.bell_curve.max);
+            $("#avgVal").text(mainChartData.bell_curve.avg);
             var sd = mainChartData.bell_curve.sd.toFixed(1); 
             $("#sdVal").text(sd);
         });

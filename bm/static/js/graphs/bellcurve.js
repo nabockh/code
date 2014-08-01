@@ -31,7 +31,7 @@ function drawBellcurveChart(chartData, divId) {
         bellcurveChartData.addColumn({id:'i1', type:'number', role:'interval'});
 
         bellcurveChartData.addRows(prepareData(chartData.avg,chartData.sd));
-
+        var median = prepareData(chartData.avg,chartData.sd);
 
         var bellcurveOptions = {
             curveType: 'function',
@@ -44,10 +44,10 @@ function drawBellcurveChart(chartData, divId) {
             series: [{'color': '#33626e'}],
             chartArea: {
                 width: "80%",
-                height: "80%"
+                height: "70%"
             },
             tooltip: {'trigger' : 'none'},
-            hAxis: {title: 'avg: ' + chartData.avg + "%"}
+            hAxis: { baselineColor : 'transparent', ticks: [{v:median[16][0], f:'min'}, {v:median[25][0], f:'avg'}, {v:median[34][0], f:'max'}] }
         };
 
         var bellcurveChart = new google.visualization.LineChart(document.getElementById(divId));
