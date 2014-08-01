@@ -42,10 +42,10 @@ class DashboardView(TemplateView):
     def get_context_data(self,*args, **kwargs):
         context = super(DashboardView, self).get_context_data(*args, **kwargs)
         context['user'] = self.request.user
-        context['history'] = Benchmark.objects.filter(owner=self.request.user).order_by('-end_date')[:5]
+        context['history'] = Benchmark.valid.filter(owner=self.request.user, end_date__lte=datetime.now()).order_by('-end_date')[:5]
         context['benchmarks'] = {
             'pending': Benchmark.pending.filter(owner=self.request.user),
-            'recent': Benchmark.valid.filter(owner=self.request.user, end_date__lte=datetime.now()).order_by('-end_date')[:5],
+            'recent': context['history'],
             'popular': Benchmark.valid.filter(popular=True)
         }
         context['contact_form'] = ContactForm()

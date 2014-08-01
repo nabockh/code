@@ -43,7 +43,7 @@ def check_for_approve(instance, **kwargs):
 @receiver(benchmark_created)
 def check_new_bm_created(sender, request, benchmark, **kwargs):
     """
-    send alert to all Superusers users
+    send alert to all Superusers
     """
     question = benchmark.question.first()
     if question.type == 1:
