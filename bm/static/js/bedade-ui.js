@@ -194,7 +194,7 @@ $(function () {
     $('.share-checkbox').change(function() {
         if ($(this).is(':checked') == true) {
             if ($(this).parents('.col-md-2').siblings('.col-md-2').children('input[type="checkbox"]').is(':checked') == false) {
-                $(this).parents('.col-md-2').siblings('.col-md-2').children('input[type="checkbox"]').trigger('click');
+                $(this).parents('.col-md-2').siblings('.col-md-2').children('input[type="checkbox"]').removeAttr('checked');
             }
         }
     });
@@ -202,17 +202,33 @@ $(function () {
     $('.choose-checkbox').change(function() {
         if ($(this).is(':checked') == false) {
             if ($(this).parents('.col-md-2').siblings('.col-md-2').children('input[type="checkbox"]').is(':checked') == true) {
-                $(this).parents('.col-md-2').siblings('.col-md-2').children('input[type="checkbox"]').trigger('click');
+                $(this).parents('.col-md-2').siblings('.col-md-2').children('input[type="checkbox"]').removeAttr('checked');
             }
         }
     });
 
     $('span.deselect-btn').click(function () {
         var id = $(this).parents('.single-contact').attr('data-contact-id');
-        $('#results .single-contact[data-contact-id='+id+']').find('.choose-checkbox').removeAttr('checked');
-        $('#selected .single-contact[data-contact-id='+id+']').find('.choose-checkbox').removeAttr('checked').end().fadeOut(500, function(){ $(this).remove();});
-        $('#recommended .single-contact[data-contact-id='+id+']').find('.choose-checkbox').removeAttr('checked');
-        $('#step3Selected .single-contact[data-contact-id='+id+']').find('.choose-checkbox').removeAttr('checked').end().fadeOut(500, function(){ $(this).remove();});
+        $('#results .single-contact[data-contact-id='+id+']').find('.choose-checkbox, .share-checkbox').removeAttr('checked');
+        $('#selected .single-contact[data-contact-id='+id+']').find('.choose-checkbox, .share-checkbox').removeAttr('checked').end().fadeOut(500, function(){ $(this).remove();});
+        $('#recommended .single-contact[data-contact-id='+id+']').find('.choose-checkbox, .share-checkbox').removeAttr('checked');
+        $('#step3Selected .single-contact[data-contact-id='+id+']').find('.choose-checkbox, .share-checkbox').removeAttr('checked').end().fadeOut(500, function(){ $(this).remove();});
+    });
+
+    $('.share-checkbox').on('change', function() {
+        var id = $(this).parents('.single-contact').attr('data-contact-id');
+        if ($(this).is(':checked') == false) {
+            $('#results .single-contact[data-contact-id='+id+']').find('.share-checkbox').prop('checked', false);
+            $('#selected .single-contact[data-contact-id='+id+']').find('.share-checkbox').prop('checked', false);
+            $('#recommended .single-contact[data-contact-id='+id+']').find('.share-checkbox').prop('checked', false);
+            $('#step3Selected .single-contact[data-contact-id='+id+']').find('.share-checkbox').prop('checked', false);
+        }
+        else {
+            $('#results .single-contact[data-contact-id='+id+']').find('.share-checkbox').prop('checked', true);
+            $('#selected .single-contact[data-contact-id='+id+']').find('.share-checkbox').prop('checked', true);
+            $('#recommended .single-contact[data-contact-id='+id+']').find('.share-checkbox').prop('checked', true);
+            $('#step3Selected .single-contact[data-contact-id='+id+']').find('.share-checkbox').prop('checked', true);
+        }
     });
 
 });
@@ -269,3 +285,45 @@ $(document).on("click","label.btn-primary",function(){
         });
 
     });
+
+// Ajax post on Contact Form
+$(document).off("submit","form.contact_form");
+$(document).on("submit","form.contact_form", function(e){
+        e.preventDefault();
+        var csrf = document.cookie.match(/csrftoken=([\w]+)/);
+        console.log("submit start");
+         $.ajax({
+            type: 'post',
+            url: $(this).attr('action'),
+            'csrfmiddlewaretoken' : csrf? csrf[1] : null,
+            data: $('.styled-form').serialize(),
+            success: function(){
+                $('#support').modal('toggle');
+                $("form.styled-form")[0].reset();
+            }
+
+        });
+});
+
+$(function () {
+
+    $("#contact_form").validate({ // initialize the plugin
+
+        rules: {
+            email: {
+                required: true,
+                email: true
+            },
+            first_name: {
+                required: true
+            },
+            last_name: {
+                required: true
+            },
+            comment: {
+                minlength: 5,
+                required: true
+            }
+        }
+    });
+});

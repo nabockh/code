@@ -54,6 +54,10 @@ h1.not-found {
     margin: 220px auto 0;
 }
 
+.or-separator {
+    padding: 8px 0;
+}
+
 .not-found-text {
     color: #41495d;
     font-size: 30px;
@@ -406,7 +410,7 @@ span.nav-username-dropdown {
     height: 80px;
 }
 
-input.btn.full-width {
+input.btn.full-width, .btn.full-width {
     width: 100%;
 }
 
@@ -707,9 +711,10 @@ input.btn.full-width {
 .styled-form label {
     display: block;
     font-weight: 500;
-    color: #364468;
+    /*color: #364468;*/
     margin-bottom: 0px;
 }
+
 .styled-form input, .styled-form textarea, .styled-form select {
     width: 100%;
     padding: 6px;
@@ -1364,22 +1369,34 @@ label.btn.btn-primary.auto-width.pull-right.fix {
 
         .btn.sign-in-btn:hover:before {
             background: #3C6081;
-        }
+        }    
     
-    
-
     .btn-invite {
+        background: #425380;
+    }
+
+    .btn-invite, .btn-tour, .btn-create {
         width: auto;
-        text-align: left;
-    
+        text-align: left;    
         display: block;
         margin: 0 1px 25px;
-}
+    }
+
+    .btn-invite:after, .btn-tour:after, .btn-create:after {
+        font-family: fontawesome;
+        float: right;
+    }
 
     .btn-invite:after {
         content: "\f0e0";
-        font-family: fontawesome;
-        float: right;
+    }
+
+    .btn-tour:after {
+        content: "\f05a";
+    }
+
+    .btn-create:after {
+        content: "\f055";
     }
 
 
@@ -1502,6 +1519,18 @@ label.btn.btn-primary.auto-width.pull-right.fix {
                 width: 30px;
                 text-align: center;
             }
+
+.recent-empty {
+    margin-top: 20px;
+}
+    .recent-empty > strong {
+        font-size: 16px;
+    }
+    
+    .recent-empty > p {
+        line-height: 18px;
+        font-size: 12px;
+    }
 
 
 /* Progress bars */
@@ -2589,4 +2618,9 @@ ul#id_choice li > label {
         text-overflow: ellipsis;
         white-space: nowrap;
     }
+}
+
+/* Error text in form color */
+.error {
+   color: red;
 }

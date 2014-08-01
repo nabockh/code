@@ -12,25 +12,25 @@
                 <h4>Contact Us!</h4>
                 <div class='row'>
                   <div class='col-md-12'>
-                      <form action="" method="post" class='styled-form'>
+                      <form id="contact_form" action="/" method="post" class='styled-form'>
                           {% csrf_token %}
-                          {{ form.non_field_errors }}
+                          {{ contact_form.non_field_errors }}
                           <div class='row'>
                               <div class="col-md-6">
-                                  {{ form.first_name.errors }}
+                                  {{ contact_form.first_name.errors }}
                                   <label for="first_name">First Name</label>
-                                  {{ form.first_name }}
-                                  {{ form.last_name.errors }}
+                                  {{ contact_form.first_name }}
+                                  {{ contact_form.last_name.errors }}
                                   <label for="last_name">Last Name</label>
-                                  {{ form.last_name }}
-                                  {{ form.email.errors }}
+                                  {{ contact_form.last_name }}
+                                  {{ contact_form.email.errors }}
                                   <label for="email">Email Address</label>
-                                  {{ form.email }}
+                                  {{ contact_form.email }}
                               </div>
                               <div class='col-md-6'>
-                                  {{ form.comment.errors }}
+                                  {{ contact_form.comment.errors }}
                                   <label for="comment">Message</label>
-                                  {{ form.comment }}
+                                  {{ contact_form.comment }}
                                   <input type="submit" value="Submit" />
                               </div>
                           </div>                            

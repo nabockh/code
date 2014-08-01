@@ -16,7 +16,7 @@ from django.utils.decorators import method_decorator
 from django.views.generic import FormView
 
 from django.contrib.auth.admin import UserAdmin
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, BaseUserManager
 
 admin.site.unregister(User)
 
@@ -97,13 +97,31 @@ def approve_benchmark(modeladmin, request, queryset):
 approve_benchmark.short_description = "Approve selected benchmarks"
 
 
+def make_popular(modeladmin, request, queryset):
+    queryset.update(popular=True)
+approve_benchmark.short_description = "Mark selected benchmarks as popular"
+
+
 class BenchmarkPendingAdmin(ReadOnlyAdminMixin, admin.ModelAdmin):
     class Meta:
         verbose_name = 'Pending Benchmark'
 
     readonly_fields = [field for field in Benchmark._meta.get_all_field_names() if field not in ('approved', )]
-    fields = ('approved', 'name', 'owner', 'geographic_coverage', 'start_date', 'end_date', 'min_numbers_of_responses')
+    readonly_fields.append('question_description')
+    readonly_fields.append('question_label')
+    fields = ('approved', 'name', 'question_label', 'question_description', 'owner',
+              'geographic_coverage', 'start_date', 'end_date', 'min_numbers_of_responses')
     actions = [decline_benchmark, approve_benchmark]
+
+    def question_description(self, obj):
+        return obj.question.first().description
+
+    def question_label(self, obj):
+        return obj.question.first().label
+
+    question_description.short_description = 'Description'
+    question_label.short_description = 'Label'
+
 
     def get_queryset(self, request):
         qs = super(BenchmarkPendingAdmin, self).get_queryset(Benchmark)
@@ -182,6 +200,7 @@ class DeclineView(FormView):
                 })
                 send_mail('Declined Benchmark', template.render(context), None, recipient_list)
                 return HttpResponseRedirect('/admin/bm/benchmarkpending/')
+        return render(self.request, 'admin/decline_form.html', {'form': form})
 
 
 class BenchmarkApproved(Benchmark):
@@ -206,9 +225,25 @@ class BenchmarkPending(Benchmark):
         return urlresolvers.reverse("admin:%s_%s_change" % (content_type.app_label, content_type.model), args=(self.id,))
 
 
+
 class BenchmarkApprovedAdmin(ReadOnlyAdminMixin, admin.ModelAdmin):
     readonly_fields = [field for field in Benchmark._meta.get_all_field_names() if field not in ('popular')]
-    fields = ('approved', 'popular', 'name', 'owner', 'geographic_coverage', 'start_date', 'end_date', 'min_numbers_of_responses')
+    readonly_fields.append('question_description')
+    readonly_fields.append('question_label')
+    fields = ('approved', 'popular', 'name', 'question_label', 'question_description', 'owner',
+              'geographic_coverage', 'start_date', 'end_date', 'min_numbers_of_responses')
+    actions = [make_popular]
+    # readonly_fields = ['related_objects']
+
+    def question_description(self, obj):
+        return obj.question.first().description
+
+    def question_label(self, obj):
+        return obj.question.first().label
+
+    question_description.short_description = 'Description'
+    question_label.short_description = 'Label'
+
 
     def get_queryset(self, request):
         qs = super(BenchmarkApprovedAdmin, self).get_queryset(Benchmark)
@@ -226,7 +261,7 @@ class BenchmarkApprovedAdmin(ReadOnlyAdminMixin, admin.ModelAdmin):
         else:
             return super(BenchmarkApprovedAdmin, self).response_change(request, obj)
 
-    list_filter = ('start_date', 'owner')
+    list_filter = ('popular', 'start_date', 'owner')
 
 admin.site.register(BenchmarkPending, BenchmarkPendingAdmin)
 admin.site.register(BenchmarkApproved, BenchmarkApprovedAdmin)
