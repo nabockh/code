@@ -185,12 +185,14 @@ CACHES = {
 }
 
 AUTHENTICATION_BACKENDS = (
+    # 'social.backend.beta.BetaBackend',
     'social_auth.backends.contrib.linkedin.LinkedinBackend',
     'app.backend.case_insensitive.CaseInsensitiveModelBackend',
     'django.contrib.auth.backends.ModelBackend',
 )
 
 SOCIAL_AUTH_PIPELINE = (
+    'social.pipeline.beta_login',
     'social_auth.backends.pipeline.social.social_auth_user',
     'social_auth.backends.pipeline.user.get_username',
     'social_auth.backends.pipeline.user.create_user',
@@ -208,7 +210,7 @@ LINKEDIN_EXTRA_FIELD_SELECTORS = ['email-address', 'headline', 'industry', 'loca
 LINKEDIN_OAUTH2_EXTRA_DATA = [('id', 'id'), ]
 
 LOGIN_REDIRECT_URL = "/"
-LOGIN_ERROR_URL = "/"
+LOGIN_ERROR_URL = "/beta"
 LOGIN_URL = '/login/linkedin'
 
 EMAIL_BACKEND = 'djcelery_email.backends.CeleryEmailBackend'

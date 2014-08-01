@@ -100,3 +100,7 @@ def complete_process(request, backend, *args, **kwargs):
         else:
             url += '?%s=%s' % (REDIRECT_FIELD_NAME, redirect_value)
     return HttpResponseRedirect(url)
+
+
+class EmailInvitationRequestView(TemplateView):
+    template_name = 'social/invite_success.html'

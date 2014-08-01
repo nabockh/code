@@ -54,12 +54,15 @@
             <div class='user-nav homepage'>
                 <div class='container text-center'>
                     <a href="{% url 'socialauth_begin' backend='linkedin' %}" class="btn sign-in-btn">Sign in with Linkedin</a>
-                    <form role="beta-email">
+                    {% if invitation_form %}
+                    <form role="beta-email" method="post">
+                        {% csrf_token %}
                         <div class="form-group">
-                          <input type="text" class="form-control" placeholder="EMAIL ADDRESS">
+                            {{ invitation_form.email }}
                         </div>
                         <button type="submit" class="btn btn-search">Submit</button>
                       </form>
+                    {% endif %}
                 </div>
             </div>
         {% endif %}

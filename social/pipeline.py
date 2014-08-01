@@ -1,6 +1,13 @@
 from django.shortcuts import redirect
-from social.models import Profile, Company, LinkedInIndustry, Contact
+from social.models import Profile, Company, LinkedInIndustry, Contact, Invite
 from bm.models import Region
+from social_auth.exceptions import StopPipeline
+
+
+def beta_login(backend, details, request, response, uid, user, social_user=None, *args, **kwargs):
+    allowed = Invite.objects.filter(email=response['email-address'], allowed=True).exists()
+    if not allowed:
+        raise StopPipeline
 
 
 def load_extra_data(backend, details,request, response, uid, user, social_user=None,

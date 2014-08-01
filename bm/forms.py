@@ -181,7 +181,6 @@ class RangeAnswerForm(forms.Form):
         self.fields['max'] = forms.IntegerField(max_value=max_value, min_value=min_value)
 
 
-
 class RankingAnswerForm(forms.Form):
     def __init__(self, ranks, *args, **kwargs):
         super(RankingAnswerForm, self).__init__(*args, **kwargs)
