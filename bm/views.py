@@ -232,6 +232,11 @@ class BenchmarkSearchView(ListView):
     context_object_name = 'benchmark'
     model = Benchmark
 
+    def get_context_data(self, **kwargs):
+        data = super(BenchmarkSearchView, self).get_context_data(**kwargs)
+        data['contact_form'] = ContactForm()
+        return data
+
     @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
         return super(BenchmarkSearchView, self).dispatch(request, *args, **kwargs)

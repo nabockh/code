@@ -3,7 +3,9 @@ import itertools
 from bm.models import Benchmark, BenchmarkInvitation
 from datetime import datetime, timedelta
 from celery import shared_task
+from django.contrib.sites.models import Site
 from django.core.mail import send_mail
+from django.core.urlresolvers import reverse
 from django.db.models import F
 from django.template.loader import get_template
 from social.models import Contact
@@ -109,7 +111,7 @@ def check_benchmark_results():
         for benchmark in finished_benchmarks:
             subject = "Benchmark results"
             context = Context({'benchmark_name': benchmark.name,
-                               'benchmark_link': benchmark.link,
+                               'benchmark_link': str(Site.objects.get_current()) + reverse('bm_details', args=[benchmark.id]),
                                })
             body = get_template('alerts/benchmark_results.html').render(context)
             contacts = Contact.objects.filter(invites__benchmark__id=benchmark.id)\
