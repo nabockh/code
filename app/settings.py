@@ -186,6 +186,7 @@ CACHES = {
 
 AUTHENTICATION_BACKENDS = (
     'social_auth.backends.contrib.linkedin.LinkedinBackend',
+    'app.backend.case_insensitive.CaseInsensitiveModelBackend',
     'django.contrib.auth.backends.ModelBackend',
 )
 

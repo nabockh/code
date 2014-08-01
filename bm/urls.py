@@ -9,5 +9,6 @@ urlpatterns = patterns('',
     url(r'^(?P<bm_id>\d+)$', views.BenchmarkDetailView.as_view(), name='bm_details'),
     url(r'^(?P<bm_id>\d+)/aggregate$', views.BenchmarkAggregateView.as_view(), name='bm_aggregate'),
     url(r'^(?P<bm_id>\d+)/excel$', views.ExcelDownloadView.as_view(), name='bm_excel'),
+    url(r'^(?P<bm_id>\d+)/add-recipients$', views.BenchmarkAddRecipientsView.as_view(), name='bm_add_recipients'),
     url(r'^search/$', views.BenchmarkSearchView.as_view(), name='bm_search'),
 )

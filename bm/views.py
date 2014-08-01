@@ -1,10 +1,10 @@
-import json
 from bm.forms import CreateBenchmarkStep12Form, AnswerMultipleChoiceForm, \
     CreateBenchmarkStep3Form, CreateBenchmarkStep4Form, NumericAnswerForm, RangeAnswerForm, RankingAnswerForm, \
     BenchmarkDetailsForm
 from bm.models import Benchmark, Region, Question, QuestionChoice, QuestionResponse, ResponseChoice, ResponseNumeric, \
     ResponseRange, QuestionRanking, ResponseRanking, BenchmarkInvitation, QuestionOptions, BenchmarkLink, BenchmarkRating
 from core.forms import ContactForm
+from bm.tasks import send_invites
 from core.utils import login_required_ajax
 from django.contrib.auth.decorators import login_required
 from django.contrib.formtools.wizard.forms import ManagementForm
@@ -14,13 +14,13 @@ from django.core.exceptions import ValidationError
 from django.core.urlresolvers import reverse
 from django.db import transaction
 from django.http import HttpResponse, HttpResponseNotFound
+from django.http.response import Http404
 from django.shortcuts import redirect
 from django.template import loader, Context
-from django.template.defaultfilters import safe
 from django.utils.decorators import method_decorator
 from django.views.generic import ListView, TemplateView
 from django.views.generic.edit import FormView
-from bm.signals import benchmark_answered
+from bm.signals import benchmark_answered, benchmark_created
 from django.db.models import Count
 import StringIO
 import xlsxwriter
@@ -125,7 +125,7 @@ class BenchmarkCreateWizardView(CookieWizardView):
         context = Context({
             'benchmark': benchmark,
         })
-        response = HttpResponse(template.render(context))
+        response = HttpResponse("<pre>" + template.render(context) + '</pre>')
         return response
 
 
@@ -205,7 +205,7 @@ class BenchmarkCreateWizardView(CookieWizardView):
             link = benchmark.create_link()
             benchmark.calculate_deadline()
             benchmark.save()
-
+            benchmark_created.send(sender=self.__class__, request=self.request, benchmark=benchmark)
         return redirect('bm_dashboard')
 
 
@@ -541,6 +541,64 @@ class BenchmarkDetailView(FormView):
                 else:
                     return HttpResponse(401)
         return HttpResponse(200)
+
+
+class BenchmarkAddRecipientsView(FormView):
+    template_name = 'bm/add_recipients.html'
+    form_class = CreateBenchmarkStep3Form
+    success_url = 'bm_dashboard'
+
+    def dispatch(self, request, bm_id, *args, **kwargs):
+        self.benchmark = Benchmark.pending.filter(pk=bm_id, owner=request.user).first()
+        self.except_ids = set(self.benchmark.invites.values_list('recipient_id', flat=True))
+        if not self.benchmark:
+            raise Http404
+        return super(BenchmarkAddRecipientsView, self).dispatch(request, *args, **kwargs)
+
+    def get_form_kwargs(self):
+        class Mock(object):
+            pass
+        kwargs = super(BenchmarkAddRecipientsView, self).get_form_kwargs()
+        wizard = Mock()
+        params = dict(
+            user=self.request.user,
+            step0data={
+                '0-geo': self.benchmark.geographic_coverage.first().id,
+                '0-industry': self.benchmark.industry.code,
+            },
+            wizard=wizard,
+            prefix='1',
+            except_ids=self.except_ids,
+        )
+        kwargs.update(params)
+        return kwargs
+
+    def get_context_data(self, **kwargs):
+        context = super(BenchmarkAddRecipientsView, self).get_context_data(**kwargs)
+        if self.request.POST.get('add_selected', None):
+            context['active_tab'] = 3
+        return context
+
+    def post(self, request, *args, **kwargs):
+        form_class = self.get_form_class()
+        form = self.get_form(form_class)
+        send_invitations = self.request.POST.get('send_invitations', None)
+        if form.is_valid() and send_invitations:
+            return self.form_valid(form)
+        else:
+            return self.form_invalid(form)
+
+    def form_valid(self, form):
+        for contact in form.selected_contacts:
+            if form.data.get(form.prefix + '-' + contact.invite_element):
+                invite = BenchmarkInvitation()
+                invite.sender = self.benchmark.owner
+                invite.recipient = contact
+                invite.status = 0 #not send
+                invite.is_allowed_to_forward_invite = bool(form.data.get(form.prefix + '-' +contact.secondary_element))
+                self.benchmark.invites.add(invite)
+        send_invites.delay(self.benchmark.id)
+        return super(BenchmarkAddRecipientsView, self).form_valid(form)
 
 
 class BenchmarkAggregateView(BenchmarkDetailView):

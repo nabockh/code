@@ -12,7 +12,7 @@ from celery.schedules import crontab
 from celery.task import periodic_task
 from django.db.models import Count, Avg
 
-INVITE_SUBJECT = 'You has been invited to benchmark'
+INVITE_SUBJECT = 'You have been invited to benchmark'
 
 
 def grouper(n, iterable, fillvalue=None):

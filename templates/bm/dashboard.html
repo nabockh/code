@@ -145,6 +145,7 @@
                                     {{ benchmark.progress }}%
                                     </div>
                                 </div>
+                                <a href="{% url 'bm_add_recipients' benchmark.id %}" class="btn btn-default btn-sm">Add contacts</a>
                             </div>
 
                             {% empty %}
