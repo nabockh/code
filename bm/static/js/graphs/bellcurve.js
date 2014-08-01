@@ -47,7 +47,7 @@ function drawBellcurveChart(chartData, divId) {
                 height: "70%"
             },
             tooltip: {'trigger' : 'none'},
-            hAxis: { baselineColor : 'transparent', ticks: [{v:median[16][0], f:'min'}, {v:median[25][0], f:'avg'}, {v:median[34][0], f:'max'}] }
+            hAxis: { baselineColor : 'transparent', ticks: [{v:median[16][0], f:'σ-1'}, {v:median[25][0], f:'avg'}, {v:median[34][0], f:'σ+1'}] }
         };
 
         var bellcurveChart = new google.visualization.LineChart(document.getElementById(divId));

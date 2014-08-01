@@ -130,8 +130,8 @@
 {% endif %}
     <div class="margined no-bottom">
         <div class='row'>            
-                <form action="" method="post" class='styled-form'>{% csrf_token %}
-                    <table>
+                <form action="" method="post" class='styled-form'>
+                    {% csrf_token %}
                     {{ wizard.management_form }}
                     {% if wizard.form.forms %}
                         {{ wizard.form.management_form }}
@@ -405,7 +405,6 @@
                             </div>
                         {% endif %}
                     {% endif %}
-                    </table>
 
                     <div class='btn-holder'>
                         {% if wizard.steps.step1 == 1 %}

@@ -744,7 +744,7 @@ input.btn.full-width, .btn.full-width {
     background: #4D566F;
 }
 
-.styled-form input[type='submit']:focus, .styled-form input[type='submit']:active {
+.styled-form input[type='submit']:focus, .styled-form input[type='submit']:active {
     box-shadow: 0 2px #ccc;
 }
 
@@ -1380,11 +1380,13 @@ label.btn.btn-primary.auto-width.pull-right.fix {
         text-align: left;    
         display: block;
         margin: 0 1px 25px;
+        position: relative;
     }
-
+    
     .btn-invite:after, .btn-tour:after, .btn-create:after {
         font-family: fontawesome;
-        float: right;
+        position: absolute;
+        right: 20px;
     }
 
     .btn-invite:after {
@@ -1532,6 +1534,10 @@ label.btn.btn-primary.auto-width.pull-right.fix {
         font-size: 12px;
     }
 
+    .recent-empty img {
+        margin: 0 auto;
+        display: block;
+    }
 
 /* Progress bars */
 

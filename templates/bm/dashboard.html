@@ -51,7 +51,7 @@
 {% block messages %}
     {% if messages %}
         {% for message in messages %}
-            {% if message.tags == 'first_answer' %}{{ message }}
+            {% if message.tags == 'first_answer' %}
               <!-- Welcome Modal -->
               <div class="modal visible fade" id="firstAnswered" tabindex="-1" role="dialog" aria-labelledby="firstAnsweredLabel" aria-hidden="false">
                 <div class="modal-dialog modal-lg">
@@ -248,8 +248,8 @@
                                   <div class='recent-empty'>
                                     <strong>You have not yet created any benchmarks.</strong>
                                     <p>Start benefiting from the questions YOU ask. in just three easy steps you can create your own benchmark queries and send them to your most trusted professional contacts.</p>
+                                    <img src='{{ STATIC_URL }}/img/guide.png'/>
                                   </div>
-                                  <div><img src='{{ STATIC_URL }}/img/guide.png'/></div>
                                   <a href="{% url 'bm_create' %}" class='btn btn-primary'>Create new benchmark <i class='fa fa-plus-circle'></i></a>
                                   <script type="text/javascript">
                                     $(function () {
