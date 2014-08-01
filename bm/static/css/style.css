@@ -1539,7 +1539,19 @@ label.btn.btn-primary.auto-width.pull-right.fix {
     border-radius: 0;
     height: 40px;
     box-shadow: inset 1px 1px #dedede, inset -1px -1px #DEDEDE;
+    position: relative;
 }
+
+.btn.add-recipients {
+    position: absolute;
+    width: 140px;
+    right: -140px;
+    transition: right 0.3s;
+}
+
+    .progress:hover .btn.add-recipients {
+        right: 0;
+    }
 
 .progress-bar {
     border-radius: 0;
@@ -1569,12 +1581,11 @@ label.btn.btn-primary.auto-width.pull-right.fix {
         font-weight: bold;
         margin-bottom: 5px;
         line-height: 21px;
-        font-size: 14px;
-    
+        font-size: 14px;    
         text-overflow: ellipsis;
         overflow: hidden;
         white-space: nowrap;
-}
+    }
 
     .dashboard-progress-block p.info {
         line-height: 18px;
