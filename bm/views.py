@@ -11,7 +11,7 @@ from django.contrib.formtools.wizard.forms import ManagementForm
 from django.contrib.formtools.wizard.views import CookieWizardView
 from django.contrib.sites.models import Site
 from django.core.exceptions import ValidationError
-from django.core.urlresolvers import reverse
+from django.core.urlresolvers import reverse, reverse_lazy
 from django.db import transaction
 from django.http import HttpResponse, HttpResponseNotFound
 from django.http.response import Http404
@@ -546,7 +546,7 @@ class BenchmarkDetailView(FormView):
 class BenchmarkAddRecipientsView(FormView):
     template_name = 'bm/add_recipients.html'
     form_class = CreateBenchmarkStep3Form
-    success_url = 'bm_dashboard'
+    success_url = reverse_lazy('bm_dashboard')
 
     def dispatch(self, request, bm_id, *args, **kwargs):
         self.benchmark = Benchmark.pending.filter(pk=bm_id, owner=request.user).first()
