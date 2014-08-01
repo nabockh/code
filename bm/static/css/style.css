@@ -2613,6 +2613,18 @@ ul#id_choice li > label {
     .not-found-img {
         margin-bottom: 50px;    
     }
+
+    .progress {
+        padding-right: 50px;
+    }
+    .btn.add-recipients {
+        right: 0;
+        width: 50px;
+    }
+
+    .btn.add-recipients .fa {
+        padding-right: 0;
+    }
 }
 
 
