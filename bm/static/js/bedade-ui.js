@@ -122,6 +122,16 @@ $(function () {
 
 
 $(function () {
+    // Example Blocks
+
+    $('.example-block').on('click', function() {
+       $(this).addClass('active').removeClass('closed').siblings().addClass('closed').removeClass('active');
+       event.stopPropagation();
+    });
+
+    $("html").click(function() {
+        $(".example-block").removeClass('closed active');
+    });
 
     // Tooltips
 
