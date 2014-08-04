@@ -245,10 +245,10 @@ ul.main-nav {
     }
 
     .user-nav .hello {
-    color: #9dbef0;
-    font-size: 24px;
-    line-height: 18px;
-}
+        color: #9dbef0;
+        font-size: 24px;
+        line-height: 18px;
+    }
 
         ul.user-nav-inner {
             margin: 0;
@@ -275,6 +275,28 @@ ul.main-nav {
         ul.user-nav-inner > li > a:hover {
             color: #5D828B;
         }
+
+        .fixed-navs .user-nav{
+            padding: 10px 0;        
+            position: fixed;
+            width: 100%;
+            z-index: 5;
+            top: 90px;
+        }
+
+            .fixed-navs .user-nav .hello {
+                font-size: 14px;
+                line-height: 14px;
+            }
+
+            .fixed-navs .user-nav ul.user-nav-inner > li {
+                font-size: 16px;
+                line-height: 18px;
+            }
+            
+            .fixed-navs .user-nav .btn {
+                padding: 6px 10px;
+            }
 
 
 /* End User Nav */

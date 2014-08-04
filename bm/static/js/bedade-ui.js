@@ -332,3 +332,23 @@ $(function () {
 $(document).ready(function() {
     $('.results').dataTable({Info: false, bPaginate: false});
 } );
+
+
+// Main Nav behavior on scroll
+
+$( document ).ready(function() {
+    var $document = $(document);
+    var navOffset = $('.user-nav').offset().top;
+
+    $document.on("scroll", function () {
+        if ($document.scrollTop() > navOffset) {
+            $('body').addClass('fixed-navs')
+        }
+
+        else {
+            $('body').removeClass('fixed-navs')
+        }
+
+        console.clear();
+    });
+});
