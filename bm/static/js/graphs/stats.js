@@ -1,4 +1,4 @@
-function Gradient(slices){
+function statsGradient(slices){
     var startColor = { r : 96, g : 138, b : 148};
     var endColor = { r : 32, g : 44, b : 69};
 
@@ -32,7 +32,7 @@ function drawStatsChart(chartData, divId) {
         legend: 'none',
         pieSliceText: 'none',
         tooltip: { text: 'percentage' },
-        slices: Gradient(),
+        slices: statsGradient(chartData.length),
         chartArea: { 
             width: "90%", 
             height: "90%" 
@@ -40,10 +40,10 @@ function drawStatsChart(chartData, divId) {
     };
 
 
-    var roleChart = new google.visualization.PieChart(document.getElementById('divId'));
-    var geoChart = new google.visualization.PieChart(document.getElementById('divId'));
-    var countryChart = new google.visualization.PieChart(document.getElementById('divId'));
-    var industryChart = new google.visualization.PieChart(document.getElementById('divId'));
+    var roleChart = new google.visualization.PieChart(document.getElementById(divId));
+    var geoChart = new google.visualization.PieChart(document.getElementById(divId));
+    var countryChart = new google.visualization.PieChart(document.getElementById(divId));
+    var industryChart = new google.visualization.PieChart(document.getElementById(divId));
 
     
     // stat charts

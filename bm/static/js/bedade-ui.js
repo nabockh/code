@@ -365,7 +365,5 @@ $( document ).ready(function() {
         else {
             $('body').removeClass('fixed-navs')
         }
-
-        console.clear();
     });
 });

@@ -2456,16 +2456,12 @@ ul#id_choice li > label {
 }
 
 .bigChart {
-    height: 228px;
+    height: 300px;
     overflow: hidden;
 }
 
-#donutChart.bigChart, .bigChart.donut {
-    height: 300px;
-}
-
 .bigChart > div {
-    margin: 10px auto 0;
+    margin: 50px auto;
 }
 
 #donutChart.bigChart > div, .bigChart.donut > div {
