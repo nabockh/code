@@ -148,7 +148,7 @@ class BenchmarkCreateWizardView(CookieWizardView):
         if step == '1' or step == '2':
             params['step0data'] = self.storage.get_step_data('0')
         if step == '2':
-            params['end_date'] = self.end_date
+            params['end_date'] = getattr(self, 'end_date', datetime.now())
         return params
 
     def get_context_data(self, form, **kwargs):
