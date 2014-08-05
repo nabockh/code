@@ -53,16 +53,23 @@
         {% else %}
             <div class='user-nav homepage'>
                 <div class='container text-center'>
-                    <a href="{% url 'socialauth_begin' backend='linkedin' %}" class="btn sign-in-btn">Sign in with Linkedin</a>
-                    {% if invitation_form %}
-                    <form role="beta-email" method="post">
-                        {% csrf_token %}
-                        <div class="form-group">
-                            {{ invitation_form.email }}
+                    <div class='row'>
+                        <div class='col-md-4 col-xs-4'>
+                            <a href="{% url 'socialauth_begin' backend='linkedin' %}" class="btn sign-in-btn">Sign in <span class='non-mobile'>with Linkedin</span></a>
                         </div>
-                        <button type="submit" class="btn btn-search">Submit</button>
-                      </form>
-                    {% endif %}
+                        <div class='col-md-8 col-xs-8'>
+                            {% if invitation_form %}
+                                <form role="beta-email" method="post">
+                                    {% csrf_token %}
+                                    <div class="form-group">
+                                        {{ invitation_form.email }}
+                                    </div>
+                                    <button type="submit" class="btn btn-search">Submit</button>
+                                </form>
+                                <span class='beta-invite non-mobile'><i class='fa fa-envelope'></i> Request Beta Invitation</span>
+                            {% endif %}
+                        </div>                        
+                    </div>
                 </div>
             </div>
         {% endif %}

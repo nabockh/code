@@ -66,6 +66,14 @@ h1.not-found {
     font-weight: 100;
 }
 
+span.beta-invite {
+    float: right;
+    margin: 15px;
+    font-weight: 900;
+    text-transform: uppercase;
+    font-size: 12px;
+}
+
 .not-found-img {
     margin-bottom: 20px;
 }
@@ -224,10 +232,9 @@ ul.main-nav {
             }
             
                 ul.main-nav .dropdown-menu>li>a {
-                    padding: 5px 20px;
-                
+                    padding: 5px 20px;                
                     box-shadow: 0 1px #dedede;
-}
+                }
     
 /* End Main Nav */
 
@@ -242,7 +249,10 @@ ul.main-nav {
     .user-nav.homepage {
     padding: 0;
         
-    }
+    position: fixed;
+    left: 0;
+    right: 0;
+}
 
     .user-nav .hello {
         color: #9dbef0;
@@ -279,10 +289,37 @@ ul.main-nav {
         .fixed-navs .user-nav{
             padding: 10px 0;        
             position: fixed;
-            width: 100%;
+            left: 0;
+            right: 0;
             z-index: 5;
             top: 90px;
             box-shadow: 0 3px 5px rgba(0, 0, 0, 0.3);
+        }
+        
+        .fixed-navs .user-nav.homepage {
+            padding: 0;        
+            top: 60px;
+        }
+        
+        .fixed-navs #top.navbar-default {
+            height: 60px;
+        }
+
+            .fixed-navs #top.navbar-default .top-navbar {
+                margin-top: 10px;
+            }
+
+            .fixed-navs #top.navbar-default ul.main-nav > li {
+                padding: 10px;
+            }
+
+            .fixed-navs #top.navbar-default ul.main-nav > li.active > a {
+                box-shadow: 0 15px #fff, 0 20px #425380;
+            }
+
+        
+        .fixed-navs .user-nav .btn.sign-in-btn {
+            padding: 7px 15px 7px 45px;
         }
 
             .fixed-navs .user-nav .hello {
@@ -470,11 +507,11 @@ input.btn.full-width, .btn.full-width {
 }
 
 .colorblock.banner {
-    background-image: url('../img/bdde_banner.png');
+    background-image: url('../img/bdde_banner.jpg');
 }
 
 .colorblock.features {
-    background-image: url('../img/bdde_features.png');
+    background-image: url('../img/bdde_features.jpg');
     min-height: 430px;
     background-position: center bottom;
     background-repeat: no-repeat;
@@ -595,6 +632,7 @@ input.btn.full-width, .btn.full-width {
     height: 50px;
     width: 70px;
     margin: 30px auto 20px;
+    background-image: url('../img/bedade-sprite.png');
 }
 
 .example-block {
@@ -631,7 +669,7 @@ input.btn.full-width, .btn.full-width {
     }
 
         .example-block.benchmark .big-icon {
-            background-image: url('../img/icon_benchmark.png');
+            background-position: 0px -60px;
         }
 
     .example-block.market-trending {
@@ -639,7 +677,7 @@ input.btn.full-width, .btn.full-width {
     }
 
         .example-block.market-trending .big-icon {
-            background-image: url('../img/icon_market_trending.png');
+            background-position: 0px -300px;
         }
 
     .example-block.market-share {
@@ -647,7 +685,7 @@ input.btn.full-width, .btn.full-width {
     }
 
         .example-block.market-share .big-icon {
-            background-image: url('../img/icon_market_share.png');
+            background-position: 0px -180px;
         }
 
     .example-block.market-size {
@@ -655,7 +693,7 @@ input.btn.full-width, .btn.full-width {
     }
 
         .example-block.market-size .big-icon {
-            background-image: url('../img/icon_market_size.png');
+            background-position: 0px -240px;
         }
 
     .example-block.historical-series {
@@ -663,7 +701,7 @@ input.btn.full-width, .btn.full-width {
     }
 
         .example-block.historical-series .big-icon {
-            background-image: url('../img/icon_historical_series.png');
+            background-position: 0px -120px;
         }
 
     .example-block.adoption-rate {
@@ -671,7 +709,7 @@ input.btn.full-width, .btn.full-width {
     }
 
         .example-block.adoption-rate .big-icon {
-            background-image: url('../img/icon_adoption_rate.png');
+            background-position: 0px 0px;
         }
 
     .example-block .title {
@@ -695,11 +733,36 @@ input.btn.full-width, .btn.full-width {
         }
 
         .example-block.closed .big-icon {
-            width: 40px;
+            width: 45px;
+            height: 35px;
             margin: 40px auto;
             background-size: 100%;
             background-repeat: no-repeat;
         }
+        
+            .example-block.closed.benchmark .big-icon {
+                background-position: 0px -35px;
+            }
+
+            .example-block.closed.market-trending .big-icon {
+                background-position: 0px -185px;
+            }
+
+            .example-block.closed.market-share .big-icon {
+                background-position: 0px -110px;
+            }
+
+            .example-block.closed.market-size .big-icon {
+                background-position: 0px -148px;
+            }
+
+            .example-block.closed.historical-series .big-icon {
+                background-position: 0px -75px;
+            }
+
+            .example-block.closed.adoption-rate .big-icon {
+                background-position: 0px 0;
+            }
 
         .example-block.closed .title {
             width: 45px;
@@ -756,7 +819,7 @@ input.btn.full-width, .btn.full-width {
 /* About */
 
 .colorblock.about {
-    background-image: url('../img/bdde_about.png');
+    background-image: url('../img/bdde_about.jpg');
 }
 
     .colorblock.about p {
@@ -1503,18 +1566,18 @@ label.btn.btn-primary.auto-width.pull-right.fix {
 
     form[role='beta-email'] {
         float: right;
-        width: 40%;
+        /* width: 40%; */
     }
 
     form[role='beta-email'] .form-group {
         float: left;
-        width: 80%;    
+        /* width: 80%; */    
         margin: 14px 0;
     }
 
     form[role='beta-email'] .btn-search {
         float: left;
-        width: 20%;
+        /* width: 20%; */
         background: #3d6c78; color: #fff; outline: none; border-radius: 0; text-transform: uppercase; height: 25px; line-height: 12px;  
         margin: 14px 0; padding: 0 10px; font-weight: 400;
     }
@@ -1885,9 +1948,8 @@ label.btn.btn-primary.auto-width.pull-right.fix {
 
     .rated-value .fill-value {
         height: 13px;
-        background-image: url('../img/stars_filled.png');
-    
-}
+        background-image: url('../img/stars_filled.png');    
+    }
 
 .rating {
   unicode-bidi: bidi-override;
@@ -1901,18 +1963,20 @@ label.btn.btn-primary.auto-width.pull-right.fix {
       font-family: FontAwesome;
       font-weight: normal;
       font-style: normal;
-      display: inline-block;
-    
+      display: inline-block;    
       padding-left: 5px;
-}
+    }
+
     .rating span.star:hover {
       cursor: pointer;
     }
+
     .rating span.star:before {
       content: "\f005";
       padding-right: 5px;
       color: #dedede;
     }
+
     .rating span.star:hover:before,
     .rating span.star:hover ~ span.star:before {
       content: "\f005";
@@ -1930,20 +1994,18 @@ label.btn.btn-primary.auto-width.pull-right.fix {
         color: #fff;
         border-bottom: none;
         box-shadow: 0 3px 3px rgba(0, 0, 0, 0.3);
-        text-transform: uppercase;
-    
+        text-transform: uppercase;    
         padding: 15px 25px;
-}
+    }
 
     .modal-header .close {
         text-shadow: none;
         color: #fff;
-        opacity: 1;
-    
+        opacity: 1;    
         outline: none;
         font-size: 16px;
         margin-top: 1px;
-}
+    }
     
     .modal-header .close:hover i.fa {
         text-shadow: 0 2px 2px rgba(0, 0, 0, 0.26);
@@ -2187,10 +2249,9 @@ label.control-label[for='id_choice'] {
     .styled-form.rangeAnswer .form-group {
         width: 50%;
         float: left;
-        padding-right: 15px;
-    
+        padding-right: 15px;    
         margin-bottom: 0;
-}
+    }
 
 ul#id_choice li > label {
     font-weight: 400;
@@ -2305,6 +2366,7 @@ ul#id_choice li > label {
 .benchmark.open .benchmark-footer {
     padding: 10px;
 }
+
     .benchmark.open .benchmark-footer .btn[data-target="#rating"] {
         margin-left: 20px;
         padding: 7px 12px 6px;
@@ -2354,7 +2416,8 @@ ul#id_choice li > label {
         overflow: hidden;
         white-space: nowrap;
         text-overflow: ellipsis;
-}
+    }
+
     .statsTable table td:last-child {
         width: 20%;
     }
@@ -2371,7 +2434,6 @@ ul#id_choice li > label {
 
 #columnChartHolder, #lineChartHolder, #bellcurveChartHolder {
     display: none;
-
 }
 
 .statGraph {
@@ -2433,6 +2495,7 @@ ul#id_choice li > label {
         width: 360px;
     }
 }
+
 @media (min-width: 992px) {
     .col-md-5ths {
         width: 20%;
@@ -2443,6 +2506,7 @@ ul#id_choice li > label {
         width: 590px;
     }
 }
+
 @media (min-width: 1200px) {
     .col-lg-5ths {
         width: 20%;
@@ -2460,7 +2524,7 @@ ul#id_choice li > label {
     }
 
     .non-mobile {
-        display: none;
+        display: none !important;
     }
 
     .social-btns {
@@ -2479,9 +2543,17 @@ ul#id_choice li > label {
     .navbar>.container .navbar-brand {
         margin-left: 15px;       
     }
-
+    
     .container>.navbar-header {
         margin-bottom: 20px;
+    }
+
+    .fixed-navs .container>.navbar-header {
+        margin-bottom: 0;
+    }
+    
+    .fixed-navs nav.collapse.navbar-collapse.bs-navbar-collapse {
+        max-height: 100%;
     }
 
     .navbar-default .navbar-collapse, .navbar-default .navbar-form {
@@ -2491,6 +2563,11 @@ ul#id_choice li > label {
     ul.main-nav > li {
         display: block;
         padding: 0 20px;    
+        margin: 0 -15px;
+    }
+    
+    .fixed-navs #top.navbar-default ul.main-nav > li {
+        padding: 0 20px;
         margin: 0 -15px;
     }
     
@@ -2508,6 +2585,10 @@ ul#id_choice li > label {
     ul.main-nav > li.active > a {
         box-shadow: none;
         color: #fff;
+    }
+    
+    .fixed-navs #top.navbar-default ul.main-nav > li.active > a {
+        box-shadow: none;
     }
 
     ul.main-nav .dropdown-menu {
@@ -2528,7 +2609,7 @@ ul#id_choice li > label {
     }
 
     .colorblock.features {
-        background-image: url('../img/bdde_banner.png');
+        background-image: url('../img/bdde_banner.jpg');
     }
 
     .features {
@@ -2548,17 +2629,21 @@ ul#id_choice li > label {
     .colorblock.about p {
         text-align: center;
     }
+
     .contact-info {
         float: none;
         margin: 30px 0 0;
         text-align: center;
     }
+
     .contact-info .title {
         text-transform: uppercase;
     }
+
     .features.text-left > * {
         padding-left: 0;
     }
+
     .features.text-right > * {
         padding-right: 0;
     }
@@ -2743,10 +2828,6 @@ ul#id_choice li > label {
         width: 40px;  background-size: 100%; background-repeat: no-repeat;
     }
 
-    .will-hide {
-        display: none;
-    }
-
     .example-block .title {
         margin-top: 15px; margin-left: 100px; width: auto;
         text-align: left;
@@ -2781,23 +2862,58 @@ ul#id_choice li > label {
         margin-left: 100px;
         width: auto;
     }
+
+    .example-block.benchmark .big-icon {
+        background-position: 0px -33px;
+    }
+
+    .example-block.market-trending .big-icon {
+        background-position: 0px -166px;
+    }
+
+    .example-block.market-share .big-icon {
+        background-position: 0px -100px;
+    }
+
+    .example-block.market-size .big-icon {
+        background-position: 0px -133px;
+    }
+
+    .example-block.historical-series .big-icon {
+        background-position: 0px -66px;
+    }
+
+    .example-block.adoption-rate .big-icon {
+        background-position: 0px 0;
+    }
 }
 
 
 @media (max-width: 640px) {
     .example-block {
-        width: 100%;
-    
+        width: 100%;    
         height: auto;
-}
+    }
 
     .search .tabulation .nav-tabs>li {
         width: 32%;
+    }
+
+    .will-hide {
+        display: none;
     }
     
     .search .tabulation .nav-tabs>li>a {
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
+    }
+
+    form[role='beta-email'] .form-group {
+        width: 65%;
+    }
+
+    form[role='beta-email'] .btn-search {
+        width: 35%;
     }
 }
