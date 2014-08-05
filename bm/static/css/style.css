@@ -199,11 +199,10 @@ ul.main-nav {
             right: 0;
             border-radius: 0;
             padding: 0;        
-            min-width: 110px;
-        
+            min-width: 110px;        
             border-top: none;
             box-shadow: 0 -5px #41495d;
-}
+        }
 
             ul.main-nav .dropdown-menu:before {
                 position: absolute;
@@ -292,7 +291,7 @@ ul.main-nav {
             left: 0;
             right: 0;
             z-index: 5;
-            top: 90px;
+            top: 60px;
             box-shadow: 0 3px 5px rgba(0, 0, 0, 0.3);
         }
         
@@ -335,7 +334,18 @@ ul.main-nav {
             .fixed-navs .user-nav .btn {
                 padding: 6px 10px;
             }
-
+            
+            .fixed-navs form[role='search'] .btn-search {
+                margin-top: 0;
+            }
+            
+            .fixed-navs form[role='search'] .form-control {
+                margin-top: 0;
+            }
+            
+            .fixed-navs ul.main-nav .dropdown-menu {
+                top: 42px;
+            }
 
 /* End User Nav */
 
@@ -523,6 +533,8 @@ input.btn.full-width, .btn.full-width {
 
 .colorblock.map {
     padding: 0;
+    min-height: 250px;
+    background-image: url('../img/map.jpg');
 }
 
     .colorblock.map iframe {
