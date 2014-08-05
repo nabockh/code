@@ -34,7 +34,8 @@ def load_extra_data(backend, details,request, response, uid, user, social_user=N
         location.code = response.get('location', {}).get('country', {}).get('code')
         location.save()
     for position in response.get('positions').get('position'):
-        if position['is-current']:
+        if position == 'is-current' or (isinstance(position, dict) and
+                                        position.get('is-current', '')):
             if isinstance(position, str):
                 company = Company.objects.filter(name=position).first()
                 position_company = {'name': position}
