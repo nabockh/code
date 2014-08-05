@@ -661,8 +661,8 @@ class ExcelDownloadView(BenchmarkDetailView):
         countries_worksheet.write_column('A2', countries_data[0])
         countries_worksheet.write_column('B2', countries_data[1])
         chart.add_series({
-            'categories': '=Countries!$A$2:$A${0}'.format(len(countries_stat)),
-            'values':     '=Countries!$B$2:$B${0}'.format(len(countries_stat)),
+            'categories': '=Countries!$A$2:$A${0}'.format(len(countries_stat)+1),
+            'values':     '=Countries!$B$2:$B${0}'.format(len(countries_stat)+1),
         })
         chart.set_chartarea({
             'border': {'color': 'black'},
@@ -683,8 +683,8 @@ class ExcelDownloadView(BenchmarkDetailView):
         industry_worksheet.write_column('A2', industry_data[0])
         industry_worksheet.write_column('B2', industry_data[1])
         chart.add_series({
-            'categories': '=Industry!$A$2:$A${0}'.format(len(industry_stat)),
-            'values':     '=Industry!$B$2:$B${0}'.format(len(industry_stat)),
+            'categories': '=Industry!$A$2:$A${0}'.format(len(industry_stat)+1),
+            'values':     '=Industry!$B$2:$B${0}'.format(len(industry_stat)+1),
         })
         chart.set_chartarea({
             'border': {'color': 'black'},
@@ -705,8 +705,8 @@ class ExcelDownloadView(BenchmarkDetailView):
         role_worksheet.write_column('A2', role_data[0])
         role_worksheet.write_column('B2', role_data[1])
         chart.add_series({
-            'categories': '=Role!$A$2:$A${0}'.format(len(role_stat)),
-            'values':     '=Role!$B$2:$B${0}'.format(len(role_stat)),
+            'categories': '=Role!$A$2:$A${0}'.format(len(role_stat)+1),
+            'values':     '=Role!$B$2:$B${0}'.format(len(role_stat)+1),
         })
         chart.set_chartarea({
             'border': {'color': 'black'},
@@ -727,8 +727,8 @@ class ExcelDownloadView(BenchmarkDetailView):
         geo_worksheet.write_column('A2', geo_data[0])
         geo_worksheet.write_column('B2', geo_data[1])
         chart.add_series({
-            'categories': '=Geo!$A$2:$A${0}'.format(len(geo_stat)),
-            'values':     '=Geo!$B$2:$B${0}'.format(len(geo_stat)),
+            'categories': '=Geo!$A$2:$A${0}'.format(len(geo_stat)+1),
+            'values':     '=Geo!$B$2:$B${0}'.format(len(geo_stat)+1),
         })
         chart.set_chartarea({
             'border': {'color': 'black'},
