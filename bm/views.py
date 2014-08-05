@@ -1,3 +1,4 @@
+from datetime import datetime
 from bm.forms import CreateBenchmarkStep12Form, AnswerMultipleChoiceForm, \
     CreateBenchmarkStep3Form, CreateBenchmarkStep4Form, NumericAnswerForm, RangeAnswerForm, RankingAnswerForm, \
     BenchmarkDetailsForm
@@ -224,6 +225,8 @@ class BenchmarkHistoryView(ListView):
     def dispatch(self, request, *args, **kwargs):
         return super(BenchmarkHistoryView, self).dispatch(request, *args, **kwargs)
 
+    def get_queryset(self):
+        return Benchmark.valid.filter(owner=self.request.user, end_date__lte=datetime.now())
 
 
 class BenchmarkSearchView(ListView):
@@ -240,6 +243,9 @@ class BenchmarkSearchView(ListView):
     @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
         return super(BenchmarkSearchView, self).dispatch(request, *args, **kwargs)
+
+    def get_queryset(self):
+        return Benchmark.valid.filter(owner=self.request.user, end_date__lte=datetime.now())
 
 
 class BaseBenchmarkAnswerView(FormView):

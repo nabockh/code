@@ -122,6 +122,16 @@ $(function () {
 
 
 $(function () {
+    // Example Blocks
+
+    $('.example-block').on('click', function() {
+       $(this).addClass('active').removeClass('closed').siblings().addClass('closed').removeClass('active');
+       event.stopPropagation();
+    });
+
+    $("html").click(function() {
+        $(".example-block").removeClass('closed active');
+    });
 
     // Tooltips
 
@@ -287,8 +297,8 @@ $(document).on("click","label.btn-primary",function(){
     });
 
 // Ajax post on Contact Form
-$(document).off("submit","form.contact_form");
-$(document).on("submit","form.contact_form", function(e){
+$(document).off("submit","form#contact_form");
+$(document).on("submit","form#contact_form", function(e){
         e.preventDefault();
         var csrf = document.cookie.match(/csrftoken=([\w]+)/);
         console.log("submit start");
@@ -296,14 +306,14 @@ $(document).on("submit","form.contact_form", function(e){
             type: 'post',
             url: $(this).attr('action'),
             'csrfmiddlewaretoken' : csrf? csrf[1] : null,
-            data: $('.styled-form').serialize(),
+            data: $('#contact_form').serialize(),
             success: function(){
                 $('#support').modal('toggle');
-                $("form.styled-form")[0].reset();
+                $("form#contact_form")[0].reset();
             }
 
-        });
-});
+            });
+    });
 
 $(function () {
 
@@ -329,9 +339,16 @@ $(function () {
 });
 
 
-$(document).ready(function() {
-    $('.results').dataTable({Info: false, bPaginate: false});
-} );
+// DataTable for Search and History page
+
+$(function() {
+    if ( (document.getElementsByClassName('benchmark')).length > 0 ) {
+        $('.results').dataTable({
+            Info: false,
+            bPaginate: false
+        });
+    }
+});
 
 
 // Main Nav behavior on scroll
