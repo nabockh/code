@@ -1,3 +1,6 @@
+from datetime import datetime, timedelta
+import math
+from app.settings import BENCHMARK_DURATIONS_DAYS
 import re
 from bm.validators import multiple_choice_validator
 from bm.models import Question, Region
@@ -76,6 +79,7 @@ class CreateBenchmarkStep3Form(forms.Form):
         else:
             self.add_suggested_contacts(step0data.get('0-geo'), step0data.get('0-industry'))
         wizard.selected_contacts = self.add_selected_contacts(data, except_ids)
+        wizard.end_date = self.end_date
 
     def add_suggested_contacts(self, geo, industry):
         self.suggested_contacts = Contact.get_suggested(geo, industry)
@@ -115,7 +119,8 @@ class CreateBenchmarkStep3Form(forms.Form):
         selected_secondary_ids = set(selected_secondary_ids)
         selected_ids = selected_ids - except_ids
 
-        self.selected_contacts = Contact.objects.filter(id__in=selected_ids)
+        count_without_email = 0
+        self.selected_contacts = Contact.objects.filter(id__in=selected_ids).select_related('user')
         for contact in self.selected_contacts:
             self.fields['selected-{0}-invite'.format(contact.id)] = \
                 forms.BooleanField(initial=True, widget=forms.CheckboxInput(attrs={'class': 'choose-checkbox', 'checked': 'checked'}))
@@ -129,12 +134,15 @@ class CreateBenchmarkStep3Form(forms.Form):
             self.fields['selected-{0}-secondary'.format(contact.id)] = \
                 forms.BooleanField(widget=forms.CheckboxInput(attrs=attr))
             contact.secondary_element = 'selected-{0}-secondary'.format(contact.id)
-
+            if not contact.email:
+                count_without_email += 1
+        days_to_sent_via_linkedin = math.ceil(float(count_without_email)/100)
+        self.end_date = datetime.now() + timedelta(days=days_to_sent_via_linkedin+BENCHMARK_DURATIONS_DAYS)
         return self.selected_contacts
 
 
 class CreateBenchmarkStep4Form(CreateBenchmarkStep12Form):
-    def __init__(self, user, step0data, *args, **kwargs):
+    def __init__(self, user, step0data, end_date, *args, **kwargs):
         initial = {
             'name': step0data.get('0-name'),
             'geo': step0data.get('0-geo'),
@@ -149,6 +157,7 @@ class CreateBenchmarkStep4Form(CreateBenchmarkStep12Form):
         }
         kwargs['initial'] = initial
         super(CreateBenchmarkStep4Form, self).__init__(user, *args, **kwargs)
+        self.end_date = end_date
 
 
 class AnswerMultipleChoiceForm(forms.Form):
@@ -159,8 +168,6 @@ class AnswerMultipleChoiceForm(forms.Form):
 
 
 class NumericAnswerForm(forms.Form):
-    # numeric_box = forms.IntegerField()
-
     def __init__(self, decimals, *args, **kwargs):
         super(NumericAnswerForm, self).__init__(*args, **kwargs)
         number = decimals['number_of_decimal']
@@ -169,9 +176,6 @@ class NumericAnswerForm(forms.Form):
 
 
 class RangeAnswerForm(forms.Form):
-    # min = forms.IntegerField(label="min")
-    # max = forms.IntegerField(label='max')
-
     def __init__(self, decimals, *args, **kwargs):
         super(RangeAnswerForm, self).__init__(*args, **kwargs)
         number = decimals['number_of_decimal']
@@ -198,7 +202,7 @@ class DeclineBenchmarkForm(forms.Form):
         super(DeclineBenchmarkForm, self).__init__(*args, **kwargs)
         self.fields['Benchmark name'] = forms.CharField(widget=forms.TextInput({'value': benchmark, 'readonly': 'readonly'}), )
         self.fields['Benchmark owner'] = forms.CharField(widget=forms.TextInput({'value': owner, 'readonly': 'readonly'}))
-        self.fields['Owner email'] = forms.EmailField(widget=forms.TextInput({'value':email, 'readonly': 'readonly'}))
+        self.fields['Owner email'] = forms.EmailField(widget=forms.TextInput({'value': email, 'readonly': 'readonly'}))
 
 
 class SendMailForm(forms.Form):

@@ -185,7 +185,6 @@ CACHES = {
 }
 
 AUTHENTICATION_BACKENDS = (
-    # 'social.backend.beta.BetaBackend',
     'social_auth.backends.contrib.linkedin.LinkedinBackend',
     'app.backend.case_insensitive.CaseInsensitiveModelBackend',
     'django.contrib.auth.backends.ModelBackend',
