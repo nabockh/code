@@ -142,13 +142,14 @@ $(function () {
     // Rating Functionality
 
     $('.rating').on('click', '[data-score]', function() {
-        var csrf = document.cookie.match(/csrftoken=([\w]+)/);        
-        $.post(window.location.pathname, {'csrfmiddlewaretoken' : csrf? csrf[1] : null,
+        var csrf = document.cookie.match(/csrftoken=([\w]+)/);
+        var request = $.post(window.location.pathname, {'csrfmiddlewaretoken' : csrf? csrf[1] : null,
                                           'rate' : $(this).attr('data-score')});
-
-        setTimeout(function () {
-            location.reload();
-        }, 1000);
+        request.done(function (response){
+            $('.color-grey').html("(" + response + ")");
+            var rate_percentage =  response/5*100 + '%';
+            $('.fill-value').css({ 'width': rate_percentage});
+        });
     });
 
     // Ranking Benchmark functionality
@@ -297,6 +298,7 @@ $(document).on("click","label.btn-primary",function(){
     });
 
 // Ajax post on Contact Form
+
 $(document).off("submit","form#contact_form");
 $(document).on("submit","form#contact_form", function(e){
         e.preventDefault();
@@ -314,6 +316,8 @@ $(document).on("submit","form#contact_form", function(e){
 
             });
     });
+
+// Validation of Contract Forms
 
 $(function () {
 
