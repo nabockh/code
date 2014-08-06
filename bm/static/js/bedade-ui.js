@@ -99,8 +99,8 @@ $(function () {
     $( "#id_Contributor_Data" ).on('change', statisticViewChange);
     $( "#id_Benchmark_Results" ).on('change', chartTypeChange);
 
-    $('#myRecentBenchmarks .item:first-child').addClass('active');
-    $('#popularComunityBenchmarks .item:first-child').addClass('active');
+    $('#myRecentBenchmarks .item:not(:first-child)').removeClass('active');
+    $('#popularComunityBenchmarks .item:not(:first-child)').removeClass('active');
     
     $( ".dashboard-progress-block .progress .progress-bar" ).each(function() {
         var dataProgress = $(this).attr('aria-valuenow');
@@ -122,6 +122,11 @@ $(function () {
 
 
 $(function () {
+
+    setTimeout(function () {
+            $('.preloader').fadeOut( "slow" );
+    }, 1000);
+
     // Example Blocks
 
     $('.example-block').on('click', function() {
@@ -242,7 +247,6 @@ $(function () {
     });
 
 });
-
 
 
 // Animate Scroll to # links

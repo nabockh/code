@@ -86,7 +86,10 @@
     {% endif %}
 {% endblock %}
 {% block content %}
-              
+    <!-- Preloader -->
+    <div class="preloader"><div class='full-centered'><i class="fa fa-cog fa-spin"></i></div></div>
+    <!-- End Preloader -->
+
     <div class='container margined'>
         <div class='row'>
             <div class='col-md-5'>
@@ -107,7 +110,7 @@
                              </div>
 
                             {% empty %}
-                            <div><strong>You have no benchmark in your history.</strong></div>
+                            <div><strong>You have no benchmarks in your history.</strong></div>
                             <div><a href='{% url 'bm_create' %}'>Gether the data you need <i class="fa fa-arrow-circle-right"></i></a></div>
 
                             {% endfor %}                       
@@ -171,8 +174,8 @@
                             <script src="{{ STATIC_URL }}js/graphs/column.js"></script>
                             <script src="{{ STATIC_URL }}js/graphs/bellcurve.js"></script>
                             <script src="{{ STATIC_URL }}js/graphs/line.js"></script>
-                            {% for benchmark in benchmarks.recent|slice:":5" %}
-                              <div class="item">
+                            {% for benchmark in benchmarks.history|slice:":5" %}
+                              <div class="item active">
                                 <div class='title' title='{{ benchmark.name }}'><a href='/benchmark/{{ benchmark.id }}'>{{ benchmark.name }}</a></div>
                                 {% if benchmark.question_type == 1 %}
                                   <div id='donutChart-{{ benchmark.id }}' class='bigChart donut'></div>
@@ -282,7 +285,7 @@
                           <!-- Wrapper for slides -->
                           <div class="carousel-inner">
                             {% for benchmark in benchmarks.popular|slice:":5" %}
-                            <div class="item">
+                            <div class="item active">
                                 <div class='title' title='{{ benchmark.name }}'><a href='/benchmark/{{ benchmark.id }}'>{{ benchmark.name }}</a></div>
                                 {% if benchmark.question_type == 1 %}
                                   <div id='donutChart_popular-{{ benchmark.id }}' class='bigChart donut'></div>
@@ -381,7 +384,6 @@
           </div>
       </div>
     </div>
-
     <!-- Support Modal -->
     {% include 'core/contact_form.html' %}
 {% endblock %}

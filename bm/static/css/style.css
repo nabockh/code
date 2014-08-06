@@ -1861,6 +1861,7 @@ label.btn.btn-primary.auto-width.pull-right.fix {
 
 .benchmark-stats .single-stat {
     width: 25%;
+    height: 110px;
     display: block;
     float: left;
     padding: 20px 0;
@@ -2440,14 +2441,6 @@ ul#id_choice li > label {
 
 /*  */
 
-#geoStats, #industryStats, #countryStats {
-    display: none;
-}
-
-#columnChartHolder, #lineChartHolder, #bellcurveChartHolder {
-    display: none;
-}
-
 .statGraph {
     width: 334px;
     height: 238px;
@@ -2460,8 +2453,12 @@ ul#id_choice li > label {
     overflow: hidden;
 }
 
+.bigChart[id^="bellcurveChart"] {
+    height: 190px;
+}
+
 .bigChart > div {
-    margin: 50px auto;
+    /* margin: 50px auto; */
 }
 
 #donutChart.bigChart > div, .bigChart.donut > div {
@@ -2481,6 +2478,38 @@ ul#id_choice li > label {
 #cms_toolbar .cms_structure .cms_structure-dimmer {
     background-color: rgba(255, 255, 255, 0.7);
 }
+
+/* PRELOADER */
+
+.preloader {
+    position: fixed;
+    top: 90px;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(61, 77, 119, 0.75);
+    z-index: 999;
+    color: #fff;
+    font-size: 5rem;
+}
+
+.preloader .full-centered {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 50px;
+    height: 50px;
+    -webkit-transform: translate(-50%, -50%);
+    -moz-transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    -o-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+}
+
+/*body.preloading {
+    overflow: hidden;
+    padding-right: 15px;
+}*/
 
 /* RESPONSIVENESS */
 
