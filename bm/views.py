@@ -540,6 +540,7 @@ class BenchmarkDetailView(FormView):
                         rating.user = request.user
                         rating.save()
                         benchmark.ratings.add(rating)
+                    return HttpResponse(benchmark.calc_average_rating())
                 else:
                     return HttpResponse(401)
         return HttpResponse(200)
