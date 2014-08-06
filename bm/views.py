@@ -792,6 +792,7 @@ class ExcelDownloadView(BenchmarkDetailView):
             })
             contributor_worksheet.insert_chart('F3', chart)
         elif question_type == 3:
+            internal_worksheet = workbook.add_worksheet('Internal')
             data = [
                 contributor_results.keys(),
                 contributor_results.values()
@@ -810,17 +811,18 @@ class ExcelDownloadView(BenchmarkDetailView):
             first_step = avg-(3*sd)
             steps = [first_step]
             i = 0
-            while i <= 50:
-                steps.append(round(steps[i]+step))
+            while i < 50:
+                steps.append((steps[i]+step))
                 i += 1
             steps_count = len(steps) + 7
-            contributor_worksheet.write_column('A8', steps)
-            contributor_worksheet.write_array_formula('B8:B%s' % steps_count, '{=NORMDIST(A8:A%s,$B$3,$B$4,0)}' % steps_count)
+            internal_worksheet.write_column('C1', steps)
 
+            # Enable worksheet protection
+            internal_worksheet.write_array_formula('D1:D50', "{=NORMDIST(C1:C50,'Contributor Stats'!$B$3,'Contributor Stats'!$B$4,0)}")
             chart.add_series({
                 'name':         benchmark.name,
-                'categories': "='Contributor Stats'!A7:A%s" % steps_count,
-                'values': "='Contributor Stats'!B7:B%s" % steps_count,
+                'categories': "='Internal'!C1:C50",
+                'values': "='Internal'!D1:D50",
                 'line': {'dash_type': 'solid', 'width': 1, 'color': 'red'}
 
             })
@@ -831,6 +833,8 @@ class ExcelDownloadView(BenchmarkDetailView):
             })
 
             contributor_worksheet.insert_chart('F3', chart)
+            internal_worksheet.hide()
+
         elif question_type == 5:
             data = [
                 [x[0] for x in contributor_results[1:]],
