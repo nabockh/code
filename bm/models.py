@@ -3,7 +3,9 @@ import uuid
 import math
 from app.settings import BENCHMARK_DURATIONS_DAYS
 from bm.utils import BmQuerySet, ArrayAgg
+from django.contrib.contenttypes.models import ContentType
 from django.contrib.sites.models import Site
+from django.core import urlresolvers
 from django.core.urlresolvers import reverse
 from django.db import models, IntegrityError, connection
 from django.db.models import Count, F
@@ -78,7 +80,6 @@ class Benchmark(models.Model):
         return self.name
 
     def select_class(self):
-        from bm.admin import BenchmarkPending
         if not isinstance(self, BenchmarkPending):
             if self.question_type == Question.MULTIPLE:
                 self.__class__ = BenchmarkMultiple
@@ -398,3 +399,24 @@ class NumericStatistic(models.Model):
     avg = models.FloatField()
     sd = models.FloatField()
 
+
+class BenchmarkPending(Benchmark):
+
+    class Meta:
+        proxy = True
+        verbose_name = 'Pending Benchmark'
+
+    def get_admin_url(self):
+        content_type = ContentType.objects.get_for_model(BenchmarkApproved)
+        return urlresolvers.reverse("admin:%s_%s_change" % (content_type.app_label, content_type.model), args=(self.id,))
+
+
+class BenchmarkApproved(Benchmark):
+
+    class Meta:
+        proxy = True
+        verbose_name = 'Approved Benchmark'
+
+    def get_admin_url(self):
+        content_type = ContentType.objects.get_for_model(self)
+        return urlresolvers.reverse("admin:%s_%s_change" % (content_type.app_label, content_type.model), args=(self.id,))

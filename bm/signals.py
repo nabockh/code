@@ -1,5 +1,4 @@
 from app.settings import MESSAGE_FIRST_ANSWER
-from bm.admin import BenchmarkPending
 from django.contrib import messages
 from django.contrib.auth.models import User
 from django.core.mail import send_mail
@@ -7,7 +6,7 @@ from django.db.models.signals import post_save, pre_save
 from django.dispatch import Signal
 from django.dispatch import receiver
 from django.template import loader, Context
-from bm.models import QuestionResponse, Benchmark
+from bm.models import QuestionResponse, BenchmarkPending
 from bm.tasks import send_invites
 
 benchmark_answered = Signal(providing_args=['user',])

@@ -3,10 +3,8 @@ from django.conf.urls import patterns
 from django.contrib import admin
 
 # Register your models here.
-from bm.models import Benchmark
+from bm.models import Benchmark, BenchmarkPending, BenchmarkApproved
 from django.contrib.admin.views.decorators import staff_member_required
-from django.contrib.contenttypes.models import ContentType
-from django.core import urlresolvers
 from django.core.mail import send_mail
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
@@ -201,29 +199,6 @@ class DeclineView(FormView):
                 send_mail('Declined Benchmark', template.render(context), None, recipient_list)
                 return HttpResponseRedirect('/admin/bm/benchmarkpending/')
         return render(self.request, 'admin/decline_form.html', {'form': form})
-
-
-class BenchmarkApproved(Benchmark):
-
-    class Meta:
-        proxy = True
-        verbose_name = 'Approved Benchmark'
-
-    def get_admin_url(self):
-        content_type = ContentType.objects.get_for_model(self)
-        return urlresolvers.reverse("admin:%s_%s_change" % (content_type.app_label, content_type.model), args=(self.id,))
-
-
-class BenchmarkPending(Benchmark):
-
-    class Meta:
-        proxy = True
-        verbose_name = 'Pending Benchmark'
-
-    def get_admin_url(self):
-        content_type = ContentType.objects.get_for_model(BenchmarkApproved)
-        return urlresolvers.reverse("admin:%s_%s_change" % (content_type.app_label, content_type.model), args=(self.id,))
-
 
 
 class BenchmarkApprovedAdmin(ReadOnlyAdminMixin, admin.ModelAdmin):
