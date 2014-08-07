@@ -64,6 +64,7 @@ class Benchmark(models.Model):
     _industry = models.ForeignKey(LinkedInIndustry, db_column="industry_id", blank=True, null=True, db_constraint=False, on_delete=models.SET_NULL)
     approved = models.NullBooleanField(blank=True)
     popular = models.BooleanField(default=False)
+    overview = models.TextField(blank=True)
 
     objects = BenchmarkManager()
     valid = BenchmarkValidManager()

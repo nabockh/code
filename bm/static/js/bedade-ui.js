@@ -307,6 +307,7 @@ $(document).off("submit","form#contact_form");
 $(document).on("submit","form#contact_form", function(e){
         e.preventDefault();
         var csrf = document.cookie.match(/csrftoken=([\w]+)/);
+        console.log(csrf? csrf[1] : null);
         console.log("submit start");
          $.ajax({
             type: 'post',
@@ -353,8 +354,9 @@ $(function() {
     if ( (document.getElementsByClassName('benchmark')).length > 0 ) {
         $('.results').dataTable({
             Info: false,
-            bPaginate: false
+            bPaginate: true
         });
+
     }
 });
 

@@ -167,6 +167,7 @@ class BenchmarkCreateWizardView(CookieWizardView):
             benchmark.owner = self.request.user
             benchmark.industry = step3.cleaned_data['industry']
             benchmark.min_numbers_of_responses = step3.cleaned_data['minimum_number_of_answers']
+            benchmark.overview = step3.cleaned_data['additional_comments']
             region = Region.objects.get(pk=step3.cleaned_data['geo'])
             if preview:
                 return benchmark
@@ -212,7 +213,6 @@ class BenchmarkCreateWizardView(CookieWizardView):
 
 class BenchmarkHistoryView(ListView):
     template_name = 'bm/history.html'
-    paginate_by = 10
     context_object_name = 'benchmark'
     model = Benchmark
 
@@ -252,9 +252,6 @@ class BaseBenchmarkAnswerView(FormView):
     success_url = '/dashboard'
     benchmark = None
 
-    # def __init__(self, *args, **kwargs):
-    #     self.benchmark = Benchmark.objects.select_related('owner', 'geographic_coverage', '_industry',
-    #                                                       'question').first()
     @method_decorator(login_required)
     def dispatch(self, request, slug, *args, **kwargs):
 
@@ -451,10 +448,14 @@ class BenchmarkDetailView(FormView):
         context['benchmark'] = benchmark
         context['question'] = benchmark.question.first()
         context['url'] = self.request.META['HTTP_HOST'] + self.request.path
-        group_by_headline = QuestionResponse.objects.filter(question=benchmark.question.first()).values('user__social_profile__headline').annotate(count=Count('user__social_profile__headline'))
-        group_by_country = QuestionResponse.objects.filter(question=benchmark.question.first()).values('user__social_profile__location__name').annotate(count=Count('user__social_profile__location__name'))
-        group_by_geo = QuestionResponse.objects.filter(question=benchmark.question.first()).values('user__social_profile__location__parent__name').annotate(count=Count('user__social_profile__location__parent__name'))
-        group_by_industry = QuestionResponse.objects.filter(question=benchmark.question.first()).values('user__social_profile__company___industry__name').annotate(count=Count('user__social_profile__company___industry__name'))
+        group_by_headline = QuestionResponse.objects.filter(question=benchmark.question.first()).\
+            values('user__social_profile__headline').annotate(count=Count('user__social_profile__headline'))
+        group_by_country = QuestionResponse.objects.filter(question=benchmark.question.first()).\
+            values('user__social_profile__location__name').annotate(count=Count('user__social_profile__location__name'))
+        group_by_geo = QuestionResponse.objects.filter(question=benchmark.question.first()).\
+            values('user__social_profile__location__parent__name').annotate(count=Count('user__social_profile__location__parent__name'))
+        group_by_industry = QuestionResponse.objects.filter(question=benchmark.question.first()).\
+            values('user__social_profile__company___industry__name').annotate(count=Count('user__social_profile__company___industry__name'))
         for dictionary in group_by_headline:
             dictionary['role'] = dictionary['user__social_profile__headline']
             del dictionary['user__social_profile__headline']
@@ -525,7 +526,6 @@ class BenchmarkDetailView(FormView):
             with transaction.atomic():
                 benchmark_id = kwargs['bm_id']
                 benchmark = self.get_benchmark(**kwargs)
-                # if BenchmarkRating.objects.filter(benchmark=benchmark, user=benchmark.question.first().responses.first().user):
                 if Benchmark.objects.filter(id=benchmark.id, question__responses__user=self.request.user):
                     if BenchmarkRating.objects.filter(benchmark=benchmark, user=request.user).first():
                         rating = BenchmarkRating.objects.filter(benchmark=benchmark, user=request.user).first()
@@ -551,6 +551,7 @@ class BenchmarkAddRecipientsView(FormView):
     form_class = CreateBenchmarkStep3Form
     success_url = reverse_lazy('bm_dashboard')
 
+    @method_decorator(login_required)
     def dispatch(self, request, bm_id, *args, **kwargs):
         self.benchmark = Benchmark.pending.filter(pk=bm_id, owner=request.user).first()
         self.except_ids = set(self.benchmark.invites.values_list('recipient_id', flat=True))
@@ -597,8 +598,8 @@ class BenchmarkAddRecipientsView(FormView):
                 invite = BenchmarkInvitation()
                 invite.sender = self.benchmark.owner
                 invite.recipient = contact
-                invite.status = 0 #not send
-                invite.is_allowed_to_forward_invite = bool(form.data.get(form.prefix + '-' +contact.secondary_element))
+                invite.status = 0 # not send
+                invite.is_allowed_to_forward_invite = bool(form.data.get(form.prefix + '-' + contact.secondary_element))
                 self.benchmark.invites.add(invite)
         send_invites.delay(self.benchmark.id)
         return super(BenchmarkAddRecipientsView, self).form_valid(form)
@@ -612,6 +613,10 @@ class BenchmarkAggregateView(BenchmarkDetailView):
 
 
 class ExcelDownloadView(BenchmarkDetailView):
+
+    @method_decorator(login_required)
+    def dispatch(self,*args, **kwargs):
+        return super(ExcelDownloadView, self).dispatch(args, **kwargs)
 
     def get(self, *args, **kwargs):
         bm_id = kwargs['bm_id']
@@ -818,7 +823,9 @@ class ExcelDownloadView(BenchmarkDetailView):
             internal_worksheet.write_column('C1', steps)
 
             # Enable worksheet protection
-            internal_worksheet.write_array_formula('D1:D50', "{=NORMDIST(C1:C50,'Contributor Stats'!$B$3,'Contributor Stats'!$B$4,0)}")
+            internal_worksheet.write_array_formula('D1:D50',
+                                                   "{=NORMDIST(C1:C50,'Contributor Stats'!$B$3,"
+                                                   "'Contributor Stats'!$B$4,0)}")
             chart.add_series({
                 'name':         benchmark.name,
                 'categories': "='Internal'!C1:C50",
@@ -858,7 +865,8 @@ class ExcelDownloadView(BenchmarkDetailView):
         workbook.close()
         output.seek(0)
 
-        response = HttpResponse(output.read(), content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+        response = HttpResponse(output.read(),
+                                content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
         response['Content-Disposition'] = 'attachment; filename={0}.xlsx'.format(benchmark.name)
         return response
 

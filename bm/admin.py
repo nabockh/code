@@ -16,7 +16,7 @@ from django.utils.decorators import method_decorator
 from django.views.generic import FormView
 
 from django.contrib.auth.admin import UserAdmin
-from django.contrib.auth.models import User, BaseUserManager
+from django.contrib.auth.models import User
 
 admin.site.unregister(User)
 
