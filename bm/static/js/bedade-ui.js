@@ -129,9 +129,9 @@ $(function () {
 
     // Example Blocks
 
-    $('.example-block').on('click', function() {
+    $('.example-block').on('click', function(e) {
        $(this).addClass('active').removeClass('closed').siblings().addClass('closed').removeClass('active');
-       event.stopPropagation();
+       e.stopPropagation();
     });
 
     $("html").click(function() {
