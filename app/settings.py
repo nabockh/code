@@ -165,8 +165,10 @@ TEMPLATE_DIRS = (
 
 CMS_TEMPLATES = (
     ('base.html', 'Base'),
+    ('layout/dashboard_two_column_5_7.html', 'Two Columns 5-7 (Dashboard)'),
     ('layout/two_column_5_7.html', 'Two Columns 5-7'),
     ('layout/two_column_7_5.html', 'Two Columns 7-5'),
+    ('layout/three_column_4_4_4.html', 'Three Columns 4-4-4'),
 )
 
 CMS_PLACEHOLDER_CONF = {
