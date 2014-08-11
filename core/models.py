@@ -79,3 +79,27 @@ class ButtonCreateBenchmark(CMSPlugin):
 
     def get_short_description(self):
         return 'Button'
+
+
+class HomeExample(CMSPlugin):
+    class Meta:
+        db_table = 'widget_home_example'
+    TYPES = (
+        (1, 'benchmark'),
+        (2, 'market-trending'),
+        (3, 'market-share'),
+        (4, 'market-size'),
+        (5, 'historical-series'),
+        (6, 'adoption-rate'),
+    )
+
+    label = models.CharField(max_length=50)
+    description = models.TextField()
+    type = models.SmallIntegerField(choices=TYPES)
+
+    def get_short_description(self):
+        return self.label
+
+    @property
+    def type_class(self):
+        return dict(self.TYPES)[self.type]
