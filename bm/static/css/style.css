@@ -5,8 +5,11 @@ body {
     padding: 0;
     background: #eff0f2;
     padding-top: 90px;
-    font-family: Roboto;
     font-weight: 300;
+}
+
+body *:not(.fa) {
+    font-family: Roboto !important;
 }
 
 html, body {
@@ -498,8 +501,12 @@ input.btn.full-width, .btn.full-width {
     background-size: auto 100%;
 }
 
-.colorblock p {
+.colorblock p, .colorblock .cms_plugin > span, .big-title + span:not(.help-text), .how-it-works .title + span, .features h4 + span {
     margin-bottom: 40px;
+    display: inline-block;
+    font-size: 14px !important; 
+    line-height: 24px !important;
+    color: #333 !important;
 }
 
 .navbar-brand {
@@ -547,15 +554,16 @@ input.btn.full-width, .btn.full-width {
         color: #fff;
     }
 
-    .colorblock.banner .help-text {
-        color: #94a6c3;
-        font-size: 26px;
-        line-height: 26px;
+    .colorblock.banner .help-text, .colorblock.banner .help-text * {
+        color: #94a6c3 !important;
+        font-size: 26px !important;
+        line-height: 26px !important;    
+        text-align: center !important;
     }
 
-        .colorblock.banner .help-text i {
+        .colorblock.banner .help-text i, .colorblock.banner .help-text em {
             text-decoration: underline;
-            color: #77a9b6;
+            color: #77a9b6 !important;
         }
 
 .colorblock.footer {
@@ -565,6 +573,7 @@ input.btn.full-width, .btn.full-width {
 
     .colorblock.footer p {
         margin-bottom: 15px;
+        color: #fff !important;
     }
 
         .colorblock.footer p.bigger {
@@ -584,7 +593,7 @@ input.btn.full-width, .btn.full-width {
     }
 
     .colorblock.footer .dec {
-        color: #94a6c3;
+        color: #94a6c3 !important;
     
 }
 
@@ -613,29 +622,55 @@ input.btn.full-width, .btn.full-width {
     .how-it-works p {
         margin-bottom: 10px;
     }
+    
+    .how-it-works .cms_plugin > span, .how-it-works .title + span{
+        text-align: left !important;
+    }
 
-.features .title {
+.features .title, .colorblock .features h4 {
     color: #fff;
     font-size: 18px;
+    margin-top: 0;
     margin-bottom: 15px;
     font-weight: 500;
 }
 
-.features p {
-    margin-bottom: 25px;
-    color: #94a6c3;
+.colorblock .features h4 {
+    margin-bottom: 0;    
+    line-height: 24px;
 }
 
-.features.text-left > * {
+.colorblock .features .cms_plugin > h4 + h4, .colorblock  .features h4 + h4 {
+    margin-bottom: 15px;
+}
+
+.features p, .colorblock .features .cms_plugin > span, .features h4 + span  {
+    margin-bottom: 25px !important;
+    color: #94a6c3 !important;
+}
+
+.features.text-left > *:not(.cms_plugin) {
     padding-left: 40px;
 }
 
-.features.text-right > * {
+.features.text-right > *:not(.cms_plugin) {
     padding-right: 20px;
 }
 
 .features .big-title {
     margin-top: -15px;
+}
+
+.features.text-right > .cms_plugin > *, .features.text-right * {
+    text-align: right !important;
+}
+
+.features.text-left > .cms_plugin > * {
+    padding-left: 40px;
+}
+
+.features.text-right > .cms_plugin > * {
+    padding-right: 20px;
 }
 
 /* Examples */
@@ -732,9 +767,11 @@ input.btn.full-width, .btn.full-width {
 
     .example-block p {
         padding: 0 10px;
-        font-size: 12px;
-        line-height: 22px;
-    }
+        font-size: 12px !important;
+        line-height: 22px !important;
+    
+        color: #fff !important;
+}
     
     .example-block.closed {
         width: 5%;
@@ -809,11 +846,11 @@ input.btn.full-width, .btn.full-width {
 }
         
         .will-show {
-            display: none;
+            display: none !important;
         }
 
         .example-block.active .will-show {
-            display: block;
+            display: block !important;
         }
 
         .example-block.active .will-hide {
@@ -835,7 +872,7 @@ input.btn.full-width, .btn.full-width {
 }
 
     .colorblock.about p {
-        color: #fff;
+        color: #fff !important;
         text-align: left;
         margin-bottom: 0;
     }
@@ -1121,6 +1158,11 @@ form[role='search'] .btn-search {
     .benchmark-help p {
         margin-bottom: 0;
     }
+    
+    .benchmark-help span {
+        font-size: 12px!important;
+        color: #fff !important;
+    }
 
     .benchmark-help a {
         color: #94a6c3;
@@ -1233,7 +1275,7 @@ label.btn.btn-primary.auto-width.pull-right.fix {
         font-size: 12px;
     }
 
-    .tips p.title {
+    .tips p.title, .tips h4 {
         display: block; 
         font-weight: 600; 
         margin-bottom: 5px; 
@@ -1243,10 +1285,10 @@ label.btn.btn-primary.auto-width.pull-right.fix {
         line-height: 18px;
     }
 
-    .tips p {
+    .tips p, .tips span {
         margin-bottom: 20px;
-        font-size: 12px;
-        line-height: 18px;
+        font-size: 12px !important;
+        line-height: 18px !important;
     }
     
     .tips .suggested-contact p {
