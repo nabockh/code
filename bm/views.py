@@ -168,11 +168,12 @@ class BenchmarkCreateWizardView(CookieWizardView):
             benchmark.industry = step3.cleaned_data['industry']
             benchmark.min_numbers_of_responses = step3.cleaned_data['minimum_number_of_answers']
             benchmark.overview = step3.cleaned_data['additional_comments']
-            region = Region.objects.get(pk=step3.cleaned_data['geo'])
             if preview:
                 return benchmark
             benchmark.save()
-            benchmark.geographic_coverage.add(region)
+            if step3.cleaned_data['geo']:
+                region = Region.objects.get(pk=step3.cleaned_data['geo'])
+                benchmark.geographic_coverage.add(region)
 
             question = Question()
             question.benchmark = benchmark
@@ -564,10 +565,11 @@ class BenchmarkAddRecipientsView(FormView):
             pass
         kwargs = super(BenchmarkAddRecipientsView, self).get_form_kwargs()
         wizard = Mock()
+        geo = self.benchmark.geographic_coverage.first()
         params = dict(
             user=self.request.user,
             step0data={
-                '0-geo': self.benchmark.geographic_coverage.first().id,
+                '0-geo': geo.id if geo else '',
                 '0-industry': self.benchmark.industry.code,
             },
             wizard=wizard,
