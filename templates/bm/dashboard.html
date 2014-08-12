@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load cms_tags %}
 {% load i18n %}
 
 {% block navigation %}
@@ -93,6 +94,7 @@
     <div class='container margined'>
         <div class='row'>
             <div class='col-md-5'>
+                {% placeholder "Column 1" or %}
                 <div class="panel-group" id="accordion">
                   <div class="panel panel-default">
                     <div class="panel-heading">
@@ -161,8 +163,10 @@
                   </div>
                 </div>
                 <a href="#" class="btn btn-primary btn-invite">Invite a collegue <span class='non-mobile'>to join bedade</span></a>
+                {% endplaceholder %}
             </div>
             <div class='col-md-7'>
+                {% placeholder "Column 2" or %}
                 <div class='col-md-12 bordered bgwhite margin-bot'>
                     <div class='title-header'>My Recent Benchmarks</div>
                     <div class='row'>
@@ -379,8 +383,9 @@
                           </div>
                         </div>
                       </div>
-                  </div>
-              </div>
+                    </div>
+                </div>
+                {% endplaceholder %}
           </div>
       </div>
     </div>

@@ -3,14 +3,14 @@ from bm.models import Benchmark
 from cms.plugin_base import CMSPluginBase
 from cms.plugin_pool import plugin_pool
 from core.models import DashboardPanel, DashboardHistory, DashboardPending, DashboardRecent, DashboardPopular, \
-    ButtonInviteColleague
+    ButtonInviteColleague, HomeExample
 from django.utils.translation import ugettext_lazy as _
 
 
 class DashboardPanelGroupPlugin(CMSPluginBase):
     module = _("Dashboard")
     name = "Panel Group"
-    render_template = "dashboard/panel_group.html"
+    render_template = "cms/dashboard/panel_group.html"
     allow_children = True
 
 
@@ -18,7 +18,7 @@ class DashboardPanelPlugin(CMSPluginBase):
     module = _("Dashboard")
     name = "Panel"
     model = DashboardPanel
-    render_template = "dashboard/panel.html"
+    render_template = "cms/dashboard/panel.html"
     allow_children = True
 
 
@@ -26,7 +26,7 @@ class DashboardHistoryPlugin(CMSPluginBase):
     module = _("Dashboard")
     name = "History"
     model = DashboardHistory
-    render_template = "dashboard/history.html"
+    render_template = "cms/dashboard/history.html"
 
     def render(self, context, instance, placeholder):
         context['instance'] = instance
@@ -40,7 +40,7 @@ class DashboardPendingPlugin(CMSPluginBase):
     module = _("Dashboard")
     name = "Pending"
     model = DashboardPending
-    render_template = "dashboard/pending.html"
+    render_template = "cms/dashboard/pending.html"
 
     def render(self, context, instance, placeholder):
         context['instance'] = instance
@@ -55,7 +55,7 @@ class DashboardRecentPlugin(CMSPluginBase):
     module = _("Dashboard")
     name = "Recent"
     model = DashboardRecent
-    render_template = "dashboard/recent.html"
+    render_template = "cms/dashboard/recent.html"
 
     def render(self, context, instance, placeholder):
         context['instance'] = instance
@@ -70,7 +70,7 @@ class DashboardPopularPlugin(CMSPluginBase):
     module = _("Dashboard")
     name = "Popular"
     model = DashboardPopular
-    render_template = "dashboard/popular.html"
+    render_template = "cms/dashboard/popular.html"
 
     def render(self, context, instance, placeholder):
         context['instance'] = instance
@@ -85,14 +85,22 @@ class ButtonInviteColleaguePlugin(CMSPluginBase):
     module = _("Buttons")
     name = "Invite Colleague"
     model = ButtonInviteColleague
-    render_template = "buttons/invite_colleague.html"
+    render_template = "cms/buttons/invite_colleague.html"
 
 
 class ButtonCreateBenchmarkPlugin(CMSPluginBase):
     module = _("Buttons")
     name = "Create Benchmark"
     model = ButtonInviteColleague
-    render_template = "buttons/create_benchmark.html"
+    render_template = "cms/buttons/create_benchmark.html"
+
+
+class HomeExamplePlugin(CMSPluginBase):
+    module = _("Home")
+    name = "Example"
+    model = HomeExample
+    render_template = "cms/home/example.html"
+    allow_children = True
 
 plugin_pool.register_plugin(DashboardPanelGroupPlugin)
 plugin_pool.register_plugin(DashboardPanelPlugin)
@@ -103,3 +111,5 @@ plugin_pool.register_plugin(DashboardPopularPlugin)
 
 plugin_pool.register_plugin(ButtonInviteColleaguePlugin)
 plugin_pool.register_plugin(ButtonCreateBenchmarkPlugin)
+
+plugin_pool.register_plugin(HomeExamplePlugin)

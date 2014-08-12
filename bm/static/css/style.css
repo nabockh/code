@@ -1343,6 +1343,10 @@ label.btn.btn-primary.auto-width.pull-right.fix {
         
             margin: 0 10px;
 }
+        .contact-errors{
+            margin: 20px 10px 0;
+            display: block;
+        }
 
         .single-contact {
             border-bottom: 1px solid #dedede;
