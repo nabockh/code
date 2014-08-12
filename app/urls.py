@@ -13,6 +13,7 @@ urlpatterns = patterns(
     url(r'^', include('core.urls')),
     url(r'^benchmark/', include('bm.urls')),
     url(r'^', include('cms.urls')),
+    url(r'^', include('core.cms_urls')),
 )
 
 if settings.DEBUG:

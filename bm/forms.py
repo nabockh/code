@@ -52,9 +52,16 @@ class CreateBenchmarkStep3Form(forms.Form):
                 self.errors['__all__'] = self.error_class(['Count of selected contacts should be at least %d' % self.min_number_of_answers])
         return self.cleaned_data
 
+    @staticmethod
+    def num(s):
+        try:
+            return int(s)
+        except (ValueError, TypeError):
+            return 0
+
     def __init__(self, user, step0data, wizard, except_ids=set(), *args, **kwargs):
         super(CreateBenchmarkStep3Form, self).__init__(*args, **kwargs)
-        self.min_number_of_answers = int(step0data.get('0-minimum_number_of_answers'))
+        self.min_number_of_answers = self.num(step0data.get('0-minimum_number_of_answers'))
         data = kwargs.get('data') or {}
         regions = [('', 'All')]
         regions.extend(list(Region.regions.values_list('id', 'name').order_by('name')))
