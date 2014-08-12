@@ -1,22 +1,27 @@
-import json
+from datetime import datetime
 from bm.forms import CreateBenchmarkStep12Form, AnswerMultipleChoiceForm, \
     CreateBenchmarkStep3Form, CreateBenchmarkStep4Form, NumericAnswerForm, RangeAnswerForm, RankingAnswerForm, \
     BenchmarkDetailsForm
 from bm.models import Benchmark, Region, Question, QuestionChoice, QuestionResponse, ResponseChoice, ResponseNumeric, \
     ResponseRange, QuestionRanking, ResponseRanking, BenchmarkInvitation, QuestionOptions, BenchmarkLink, BenchmarkRating
+from core.forms import ContactForm
+from bm.tasks import send_invites
 from core.utils import login_required_ajax
 from django.contrib.auth.decorators import login_required
 from django.contrib.formtools.wizard.forms import ManagementForm
 from django.contrib.formtools.wizard.views import CookieWizardView
+from django.contrib.sites.models import Site
 from django.core.exceptions import ValidationError
+from django.core.urlresolvers import reverse, reverse_lazy
 from django.db import transaction
 from django.http import HttpResponse, HttpResponseNotFound
+from django.http.response import Http404
 from django.shortcuts import redirect
-from django.template.defaultfilters import safe
+from django.template import loader, Context
 from django.utils.decorators import method_decorator
 from django.views.generic import ListView, TemplateView
 from django.views.generic.edit import FormView
-from bm.signals import benchmark_answered
+from bm.signals import benchmark_answered, benchmark_created
 from django.db.models import Count
 import StringIO
 import xlsxwriter
@@ -84,6 +89,47 @@ class BenchmarkCreateWizardView(CookieWizardView):
                 return self.render_next_step(form)
         return self.render(form)
 
+    def render_done(self, form, **kwargs):
+        """
+        This method gets called when all forms passed. The method should also
+        re-validate all steps to prevent manipulation. If any form don't
+        validate, `render_revalidation_failure` should get called.
+        If everything is fine call `done`.
+        """
+        final_form_list = []
+        # walk through the form list and try to validate the data again.
+        for form_key in self.get_form_list():
+            form_obj = self.get_form(step=form_key,
+                data=self.storage.get_step_data(form_key),
+                files=self.storage.get_step_files(form_key))
+            if not form_obj.is_valid():
+                return self.render_revalidation_failure(form_key, form_obj, **kwargs)
+            final_form_list.append(form_obj)
+
+        # render the done view and reset the wizard before returning the
+        # response. This is needed to prevent from rendering done with the
+        # same data twice.
+        if self.request.is_ajax():
+            benchmark = self.done(final_form_list, preview=True, **kwargs)
+            return self.render_email_preview(benchmark)
+
+        done_response = self.done(final_form_list, **kwargs)
+
+        self.storage.reset()
+        return done_response
+
+
+    def render_email_preview(self, benchmark):
+        template = loader.get_template('alerts/invite.html')
+        # TODO: http is hardcoded
+        benchmark.link ='http://{0}{1}'.format(Site.objects.get_current().domain, reverse('bm_answer', kwargs={'slug': 'slug'}))
+        context = Context({
+            'benchmark': benchmark,
+        })
+        response = HttpResponse("<pre>" + template.render(context) + '</pre>')
+        return response
+
+
     def render_goto_step(self, goto_step, **kwargs):
         """
         This method gets called when the current step has to be changed.
@@ -101,17 +147,18 @@ class BenchmarkCreateWizardView(CookieWizardView):
             params['wizard'] = self
         if step == '1' or step == '2':
             params['step0data'] = self.storage.get_step_data('0')
-        # if step == '2':
-        #     params['step1data'] = self.storage.get_step_data('1')
+        if step == '2':
+            params['end_date'] = getattr(self, 'end_date', datetime.now())
         return params
 
     def get_context_data(self, form, **kwargs):
         context = super(BenchmarkCreateWizardView, self).get_context_data(form, **kwargs)
         if self.steps.current == '2':
             context['selected_contacts'] = self.selected_contacts if hasattr(self, 'selected_contacts') else []
+        context['contact_form'] = ContactForm()
         return context
 
-    def done(self, form_list, **kwargs):
+    def done(self, form_list, preview=False, **kwargs):
         step2 = form_list[1]
         step3 = form_list[2]
         with transaction.atomic():
@@ -120,7 +167,10 @@ class BenchmarkCreateWizardView(CookieWizardView):
             benchmark.owner = self.request.user
             benchmark.industry = step3.cleaned_data['industry']
             benchmark.min_numbers_of_responses = step3.cleaned_data['minimum_number_of_answers']
+            benchmark.overview = step3.cleaned_data['additional_comments']
             region = Region.objects.get(pk=step3.cleaned_data['geo'])
+            if preview:
+                return benchmark
             benchmark.save()
             benchmark.geographic_coverage.add(region)
 
@@ -146,60 +196,62 @@ class BenchmarkCreateWizardView(CookieWizardView):
 
             step2_data = self.storage.get_step_data('1')
             for contact in step2.selected_contacts:
-                if step2_data.get('1-selected-{0}-invite'.format(contact.id)):
+                if step3.data.get(contact.invite_element):
                     invite = BenchmarkInvitation()
                     invite.sender = benchmark.owner
                     invite.recipient = contact
                     invite.status = '0' #not send
-                    invite.is_allowed_to_forward_invite = bool(step2_data.get('1-selected-{0}-secondary'.format(contact.id)))
+                    invite.is_allowed_to_forward_invite = bool(step3.data.get(contact.secondary_element))
                     benchmark.invites.add(invite)
 
             link = benchmark.create_link()
             benchmark.calculate_deadline()
             benchmark.save()
-
+            benchmark_created.send(sender=self.__class__, request=self.request, benchmark=benchmark)
         return redirect('bm_dashboard')
 
 
 class BenchmarkHistoryView(ListView):
     template_name = 'bm/history.html'
-    paginate_by = 10
     context_object_name = 'benchmark'
+    model = Benchmark
+
+    def get_context_data(self, **kwargs):
+        data = super(BenchmarkHistoryView, self).get_context_data(**kwargs)
+        data['contact_form'] = ContactForm()
+        return data
 
     @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
         return super(BenchmarkHistoryView, self).dispatch(request, *args, **kwargs)
 
     def get_queryset(self):
-        order_by = self.request.GET.get('order_by', 'name')
-        if order_by == 'rating':
-            order_by = 'ratings'
-        elif order_by == 'participants':
-            order_by = '-responses_count'
-        return Benchmark.valid.filter(owner=self.request.user).order_by(order_by).select_related('question')
+        return Benchmark.valid.filter(owner=self.request.user, end_date__lte=datetime.now())
 
 
 class BenchmarkSearchView(ListView):
     template_name = 'bm/history.html'
     paginate_by = 10
     context_object_name = 'benchmark'
+    model = Benchmark
+
+    def get_context_data(self, **kwargs):
+        data = super(BenchmarkSearchView, self).get_context_data(**kwargs)
+        data['contact_form'] = ContactForm()
+        return data
 
     @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
         return super(BenchmarkSearchView, self).dispatch(request, *args, **kwargs)
 
     def get_queryset(self):
-        order_by = self.request.GET.get('order_by', 'name')
-        return Benchmark.valid.order_by(order_by).select_related('question')
+        return Benchmark.valid.filter(owner=self.request.user, end_date__lte=datetime.now())
 
 
 class BaseBenchmarkAnswerView(FormView):
     success_url = '/dashboard'
     benchmark = None
 
-    # def __init__(self, *args, **kwargs):
-    #     self.benchmark = Benchmark.objects.select_related('owner', 'geographic_coverage', '_industry',
-    #                                                       'question').first()
     @method_decorator(login_required)
     def dispatch(self, request, slug, *args, **kwargs):
 
@@ -225,6 +277,7 @@ class BaseBenchmarkAnswerView(FormView):
         context = super(BaseBenchmarkAnswerView, self).get_context_data(**kwargs)
         context['benchmark'] = self.benchmark
         context['contributors'] = self.benchmark.invites.count()
+        context['contact_form'] = ContactForm()
         return context
 
     def post(self, request, *args, **kwargs):
@@ -236,9 +289,7 @@ class BaseBenchmarkAnswerView(FormView):
         form = self.get_form(form_class)
         if form.is_valid():
             result = self.form_valid(form)
-            benchmark_answered.send(sender=self.__class__, user=request.user)
-            if not QuestionResponse.objects.filter(user=request.user).count() > 1:
-                return redirect('/benchmark/welcome')
+            benchmark_answered.send(sender=self.__class__, request=request, user=request.user)
             return result
         else:
             return self.form_invalid(form)
@@ -246,7 +297,7 @@ class BaseBenchmarkAnswerView(FormView):
 
 class MultipleChoiceAnswerView(BaseBenchmarkAnswerView):
     form_class = AnswerMultipleChoiceForm
-    template_name = 'bm/answerMultiple.html'
+    template_name = 'bm/answer/Multiple.html'
 
     def dispatch(self, request, benchmark, *args, **kwargs):
         self.benchmark = benchmark
@@ -277,7 +328,7 @@ class MultipleChoiceAnswerView(BaseBenchmarkAnswerView):
 
 class RankingAnswerView(BaseBenchmarkAnswerView):
     form_class = RankingAnswerForm
-    template_name = 'bm/answerRanking.html'
+    template_name = 'bm/answer/Ranking.html'
 
     def dispatch(self, request, benchmark, *args, **kwargs):
         self.benchmark = benchmark
@@ -308,7 +359,7 @@ class RankingAnswerView(BaseBenchmarkAnswerView):
 
 class RangeAnswerView(BaseBenchmarkAnswerView):
     form_class = RangeAnswerForm
-    template_name = 'bm/answerRange.html'
+    template_name = 'bm/answer/Range.html'
 
     def dispatch(self, request, benchmark, *args, **kwargs):
         self.benchmark = benchmark
@@ -337,7 +388,7 @@ class RangeAnswerView(BaseBenchmarkAnswerView):
 
 class NumericAnswerView(BaseBenchmarkAnswerView):
     form_class = NumericAnswerForm
-    template_name = 'bm/answerNumeric.html'
+    template_name = 'bm/answer/Numeric.html'
 
     def dispatch(self, request, benchmark, *args, **kwargs):
         self.benchmark = benchmark
@@ -358,7 +409,6 @@ class NumericAnswerView(BaseBenchmarkAnswerView):
                 bm_response_numeric = ResponseNumeric()
                 bm_response_numeric.value = form.cleaned_data['numeric_box']
                 question_response.data_numeric.add(bm_response_numeric)
-            print form.cleaned_data['numeric_box']
 
         return super(NumericAnswerView, self).form_valid(form)
 
@@ -398,10 +448,14 @@ class BenchmarkDetailView(FormView):
         context['benchmark'] = benchmark
         context['question'] = benchmark.question.first()
         context['url'] = self.request.META['HTTP_HOST'] + self.request.path
-        group_by_headline = QuestionResponse.objects.filter(question=benchmark.question.first()).values('user__social_profile__headline').annotate(count=Count('user__social_profile__headline'))
-        group_by_country = QuestionResponse.objects.filter(question=benchmark.question.first()).values('user__social_profile__location__name').annotate(count=Count('user__social_profile__location__name'))
-        group_by_geo = QuestionResponse.objects.filter(question=benchmark.question.first()).values('user__social_profile__location__parent__name').annotate(count=Count('user__social_profile__location__parent__name'))
-        group_by_industry = QuestionResponse.objects.filter(question=benchmark.question.first()).values('user__social_profile__company___industry__name').annotate(count=Count('user__social_profile__company___industry__name'))
+        group_by_headline = QuestionResponse.objects.filter(question=benchmark.question.first()).\
+            values('user__social_profile__headline').annotate(count=Count('user__social_profile__headline'))
+        group_by_country = QuestionResponse.objects.filter(question=benchmark.question.first()).\
+            values('user__social_profile__location__name').annotate(count=Count('user__social_profile__location__name'))
+        group_by_geo = QuestionResponse.objects.filter(question=benchmark.question.first()).\
+            values('user__social_profile__location__parent__name').annotate(count=Count('user__social_profile__location__parent__name'))
+        group_by_industry = QuestionResponse.objects.filter(question=benchmark.question.first()).\
+            values('user__social_profile__company___industry__name').annotate(count=Count('user__social_profile__company___industry__name'))
         for dictionary in group_by_headline:
             dictionary['role'] = dictionary['user__social_profile__headline']
             del dictionary['user__social_profile__headline']
@@ -472,7 +526,6 @@ class BenchmarkDetailView(FormView):
             with transaction.atomic():
                 benchmark_id = kwargs['bm_id']
                 benchmark = self.get_benchmark(**kwargs)
-                # if BenchmarkRating.objects.filter(benchmark=benchmark, user=benchmark.question.first().responses.first().user):
                 if Benchmark.objects.filter(id=benchmark.id, question__responses__user=self.request.user):
                     if BenchmarkRating.objects.filter(benchmark=benchmark, user=request.user).first():
                         rating = BenchmarkRating.objects.filter(benchmark=benchmark, user=request.user).first()
@@ -487,9 +540,69 @@ class BenchmarkDetailView(FormView):
                         rating.user = request.user
                         rating.save()
                         benchmark.ratings.add(rating)
+                    return HttpResponse(benchmark.calc_average_rating())
                 else:
                     return HttpResponse(401)
         return HttpResponse(200)
+
+
+class BenchmarkAddRecipientsView(FormView):
+    template_name = 'bm/add_recipients.html'
+    form_class = CreateBenchmarkStep3Form
+    success_url = reverse_lazy('bm_dashboard')
+
+    @method_decorator(login_required)
+    def dispatch(self, request, bm_id, *args, **kwargs):
+        self.benchmark = Benchmark.pending.filter(pk=bm_id, owner=request.user).first()
+        self.except_ids = set(self.benchmark.invites.values_list('recipient_id', flat=True))
+        if not self.benchmark:
+            raise Http404
+        return super(BenchmarkAddRecipientsView, self).dispatch(request, *args, **kwargs)
+
+    def get_form_kwargs(self):
+        class Mock(object):
+            pass
+        kwargs = super(BenchmarkAddRecipientsView, self).get_form_kwargs()
+        wizard = Mock()
+        params = dict(
+            user=self.request.user,
+            step0data={
+                '0-geo': self.benchmark.geographic_coverage.first().id,
+                '0-industry': self.benchmark.industry.code,
+            },
+            wizard=wizard,
+            prefix='1',
+            except_ids=self.except_ids,
+        )
+        kwargs.update(params)
+        return kwargs
+
+    def get_context_data(self, **kwargs):
+        context = super(BenchmarkAddRecipientsView, self).get_context_data(**kwargs)
+        if self.request.POST.get('add_selected', None):
+            context['active_tab'] = 3
+        return context
+
+    def post(self, request, *args, **kwargs):
+        form_class = self.get_form_class()
+        form = self.get_form(form_class)
+        send_invitations = self.request.POST.get('send_invitations', None)
+        if form.is_valid() and send_invitations:
+            return self.form_valid(form)
+        else:
+            return self.form_invalid(form)
+
+    def form_valid(self, form):
+        for contact in form.selected_contacts:
+            if form.data.get(form.prefix + '-' + contact.invite_element):
+                invite = BenchmarkInvitation()
+                invite.sender = self.benchmark.owner
+                invite.recipient = contact
+                invite.status = 0 # not send
+                invite.is_allowed_to_forward_invite = bool(form.data.get(form.prefix + '-' + contact.secondary_element))
+                self.benchmark.invites.add(invite)
+        send_invites.delay(self.benchmark.id)
+        return super(BenchmarkAddRecipientsView, self).form_valid(form)
 
 
 class BenchmarkAggregateView(BenchmarkDetailView):
@@ -500,6 +613,10 @@ class BenchmarkAggregateView(BenchmarkDetailView):
 
 
 class ExcelDownloadView(BenchmarkDetailView):
+
+    @method_decorator(login_required)
+    def dispatch(self,*args, **kwargs):
+        return super(ExcelDownloadView, self).dispatch(args, **kwargs)
 
     def get(self, *args, **kwargs):
         bm_id = kwargs['bm_id']
@@ -550,8 +667,8 @@ class ExcelDownloadView(BenchmarkDetailView):
         countries_worksheet.write_column('A2', countries_data[0])
         countries_worksheet.write_column('B2', countries_data[1])
         chart.add_series({
-            'categories': '=Countries!$A$2:$A${0}'.format(len(countries_stat)),
-            'values':     '=Countries!$B$2:$B${0}'.format(len(countries_stat)),
+            'categories': '=Countries!$A$2:$A${0}'.format(len(countries_stat)+1),
+            'values':     '=Countries!$B$2:$B${0}'.format(len(countries_stat)+1),
         })
         chart.set_chartarea({
             'border': {'color': 'black'},
@@ -572,8 +689,8 @@ class ExcelDownloadView(BenchmarkDetailView):
         industry_worksheet.write_column('A2', industry_data[0])
         industry_worksheet.write_column('B2', industry_data[1])
         chart.add_series({
-            'categories': '=Industry!$A$2:$A${0}'.format(len(industry_stat)),
-            'values':     '=Industry!$B$2:$B${0}'.format(len(industry_stat)),
+            'categories': '=Industry!$A$2:$A${0}'.format(len(industry_stat)+1),
+            'values':     '=Industry!$B$2:$B${0}'.format(len(industry_stat)+1),
         })
         chart.set_chartarea({
             'border': {'color': 'black'},
@@ -594,8 +711,8 @@ class ExcelDownloadView(BenchmarkDetailView):
         role_worksheet.write_column('A2', role_data[0])
         role_worksheet.write_column('B2', role_data[1])
         chart.add_series({
-            'categories': '=Role!$A$2:$A${0}'.format(len(role_stat)),
-            'values':     '=Role!$B$2:$B${0}'.format(len(role_stat)),
+            'categories': '=Role!$A$2:$A${0}'.format(len(role_stat)+1),
+            'values':     '=Role!$B$2:$B${0}'.format(len(role_stat)+1),
         })
         chart.set_chartarea({
             'border': {'color': 'black'},
@@ -616,8 +733,8 @@ class ExcelDownloadView(BenchmarkDetailView):
         geo_worksheet.write_column('A2', geo_data[0])
         geo_worksheet.write_column('B2', geo_data[1])
         chart.add_series({
-            'categories': '=Geo!$A$2:$A${0}'.format(len(geo_stat)),
-            'values':     '=Geo!$B$2:$B${0}'.format(len(geo_stat)),
+            'categories': '=Geo!$A$2:$A${0}'.format(len(geo_stat)+1),
+            'values':     '=Geo!$B$2:$B${0}'.format(len(geo_stat)+1),
         })
         chart.set_chartarea({
             'border': {'color': 'black'},
@@ -680,6 +797,7 @@ class ExcelDownloadView(BenchmarkDetailView):
             })
             contributor_worksheet.insert_chart('F3', chart)
         elif question_type == 3:
+            internal_worksheet = workbook.add_worksheet('Internal')
             data = [
                 contributor_results.keys(),
                 contributor_results.values()
@@ -692,21 +810,26 @@ class ExcelDownloadView(BenchmarkDetailView):
             min = contributor_results['min']
             max = contributor_results['max']
             avg = contributor_results['avg']
-            first_step = avg - (3*avg)
-            last_step = avg + (3*avg)
-            step = (last_step - first_step)/5
-            steps = [first_step]
-            while steps[-1] < last_step:
-                steps.append(first_step + step)
-                step += 1
-            steps_count = len(steps)
-            contributor_worksheet.write_column('A8', steps)
-            contributor_worksheet.write_array_formula('B8:B%s' % steps_count, '{=NORMDIST(A7:A%s,$B$3,$B$4,0)}' % steps_count)
+            sd = contributor_results['sd']
 
+            step = 6*sd/50
+            first_step = avg-(3*sd)
+            steps = [first_step]
+            i = 0
+            while i < 50:
+                steps.append((steps[i]+step))
+                i += 1
+            steps_count = len(steps) + 7
+            internal_worksheet.write_column('C1', steps)
+
+            # Enable worksheet protection
+            internal_worksheet.write_array_formula('D1:D50',
+                                                   "{=NORMDIST(C1:C50,'Contributor Stats'!$B$3,"
+                                                   "'Contributor Stats'!$B$4,0)}")
             chart.add_series({
                 'name':         benchmark.name,
-                'categories': "='Contributor Stats'!A7:A%s" % steps_count,
-                'values': "='Contributor Stats'!B7:B%s" % steps_count,
+                'categories': "='Internal'!C1:C50",
+                'values': "='Internal'!D1:D50",
                 'line': {'dash_type': 'solid', 'width': 1, 'color': 'red'}
 
             })
@@ -717,6 +840,8 @@ class ExcelDownloadView(BenchmarkDetailView):
             })
 
             contributor_worksheet.insert_chart('F3', chart)
+            internal_worksheet.hide()
+
         elif question_type == 5:
             data = [
                 [x[0] for x in contributor_results[1:]],
@@ -740,7 +865,8 @@ class ExcelDownloadView(BenchmarkDetailView):
         workbook.close()
         output.seek(0)
 
-        response = HttpResponse(output.read(), content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+        response = HttpResponse(output.read(),
+                                content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
         response['Content-Disposition'] = 'attachment; filename={0}.xlsx'.format(benchmark.name)
         return response
 

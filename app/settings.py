@@ -55,6 +55,7 @@ INSTALLED_APPS = (
     'menus',  # helper for model independent hierarchical website navigation
     'south',  # intelligent schema and data migrations
     'sekizai',  # for javascript and css management
+    'core',
     'djangocms_admin_style',
     'djangocms_text_ckeditor',
     'djangocms_file',
@@ -74,7 +75,6 @@ INSTALLED_APPS = (
     'djcelery_email',
     'social',
     'social_auth',
-    'core',
     'bm',
     'formadmin',
     'bootstrap3',
@@ -110,6 +110,12 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'cms.context_processors.cms_settings',
     'sekizai.context_processors.sekizai',
 )
+
+MESSAGE_STORAGE = 'django.contrib.messages.storage.cookie.CookieStorage'
+MESSAGE_FIRST_ANSWER = 50
+MESSAGE_TAGS = {
+    MESSAGE_FIRST_ANSWER: 'first_answer',
+}
 
 ROOT_URLCONF = 'app.urls'
 
@@ -159,8 +165,10 @@ TEMPLATE_DIRS = (
 
 CMS_TEMPLATES = (
     ('base.html', 'Base'),
+    ('layout/dashboard_two_column_5_7.html', 'Two Columns 5-7 (Dashboard)'),
     ('layout/two_column_5_7.html', 'Two Columns 5-7'),
     ('layout/two_column_7_5.html', 'Two Columns 7-5'),
+    ('layout/three_column_4_4_4.html', 'Three Columns 4-4-4'),
 )
 
 CMS_PLACEHOLDER_CONF = {
@@ -180,10 +188,12 @@ CACHES = {
 
 AUTHENTICATION_BACKENDS = (
     'social_auth.backends.contrib.linkedin.LinkedinBackend',
+    'app.backend.case_insensitive.CaseInsensitiveModelBackend',
     'django.contrib.auth.backends.ModelBackend',
 )
 
 SOCIAL_AUTH_PIPELINE = (
+    'social.pipeline.beta_login',
     'social_auth.backends.pipeline.social.social_auth_user',
     'social_auth.backends.pipeline.user.get_username',
     'social_auth.backends.pipeline.user.create_user',
@@ -201,7 +211,7 @@ LINKEDIN_EXTRA_FIELD_SELECTORS = ['email-address', 'headline', 'industry', 'loca
 LINKEDIN_OAUTH2_EXTRA_DATA = [('id', 'id'), ]
 
 LOGIN_REDIRECT_URL = "/"
-LOGIN_ERROR_URL = "/"
+LOGIN_ERROR_URL = "/beta"
 LOGIN_URL = '/login/linkedin'
 
 EMAIL_BACKEND = 'djcelery_email.backends.CeleryEmailBackend'

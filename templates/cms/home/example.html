@@ -1,0 +1,15 @@
+{% load cms_tags %}
+
+<div class="example-block {{ instance.type_class }}">
+    <div class="big-icon"></div>
+    <div class="title">{{ instance.label }}</div>
+    <p class='will-hide'>{{ instance.description }}</p>
+
+    <div class="will-show">
+        <p class='will-show'>
+            {% for plugin in instance.child_plugin_instances %}
+                 {% render_plugin plugin %}
+            {% endfor %}
+        </p>
+    </div>
+</div>

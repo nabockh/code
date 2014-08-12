@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% load cms_tags %}
+
+{% block navigation %}
+    {% include 'core/navigation_registered.html' %}
+{% endblock %}
+
+{% block content %}
+    <div class="container margined">
+        <div class='row'>
+            <div class='col-md-7'>{% placeholder "Column 1" %}</div>
+            <div class='col-md-5'>{% placeholder "Column 2" %}</div>
+        </div>
+    </div>
+{% endblock %}

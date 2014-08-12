@@ -164,3 +164,11 @@ class Contact(models.Model):
             contact_filter['location__parent__id'] = geo
         contacts = cls.objects.filter(**contact_filter)[:10]
         return contacts
+
+
+class Invite(models.Model):
+    email = models.EmailField(max_length=255, unique=True)
+    allowed = models.BooleanField(default=False)
+
+    def __unicode__(self):
+        return self.email

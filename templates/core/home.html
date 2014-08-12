@@ -37,14 +37,14 @@
             <div class='user-nav'>
                 <div class='container'>
                     <div class='row'>
-                    <div class='col-md-8'>
+                    <div class='col-md-8 col-xs-9'>
                         <div class='hello'>Hello,</div>
                         <ul class='user-nav-inner'>
-                            <li class='username'>{{ user.first_name }} {{ user.last_name }}</li>
+                            <li class='username'>{{ user.first_name }} {{ user.last_name }}</li>                            
                             <li><a href='/logout' title='Log Out'><i class='fa fa-unlock'></i></a></li>
                         </ul>
                     </div>
-                    <div class='col-md-4'>
+                    <div class='col-md-4 col-xs-3'>
                         <a href="/dashboard" class='btn btn-primary pull-right'>Go to Dashboard <i class='fa fa-arrow-circle-right'></i></a>
                     </div>
                 </div>
@@ -53,13 +53,23 @@
         {% else %}
             <div class='user-nav homepage'>
                 <div class='container text-center'>
-                    <a href="{% url 'socialauth_begin' backend='linkedin' %}" class="btn sign-in-btn">Sign in with Linkedin</a>
-                    <form role="beta-email">
-                        <div class="form-group">
-                          <input type="text" class="form-control" placeholder="EMAIL ADDRESS">
+                    <div class='row'>
+                        <div class='col-md-4 col-xs-4'>
+                            <a href="{% url 'socialauth_begin' backend='linkedin' %}" class="btn sign-in-btn">Sign in <span class='non-mobile'>with Linkedin</span></a>
                         </div>
-                        <button type="submit" class="btn btn-search">Submit</button>
-                      </form>
+                        <div class='col-md-8 col-xs-8'>
+                            {% if invitation_form %}
+                                <form role="beta-email" method="post">
+                                    {% csrf_token %}
+                                    <div class="form-group">
+                                        {{ invitation_form.email }}
+                                    </div>
+                                    <button type="submit" class="btn btn-search">Submit</button>
+                                </form>
+                                <span class='beta-invite non-mobile'><i class='fa fa-envelope'></i> Request Beta Invitation</span>
+                            {% endif %}
+                        </div>                        
+                    </div>
                 </div>
             </div>
         {% endif %}
@@ -136,42 +146,83 @@
             <div class='container'>
                 <span class='big-title text-center'>Examples</span>
                 {% static_placeholder "home_examples_text" or %}
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut euismod vel neque vel ullamcorper. Morbi vel placerat lorem. Integer lacinia vulputate ligula id consectetur. Vivamus commodo nibh in ultricies varius. Quisque semper pellentesque rutrum. Fusce semper porta massa, congue egestas nunc accumsan sollicitudin. Fusce sagittis leo vitae nunc fermentum vestibulum. Donec vel euismod velit. Fusce luctus metus vitae justo semper, vitae auctor urna consequat. Nunc eget lacus sed magna tincidunt mattis. Proin viverra luctus quam, et congue mauris ornare eu.</p>                
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut euismod vel neque vel ullamcorper. Morbi vel placerat lorem. Integer lacinia vulputate ligula id consectetur. Vivamus commodo nibh in ultricies varius. Quisque semper pellentesque rutrum. Fusce semper porta massa, congue egestas nunc accumsan sollicitudin. Fusce sagittis leo vitae nunc fermentum vestibulum. Donec vel euismod velit. Fusce luctus metus vitae justo semper, vitae auctor urna consequat. Nunc eget lacus sed magna tincidunt mattis.</p>                
                 {% endstatic_placeholder %}
                 <div class='clearfix'>
                     <div class='row'>
-                        <div class="example-block benchmark">
-                            <div class="big-icon"></div>
-                            <div class="title">Benchmark</div>
-                            <p>Comparison of planned IT spending to the everage spend around compliance for a new regulation.</p>
-                        </div>
-                        <div class="example-block market-trending">
-                            <div class="big-icon"></div>
-                            <div class="title"> Market Trending</div>
-                            <p>Measure multiple data sets against each other.</p>
-                        </div>
-                        <div class="example-block market-share">
-                            <div class="big-icon"></div>
-                            <div class="title">Market Share</div>
-                            <p>Comparison of company sales, size and market compared to competitors.</p>
-                        </div>
-                        <div class="example-block market-size">
-                            <div class="big-icon"></div>
-                            <div class="title">Market Size</div>
-                            <p>Create benchmarks to collect the subsegments of your specific markets.</p>
-                        </div>
-                        <div class="example-block historical-series">
-                            <div class="big-icon"></div>
-                            <div class="title">Historical Series</div>
-                            <p>Create automatic recurring benchmarks that calculate new data points over specific intervals.</p>
-                        </div>
-                        <div class="example-block adoption-rate">
-                            <div class="big-icon"></div>
-                            <div class="title">Adoption Rate</div>
-                            <p>Compare your data against the aggregate of your peers.</p>
+                        <div class='example-container'>
+                            {% static_placeholder "home_examples" or %}
+                            <div class="example-block benchmark">
+                                <div class="big-icon"></div>
+                                <div class="title">Benchmark</div>
+                                <p class='will-hide'>Comparison of planned IT spending to the everage spend around compliance for a new regulation.</p>
+                                <p class='will-show'>Mrs. Blue is the head of operations at an asset management company </p>
+                                <ul class='will-show'>
+                                    <li>Comparing the average transaction cost vs. her peers to understand if her deals sell side providers are on favorable terms. </li>
+                                    <li>Ms. Blue sends a range benchmark to her peers in the industry </li>
+                                    <li>She and her contacts have now access to a pertinent benchmark to compare average transaction costs beyond the information being provided by their sell-side providers. </li>
+                                </ul>
+                            </div>
+                            <div class="example-block market-trending">
+                                <div class="big-icon"></div>
+                                <div class="title"> Market Trending</div>
+                                <p class='will-hide'>Measure multiple data sets against each other.</p>
+                                <p class='will-show'>Mrs. Blue is the head of operations at an asset management company </p>
+                                <ul class='will-show'>
+                                    <li>Comparing the average transaction cost vs. her peers to understand if her deals sell side providers are on favorable terms. </li>
+                                    <li>Ms. Blue sends a range benchmark to her peers in the industry </li>
+                                    <li>She and her contacts have now access to a pertinent benchmark to compare average transaction costs beyond the information being provided by their sell-side providers. </li>
+                                </ul>
+                            </div>
+                            <div class="example-block market-share">
+                                <div class="big-icon"></div>
+                                <div class="title">Market Share</div>
+                                <p class='will-hide'>Comparison of company sales, size and market compared to competitors.</p>
+                                <p class='will-show'>Mrs. Blue is the head of operations at an asset management company </p>
+                                <ul class='will-show'>
+                                    <li>Comparing the average transaction cost vs. her peers to understand if her deals sell side providers are on favorable terms. </li>
+                                    <li>Ms. Blue sends a range benchmark to her peers in the industry </li>
+                                    <li>She and her contacts have now access to a pertinent benchmark to compare average transaction costs beyond the information being provided by their sell-side providers. </li>
+                                </ul>
+                            </div>
+                            <div class="example-block market-size">
+                                <div class="big-icon"></div>
+                                <div class="title">Market Size</div>
+                                <p class='will-hide'>Create benchmarks to collect the subsegments of your specific markets.</p>
+                                <p class='will-show'>Mrs. Blue is the head of operations at an asset management company </p>
+                                <ul class='will-show'>
+                                    <li>Comparing the average transaction cost vs. her peers to understand if her deals sell side providers are on favorable terms. </li>
+                                    <li>Ms. Blue sends a range benchmark to her peers in the industry </li>
+                                    <li>She and her contacts have now access to a pertinent benchmark to compare average transaction costs beyond the information being provided by their sell-side providers. </li>
+                                </ul>
+                            </div>
+                            <div class="example-block historical-series">
+                                <div class="big-icon"></div>
+                                <div class="title">Historical Series</div>
+                                <p class='will-hide'>Create automatic recurring benchmarks that calculate new data points over specific intervals.</p>
+                                <p class='will-show'>Mrs. Blue is the head of operations at an asset management company </p>
+                                <ul class='will-show'>
+                                    <li>Comparing the average transaction cost vs. her peers to understand if her deals sell side providers are on favorable terms. </li>
+                                    <li>Ms. Blue sends a range benchmark to her peers in the industry </li>
+                                    <li>She and her contacts have now access to a pertinent benchmark to compare average transaction costs beyond the information being provided by their sell-side providers. </li>
+                                </ul>
+                            </div>
+                            <div class="example-block adoption-rate">
+                                <div class="big-icon"></div>
+                                <div class="title">Adoption Rate</div>
+                                <p class='will-hide'>Compare your data against the aggregate of your peers.</p>
+                                <p class='will-show'>Mrs. Blue is the head of operations at an asset management company </p>
+                                <ul class='will-show'>
+                                    <li>Comparing the average transaction cost vs. her peers to understand if her deals sell side providers are on favorable terms. </li>
+                                    <li>Ms. Blue sends a range benchmark to her peers in the industry </li>
+                                    <li>She and her contacts have now access to a pertinent benchmark to compare average transaction costs beyond the information being provided by their sell-side providers. </li>
+                                </ul>
+                            </div>
+                            {% endstatic_placeholder %}
                         </div>
                     </div>
                 </div>
+                <div class='text-center text-teal'>Click on the examples above to read full information.</div>
             </div>
         </div>
         <div class="colorblock about" id='about'>
@@ -198,7 +249,7 @@
                 {% endstatic_placeholder %}
                 <div class='row'>
                     <div class='col-md-9'>
-                        <form action="" method="post" class='styled-form'>
+                        <form id="contact_form" action="" method="post" class='styled-form'>
                             {% csrf_token %}
                             {{ form.non_field_errors }}
                             <div class='row'>
@@ -217,9 +268,9 @@
                                     {{ form.comment.errors }}
                                     <label for="comment">Message</label>
                                     {{ form.comment }}
-                                    <input type="submit" value="Submit" />
+                                    <input id="contact_submit" type="submit" value="Submit" />
                                 </div>
-                            </div>                            
+                            </div>
                         </form>
                     </div>
                     <div class='col-md-3 lined-right'>
@@ -227,11 +278,12 @@
                             <div class='title'>Contact Details</div>
                             {% static_placeholder "home_contact_details" or %}
                             <p>Bedade Inc.</p>
-                            <p>50 California Street</p>
+                            <p>Paris, France</p>
                             <p>San Francisco, CA USA</p>
-                            <p style='margin-bottom:40px;'><a href="#">Get Directions</a></p>
-                            <p>+1.415.275.0280</p>
-                            <p><a href='@mailto:contact@bedade.com'>contact@bedade.com</a></p>
+                            <p style='margin-bottom:20px;'><a href="#">Get Directions</a></p>
+                            <p>+33 6 61 58 90 63</p>
+                            <p>+1 415 275 0280</p>
+                            <p><a href='mailto:contact@bedade.com'>contact@bedade.com</a></p>
                             {% endstatic_placeholder %}
                         </div>
                     </div>
@@ -240,7 +292,7 @@
         </div>
 
         <div class="colorblock map">
-            <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d3152.8253615926615!2d-122.3973606!3d37.794132299999994!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8085806168b6716f%3A0xc7a13d7472243442!2s50+California+St!5e0!3m2!1suk!2sua!4v1403699515076" width="100%" height="250px" frameborder="0" style="border:0" disableDefaultUI: true></iframe>
+            <!-- <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d3152.8253615926615!2d-122.3973606!3d37.794132299999994!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8085806168b6716f%3A0xc7a13d7472243442!2s50+California+St!5e0!3m2!1suk!2sua!4v1403699515076" width="100%" height="250px" frameborder="0" style="border:0" disableDefaultUI: true></iframe> -->
         </div>
 
 

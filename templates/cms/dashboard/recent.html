@@ -1,0 +1,113 @@
+<div class='benchmark'>
+    <div id="myRecentBenchmarks" class="carousel slide" data-ride="carousel">
+        <!-- Wrapper for slides -->
+        <div class="carousel-inner">
+{#          TODO: should move js to widget media #}
+            <script src="{{ STATIC_URL }}js/graphs/pie.js"></script>
+            <script src="{{ STATIC_URL }}js/graphs/column.js"></script>
+            <script src="{{ STATIC_URL }}js/graphs/bellcurve.js"></script>
+            <script src="{{ STATIC_URL }}js/graphs/line.js"></script>
+            {% for benchmark in benchmarks.recent %}
+                <div class="item active">
+                    <div class='title' title='{{ benchmark.name }}'><a
+                            href='/benchmark/{{ benchmark.id }}'>{{ benchmark.name }}</a></div>
+                    {% if benchmark.question_type == 1 %}
+                        <div id='donutChart-{{ benchmark.id }}' class='bigChart donut'></div>
+                        <script type="text/javascript">
+                            var mainChartData_{{ benchmark.id }} = {{ benchmark.charts|safe }};
+                            drawPieChart(mainChartData_{{ benchmark.id }}.pie, 'donutChart-{{ benchmark.id }}');
+                        </script>
+
+                    {% elif benchmark.question_type == 2 %}
+                        <div id='columnChart-{{ benchmark.id }}' class='bigChart'></div>
+                        <script type="text/javascript">
+                            var mainChartData_{{ benchmark.id }} = {{ benchmark.charts|safe }};
+                            drawColumnChart(mainChartData_{{ benchmark.id }}.column, 'columnChart-{{ benchmark.id }}');
+                        </script>
+
+
+                    {% elif benchmark.question_type == 3 %}
+                        <div id='bellcurveChart-{{ benchmark.id }}' class='bigChart'></div>
+                        <div class='benchmark-stats perc-based'>
+                            <div class='single-stat'>
+                                <span class='title'>Min</span>
+                                <span class='value' id='minVal-{{ benchmark.id }}'></span>
+                            </div>
+                            <div class='single-stat'>
+                                <span class='title'>Max</span>
+                                <span class='value' id='maxVal-{{ benchmark.id }}'></span>
+                            </div>
+                            <div class='single-stat'>
+                                <span class='title'>Avg</span>
+                                <span class='value' id='avgVal-{{ benchmark.id }}'></span>
+                            </div>
+                            <div class='single-stat'>
+                                <span class='title'>SD</span>
+                                <span class='value' id='sdVal-{{ benchmark.id }}'></span>
+                            </div>
+                        </div>
+
+                        <script type="text/javascript">
+                            var mainChartData_{{ benchmark.id }} = {{ benchmark.charts|safe }};
+
+                            $(function () {
+                                $("#minVal-{{ benchmark.id }}").text(mainChartData_{{ benchmark.id }}.bell_curve.min);
+                                $("#maxVal-{{ benchmark.id }}").text(mainChartData_{{ benchmark.id }}.bell_curve.max);
+                                $("#avgVal-{{ benchmark.id }}").text(mainChartData_{{ benchmark.id }}.bell_curve.avg);
+                                var sd = mainChartData_{{ benchmark.id }}.bell_curve.sd.toFixed(1);
+                                $("#sdVal-{{ benchmark.id }}").text(sd);
+                            });
+                            drawBellcurveChart(mainChartData_{{ benchmark.id }}.bell_curve, 'bellcurveChart-{{ benchmark.id }}');
+                        </script>
+
+
+
+                    {% elif benchmark.question_type == 5 %}
+                        <div id='lineChart-{{ benchmark.id }}' class='bigChart'></div>
+                        <script type="text/javascript">
+                            var mainChartData_{{ benchmark.id }} = {{ benchmark.charts|safe }};
+                            drawLineChart(mainChartData_{{ benchmark.id }}.line, 'lineChart-{{ benchmark.id }}');
+                        </script>
+                    {% endif %}
+
+                    <div class='benchmark-footer text-center'>
+                        <span class='color-blue'><i class='fa fa-user'></i> {{ benchmark.contributors }} Contributors</span>
+                        <span class='separator'></span>
+                        <span class='rated-value'>
+                            <div class='fill-value' style='width: {% widthratio benchmark.calc_average_rating 5 100 %}%'></div>
+                        </span>
+                        <span class='color-grey'>({{ benchmark.calc_average_rating }})</span>
+                    </div>
+                </div>
+
+            {% empty %}
+                <div class='col-md-12 margin-bot'>
+                    <div class='recent-empty'>
+                        <strong>You have not yet created any benchmarks.</strong>
+
+                        <p>Start benefiting from the questions YOU ask. in just three easy steps you can create your own
+                            benchmark queries and send them to your most trusted professional contacts.</p>
+                        <img src='{{ STATIC_URL }}img/guide.png'/>
+                    </div>
+                    <a href="{% url 'bm_create' %}" class='btn btn-primary'>Create new benchmark <i
+                            class='fa fa-plus-circle'></i></a>
+                    <script type="text/javascript">
+                        $(function () {
+                            $('#myRecentBenchmarks .recent-benchmark-controls').hide();
+                        });
+                    </script>
+                </div>
+            {% endfor %}
+        </div>
+
+        <!-- Controls -->
+        <div class='recent-benchmark-controls'>
+            <a class="left carousel-control" href="#myRecentBenchmarks" role="button" data-slide="prev">
+                <i class='fa fa-caret-left'></i>
+            </a>
+            <a class="right carousel-control" href="#myRecentBenchmarks" role="button" data-slide="next">
+                <i class='fa fa-caret-right'></i>
+            </a>
+        </div>
+    </div>
+</div>

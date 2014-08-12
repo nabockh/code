@@ -1,4 +1,8 @@
-Hello
-You has been invited to benchmark {{ benchmark.name }}.
-Please visit link below
+Hello!
+You have been invited to benchmark "{{ benchmark.name }}".
+{% if benchmark.overview %}
+Short overview of Benchmark:
+{{ benchmark.overview }}
+{% endif %}
+Please visit link below:
 {{ benchmark.link }}

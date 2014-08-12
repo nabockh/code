@@ -3,7 +3,9 @@ import uuid
 import math
 from app.settings import BENCHMARK_DURATIONS_DAYS
 from bm.utils import BmQuerySet, ArrayAgg
+from django.contrib.contenttypes.models import ContentType
 from django.contrib.sites.models import Site
+from django.core import urlresolvers
 from django.core.urlresolvers import reverse
 from django.db import models, IntegrityError, connection
 from django.db.models import Count, F
@@ -40,7 +42,7 @@ class BenchmarkManager(models.Manager):
             .annotate(question_type=Min('question__type'))
 
 
-class BenchmarkValidManager(models.Manager):
+class BenchmarkValidManager(BenchmarkManager):
     def get_queryset(self):
         return super(BenchmarkValidManager, self).get_queryset()\
             .annotate(responses_count=Count('question__responses'))\
@@ -64,6 +66,7 @@ class Benchmark(models.Model):
     _industry = models.ForeignKey(LinkedInIndustry, db_column="industry_id", blank=True, null=True, db_constraint=False, on_delete=models.SET_NULL)
     approved = models.NullBooleanField(blank=True)
     popular = models.BooleanField(default=False)
+    overview = models.TextField(blank=True)
 
     objects = BenchmarkManager()
     valid = BenchmarkValidManager()
@@ -77,7 +80,6 @@ class Benchmark(models.Model):
         return self.name
 
     def select_class(self):
-        from bm.admin import BenchmarkPending
         if not isinstance(self, BenchmarkPending):
             if self.question_type == Question.MULTIPLE:
                 self.__class__ = BenchmarkMultiple
@@ -113,7 +115,11 @@ class Benchmark(models.Model):
 
     @property
     def link(self):
-        return self.links.first()
+        return self.links.first() if not hasattr(self, '_link') else self._link
+
+    @link.setter
+    def link(self, value):
+        self._link = value
 
     def calculate_deadline(self):
         count_without_email = self.invites.filter(recipient___email__isnull=True, recipient__user_id__isnull=True).count()
@@ -266,6 +272,7 @@ class BenchmarkLink(models.Model):
                 break
 
     def __unicode__(self):
+        # TODO: http is hardcoded
         return 'http://{0}{1}'.format(Site.objects.get_current().domain, reverse('bm_answer', kwargs=dict(slug=self.slug)))
 
 
@@ -373,6 +380,7 @@ class BenchmarkRating(models.Model):
     user = models.ForeignKey(USER_MODEL, null=True)
     rating = models.PositiveSmallIntegerField()
 
+
 class SeriesStatistic(models.Model):
     benchmark = models.ForeignKey(Benchmark, on_delete=models.CASCADE, related_name='series_statistic')
     series = models.CharField(max_length=255)
@@ -390,3 +398,25 @@ class NumericStatistic(models.Model):
     max = models.FloatField()
     avg = models.FloatField()
     sd = models.FloatField()
+
+
+class BenchmarkPending(Benchmark):
+
+    class Meta:
+        proxy = True
+        verbose_name = 'Pending Benchmark'
+
+    def get_admin_url(self):
+        content_type = ContentType.objects.get_for_model(BenchmarkApproved)
+        return urlresolvers.reverse("admin:%s_%s_change" % (content_type.app_label, content_type.model), args=(self.id,))
+
+
+class BenchmarkApproved(Benchmark):
+
+    class Meta:
+        proxy = True
+        verbose_name = 'Approved Benchmark'
+
+    def get_admin_url(self):
+        content_type = ContentType.objects.get_for_model(self)
+        return urlresolvers.reverse("admin:%s_%s_change" % (content_type.app_label, content_type.model), args=(self.id,))

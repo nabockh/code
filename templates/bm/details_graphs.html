@@ -23,23 +23,19 @@
                             <div class='benchmark-stats perc-based'>
                                 <div class='single-stat'>
                                     <span class='title'>Min</span>
-                                    <span class='value'>0%</span>
+                                    <span class='value' id='minVal'></span>
                                 </div>
                                 <div class='single-stat'>
                                     <span class='title'>Max</span>
-                                    <span class='value'>91%</span>
-                                </div>
-                                <div class='single-stat'>
-                                    <span class='title'>Mean</span>
-                                    <span class='value'>47%</span>
+                                    <span class='value' id='maxVal'></span>
                                 </div>
                                 <div class='single-stat'>
                                     <span class='title'>Avg</span>
-                                    <span class='value'>51%</span>
+                                    <span class='value' id='avgVal'></span>
                                 </div>
                                 <div class='single-stat'>
                                     <span class='title'>SD</span>
-                                    <span class='value'>1.4</span>
+                                    <span class='value' id='sdVal'></span>
                                 </div>
                             </div>
                         </div>
@@ -54,13 +50,16 @@
                                 <div class='fill-value' style='width: {% widthratio benchmark.calc_average_rating 5 100 %}%'></div>
                             </span>
                             <span class='color-grey'>({{ benchmark.calc_average_rating }})</span>
-                            <a href='#' class="btn btn-primary btn-lg" data-toggle="modal" data-target="#rating">Rate this benchmark <i class='fa fa-star'></i></a>
+                            {% if user.is_authenticated %}
+                                <a href='#' class="btn btn-primary btn-lg" data-toggle="modal" data-target="#rating">Rate this benchmark <i class='fa fa-star'></i></a>
+                            {% endif %}
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <div class='col-md-5'>
+        {% if user.is_authenticated %}
+            <div class='col-md-5'>
             <div class='col-md-12 bordered bgwhite margined margin-bot'>
                 <div class='title-header'>
                     Contributor data {{ form.Contributor_Data }}
@@ -134,8 +133,16 @@
                 </div>
             </div>
         </div>
+        {% endif %}
     </div>
     </form>
+
+
+<script src="{{ STATIC_URL }}js/graphs/pie.js"></script>
+<script src="{{ STATIC_URL }}js/graphs/column.js"></script>
+<script src="{{ STATIC_URL }}js/graphs/line.js"></script>
+<script src="{{ STATIC_URL }}js/graphs/bellcurve.js"></script>
+<script src="{{ STATIC_URL }}js/graphs/stats.js"></script>
 
 <script type="text/javascript">
     var statisticGeoData = {{ geo|safe }};
@@ -143,6 +150,42 @@
     var statisticIndustriesData = {{ industries|safe }};
     var statisticCountriesData = {{ countries|safe }};
     var mainChartData = {{ benchmark.charts|safe }};
+
+
+    {% if 'Pie' in benchmark.charts_allowed %}
+        drawPieChart(mainChartData.pie, 'donutChart');
+    {% endif %}
+
+    {% if 'Column' in benchmark.charts_allowed %}
+        drawColumnChart(mainChartData.column, 'columnChart');
+    {% endif %}
+
+    {% if 'Line' in benchmark.charts_allowed %}
+        drawLineChart(mainChartData.line, 'lineChart');
+    {% endif %}
+
+    {% if 'Bell_Curve' in benchmark.charts_allowed %}
+        $(function () {
+            $("#minVal").text(mainChartData.bell_curve.min);
+            $("#maxVal").text(mainChartData.bell_curve.max);
+            $("#avgVal").text(mainChartData.bell_curve.avg);
+            var sd = mainChartData.bell_curve.sd.toFixed(1); 
+            $("#sdVal").text(sd);
+        });
+        drawBellcurveChart(mainChartData.bell_curve, 'bellcurveChart');
+
+
+    {% endif %}
+
+    drawStatsChart(statisticRoleData, 'roleChart');
+    drawStatsChart(statisticGeoData, 'geoChart');
+    drawStatsChart(statisticIndustriesData, 'industryChart');
+    drawStatsChart(statisticCountriesData, 'countryChart');
+    
 </script>
-<script src="{{ STATIC_URL }}js/graphs.js"></script>
+
+
+
+
+
 {% endblock %}
