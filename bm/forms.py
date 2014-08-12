@@ -15,7 +15,7 @@ from math import pow
 class CreateBenchmarkStep12Form(forms.Form):
     name = forms.CharField(max_length=45)
     industry = forms.ChoiceField()
-    geo = forms.ChoiceField()
+    geo = forms.ChoiceField(required=False)
     question_label = forms.CharField(max_length=255)
     question_text = forms.CharField(widget=forms.Textarea())
     question_type = forms.ChoiceField(choices=Question.TYPES)
@@ -28,7 +28,9 @@ class CreateBenchmarkStep12Form(forms.Form):
 
     def __init__(self, user, data, *args, **kwargs):
         super(CreateBenchmarkStep12Form, self).__init__(data=data, *args, **kwargs)
-        self.fields['geo'].choices = list(Region.regions.values_list('id', 'name').order_by('name'))
+        regions = [('', 'All')]
+        regions.extend(list(Region.regions.values_list('id', 'name').order_by('name')))
+        self.fields['geo'].choices = regions
         self.fields['industry'].choices = list(LinkedInIndustry.get_proposal(user.contacts))
         question_type = int(data and data.get(kwargs['prefix'] + '-question_type', '1') or '1')
         if question_type == Question.MULTIPLE or question_type == Question.RANKING:
@@ -54,11 +56,11 @@ class CreateBenchmarkStep3Form(forms.Form):
         super(CreateBenchmarkStep3Form, self).__init__(*args, **kwargs)
         self.min_number_of_answers = int(step0data.get('0-minimum_number_of_answers'))
         data = kwargs.get('data') or {}
-        regions = [('', '------')]
+        regions = [('', 'All')]
         regions.extend(list(Region.regions.values_list('id', 'name').order_by('name')))
         self.fields['geo'].choices = regions
         self.fields['geo'].initial = step0data.get('0-geo')
-        industries = [('', '------')]
+        industries = [('', 'All')]
         industries.extend(list(LinkedInIndustry.get_proposal(user.contacts)))
         self.fields['industry'].choices = industries
         self.fields['industry'].initial = step0data.get('0-industry')
