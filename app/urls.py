@@ -4,6 +4,8 @@ from django.conf.urls import patterns, include, url
 from django.contrib import admin
 admin.autodiscover()
 
+import social_auth.urls
+
 urlpatterns = patterns(
     '',
     url(r'^admin/', include(admin.site.urls)),

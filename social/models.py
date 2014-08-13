@@ -156,14 +156,21 @@ class Contact(models.Model):
         return contact
 
     @classmethod
-    def get_suggested(cls, geo=None, industry=None):
+    def get_suggested(cls, geo=None, industry=None, user=None):
         contact_filter = {}
         if industry:
             contact_filter['company___industry__code'] = industry
         if geo:
             contact_filter['location__parent__id'] = geo
-        contacts = cls.objects.filter(**contact_filter)[:10]
-        return contacts
+
+        return cls.objects.filter(**contact_filter) \
+                          .exclude(user=user) \
+                          .annotate(num_responses=models.Count('user__responses'),
+                                    is_active_user=models.Count('user__id')) \
+                          .order_by('-is_active_user',
+                                    'num_responses',
+                                    'company___industry',
+                                    'headline')[:10]
 
 
 class Invite(models.Model):

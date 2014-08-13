@@ -299,7 +299,7 @@ class Question(models.Model):
 
 class QuestionResponse(models.Model):
     question = models.ForeignKey(Question, related_name='responses')
-    user = models.ForeignKey(USER_MODEL, related_name='users', null=True, on_delete=models.SET_NULL)
+    user = models.ForeignKey(USER_MODEL, related_name='responses', null=True, on_delete=models.SET_NULL)
     date = models.DateTimeField(auto_now_add=True)
 
     @property

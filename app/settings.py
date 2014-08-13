@@ -129,6 +129,10 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'bedade',
+	'USER': 'postgres',
+	'PASSWORD': 'pass',
+	'HOST': '127.0.0.1',
+	'PORT': '5432',    
     }
 }
 
@@ -187,13 +191,14 @@ CACHES = {
 }
 
 AUTHENTICATION_BACKENDS = (
+#    'social.backend.beta.BetaBackend',
     'social_auth.backends.contrib.linkedin.LinkedinBackend',
     'app.backend.case_insensitive.CaseInsensitiveModelBackend',
     'django.contrib.auth.backends.ModelBackend',
 )
 
 SOCIAL_AUTH_PIPELINE = (
-    'social.pipeline.beta_login',
+#    'social.pipeline.beta_login',
     'social_auth.backends.pipeline.social.social_auth_user',
     'social_auth.backends.pipeline.user.get_username',
     'social_auth.backends.pipeline.user.create_user',
@@ -203,6 +208,8 @@ SOCIAL_AUTH_PIPELINE = (
     'social.pipeline.load_extra_data',
 )
 
+#LINKEDIN_CONSUMER_KEY = '77ib04b5abd803'
+#LINKEDIN_CONSUMER_SECRET = '2HuRj68wed7IPndy'
 LINKEDIN_CONSUMER_KEY = '77pi0tgejrq7si'
 LINKEDIN_CONSUMER_SECRET = 'ZneKr9tbVPSSrm5O'
 
