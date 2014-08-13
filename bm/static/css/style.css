@@ -4,7 +4,7 @@ body {
     margin: 0;
     padding: 0;
     background: #eff0f2;
-    padding-top: 90px;
+    padding-top: 180px;
     font-weight: 300;
 }
 
@@ -139,7 +139,7 @@ span.beta-invite {
     -webkit-transition: margin 0.2s;
     transition: margin 0.2s;
 }
-.cms-toolbar-expanded .navbar-default{
+.cms-toolbar-expanded .navbar-default, .cms-toolbar-expanded .user-nav{
     margin-top: 30px;
 }
 
@@ -246,6 +246,10 @@ ul.main-nav {
     background: #333;
     color: #fff;
     padding: 25px 0 17px;
+    position: fixed;
+    top: 90px;
+    left: 0;
+    right: 0;
 }
 
     .user-nav.homepage {
@@ -501,12 +505,22 @@ input.btn.full-width, .btn.full-width {
     background-size: auto 100%;
 }
 
-.colorblock p, .colorblock .cms_plugin > span, .big-title + span:not(.help-text), .how-it-works .title + span, .features h4 + span {
+.colorblock p, .colorblock .cms_plugin span, .big-title ~ span:not(.help-text), .big-title + div:not(.cms_plugin) ~ *:not(.ex-info-text):not(.clearfix), .how-it-works .title + span, .features h4 + span {
     margin-bottom: 40px;
     display: inline-block;
     font-size: 14px !important; 
     line-height: 24px !important;
-    color: #333 !important;
+    color: inherit;
+}
+
+.big-title + div:not(.cms_placeholder) {
+    margin-bottom: 40px;
+}
+
+.big-title + div *, .colorblock .cms_plugin span {
+    line-height: inherit !important;
+    font-size: inherit !important;
+    margin-bottom: inherit !important;
 }
 
 .navbar-brand {
@@ -555,7 +569,7 @@ input.btn.full-width, .btn.full-width {
     }
 
     .colorblock.banner .help-text, .colorblock.banner .help-text * {
-        color: #94a6c3 !important;
+        color: #94a6c3;
         font-size: 26px !important;
         line-height: 26px !important;    
         text-align: center !important;
@@ -880,6 +894,13 @@ input.btn.full-width, .btn.full-width {
 .about-container {
     padding: 30px 60px;
     background-color: rgba(25, 30, 44, 0.76);
+    color: #fff;
+}
+
+.about-container.big-title +  * {
+    font-size: 14px !important;
+    line-height: 24px !important;
+    color: #fff;
 }
 
 .big-title.decored {
