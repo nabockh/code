@@ -132,7 +132,7 @@ class CreateBenchmarkStep3Form(forms.Form):
         for contact in self.suggested_contacts:
             if data.get('{0}-suggested-{1}-invite'.format(self.prefix, contact.id)):
                 selected_ids.append(contact.id)
-                if data.get('{0}-suggested-{1}-secondary'.formatself.prefix, (contact.id)):
+                if data.get('{0}-suggested-{1}-secondary'.format(self.prefix, contact.id)):
                     selected_secondary_ids.append(contact.id)
 
         selected_ids = set(selected_ids)
