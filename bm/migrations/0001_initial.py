@@ -86,7 +86,7 @@ class Migration(SchemaMigration):
         db.create_table(u'bm_questionresponse', (
             (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
             ('question', self.gf('django.db.models.fields.related.ForeignKey')(related_name='responses', to=orm['bm.Question'])),
-            ('user', self.gf('django.db.models.fields.related.ForeignKey')(related_name='users', null=True, on_delete=models.SET_NULL, to=orm['auth.User'])),
+            ('user', self.gf('django.db.models.fields.related.ForeignKey')(related_name='responses', null=True, on_delete=models.SET_NULL, to=orm['auth.User'])),
             ('date', self.gf('django.db.models.fields.DateTimeField')(auto_now_add=True, blank=True)),
         ))
         db.send_create_signal(u'bm', ['QuestionResponse'])
@@ -349,7 +349,7 @@ class Migration(SchemaMigration):
             'date': ('django.db.models.fields.DateTimeField', [], {'auto_now_add': 'True', 'blank': 'True'}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'question': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'responses'", 'to': u"orm['bm.Question']"}),
-            'user': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'users'", 'null': 'True', 'on_delete': 'models.SET_NULL', 'to': u"orm['auth.User']"})
+            'user': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'responses'", 'null': 'True', 'on_delete': 'models.SET_NULL', 'to': u"orm['auth.User']"})
         },
         u'bm.region': {
             'Meta': {'object_name': 'Region'},
