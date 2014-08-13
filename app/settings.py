@@ -59,7 +59,7 @@ INSTALLED_APPS = (
     'djangocms_admin_style',
     'djangocms_text_ckeditor',
     # 'djangocms_file',
-    'cmsplugin_cascade',
+    # 'cmsplugin_cascade',
     # 'filer',
     # 'cmsplugin_filer_file',
     # 'cmsplugin_filer_image',
