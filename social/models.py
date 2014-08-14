@@ -2,6 +2,7 @@ from app import settings
 from django.core.cache import cache
 from django.core.mail import send_mail
 from django.db import models, transaction
+from django.db.models import Count
 from linkedin import linkedin
 from social.backend.linkedin import extract_access_tokens, LinkedInApplication
 from social_auth.db.django_models import USER_MODEL
@@ -28,7 +29,11 @@ class LinkedInIndustry(models.Model):
 
     @classmethod
     def get_proposal(cls, contacts):
-        return cls.objects.filter(companies__employees__in=contacts.values_list('id', flat=True)).values_list('code', 'name').distinct().order_by('name')
+        result = cls.objects\
+            .annotate(responses_count=Count('companies__employees__user__responses'))\
+            .filter(companies__employees__in=contacts.values_list('id', flat=True)).values_list('code', 'name', 'responses_count')\
+            .distinct().order_by('-responses_count')
+        return [(a, b) for a, b, _ in result]
 
     def __unicode__(self):
         return self.name
