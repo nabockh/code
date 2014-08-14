@@ -141,12 +141,14 @@ $(function () {
 
     $("html").click(function() {
         $(".example-block").removeClass('closed active');
+        $(".add_help .add_help_inner").removeClass('visible');
     });
 
     // Tooltips
 
-    $('.add_help').on('click', function() {
+    $('.add_help').on('click', function(e) {
        $(this).children('.add_help_inner').toggleClass('visible');
+       e.stopPropagation();
     });
 
     // Rating Functionality

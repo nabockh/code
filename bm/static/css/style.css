@@ -1369,6 +1369,13 @@ span.add_info {
     text-transform: none;
 }
 
+    .add_help_inner * {
+        color: #b9d4db !important;
+        font-size: 11px  !important;
+        line-height: 15px  !important;
+        font-weight: 400  !important;
+    }
+
     .add_help_inner:after {
         position: absolute;
         content: '';
@@ -2562,6 +2569,10 @@ ul#answerSortable {
     color: #fff;
     font-size: 5rem;
 }
+    
+    .cms-toolbar-expanded .preloader {
+        top: 120px;
+    }
 
     .preloader .full-centered {
         position: absolute;
