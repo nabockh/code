@@ -146,6 +146,8 @@ class CreateBenchmarkStep3Form(forms.Form):
         for contact in self.selected_contacts:
             self.fields['selected-{0}-invite'.format(contact.id)] = \
                 forms.BooleanField(initial=True, widget=forms.CheckboxInput(attrs={'class': 'choose-checkbox', 'checked': 'checked'}), required=False)
+            self.fields['contact-{0}-invite'.format(contact.id)] = \
+                forms.BooleanField(initial=True, widget=forms.CheckboxInput(attrs={'class': 'choose-checkbox', 'checked': 'checked'}), required=False)
             contact.invite_element = 'selected-{0}-invite'.format(contact.id)
             attr = {'class': 'share-checkbox'}
             if contact.id in selected_secondary_ids:
@@ -153,8 +155,12 @@ class CreateBenchmarkStep3Form(forms.Form):
                 contact.allow_secondary = True
             else:
                 contact.allow_secondary = False
+
             self.fields['selected-{0}-secondary'.format(contact.id)] = \
                 forms.BooleanField(widget=forms.CheckboxInput(attrs=attr), required=False)
+            self.fields['contact-{0}-secondary'.format(contact.id)] = \
+                forms.BooleanField(widget=forms.CheckboxInput(attrs=attr), required=False)
+
             contact.secondary_element = 'selected-{0}-secondary'.format(contact.id)
             if not contact.email:
                 count_without_email += 1
