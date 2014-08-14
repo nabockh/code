@@ -3,7 +3,7 @@ from bm.models import Benchmark
 from cms.plugin_base import CMSPluginBase
 from cms.plugin_pool import plugin_pool
 from core.models import DashboardPanel, DashboardHistory, DashboardPending, DashboardRecent, DashboardPopular, \
-    ButtonInviteColleague, HomeExample
+    ButtonInviteColleague, HomeExample, HomeHowItWorks
 from django.utils.translation import ugettext_lazy as _
 
 
@@ -102,6 +102,13 @@ class HomeExamplePlugin(CMSPluginBase):
     render_template = "cms/home/example.html"
     allow_children = True
 
+
+class HomeHowItWorksPlugin(CMSPluginBase):
+    module = _("Home")
+    name = "How It Works"
+    model = HomeHowItWorks
+    render_template = "cms/home/how_it_works.html"
+
 plugin_pool.register_plugin(DashboardPanelGroupPlugin)
 plugin_pool.register_plugin(DashboardPanelPlugin)
 plugin_pool.register_plugin(DashboardHistoryPlugin)
@@ -113,3 +120,4 @@ plugin_pool.register_plugin(ButtonInviteColleaguePlugin)
 plugin_pool.register_plugin(ButtonCreateBenchmarkPlugin)
 
 plugin_pool.register_plugin(HomeExamplePlugin)
+plugin_pool.register_plugin(HomeHowItWorksPlugin)
