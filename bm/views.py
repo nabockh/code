@@ -118,17 +118,16 @@ class BenchmarkCreateWizardView(CookieWizardView):
         self.storage.reset()
         return done_response
 
-
-    def render_email_preview(self, benchmark):
+    @staticmethod
+    def render_email_preview(benchmark):
         template = loader.get_template('alerts/invite.html')
         # TODO: http is hardcoded
-        benchmark.link ='http://{0}{1}'.format(Site.objects.get_current().domain, reverse('bm_answer', kwargs={'slug': 'slug'}))
+        benchmark.link ='{0}{1}'.format(Site.objects.get_current().domain, reverse('bm_answer', kwargs={'slug': 'slug'}))
         context = Context({
             'benchmark': benchmark,
         })
         response = HttpResponse("<pre>" + template.render(context) + '</pre>')
         return response
-
 
     def render_goto_step(self, goto_step, **kwargs):
         """

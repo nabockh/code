@@ -20,7 +20,7 @@ class CreateBenchmarkStep12Form(forms.Form):
     question_text = forms.CharField(widget=forms.Textarea())
     question_type = forms.ChoiceField(choices=Question.TYPES)
     answer_options = forms.CharField(widget=forms.Textarea(), validators=[multiple_choice_validator])
-    units = forms.CharField(max_length=50)
+    units = forms.CharField(max_length=50, initial='$')
     max_number_of_decimal = forms.IntegerField(min_value=1, max_value=6)
     additional_comments = forms.CharField(widget=forms.Textarea(), required=False)
     min_value = 1 if settings.DEBUG else 5
@@ -47,7 +47,7 @@ class CreateBenchmarkStep3Form(forms.Form):
     name = forms.CharField(max_length=100, required=False)
 
     def clean(self):
-        if hasattr(self, 'selected_contacts'):
+        if self.is_continue and hasattr(self, 'selected_contacts'):
             if len(self.selected_contacts) < self.min_number_of_answers:
                 self.errors['__all__'] = self.error_class(['Count of selected contacts should be at least %d' % self.min_number_of_answers])
         return self.cleaned_data
@@ -63,6 +63,7 @@ class CreateBenchmarkStep3Form(forms.Form):
         super(CreateBenchmarkStep3Form, self).__init__(*args, **kwargs)
         self.min_number_of_answers = self.num(step0data.get('0-minimum_number_of_answers'))
         data = kwargs.get('data') or {}
+        self.is_continue = data.get('is_continue', False) and not(data.get('add_selected') or data.get('save_and_wizard_goto_step'))
         regions = [('', 'All')]
         regions.extend(list(Region.regions.values_list('id', 'name').order_by('name')))
         self.fields['geo'].choices = regions
@@ -88,8 +89,9 @@ class CreateBenchmarkStep3Form(forms.Form):
             contact_filter['company___industry__code'] = cleaned_data.get('industry')
         if cleaned_data.get('geo'):
             contact_filter['location__parent__id'] = cleaned_data.get('geo')
-        self.contacts_filtered = user.contacts.filter(name_filter, **contact_filter).exclude(id__in=except_ids) if name_filter else \
-            user.contacts.filter(**contact_filter).exclude(id__in=except_ids)
+        self.contacts_filtered = user.contacts.filter(name_filter, **contact_filter).exclude(id__in=except_ids)\
+            .order_by('first_name') if name_filter else \
+            user.contacts.filter(**contact_filter).exclude(id__in=except_ids).order_by('first_name')
         for contact in self.contacts_filtered:
             self.fields['contact-{0}-invite'.format(contact.id)] = \
                 forms.BooleanField(widget=forms.CheckboxInput(attrs={'class': 'choose-checkbox'}), required=False)
@@ -144,6 +146,8 @@ class CreateBenchmarkStep3Form(forms.Form):
         for contact in self.selected_contacts:
             self.fields['selected-{0}-invite'.format(contact.id)] = \
                 forms.BooleanField(initial=True, widget=forms.CheckboxInput(attrs={'class': 'choose-checkbox', 'checked': 'checked'}), required=False)
+            self.fields['contact-{0}-invite'.format(contact.id)] = \
+                forms.BooleanField(initial=True, widget=forms.CheckboxInput(attrs={'class': 'choose-checkbox', 'checked': 'checked'}), required=False)
             contact.invite_element = 'selected-{0}-invite'.format(contact.id)
             attr = {'class': 'share-checkbox'}
             if contact.id in selected_secondary_ids:
@@ -151,8 +155,12 @@ class CreateBenchmarkStep3Form(forms.Form):
                 contact.allow_secondary = True
             else:
                 contact.allow_secondary = False
+
             self.fields['selected-{0}-secondary'.format(contact.id)] = \
                 forms.BooleanField(widget=forms.CheckboxInput(attrs=attr), required=False)
+            self.fields['contact-{0}-secondary'.format(contact.id)] = \
+                forms.BooleanField(widget=forms.CheckboxInput(attrs=attr), required=False)
+
             contact.secondary_element = 'selected-{0}-secondary'.format(contact.id)
             if not contact.email:
                 count_without_email += 1
