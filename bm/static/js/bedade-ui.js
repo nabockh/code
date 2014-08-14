@@ -134,6 +134,11 @@ $(function () {
        e.stopPropagation();
     });
 
+    $('.cms_plugin .example-block').on('click', function(e) {
+       $(this).addClass('active').removeClass('closed').parents('.cms_plugin').siblings().children('.example-block').addClass('closed').removeClass('active');
+       e.stopPropagation();
+    });
+
     $("html").click(function() {
         $(".example-block").removeClass('closed active');
     });
@@ -149,7 +154,7 @@ $(function () {
     $('.rating').on('click', '[data-score]', function() {
         var csrf = document.cookie.match(/csrftoken=([\w]+)/);
         var request = $.post(window.location.pathname, {'csrfmiddlewaretoken' : csrf? csrf[1] : null,
-                                          'rate' : $(this).attr('data-score')});
+                                                        'rate' : $(this).attr('data-score')});
         request.done(function (response){
             $('.color-grey').html("(" + response + ")");
             var rate_percentage =  response/5*100 + '%';
@@ -173,7 +178,7 @@ $(function () {
     // Layout JS
 
     $('.collapse').collapse({
-        toggle: false
+        toggle: true
     });
 
     
