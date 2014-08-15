@@ -12,6 +12,10 @@ body {
         font-family: Roboto !important;
     }
 
+    body.unauth {
+        padding-top: 140px;
+    }
+
 html, body {
     height: 100%;
 }
@@ -249,6 +253,7 @@ ul.main-nav .dropdown-menu {
     top: 90px;
     left: 0;
     right: 0;
+    z-index: 8;
 }
 
     .user-nav.homepage {
@@ -2636,7 +2641,7 @@ ul#answerSortable {
     }
 }
 
-@media (max-width: 767px) {
+@media (max-width: 768px) {
     .mobile {
         display: block;
     }
@@ -2652,7 +2657,9 @@ ul#answerSortable {
     nav.collapse.navbar-collapse.bs-navbar-collapse {
         float: none;
         box-shadow: 0 3px 3px rgba(0, 0, 0, 0.2);
-    }
+    
+        z-index: 10;
+}
 
     ul.main-nav, ul.main-nav.dashboard-nav {
         width: 100%;
@@ -2759,12 +2766,16 @@ ul#answerSortable {
         }
 
     .features.text-left > * {
-        padding-left: 0;
-    }
+        padding-left: 0 !important;
+    
+        text-align: center !important;
+}
 
     .features.text-right > * {
-        padding-right: 0;
-    }
+        padding-right: 0 !important;
+    
+        text-align: center !important;
+}
 
     .big-title.decored:before, .big-title.decored:after {
         width: 15%;
@@ -2799,10 +2810,11 @@ ul#answerSortable {
             width: 90%;
         }
 
-    .icon-only.btn.pull-right .fa {
-        padding-left: 0;
+    .icon-only.btn .fa {
+        padding: 0;
+        font-size: 1.7rem;
     }
-
+    
     .search-fields form[role='search'] .form-control {
         float: left;
         width: 100%;
@@ -2823,17 +2835,18 @@ ul#answerSortable {
     /* Benchmark Creation */
 
     .benchmark-creation .title-header {
-        padding: 6px 30px;
-        margin: 0 -30px;
+        padding: 6px 20px;
+        margin: 0 -20px;
     }
 
     .creation_steps {
-        margin: 0 -30px;
+        margin: 0 -20px;
     }
 
         .creation_steps .cr_step {
             width: 100%;
             display: none;
+            padding: 10px 20px;
         }
 
             .creation_steps .cr_step.active {
@@ -2841,13 +2854,13 @@ ul#answerSortable {
             }
 
     .benchmark-creation {
-        margin: 40px 20px 70px;
-        padding: 0 30px;
+        margin: 40px 10px 70px;
+        padding: 0 20px;
     }
 
     .benchmark-help {
-        padding: 25px 30px;
-        margin: 0 -30px;
+        padding: 25px 20px;
+        margin: 0 -20px;
     }
 
     .benchmark-creation .margined .styled-form > .col-md-8 {
@@ -2864,21 +2877,31 @@ ul#answerSortable {
     }
 
     .tips {
-        padding: 15px;
+        padding: 0 0 20px;
+    }
+    
+    .tips.fix {
+        margin: 0 15px;
     }
 
     .btn-holder {
-        margin: 0 -15px;
-        padding: 30px;
-    }
+        margin: 0 -5px;
+        padding: 20px;
+    
+        height: auto;
+}
 
     .benchmark-help.search {
-        margin: -45px -15px 0;
+        margin: -45px -5px 0;
     }
 
     .benchmark-creation .styled-form .benchmark-help.search label.btn.btn-primary {
         width: auto;
-        margin-top: 10px;
+        margin-top: 20px;
+    }
+    
+    .benchmark-creation .styled-form .col-md-5ths input:not([type='submit']) {
+        margin-bottom: 0;
     }
 
     #step3Selected {
@@ -3015,28 +3038,73 @@ ul#answerSortable {
 @media (max-width: 640px) {
     .example-block {
         width: 100%;
+        margin: -4px 0;
         height: auto;
     }
 
     .search .tabulation .nav-tabs > li {
-        width: 32%;
+        width: 32%;    
+        margin-right: 1%;
     }
 
     .will-hide {
-        display: none;
+        display: none !important;
     }
 
     .search .tabulation .nav-tabs > li > a {
         overflow: hidden;
         text-overflow: ellipsis;
-        white-space: nowrap;
+        white-space: nowrap;    
+        padding: 0 10px;
     }
 
     form[role='beta-email'] .form-group {
         width: 65%;
-    }
+    
+        margin: 10px 0;
+}
 
     form[role='beta-email'] .btn-search {
         width: 35%;
+    }
+    
+    .big-title.decored:before, .big-title.decored:after {
+        width: 10%;
+    }
+
+    .about-container {
+        padding: 30px;
+    }
+
+    .big-title {
+        font-size: 55px;
+    }
+
+    form[role='beta-email'] .btn-search {
+        font-size: 1rem;
+        padding: 0;
+        margin: 10px 0;
+        height: 35px;
+        border-bottom-right-radius: 5px;
+        border-top-right-radius: 5px;
+    }
+
+    form[role='beta-email'] .form-control {
+        font-size: 1rem;
+        padding-right: 0;    
+        margin-left: 5px;
+        height: 35px;
+        border-bottom-left-radius: 5px;
+        border-top-left-radius: 5px;
+    }
+    
+    .btn.sign-in-btn {
+        font-size: 1.2rem;
+        height: 34px;
+        line-height: 20px;
+    }
+
+    body.unauth {
+        padding-top: 145px;
     }
 }

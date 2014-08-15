@@ -22,7 +22,8 @@ class CreateBenchmarkStep12Form(forms.Form):
     answer_options = forms.CharField(widget=forms.Textarea(), validators=[multiple_choice_validator])
     units = forms.CharField(max_length=50, initial='$')
     max_number_of_decimal = forms.IntegerField(min_value=1, max_value=6)
-    additional_comments = forms.CharField(widget=forms.Textarea(), required=False)
+    additional_comments = forms.CharField(widget=forms.Textarea(attrs={'maxlength': 10000}),
+                                          required=False)
     min_value = 1 if settings.DEBUG else 5
     minimum_number_of_answers = forms.IntegerField(min_value=min_value, initial=5)
 
