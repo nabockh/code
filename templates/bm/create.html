@@ -419,7 +419,7 @@
                             {% if wizard.steps.step1 == 1 %}
                             {% else %}
                                 <button id='go_back' name="wizard_goto_step" type="submit" value="{{ wizard.steps.prev }}" class="btn btn-default auto-width continue-btn hidden">{% trans "go back" %}</button>
-                                <label for='go_back' class='btn btn-default auto-width'><i class='fa fa-arrow-circle-o-left'></i> Go Back</label>
+                                <label for='go_back' class='btn btn-default auto-width icon-only'><i class='fa fa-arrow-circle-o-left'></i> <span class='non-mobile'>Go Back</span></label>
                             >
                             {% endif %}
 
@@ -427,14 +427,14 @@
                         {% if wizard.steps.step1 == 3 %}
                             <input id='bm-submit' type="submit" class="btn btn-primary auto-width continue-btn hidden" value="{% trans "Send invitations" %}"/>
                             <label for='bm-submit' class='btn btn-primary auto-width pull-right'> Send Invitations <i class='fa fa-arrow-circle-o-right'></i></label>
-                            <label class="btn btn-primary auto-width pull-right fix" data-toggle="modal" data-target="#preview">Email Preview <i class='fa fa-eye'></i></label>
+                            <label class="btn btn-primary auto-width pull-right fix non-mobile" data-toggle="modal" data-target="#preview">Email Preview <i class='fa fa-eye'></i></label>
                         {% else %}
 
                             <input id='bm-submit' type="submit" class="btn btn-primary auto-width continue-btn hidden" value="{% trans "Continue" %}"/>
-                            <label for='bm-submit' class='btn btn-primary auto-width pull-right'> Continue <i class='fa fa-arrow-circle-o-right'></i></label>
+                            <label for='bm-submit' class='btn btn-primary auto-width pull-right icon-only'> <span class='non-mobile'>Continue</span> <i class='fa fa-arrow-circle-o-right'></i></label>
                             {% if wizard.steps.step1 == 2 %}
                                 <input id='add_selected' name="add_selected" type="submit" class="btn btn-primary auto-width continue-btn hidden" value="1"/>   
-                                <label for='add_selected' class='btn btn-primary auto-width pull-right fix'>Add selected <i class='fa fa-plus'></i></label> 
+                                <label for='add_selected' class='btn btn-primary auto-width pull-right fix'>Add <span class='non-mobile'>selected</span> <i class='fa fa-plus'></i></label> 
                                 <input type="hidden" name="is_continue" value="1">
                             {% endif %}
                         {% endif %}
