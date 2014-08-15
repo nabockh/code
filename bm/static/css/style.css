@@ -27,7 +27,7 @@ a {
 
     a[data-export='excel']:after {
         content: ' ';
-        font-family: fontawesome;
+        font-family: fontawesome !important;
     }
 
 hr {
@@ -633,7 +633,7 @@ input.btn.full-width, .btn.full-width {
         line-height: 4rem;
         position: absolute;
         left: 0;
-        font-family: fontawesome;
+        font-family: fontawesome !important;
         top: 5px;
     }
 
@@ -1576,7 +1576,7 @@ span.grey {
 }
 
 .styled-form .btn-holder > input[type='submit'].continue-btn:after {
-    font-family: fontawesome;
+    font-family: fontawesome !important;
     content: "\f0a9";
 }
 
@@ -1627,7 +1627,7 @@ span.grey {
 }
 
     .btn-invite:after, .btn-tour:after, .btn-create:after {
-        font-family: fontawesome;
+        font-family: fontawesome !important;
         position: absolute;
         right: 20px;
     }
@@ -1730,7 +1730,7 @@ form[role='beta-email'] {
     padding-right: 10px;
     font-size: 16px;
     line-height: 13px;
-    font-family: fontawesome;
+    font-family: fontawesome !important;
 }
 
 .panel h4.panel-title a.collapsed:before {
@@ -1772,7 +1772,7 @@ form[role='beta-email'] {
 
         .recent-benchmark-link a:hover:after {
             content: '';
-            font-family: fontAwesome;
+            font-family: fontAwesome !important;
             position: absolute;
             right: 0;
             width: 30px;
@@ -2058,7 +2058,7 @@ form[role='beta-email'] {
 }
 
     .rating span.star {
-        font-family: FontAwesome;
+        font-family: FontAwesome !important;
         font-weight: normal;
         font-style: normal;
         display: inline-block;
@@ -2206,7 +2206,7 @@ table.results tbody td {
 table.results thead th a:after {
     content: "\f0dd";
     color: #333;
-    font-family: fontawesome;
+    font-family: fontawesome !important;
     vertical-align: top;
     line-height: 20px;
     padding-left: 5px;
@@ -2263,7 +2263,7 @@ label.btn.btn-primary.answer_btn {
 
     label.btn.btn-primary.answer_btn:after {
         content: "\f0a9";
-        font-family: fontAwesome;
+        font-family: fontAwesome !important;
         float: right;
     }
 
@@ -2392,7 +2392,7 @@ ul#id_choice li > label {
     .ui-state-default:before, .ui-widget-content .ui-state-default:before, .ui-widget-header .ui-state-default:before {
         content: '';
         position: absolute;
-        font-family: fontAwesome;
+        font-family: fontAwesome !important;
         left: -1px;
         top: -1px;
         height: 33px;
@@ -2671,7 +2671,9 @@ ul#answerSortable {
 
     .container > .navbar-header {
         margin-bottom: 20px;
-    }
+    
+        float: none;
+}
 
     .fixed-navs .container > .navbar-header {
         margin-bottom: 0;
@@ -3033,6 +3035,27 @@ ul#answerSortable {
     .example-block.adoption-rate .big-icon {
         background-position: 0px 0;
     }
+    
+    .container.top-navbar {
+        padding: 0;
+    }
+    
+    .navbar-toggle {
+        display: block;
+    }
+    
+    .navbar-collapse.collapse {
+        display: none !important;
+    
+        height: 0 !important;
+}
+    
+    .navbar-collapse.in {
+        overflow-y: auto !important;
+        display: block !important;
+    
+        height: auto !important;
+}
 }
 
 @media (max-width: 640px) {
