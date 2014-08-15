@@ -3044,7 +3044,7 @@ ul#answerSortable {
     }
 
     .will-hide {
-        display: none;
+        display: none !important;
     }
 
     .search .tabulation .nav-tabs > li > a {
@@ -3068,5 +3068,19 @@ ul#answerSortable {
 
     .about-container {
         padding: 30px;
+    }
+
+    .big-title {
+        font-size: 55px;
+    }
+
+    form[role='beta-email'] .btn-search {
+        font-size: 1rem;
+        padding: 0;
+    }
+
+    form[role='beta-email'] .form-control {
+        font-size: 0.9rem;
+        padding-right: 0;
     }
 }
