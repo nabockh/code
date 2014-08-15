@@ -180,7 +180,7 @@ $(function () {
     // Layout JS
 
     $('.collapse').collapse({
-        toggle: false;
+        toggle: false
     });
 
     
