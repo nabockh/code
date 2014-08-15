@@ -12,6 +12,10 @@ body {
         font-family: Roboto !important;
     }
 
+    body.unauth {
+        padding-top: 140px;
+    }
+
 html, body {
     height: 100%;
 }
@@ -3098,5 +3102,9 @@ ul#answerSortable {
         font-size: 1.2rem;
         height: 34px;
         line-height: 20px;
+    }
+
+    body.unauth {
+        padding-top: 145px;
     }
 }
