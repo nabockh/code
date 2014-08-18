@@ -156,7 +156,7 @@
 
                             {% empty %}
                             <div><strong>You have no open benchmarks.</strong></div>
-                            <div><a href='/benchmark/create'>Gather the data you need <i class="fa fa-arrow-circle-right"></i></a></div>
+                            <div><a href="{% url 'bm_create' %}">Gather the data you need <i class="fa fa-arrow-circle-right"></i></a></div>
                             {% endfor %}
                         </div>                        
                     </div>
@@ -257,7 +257,9 @@
                                     <p>Start benefiting from the questions YOU ask. in just three easy steps you can create your own benchmark queries and send them to your most trusted professional contacts.</p>
                                     <img src='{{ STATIC_URL }}img/guide.png'/>
                                   </div>
-                                  <a href="{% url 'bm_create' %}" class='btn btn-primary'>Create new benchmark <i class='fa fa-plus-circle'></i></a>
+                                  <div class='text-center'>
+                                    <a href="{% url 'bm_create' %}" class='btn btn-primary'>Create new benchmark <i class='fa fa-plus-circle'></i></a>
+                                  </div>
                                   <script type="text/javascript">
                                     $(function () {
                                       $('#myRecentBenchmarks .recent-benchmark-controls').hide();

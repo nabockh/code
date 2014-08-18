@@ -623,9 +623,11 @@ input.btn.full-width, .btn.full-width {
     color: #3d4d77;
     font-size: 18px;
     font-weight: 500;
-    margin-bottom: 15px;
     padding-left: 65px;
     position: relative;
+    display: table-cell;
+    vertical-align: middle;
+    height: 50px;
 }
 
     .how-it-works .title:before {
@@ -635,7 +637,12 @@ input.btn.full-width, .btn.full-width {
         left: 0;
         font-family: fontawesome !important;
         top: 5px;
-    }
+    
+}
+
+.how-it-works .title + p {
+    margin-top: 10px
+}
 
 .how-it-works p {
     margin-bottom: 10px;
