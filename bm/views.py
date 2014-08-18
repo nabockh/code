@@ -23,6 +23,8 @@ from django.views.generic import ListView, TemplateView
 from django.views.generic.edit import FormView
 from bm.signals import benchmark_answered, benchmark_created
 from django.db.models import Count
+
+import json
 import StringIO
 import xlsxwriter
 
@@ -289,7 +291,7 @@ class BaseBenchmarkAnswerView(FormView):
         form = self.get_form(form_class)
         if form.is_valid():
             result = self.form_valid(form)
-            benchmark_answered.send(sender=self.__class__, request=request, user=request.user)
+            benchmark_answered.send(sender=self.__class__, request=request, user=request.user, benchmark=self.benchmark)
             return result
         else:
             return self.form_invalid(form)
@@ -471,22 +473,22 @@ class BenchmarkDetailView(FormView):
         headlines = []
         for item in group_by_headline:
             first = item['count']
-            second = str(item['role'])
+            second = item['role']
             headlines.append([second, first])
         geo = []
         for item in group_by_geo:
             first = item['count']
-            second = str(item['geo'])
+            second = item['geo']
             geo.append([second, first])
         countries = []
         for item in group_by_country:
             first = item['count']
-            second = str(item['country'])
+            second = item['country']
             countries.append([second, first])
         industries = []
         for item in group_by_industry:
             first = item['count']
-            second = str(item['industry'])
+            second = item['industry']
             industries.append([second, first])
         context['role'] = list(headlines)
         context['role'].insert(0, ['role', 'count'])
@@ -496,6 +498,9 @@ class BenchmarkDetailView(FormView):
         context['countries'].insert(0, ['countries', 'count'])
         context['industries'] = list(industries)
         context['industries'].insert(0, ['industries', 'count'])
+
+        for field in ['role', 'geo', 'countries', 'industries']:
+            context[field] = json.dumps(context[field])
 
         # Count percentage in aggregated lists
         countries_percentage = list(countries)
