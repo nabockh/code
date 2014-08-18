@@ -471,22 +471,22 @@ class BenchmarkDetailView(FormView):
         headlines = []
         for item in group_by_headline:
             first = item['count']
-            second = str(item['role'])
+            second = item['role']
             headlines.append([second, first])
         geo = []
         for item in group_by_geo:
             first = item['count']
-            second = str(item['geo'])
+            second = item['geo']
             geo.append([second, first])
         countries = []
         for item in group_by_country:
             first = item['count']
-            second = str(item['country'])
+            second = item['country']
             countries.append([second, first])
         industries = []
         for item in group_by_industry:
             first = item['count']
-            second = str(item['industry'])
+            second = item['industry']
             industries.append([second, first])
         context['role'] = list(headlines)
         context['role'].insert(0, ['role', 'count'])
