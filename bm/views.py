@@ -289,7 +289,7 @@ class BaseBenchmarkAnswerView(FormView):
         form = self.get_form(form_class)
         if form.is_valid():
             result = self.form_valid(form)
-            benchmark_answered.send(sender=self.__class__, request=request, user=request.user)
+            benchmark_answered.send(sender=self.__class__, request=request, user=request.user, benchmark=self.benchmark)
             return result
         else:
             return self.form_invalid(form)

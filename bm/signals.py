@@ -1,6 +1,8 @@
 from app.settings import MESSAGE_FIRST_ANSWER
+from django.contrib.admin.models import LogEntry, ADDITION, CHANGE
 from django.contrib import messages
 from django.contrib.auth.models import User
+from django.contrib.contenttypes.models import ContentType
 from django.core.mail import send_mail
 from django.db.models.signals import post_save, pre_save
 from django.dispatch import Signal
@@ -8,9 +10,11 @@ from django.dispatch import receiver
 from django.template import loader, Context
 from bm.models import QuestionResponse, BenchmarkPending
 from bm.tasks import send_invites
+from django.utils.encoding import force_unicode
 
-benchmark_answered = Signal(providing_args=['user',])
-benchmark_created = Signal(providing_args=['benchmark',])
+benchmark_answered = Signal(providing_args=['user', ])
+benchmark_created = Signal(providing_args=['benchmark', ])
+
 
 @receiver(benchmark_answered)
 def send_welcome_alert(sender, request, user, **kwargs):
@@ -63,3 +67,26 @@ def check_new_bm_created(sender, request, benchmark, **kwargs):
         'type': type
     })
     send_mail('New Benchmark has been created', template.render(context), None, recipient_list)
+
+
+@receiver(benchmark_created)
+def log_bm_creation(benchmark, **kwargs):
+    LogEntry.objects.log_action(
+        user_id=benchmark.owner.pk,
+        content_type_id=ContentType.objects.get_for_model(benchmark).pk,
+        object_id=benchmark.pk,
+        object_repr=force_unicode(benchmark),
+        action_flag=ADDITION,
+        change_message='Created new Benchmark'
+    )
+
+@receiver(benchmark_answered)
+def log_bm_creation(benchmark, user, **kwargs):
+    LogEntry.objects.log_action(
+        user_id=user.pk,
+        content_type_id=ContentType.objects.get_for_model(benchmark).pk,
+        object_id=benchmark.pk,
+        object_repr=force_unicode(benchmark),
+        action_flag=CHANGE,
+        change_message='Answered'
+    )
