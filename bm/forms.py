@@ -210,8 +210,8 @@ class RangeAnswerForm(forms.Form):
         number = decimals['number_of_decimal']
         max_value = (pow(10, number) - 1)
         min_value = (-(pow(10, number) - 1))
-        self.fields['min'] = forms.IntegerField(max_value=max_value, min_value=min_value)
-        self.fields['max'] = forms.IntegerField(max_value=max_value, min_value=min_value)
+        self.fields['min'] = forms.IntegerField(max_value=max_value, min_value=min_value, widget=forms.NumberInput(attrs={'placeholder': '1'}))
+        self.fields['max'] = forms.IntegerField(max_value=max_value, min_value=min_value, widget=forms.NumberInput(attrs={'placeholder': '1000000'}))
 
 
 class RankingAnswerForm(forms.Form):
