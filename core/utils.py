@@ -1,4 +1,9 @@
+from app import settings
 from django.http import HttpResponse
+import logging
+logging.config.dictConfig(settings.LOGGING)
+logger = logging.getLogger('bedade.background')
+
 
 
 def login_required_ajax(function=None, redirect_field_name=None):
@@ -20,3 +25,13 @@ def login_required_ajax(function=None, redirect_field_name=None):
         return _decorator
     else:
         return _decorator(function)
+
+
+def celery_log(func):
+    def _decorator():
+        try:
+            return func()
+        except:
+            logger.exception('')
+    _decorator.__name__ = func.__name__
+    return _decorator

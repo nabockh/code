@@ -171,25 +171,46 @@ ADMINS = (
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
+    'formatters': {
+        'simple': {
+            'format': '%(levelname)s %(message)s',
+            'datefmt': '%y %b %d, %H:%M:%S',
+        },
+    },
     'handlers': {
         'file': {
             'level': 'ERROR',
-            'class': 'logging.FileHandler',
-            'filename': 'log/error/web_worker.log',
+            'class': 'logging.handlers.RotatingFileHandler',
+            'filename': 'log/web_worker.log',
+            # 'formatter': 'simple',
+            'maxBytes': 1024 * 1024 * 100,  # 100 mb
         },
         'console': {
             'level': 'DEBUG',
             'class': 'logging.StreamHandler',
-            # 'formatter': 'simple'
+            'formatter': 'simple'
         },
         'mail_admins': {
             'level': 'ERROR',
             'class': 'django.utils.log.AdminEmailHandler',
-        }
+            # 'formatter': 'simple'
+        },
+        'celery': {
+            'level': 'DEBUG',
+            'class': 'logging.handlers.RotatingFileHandler',
+            'filename': 'log/celery.log',
+            # 'formatter': 'simple',
+            'maxBytes': 1024 * 1024 * 100,  # 100 mb
+        },
     },
     'loggers': {
         'django.request': {
-            'handlers': ['file', 'console', 'mail_admins'],
+            'handlers': ['file', 'mail_admins'],
+            'level': 'ERROR',
+            'propagate': True,
+        },
+        'bedade.background': {
+            'handlers': ['celery', 'mail_admins'],
             'level': 'ERROR',
             'propagate': True,
         },
