@@ -23,6 +23,8 @@ from django.views.generic import ListView, TemplateView
 from django.views.generic.edit import FormView
 from bm.signals import benchmark_answered, benchmark_created
 from django.db.models import Count
+
+import json
 import StringIO
 import xlsxwriter
 
@@ -496,6 +498,9 @@ class BenchmarkDetailView(FormView):
         context['countries'].insert(0, ['countries', 'count'])
         context['industries'] = list(industries)
         context['industries'].insert(0, ['industries', 'count'])
+
+        for field in ['role', 'geo', 'countries', 'industries']:
+            context[field] = json.dumps(context[field])
 
         # Count percentage in aggregated lists
         countries_percentage = list(countries)
