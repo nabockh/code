@@ -219,7 +219,6 @@ class BenchmarkHistoryView(ListView):
     model = Benchmark
 
     def get_context_data(self, **kwargs):
-        5/0
         data = super(BenchmarkHistoryView, self).get_context_data(**kwargs)
         data['contact_form'] = ContactForm()
         return data
