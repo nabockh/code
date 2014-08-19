@@ -3167,4 +3167,8 @@ ul#answerSortable {
         width: 100%;
         margin: 10px 0;
     }
+
+    .benchmark-help p.info {
+        margin-top: 15px;
+    }
 }
