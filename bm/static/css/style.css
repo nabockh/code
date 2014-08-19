@@ -3091,10 +3091,9 @@ ul#answerSortable {
     }
 
     form[role='beta-email'] .form-group {
-        width: 65%;
-    
+        width: 65%;    
         margin: 10px 0;
-}
+    }
 
     form[role='beta-email'] .btn-search {
         width: 35%;
@@ -3138,5 +3137,9 @@ ul#answerSortable {
 
     body.unauth {
         padding-top: 145px;
+    }
+
+    .container.top-navbar {
+        padding: 0 15px;
     }
 }
