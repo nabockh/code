@@ -3,8 +3,10 @@ from django.conf.urls import patterns
 from django.contrib import admin
 
 # Register your models here.
-from bm.models import Benchmark, BenchmarkPending, BenchmarkApproved
+from bm.models import Benchmark, BenchmarkPending, BenchmarkApproved, BenchmarkAuditLog
+from django.contrib.admin.models import LogEntry
 from django.contrib.admin.views.decorators import staff_member_required
+from django.contrib.contenttypes.models import ContentType
 from django.core.mail import send_mail
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
@@ -219,7 +221,6 @@ class BenchmarkApprovedAdmin(ReadOnlyAdminMixin, admin.ModelAdmin):
     question_description.short_description = 'Description'
     question_label.short_description = 'Label'
 
-
     def get_queryset(self, request):
         qs = super(BenchmarkApprovedAdmin, self).get_queryset(Benchmark)
         return qs.filter(approved=True)
@@ -238,5 +239,18 @@ class BenchmarkApprovedAdmin(ReadOnlyAdminMixin, admin.ModelAdmin):
 
     list_filter = ('popular', 'start_date', 'owner')
 
+
+class BenchmarkAuditLogAdmin(ReadOnlyAdminMixin, admin.ModelAdmin):
+
+    list_display = ('action_time', 'object_repr', 'user', 'change_message')
+    fields = ('object_repr', 'user', 'change_message')
+    readonly_fields = ('object_repr', 'user', 'change_message')
+    list_filter = ('user', 'object_repr')
+
+    def get_queryset(self, request):
+        return LogEntry.objects.filter(content_type_id=ContentType.objects.get_for_model(Benchmark).pk,)\
+            .order_by('-id', 'object_id')
+
 admin.site.register(BenchmarkPending, BenchmarkPendingAdmin)
 admin.site.register(BenchmarkApproved, BenchmarkApprovedAdmin)
+admin.site.register(BenchmarkAuditLog, BenchmarkAuditLogAdmin)

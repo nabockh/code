@@ -560,7 +560,7 @@ input.btn.full-width, .btn.full-width {
 .colorblock.map {
     padding: 0;
     min-height: 250px;
-    background-image: url('../img/map.jpg');
+    background-image: url('../img/map.png');
 }
 
     .colorblock.map iframe {
@@ -626,10 +626,16 @@ input.btn.full-width, .btn.full-width {
     color: #3d4d77;
     font-size: 18px;
     font-weight: 500;
-    margin-bottom: 15px;
     padding-left: 65px;
     position: relative;
+    display: table-cell;
+    vertical-align: middle;
+    height: 50px;
 }
+
+    .how-it-works .title + p {
+        margin-top: 10px
+    }
 
     .how-it-works .title:before {
         font-size: 4.5rem;
@@ -3085,10 +3091,9 @@ ul#answerSortable {
     }
 
     form[role='beta-email'] .form-group {
-        width: 65%;
-    
+        width: 65%;    
         margin: 10px 0;
-}
+    }
 
     form[role='beta-email'] .btn-search {
         width: 35%;
@@ -3132,5 +3137,9 @@ ul#answerSortable {
 
     body.unauth {
         padding-top: 145px;
+    }
+
+    .container.top-navbar {
+        padding: 0 15px;
     }
 }
