@@ -194,7 +194,7 @@ class BenchmarkCreateWizardView(CookieWizardView):
                     rank = QuestionRanking(label=rank, order=i)
                     question.ranks.add(rank)
             elif question.type == Question.NUMERIC or question.type == Question.RANGE:
-                question.options.add(QuestionOptions(step3.cleaned_data.get('units'), step3.cleaned_data.get('max_number_of_decimal')))
+                question.options.add(QuestionOptions(step3.cleaned_data.get('units'), None))
 
             step2_data = self.storage.get_step_data('1')
             for contact in step2.selected_contacts:
@@ -291,7 +291,7 @@ class BaseBenchmarkAnswerView(FormView):
         form = self.get_form(form_class)
         if form.is_valid():
             result = self.form_valid(form)
-            benchmark_answered.send(sender=self.__class__, request=request, user=request.user, benchmark=self.benchmark)
+            benchmark_answered.send(sender=self.__class__, request=request, user=request.user)
             return result
         else:
             return self.form_invalid(form)
@@ -366,11 +366,6 @@ class RangeAnswerView(BaseBenchmarkAnswerView):
     def dispatch(self, request, benchmark, *args, **kwargs):
         self.benchmark = benchmark
         return super(BaseBenchmarkAnswerView, self).dispatch(self.request, *args, **kwargs)
-
-    def get_form_kwargs(self):
-        kwargs = super(RangeAnswerView, self).get_form_kwargs()
-        kwargs['decimals'] = self.benchmark.question.first().options.values('number_of_decimal')[0]
-        return kwargs
 
     def form_valid(self, form):
         if form.is_valid():
