@@ -31,6 +31,7 @@ class HomeView(TemplateView):
             last_name = form.cleaned_data['last_name']
             comments = form.cleaned_data['comment']
             recipient_list = User.objects.filter(is_superuser=True).values_list('email', flat=True)
+            recipient_list = [email for email in recipient_list if email]
             if recipient_list:
                 send_mail('Customer feedback', comments, last_name + '' + first_name, recipient_list)
             return HttpResponseRedirect('/')
@@ -59,7 +60,7 @@ class DashboardView(TemplateView):
         context['history'] = Benchmark.valid.filter(owner=self.request.user, end_date__lte=datetime.now()).order_by('-end_date')[:5]
         context['benchmarks'] = {
             'pending': Benchmark.pending.filter(owner=self.request.user),
-            'recent': context['history'],
+            'recent': Benchmark.objects.filter(approved=True, question__responses__user=self.request.user),
             'popular': Benchmark.valid.filter(popular=True)
         }
         context['contact_form'] = ContactForm()
