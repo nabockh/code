@@ -2533,7 +2533,7 @@ ul#answerSortable {
 /*  */
 
 .statGraph {
-    width: 334px;
+    width: 100%;
     height: 238px;
     margin: 0 auto;
     overflow: hidden;
@@ -2601,10 +2601,10 @@ ul#answerSortable {
         transform: translate(-50%, -50%);
     }
 
-/*body.preloading {
-    overflow: hidden;
-    padding-right: 15px;
-}*/
+.unauth .centered-middle {
+    float: none;
+    margin: 0 auto;
+}
 
 /* RESPONSIVENESS */
 
@@ -2938,11 +2938,6 @@ ul#answerSortable {
         margin: 0 -30px;
     }
 
-        .open-benchmark-container .benchmark-help p span {
-            width: 45%;
-            display: inline-block;
-        }
-
     h1.not-found {
         margin: 20px auto;
         text-align: center;
@@ -3141,5 +3136,35 @@ ul#answerSortable {
 
     .container.top-navbar {
         padding: 0 15px;
+    }
+
+    .colorblock.map {
+        display: none;
+    }
+
+    .contact-info {
+        background: #fff;
+        border-radius: 5px;
+        padding: 40px 0 45px;
+        border: 1px solid #E2E2E2;
+    }
+
+        .contact-info p {
+            display: block;
+        }
+
+    .open-benchmark-container .benchmark-help p span {
+        display: block;
+        width: 100%;
+    }
+    
+    .mobile-wide {
+        margin: -30px -25px 0 !important;
+    }
+
+    .title-header select {
+        float: none;
+        width: 100%;
+        margin: 10px 0;
     }
 }
