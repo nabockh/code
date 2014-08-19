@@ -1,4 +1,4 @@
-{% for benchmark in history %}
+{% for benchmark in history|slice:":{{ max_items }}" %}
     <div class='recent-benchmark-link'>
         <a href='{% url 'bm_details' benchmark.id %}' title='{{ benchmark.name }}'>{{ benchmark.name }}</a>
     </div>

@@ -10,75 +10,7 @@
         <div class="carousel-inner">
             {% for benchmark in benchmarks.popular|slice:":5" %}
                 <div class="item active">
-                    <div class='title' title='{{ benchmark.name }}'><a
-                            href='/benchmark/{{ benchmark.id }}'>{{ benchmark.name }}</a></div>
-                    {% if benchmark.question_type == 1 %}
-                        <div id='donutChart_popular-{{ benchmark.id }}' class='bigChart donut'></div>
-                        <script type="text/javascript">
-                            var mainChartData_popular_{{ benchmark.id }} = {{ benchmark.charts|safe }};
-                            drawPieChart(mainChartData_popular_{{ benchmark.id }}.pie, 'donutChart_popular-{{ benchmark.id }}');
-                        </script>
-
-                    {% elif benchmark.question_type == 2 %}
-                        <div id='columnChart_popular-{{ benchmark.id }}' class='bigChart'></div>
-                        <script type="text/javascript">
-                            var mainChartData_popular_{{ benchmark.id }} = {{ benchmark.charts|safe }};
-                            drawColumnChart(mainChartData_popular_{{ benchmark.id }}.column, 'columnChart_popular-{{ benchmark.id }}');
-                        </script>
-
-
-                    {% elif benchmark.question_type == 3 %}
-                        <div id='bellcurveChart_popular-{{ benchmark.id }}' class='bigChart'></div>
-                        <div class='benchmark-stats perc-based'>
-                            <div class='single-stat'>
-                                <span class='title'>Min</span>
-                                <span class='value' id='minVal_popular-{{ benchmark.id }}'></span>
-                            </div>
-                            <div class='single-stat'>
-                                <span class='title'>Max</span>
-                                <span class='value' id='maxVal_popular-{{ benchmark.id }}'></span>
-                            </div>
-                            <div class='single-stat'>
-                                <span class='title'>Avg</span>
-                                <span class='value' id='avgVal_popular-{{ benchmark.id }}'></span>
-                            </div>
-                            <div class='single-stat'>
-                                <span class='title'>SD</span>
-                                <span class='value' id='sdVal_popular-{{ benchmark.id }}'></span>
-                            </div>
-                        </div>
-
-                        <script type="text/javascript">
-                            var mainChartData_popular_{{ benchmark.id }} = {{ benchmark.charts|safe }};
-
-                            $(function () {
-                                $("#minVal_popular-{{ benchmark.id }}").text(mainChartData_popular_{{ benchmark.id }}.bell_curve.min);
-                                $("#maxVal_popular-{{ benchmark.id }}").text(mainChartData_popular_{{ benchmark.id }}.bell_curve.max);
-                                $("#avgVal_popular-{{ benchmark.id }}").text(mainChartData_popular_{{ benchmark.id }}.bell_curve.avg);
-                                var sd = mainChartData_popular_{{ benchmark.id }}.bell_curve.sd.toFixed(1);
-                                $("#sdVal_popular-{{ benchmark.id }}").text(sd);
-                            });
-                            drawBellcurveChart(mainChartData_popular_{{ benchmark.id }}.bell_curve, 'bellcurveChart_popular-{{ benchmark.id }}');
-                        </script>
-
-                    {% elif benchmark.question_type == 5 %}
-                        <div id='lineChart_popular-{{ benchmark.id }}' class='bigChart'></div>
-                        <script type="text/javascript">
-                            var mainChartData_popular_{{ benchmark.id }} = {{ benchmark.charts|safe }};
-                            drawLineChart(mainChartData_popular_{{ benchmark.id }}.line, 'lineChart_popular-{{ benchmark.id }}');
-                        </script>
-                    {% endif %}
-
-                    <div class='benchmark-footer text-center'>
-                        <span class='color-blue'><i
-                                class='fa fa-user'></i> {{ benchmark.contributors }} Contributors</span>
-                        <span class='separator'></span>
-                                    <span class='rated-value'>
-                                        <div class='fill-value'
-                                             style='width: {% widthratio benchmark.calc_average_rating 5 100 %}%'></div>
-                                    </span>
-                        <span class='color-grey'>({{ benchmark.calc_average_rating }})</span>
-                    </div>
+                    {% include "cms/dashboard/bm_item.html" %}
                 </div>
             {% empty %}
 
