@@ -344,9 +344,17 @@ class QuestionRanking(models.Model):
 
 
 class QuestionOptions(models.Model):
+    UNITS = (
+        ('$', '$'),
+        ('\xe2\x82\xac', '\xe2\x82\xac'),
+        ('\xc2\xa3', '\xc2\xa3'),
+        ('%', '%'),
+        ('year', 'year'),
+        ('trades', 'trades'),
+        ('clients', 'clients')
+    )
     question = models.ForeignKey(Question, rel_class=models.OneToOneRel, related_name='options')
     units = models.CharField(max_length=50)
-    number_of_decimal = models.PositiveSmallIntegerField(default=2)
 
     def __init__(self, units, number_of_decimal, *args, **kwargs):
         super(QuestionOptions, self).__init__(*args, **kwargs)
@@ -418,7 +426,7 @@ class BenchmarkApproved(Benchmark):
     class Meta:
         proxy = True
         verbose_name = 'Benchmark Approved'
-        verbose_name_plural = 'Benchmarks Approved'
+        verbose_name_plural = 'Benchmark Approved'
 
     def get_admin_url(self):
         content_type = ContentType.objects.get_for_model(self)

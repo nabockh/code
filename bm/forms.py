@@ -4,7 +4,7 @@ from app import settings
 from app.settings import BENCHMARK_DURATIONS_DAYS
 import re
 from bm.validators import multiple_choice_validator
-from bm.models import Question, Region
+from bm.models import Question, Region, QuestionOptions
 from django import forms
 from bm.widgets import RankingWidget
 from django.db.models import Q
@@ -20,8 +20,7 @@ class CreateBenchmarkStep12Form(forms.Form):
     question_text = forms.CharField(widget=forms.Textarea())
     question_type = forms.ChoiceField(choices=Question.TYPES)
     answer_options = forms.CharField(widget=forms.Textarea(), validators=[multiple_choice_validator])
-    units = forms.CharField(max_length=50, initial='$')
-    max_number_of_decimal = forms.IntegerField(min_value=1, max_value=6)
+    units = forms.ChoiceField(initial='$', choices=QuestionOptions.UNITS)
     additional_comments = forms.CharField(widget=forms.Textarea(attrs={'maxlength': 10000}),
                                           required=False)
     min_value = 1 if settings.DEBUG else 5
@@ -36,7 +35,6 @@ class CreateBenchmarkStep12Form(forms.Form):
         question_type = int(data and data.get(kwargs['prefix'] + '-question_type', '1') or '1')
         if question_type == Question.MULTIPLE or question_type == Question.RANKING:
             self.fields['units'].required = False
-            self.fields['max_number_of_decimal'].required = False
         elif question_type == Question.NUMERIC or question_type == Question.RANGE:
             self.fields['answer_options'].required = False
 
@@ -181,7 +179,6 @@ class CreateBenchmarkStep4Form(CreateBenchmarkStep12Form):
             'question_type': step0data.get('0-question_type'),
             'answer_options': step0data.get('0-answer_options'),
             'units': step0data.get('0-units'),
-            'max_number_of_decimal': step0data.get('0-max_number_of_decimal'),
             'minimum_number_of_answers': step0data.get('0-minimum_number_of_answers'),
         }
         kwargs['initial'] = initial
@@ -197,21 +194,22 @@ class AnswerMultipleChoiceForm(forms.Form):
 
 
 class NumericAnswerForm(forms.Form):
-    def __init__(self, decimals, *args, **kwargs):
-        super(NumericAnswerForm, self).__init__(*args, **kwargs)
-        number = decimals['number_of_decimal']
-        value = (pow(10, number) - 1)
-        self.fields['numeric_box'] = forms.IntegerField(max_value=value, min_value=-value)
+    numeric_box = forms.IntegerField(min_value=0, max_value=1000000)
 
 
 class RangeAnswerForm(forms.Form):
-    def __init__(self, decimals, *args, **kwargs):
+    min = forms.IntegerField(min_value=0, max_value=1000000, widget=forms.NumberInput(attrs={'placeholder': '1'}))
+    max = forms.IntegerField(min_value=0, max_value=1000000, widget=forms.NumberInput(attrs={'placeholder': '1000000'}))
+
+    def __init__(self, *args, **kwargs):
         super(RangeAnswerForm, self).__init__(*args, **kwargs)
-        number = decimals['number_of_decimal']
-        max_value = (pow(10, number) - 1)
-        min_value = (-(pow(10, number) - 1))
-        self.fields['min'] = forms.IntegerField(max_value=max_value, min_value=min_value, widget=forms.NumberInput(attrs={'placeholder': '1'}))
-        self.fields['max'] = forms.IntegerField(max_value=max_value, min_value=min_value, widget=forms.NumberInput(attrs={'placeholder': '1000000'}))
+        data = kwargs.get('data', {})
+        self.fields['max'].min_value = data.get('min', 0)
+
+    def clean_max(self):
+        if self.cleaned_data['min'] > self.cleaned_data['max']:
+            self.errors['max'] = self.error_class(['Value should be more or equal %d' % self.cleaned_data['min']])
+        return self.cleaned_data['max']
 
 
 class RankingAnswerForm(forms.Form):
