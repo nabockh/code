@@ -560,7 +560,7 @@ input.btn.full-width, .btn.full-width {
 .colorblock.map {
     padding: 0;
     min-height: 250px;
-    background-image: url('../img/map.jpg');
+    background-image: url('../img/map.png');
 }
 
     .colorblock.map iframe {
