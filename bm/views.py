@@ -156,7 +156,6 @@ class BenchmarkCreateWizardView(CookieWizardView):
         context = super(BenchmarkCreateWizardView, self).get_context_data(form, **kwargs)
         if self.steps.current == '2':
             context['selected_contacts'] = self.selected_contacts if hasattr(self, 'selected_contacts') else []
-        context['contact_form'] = ContactForm()
         return context
 
     def done(self, form_list, preview=False, **kwargs):
@@ -279,7 +278,6 @@ class BaseBenchmarkAnswerView(FormView):
         context = super(BaseBenchmarkAnswerView, self).get_context_data(**kwargs)
         context['benchmark'] = self.benchmark
         context['contributors'] = self.benchmark.invites.count()
-        context['contact_form'] = ContactForm()
         return context
 
     def post(self, request, *args, **kwargs):
