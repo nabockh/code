@@ -120,6 +120,7 @@ class HomeHowItWorksPlugin(CMSPluginBase):
     name = "How It Works"
     model = HomeHowItWorks
     render_template = "cms/home/how_it_works.html"
+    allow_children = True
 
 plugin_pool.register_plugin(DashboardPanelGroupPlugin)
 plugin_pool.register_plugin(DashboardPanelPlugin)
