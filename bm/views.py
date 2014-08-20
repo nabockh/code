@@ -389,11 +389,6 @@ class NumericAnswerView(BaseBenchmarkAnswerView):
         self.benchmark = benchmark
         return super(BaseBenchmarkAnswerView, self).dispatch(self.request, *args, **kwargs)
 
-    def get_form_kwargs(self):
-        kwargs = super(NumericAnswerView, self).get_form_kwargs()
-        kwargs['decimals'] = self.benchmark.question.first().options.values('number_of_decimal')[0]
-        return kwargs
-
     def form_valid(self, form):
         if form.is_valid():
             with transaction.atomic():
