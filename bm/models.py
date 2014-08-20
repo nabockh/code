@@ -52,9 +52,10 @@ class BenchmarkValidManager(BenchmarkManager):
 
 class BenchmarkPendingManager(models.Manager):
     def get_queryset(self):
-        return super(BenchmarkPendingManager, self).get_queryset()\
-            .annotate(responses_count=Count('question__responses'))\
-            .filter(approved=True, end_date__gt=datetime.now())
+        return super(BenchmarkPendingManager, self).get_queryset() \
+            .annotate(responses_count=Count('question__responses')) \
+            .exclude(approved=False) \
+            .filter(end_date__gt=datetime.now())
 
 
 class Benchmark(models.Model):
