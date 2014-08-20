@@ -1,4 +1,10 @@
+{% load cms_tags %}
+
 <div class="col-md-4 how-it-works">
     <div class='title {{ instance.type }}'>{{ instance.label }}</div>
-    <p>{{ instance.description }}</p>
+     {% for plugin in instance.child_plugin_instances %}
+        {% render_plugin plugin %}
+     {% empty %}
+         <pre>{{ instance.description }}</pre>
+     {% endfor %}
 </div>
