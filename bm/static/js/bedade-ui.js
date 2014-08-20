@@ -99,8 +99,9 @@ $(function () {
     $( "#id_Contributor_Data" ).on('change', statisticViewChange);
     $( "#id_Benchmark_Results" ).on('change', chartTypeChange);
 
-    $('.carousel-inner .item:not(:first-child)').removeClass('active');
-
+    $('#myRecentBenchmarks .item:not(:first-child)').removeClass('active');
+    $('#popularComunityBenchmarks .item:not(:first-child)').removeClass('active');
+    
     $( ".dashboard-progress-block .progress .progress-bar" ).each(function() {
         var dataProgress = $(this).attr('aria-valuenow');
         if (dataProgress <= 33) {
@@ -133,21 +134,14 @@ $(function () {
        e.stopPropagation();
     });
 
-    $('.cms_plugin .example-block').on('click', function(e) {
-       $(this).addClass('active').removeClass('closed').parents('.cms_plugin').siblings().children('.example-block').addClass('closed').removeClass('active');
-       e.stopPropagation();
-    });
-
     $("html").click(function() {
         $(".example-block").removeClass('closed active');
-        $(".add_help .add_help_inner").removeClass('visible');
     });
 
     // Tooltips
 
-    $('.add_help').on('click', function(e) {
+    $('.add_help').on('click', function() {
        $(this).children('.add_help_inner').toggleClass('visible');
-       e.stopPropagation();
     });
 
     // Rating Functionality
@@ -155,7 +149,7 @@ $(function () {
     $('.rating').on('click', '[data-score]', function() {
         var csrf = document.cookie.match(/csrftoken=([\w]+)/);
         var request = $.post(window.location.pathname, {'csrfmiddlewaretoken' : csrf? csrf[1] : null,
-                                                        'rate' : $(this).attr('data-score')});
+                                          'rate' : $(this).attr('data-score')});
         request.done(function (response){
             $('.color-grey').html("(" + response + ")");
             var rate_percentage =  response/5*100 + '%';
@@ -381,5 +375,45 @@ $( document ).ready(function() {
         else {
             $('body').removeClass('fixed-navs')
         }
+    });
+
+    //Selectbox customize
+    $('select').each(function(){
+        var $select = $(this);
+        var width = $select.parents('div:eq(0)').width();
+        $select.prev('.select2-container').remove();
+        //$select.parents().filter(':display-none').each(function(){
+        //    $select.data('display', $select.css('display')).show();
+        //    $select.css('display', $select.data('display'));
+        //});
+        $select2 = $select.removeAttr('style').css('width', width).select2({placeholder: "Select a State"});
+        $select2.on("select2-open", function(){ $('.select2-offscreen > .select2-input').blur();}); // Workaround not to show cursor on iPad
+    });
+
+});
+$(window).on('resize', function(){
+    $('select').each(function(){
+        var $select = $(this);
+        var width = $select.parents('div:eq(0)').width();
+        $select.prev('.select2-container').remove();
+        //$select.parents().filter(':display-none').each(function(){
+        //    $select.data('display', $select.css('display')).show();
+        //    $select.css('display', $select.data('display'));
+        //});
+        $select2 = $select.removeAttr('style').css('width', width).select2({placeholder: "Select a State"});
+        $select2.on("select2-open", function(){ $('.select2-offscreen > .select2-input').blur();}); // Workaround not to show cursor on iPad
+    });
+});
+$(document).ajaxStop(function() {
+    $('select').each(function(){
+        var $select = $(this);
+        var width = $select.parents('div:eq(0)').width();
+        $select.prev('.select2-container').remove();
+        //$select.parents().filter(':display-none').each(function(){
+        //    $select.data('display', $select.css('display')).show();
+        //    $select.css('display', $select.data('display'));
+        //});
+        $select2 = $select.removeAttr('style').css('width', width).select2({placeholder: "Select a State"});
+        $select2.on("select2-open", function(){ $('.select2-offscreen > .select2-input').blur();}); // Workaround not to show cursor on iPad
     });
 });
