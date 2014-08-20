@@ -156,7 +156,6 @@ class BenchmarkCreateWizardView(CookieWizardView):
         context = super(BenchmarkCreateWizardView, self).get_context_data(form, **kwargs)
         if self.steps.current == '2':
             context['selected_contacts'] = self.selected_contacts if hasattr(self, 'selected_contacts') else []
-        context['contact_form'] = ContactForm()
         return context
 
     def done(self, form_list, preview=False, **kwargs):
@@ -279,7 +278,6 @@ class BaseBenchmarkAnswerView(FormView):
         context = super(BaseBenchmarkAnswerView, self).get_context_data(**kwargs)
         context['benchmark'] = self.benchmark
         context['contributors'] = self.benchmark.invites.count()
-        context['contact_form'] = ContactForm()
         return context
 
     def post(self, request, *args, **kwargs):
@@ -390,11 +388,6 @@ class NumericAnswerView(BaseBenchmarkAnswerView):
     def dispatch(self, request, benchmark, *args, **kwargs):
         self.benchmark = benchmark
         return super(BaseBenchmarkAnswerView, self).dispatch(self.request, *args, **kwargs)
-
-    def get_form_kwargs(self):
-        kwargs = super(NumericAnswerView, self).get_form_kwargs()
-        kwargs['decimals'] = self.benchmark.question.first().options.values('number_of_decimal')[0]
-        return kwargs
 
     def form_valid(self, form):
         if form.is_valid():

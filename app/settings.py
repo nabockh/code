@@ -109,6 +109,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'django.core.context_processors.static',
     'cms.context_processors.cms_settings',
     'sekizai.context_processors.sekizai',
+    'core.context_prepocessos.contact_form',
 )
 
 MESSAGE_STORAGE = 'django.contrib.messages.storage.cookie.CookieStorage'
