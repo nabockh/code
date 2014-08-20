@@ -99,7 +99,7 @@ approve_benchmark.short_description = "Approve selected benchmarks"
 
 def make_popular(modeladmin, request, queryset):
     queryset.update(popular=True)
-approve_benchmark.short_description = "Mark selected benchmarks as popular"
+make_popular.short_description = "Mark selected benchmarks as popular"
 
 
 class BenchmarkPendingAdmin(ReadOnlyAdminMixin, admin.ModelAdmin):
