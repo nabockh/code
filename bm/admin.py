@@ -26,6 +26,9 @@ class CustomUserAdmin(UserAdmin):
     save_on_top = True
     list_display = ('username', 'email', 'first_name', 'last_name', 'is_staff', 'last_login')
 
+    class Media:
+        js = ['js/admin-custom-ui.js']
+
     def response_change(self, request, obj):
         if '_send_mail' in request.POST:
             return HttpResponseRedirect('/admin/auth/user/%s/send_mail' % obj.id)

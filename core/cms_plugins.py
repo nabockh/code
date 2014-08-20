@@ -87,6 +87,7 @@ class DashboardPopularPlugin(CMSPluginBase):
             context['benchmarks'] = {
                 'popular': Benchmark.valid.filter(
                                 popular=True,
+                                end_date__lte=datetime.now(),
                                 _industry=context['request'].user.social_profile.first().company.industry) \
                             .order_by('-end_date')
             }

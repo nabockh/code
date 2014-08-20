@@ -74,6 +74,7 @@ class DashboardView(TemplateView):
                 .order_by('-end_date')[:5],
             'popular': Benchmark.valid.filter(
                                 popular=True,
+                                end_date__lte=datetime.now(),
                                 _industry=self.request.user.social_profile.first().company.industry) \
                             .order_by('-end_date')
         }
