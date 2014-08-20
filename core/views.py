@@ -12,6 +12,7 @@ from django.contrib.auth.models import User
 from django.utils.decorators import method_decorator
 from social.forms import EmailInvitationRequest
 from social.models import Invite
+import django.db.models as models
 
 
 class HomeView(TemplateView):
@@ -63,8 +64,19 @@ class DashboardView(TemplateView):
         context['history'] = Benchmark.valid.filter(owner=self.request.user, end_date__lte=datetime.now()).order_by('-end_date')[:5]
         context['benchmarks'] = {
             'pending': Benchmark.pending.filter(owner=self.request.user),
-            'recent': Benchmark.objects.filter(approved=True, question__responses__user=self.request.user),
-            'popular': Benchmark.valid.filter(popular=True)
+            'recent': Benchmark.objects \
+                .annotate(responses_count=models.Count('question__responses')) \
+                .filter(models.Q(approved=True,
+                                 responses_count__gte=models.F('min_numbers_of_responses'),
+                                 end_date__lte=datetime.now()) &
+                        (models.Q(question__responses__user=self.request.user) |
+                         models.Q(owner=self.request.user)) ) \
+                .order_by('-end_date')[:5],
+            'popular': Benchmark.valid.filter(
+                                popular=True,
+                                end_date__lte=datetime.now(),
+                                _industry=self.request.user.social_profile.first().company.industry) \
+                            .order_by('-end_date')
         }
         context['contact_form'] = ContactForm()
         return context
