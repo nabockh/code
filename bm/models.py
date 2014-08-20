@@ -190,7 +190,8 @@ class BenchmarkRanking(Benchmark):
         series1.insert(0, ['series', 'count'])
         series2 = self.series_statistic.values('series').annotate(count=ArrayAgg('value')).order_by('series')
         series2 = [[str(s['series'])] + s['count'][::-1] for s in series2]
-        series2.insert(0, ['series'] + [str(i) for i in range(1, len(s['count']) + 1)])
+        if series2:
+            series2.insert(0, ['series'] + [str(i) for i in range(1, len(s['count']) + 1)])
         return {
             'pie': series1,
             'column': series2,

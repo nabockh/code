@@ -139,22 +139,32 @@ BEGIN
       VALUES (
         a_point.benchmark_id, a_point.min, a_point.max, a_point.avg, a_point.stddev
       );
-    v_groups_count := 3;
-    from_ := a_point.min;
-    to_ := a_point.max - from_;
-    IF to_/v_groups_count = 1 THEN
-      v_groups_count := 2;
-    END IF;
-    to_ := to_ + (v_groups_count - to_%v_groups_count);
-    v_groups_step := CEIL(to_/v_groups_count::float)::INTEGER;
+
+    v_groups_count := LEAST(10, a_point.count);
     INSERT INTO "bm_seriesstatistic" ("benchmark_id", "series", "value")
       (
         WITH ranges AS (
           SELECT
-            s::text||'-'||(s + v_groups_step - 1)::text as "range",
-            s as "r_min",
-            s + v_groups_step - 1 as "r_max"
-          FROM generate_series(from_, to_, v_groups_step) AS s)
+            "r_min"::text||'-'||"r_max"::text as "range",
+            r_min,
+            r_max
+          FROM (
+            SELECT lag("lowest", 1, -1) over(order by "lowest") + 1 as "r_min", greatest("lowest", "highest") as "r_max" from (
+              SELECT DISTINCT
+                lowest, highest
+              FROM (SELECT
+                      count("id"),
+                      min("value") AS "lowest",
+                      max("value") AS "highest",
+                      rank
+                    FROM (SELECT *, ntile(v_groups_count) OVER (ORDER BY "value") AS "r_rank"
+                           FROM bm_responsenumeric
+                         ) AS ranked
+                    GROUP BY ranked.r_rank
+                    ORDER BY "lowest"
+                   ) AS uniq
+              ) as range
+            ) AS s)
         SELECT
           bm_id,
           r.range,
