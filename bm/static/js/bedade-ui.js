@@ -99,9 +99,8 @@ $(function () {
     $( "#id_Contributor_Data" ).on('change', statisticViewChange);
     $( "#id_Benchmark_Results" ).on('change', chartTypeChange);
 
-    $('#myRecentBenchmarks .item:not(:first-child)').removeClass('active');
-    $('#popularComunityBenchmarks .item:not(:first-child)').removeClass('active');
-    
+    $('.carousel-inner .item:not(:first-child)').removeClass('active');
+
     $( ".dashboard-progress-block .progress .progress-bar" ).each(function() {
         var dataProgress = $(this).attr('aria-valuenow');
         if (dataProgress <= 33) {
