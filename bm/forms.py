@@ -14,8 +14,8 @@ from math import pow
 
 class CreateBenchmarkStep12Form(forms.Form):
     name = forms.CharField(max_length=45)
-    industry = forms.ChoiceField()
-    geo = forms.ChoiceField(required=False)
+    industry = forms.MultipleChoiceField()
+    geo = forms.MultipleChoiceField()
     question_label = forms.CharField(max_length=255)
     question_text = forms.CharField(widget=forms.Textarea())
     question_type = forms.ChoiceField(choices=Question.TYPES)
@@ -40,8 +40,8 @@ class CreateBenchmarkStep12Form(forms.Form):
 
 
 class CreateBenchmarkStep3Form(forms.Form):
-    industry = forms.ChoiceField(required=False)
-    geo = forms.ChoiceField(required=False)
+    industry = forms.MultipleChoiceField(required=False)
+    geo = forms.MultipleChoiceField(required=False)
     role = forms.CharField(max_length=200, required=False)
     name = forms.CharField(max_length=100, required=False)
 
