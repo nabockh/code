@@ -33,7 +33,7 @@ class DashboardHistoryPlugin(CMSPluginBase):
         context['placeholder'] = placeholder
         context['max_items'] = instance.max_items
         context['history'] = Benchmark.valid.filter(owner=context['request'].user, end_date__lte=datetime.now())\
-            .order_by('-end_date')[:instance.max_items]
+            .order_by('-end_date', '-id')[:instance.max_items]
         return context
 
 
@@ -47,7 +47,7 @@ class DashboardPendingPlugin(CMSPluginBase):
         context['instance'] = instance
         context['placeholder'] = placeholder
         context['benchmarks'] = {
-            'pending': Benchmark.pending.filter(owner=context['request'].user),
+            'pending': Benchmark.pending.filter(owner=context['request'].user).order_by('-end_date', '-id'),
         }
         return context
 
@@ -69,7 +69,7 @@ class DashboardRecentPlugin(CMSPluginBase):
                                  end_date__lte=datetime.now()) &
                         (models.Q(question__responses__user=context['request'].user) |
                          models.Q(owner=context['request'].user)) ) \
-                .order_by('-end_date')[:5]
+                .order_by('-end_date', '-id')[:5]
         }
         return context
 
@@ -89,7 +89,7 @@ class DashboardPopularPlugin(CMSPluginBase):
                                 popular=True,
                                 end_date__lte=datetime.now(),
                                 _industry=context['request'].user.social_profile.first().company.industry) \
-                            .order_by('-end_date')
+                            .order_by('-end_date', '-id')
             }
         return context
 
