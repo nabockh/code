@@ -193,11 +193,13 @@ class BenchmarkCreateWizardView(CookieWizardView):
 
             if question.type == Question.MULTIPLE:
                 choices = step3.cleaned_data['answer_options'].split('\r\n')
+                choices = [option for option in choices if option]
                 for i, choice in enumerate(choices, start=1):
                     choice = QuestionChoice(label=choice, order=i)
                     question.choices.add(choice)
             elif question.type == Question.RANKING:
                 ranks = step3.cleaned_data['answer_options'].split('\r\n')
+                ranks = [option for option in ranks if option]
                 for i, rank in enumerate(ranks, start=1):
                     rank = QuestionRanking(label=rank, order=i)
                     question.ranks.add(rank)

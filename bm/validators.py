@@ -14,13 +14,14 @@ class MultipleChoiceValidator(object):
             options = value.split('\r')
             if len(options) == 1:
                 options = value.split('\n')
-        if len(options) > 1 and all(options):
+        options = [option for option in options if option]
+        if len(options) > 1:
             if len(options) > 10:
                 raise ValidationError(self.message_max, code=self.code)
             for option in options:
                 if len(option) > 45:
                     raise ValidationError(self.message_max_one_item, code=self.code)
-            return value
+            return '\r\n'.join(options)
         raise ValidationError(self.message, code=self.code)
 
 
