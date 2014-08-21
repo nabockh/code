@@ -110,6 +110,11 @@ class Benchmark(models.Model):
         if hasattr(self, 'responses_count'):
             return min(int(round(float(self.responses_count)/self.min_numbers_of_responses*100)), 100)
 
+    @property
+    def geography(self):
+        region = self.geographic_coverage.first()
+        return region.name if region else 'Global'
+
     def create_link(self):
         link = BenchmarkLink()
         self.links.add(link)
