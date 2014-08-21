@@ -1,6 +1,8 @@
-CREATE OR REPLACE FUNCTION benchmark_aggregate(IN bm_id INTEGER)
-  RETURNS INTEGER AS $$
-DECLARE
+CREATE OR REPLACE FUNCTION benchmark_aggregate (bm_id int4)
+  RETURNS int4
+AS
+$BODY$
+  DECLARE
   type_               INTEGER;
   from_               INTEGER;
   to_                 INTEGER;
@@ -128,7 +130,8 @@ BEGIN
       min("rn".value),
       max("rn".value),
       avg("rn".value),
-      stddev("rn".value)
+      stddev("rn".value),
+      count("rn".value)
     INTO a_point
     FROM "bm_responsenumeric" AS "rn"
       INNER JOIN "bm_questionresponse" ON "bm_questionresponse"."id" = "rn"."response_id"
@@ -153,12 +156,17 @@ BEGIN
               SELECT DISTINCT
                 lowest, highest
               FROM (SELECT
-                      count("id"),
+                      count("response_id"),
                       min("value") AS "lowest",
                       max("value") AS "highest",
-                      rank
-                    FROM (SELECT *, ntile(v_groups_count) OVER (ORDER BY "value") AS "r_rank"
-                           FROM bm_responsenumeric
+                      "r_rank"
+                    FROM (SELECT "rn"."response_id", "rn"."value",
+                                 ntile(v_groups_count) OVER (ORDER BY "value") AS "r_rank"
+                           FROM bm_responsenumeric rn
+                              INNER JOIN "bm_questionresponse" ON "bm_questionresponse"."id" = "rn"."response_id"
+                              INNER JOIN "bm_question" ON "bm_question"."id" = "bm_questionresponse"."question_id"
+                              INNER JOIN "bm_benchmark" ON "bm_benchmark"."id" = "bm_question"."benchmark_id"
+                           WHERE "bm_benchmark"."id" = bm_id
                          ) AS ranked
                     GROUP BY ranked.r_rank
                     ORDER BY "lowest"
@@ -206,4 +214,5 @@ BEGIN
   END IF;
   RETURN bm_id;
 END;
-$$ LANGUAGE plpgsql;
+$BODY$
+LANGUAGE plpgsql VOLATILE;
