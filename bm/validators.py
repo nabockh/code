@@ -10,6 +10,10 @@ class MultipleChoiceValidator(object):
 
     def __call__(self, value):
         options = value.split('\r\n')
+        if len(options) == 1:
+            options = value.split('\r')
+            if len(options) == 1:
+                options = value.split('\n')
         if len(options) > 1 and all(options):
             if len(options) > 10:
                 raise ValidationError(self.message_max, code=self.code)
