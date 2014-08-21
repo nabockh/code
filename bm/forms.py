@@ -18,11 +18,13 @@ class CreateBenchmarkStep12Form(forms.Form):
     industry = forms.ChoiceField()
     geo = forms.ChoiceField(required=False)
     question_label = forms.CharField(max_length=255)
-    question_text = forms.CharField(widget=forms.Textarea(attrs={'maxlength': 10000}))
+    question_text = forms.CharField(widget=forms.Textarea(attrs={'maxlength': 10000}),
+                                    max_length=10000)
     question_type = forms.ChoiceField(choices=Question.TYPES)
     answer_options = forms.CharField(widget=forms.Textarea(), validators=[multiple_choice_validator])
     units = forms.ChoiceField(initial='$', choices=QuestionOptions.UNITS)
     additional_comments = forms.CharField(widget=forms.Textarea(attrs={'maxlength': 10000}),
+                                          max_length=10000,
                                           required=False)
     min_value = 1 if settings.DEBUG else 5
     minimum_number_of_answers = forms.IntegerField(min_value=min_value, initial=5)
