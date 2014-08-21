@@ -99,12 +99,12 @@ class CreateBenchmarkStep3Form(forms.Form):
                 forms.BooleanField(widget=forms.CheckboxInput(attrs={'class': 'share-checkbox'}), required=False)
             contact.secondary_element = 'contact-{0}-secondary'.format(contact.id)
 
-        self.add_suggested_contacts(cleaned_data.get('geo'), cleaned_data.get('industry'), user)
+        self.add_suggested_contacts(cleaned_data.get('geo'), cleaned_data.get('industry'), user, except_ids)
         wizard.selected_contacts = self.add_selected_contacts(data, except_ids)
         wizard.end_date = self.end_date
 
-    def add_suggested_contacts(self, geo, industry, user=None):
-        self.suggested_contacts = Contact.get_suggested(geo, industry, user)
+    def add_suggested_contacts(self, geo, industry, user=None, exclude_ids=[]):
+        self.suggested_contacts = Contact.get_suggested(geo, industry, user, exclude_ids)
         for contact in self.suggested_contacts:
             self.fields['suggested-{0}-invite'.format(contact.id)] = \
                 forms.BooleanField(widget=forms.CheckboxInput(attrs={'class': 'choose-checkbox'}), required=False)

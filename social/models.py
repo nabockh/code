@@ -161,15 +161,15 @@ class Contact(models.Model):
         return contact
 
     @classmethod
-    def get_suggested(cls, geo=None, industry=None, user=None):
+    def get_suggested(cls, geo=None, industry=None, user=None, exclude_ids=[]):
         contact_filter = {}
         if industry:
             contact_filter['company___industry__code'] = industry
         if geo:
             contact_filter['location__parent__id'] = geo
 
-        return cls.objects.filter(**contact_filter) \
-                          .exclude(user=user) \
+        return cls.objects.exclude(models.Q(user=user) | models.Q(id__in=exclude_ids)) \
+                          .filter(**contact_filter) \
                           .annotate(num_responses=models.Count('user__responses'),
                                     is_active_user=models.Count('user__id')) \
                           .order_by('-is_active_user',
