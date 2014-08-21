@@ -1,4 +1,5 @@
 from bm.forms import DeclineBenchmarkForm, SendMailForm
+from cms.models import StaticPlaceholder
 from django.conf.urls import patterns
 from django.contrib import admin
 
@@ -16,9 +17,17 @@ from django.utils.decorators import method_decorator
 from django.views.generic import FormView
 
 from django.contrib.auth.admin import UserAdmin
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Group
+
+from social_auth.db.django_models import Association, Nonce, UserSocialAuth
+
 
 admin.site.unregister(User)
+admin.site.unregister(Group)
+admin.site.unregister(Association)
+admin.site.unregister(Nonce)
+admin.site.unregister(UserSocialAuth)
+admin.site.unregister(StaticPlaceholder)
 
 
 class CustomUserAdmin(UserAdmin):

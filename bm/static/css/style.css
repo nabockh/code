@@ -1453,7 +1453,7 @@ span.add_info {
     .benchmark-creation .styled-form .single-contact input[type="checkbox"].pre-checked {
         margin: 0;
         width: auto;
-        vertical-align: bottom;
+        vertical-align: middle;
     }
 
 span.grey {

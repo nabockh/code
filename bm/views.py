@@ -165,14 +165,23 @@ class BenchmarkCreateWizardView(CookieWizardView):
             benchmark = Benchmark()
             benchmark.name = step3.cleaned_data['name']
             benchmark.owner = self.request.user
-            benchmark.industry = step3.cleaned_data['industry']
+            # TODO: Industry and Geo(?) must be fixed later to support multiple choice inputs
+            if isinstance(step3.cleaned_data['industry'], list):
+                benchmark.industry = step3.cleaned_data['industry'][0]
+            else:
+                benchmark.industry = step3.cleaned_data['industry']
             benchmark.min_numbers_of_responses = step3.cleaned_data['minimum_number_of_answers']
             benchmark.overview = step3.cleaned_data['additional_comments']
             if preview:
                 return benchmark
             benchmark.save()
-            if step3.cleaned_data['geo']:
-                region = Region.objects.get(pk=step3.cleaned_data['geo'])
+
+            if isinstance(step3.cleaned_data['geo'], list):
+                bm_geo =  step3.cleaned_data['geo'][0]
+            else:
+                bm_geo = step3.cleaned_data['geo']
+            if bm_geo:
+                region = Region.objects.get(pk=bm_geo)
                 benchmark.geographic_coverage.add(region)
 
             question = Question()
@@ -184,11 +193,13 @@ class BenchmarkCreateWizardView(CookieWizardView):
 
             if question.type == Question.MULTIPLE:
                 choices = step3.cleaned_data['answer_options'].split('\r\n')
+                choices = [option for option in choices if option]
                 for i, choice in enumerate(choices, start=1):
                     choice = QuestionChoice(label=choice, order=i)
                     question.choices.add(choice)
             elif question.type == Question.RANKING:
                 ranks = step3.cleaned_data['answer_options'].split('\r\n')
+                ranks = [option for option in ranks if option]
                 for i, rank in enumerate(ranks, start=1):
                     rank = QuestionRanking(label=rank, order=i)
                     question.ranks.add(rank)

@@ -2,6 +2,7 @@ from datetime import datetime, timedelta
 import math
 from app import settings
 from app.settings import BENCHMARK_DURATIONS_DAYS
+from bm.tasks import benchmark_aggregate
 import re
 from bm.validators import multiple_choice_validator
 from bm.models import Question, Region, QuestionOptions
@@ -14,14 +15,16 @@ from math import pow
 
 class CreateBenchmarkStep12Form(forms.Form):
     name = forms.CharField(max_length=45)
-    industry = forms.MultipleChoiceField()
-    geo = forms.MultipleChoiceField()
+    industry = forms.ChoiceField()
+    geo = forms.ChoiceField(required=False)
     question_label = forms.CharField(max_length=255)
-    question_text = forms.CharField(widget=forms.Textarea())
+    question_text = forms.CharField(widget=forms.Textarea(attrs={'maxlength': 10000}),
+                                    max_length=10000)
     question_type = forms.ChoiceField(choices=Question.TYPES)
     answer_options = forms.CharField(widget=forms.Textarea(), validators=[multiple_choice_validator])
     units = forms.ChoiceField(initial='$', choices=QuestionOptions.UNITS)
     additional_comments = forms.CharField(widget=forms.Textarea(attrs={'maxlength': 10000}),
+                                          max_length=10000,
                                           required=False)
     min_value = 1 if settings.DEBUG else 5
     minimum_number_of_answers = forms.IntegerField(min_value=min_value, initial=5)
@@ -99,12 +102,12 @@ class CreateBenchmarkStep3Form(forms.Form):
                 forms.BooleanField(widget=forms.CheckboxInput(attrs={'class': 'share-checkbox'}), required=False)
             contact.secondary_element = 'contact-{0}-secondary'.format(contact.id)
 
-        self.add_suggested_contacts(cleaned_data.get('geo'), cleaned_data.get('industry'), user)
+        self.add_suggested_contacts(cleaned_data.get('geo'), cleaned_data.get('industry'), user, except_ids)
         wizard.selected_contacts = self.add_selected_contacts(data, except_ids)
         wizard.end_date = self.end_date
 
-    def add_suggested_contacts(self, geo, industry, user=None):
-        self.suggested_contacts = Contact.get_suggested(geo, industry, user)
+    def add_suggested_contacts(self, geo, industry, user=None, exclude_ids=[]):
+        self.suggested_contacts = Contact.get_suggested(geo, industry, user, exclude_ids)
         for contact in self.suggested_contacts:
             self.fields['suggested-{0}-invite'.format(contact.id)] = \
                 forms.BooleanField(widget=forms.CheckboxInput(attrs={'class': 'choose-checkbox'}), required=False)
@@ -247,6 +250,7 @@ class BenchmarkDetailsForm(forms.Form):
 
     def __init__(self, benchmark, *args, **kwargs):
         super(BenchmarkDetailsForm, self).__init__(*args, **kwargs)
-        self.fields['Benchmark_Results'] = forms.ChoiceField(choices=benchmark.available_charts)
+        self.fields['Benchmark_Results'] = forms.ChoiceField(choices=benchmark.available_charts,
+                                                             initial=benchmark.default_chart)
         self.fields['Contributor_Data'] = forms.ChoiceField(choices=self.choices)
 
