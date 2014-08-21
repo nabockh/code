@@ -36,7 +36,7 @@ class HomeView(TemplateView):
                     return HttpResponseRedirect('/')
                 return HttpResponseRedirect('/')
         else:
-            form = ContactForm(request.POST, request=request)
+            form = ContactForm(request=request, data=request.POST)
             if form.is_valid():
                 first_name = form.cleaned_data['first_name']
                 last_name = form.cleaned_data['last_name']
