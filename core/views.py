@@ -20,12 +20,11 @@ class HomeView(TemplateView):
 
     def get_context_data(self, **kwargs):
         data = super(HomeView, self).get_context_data(**kwargs)
-        data['form'] = ContactForm()
+        data['form'] = ContactForm(request=self.request)
         data['invitation_form'] = EmailInvitationRequest(prefix='invite')
         return data
 
     def post(self, request, *args, **kwargs):
-        form = ContactForm()
         if request.POST.has_key('invite-email'):
             invitation_form = EmailInvitationRequest(request.POST, prefix='invite')
             if invitation_form.is_valid():
@@ -37,15 +36,17 @@ class HomeView(TemplateView):
                     return HttpResponseRedirect('/')
                 return HttpResponseRedirect('/')
         else:
-            form = ContactForm(request.POST)
+            form = ContactForm(request.POST, request=request)
             if form.is_valid():
                 first_name = form.cleaned_data['first_name']
                 last_name = form.cleaned_data['last_name']
-                comments = form.cleaned_data['comment']
-                recipient_list = User.objects.filter(is_superuser=True).values_list('email', flat=True)
-                recipient_list = [email for email in recipient_list if email]
+                customer_email = form.cleaned_data['email']
+                comment = form.cleaned_data['comment']
+                recipient_list = User.objects.filter(is_superuser=True, email__isnull=False)\
+                    .values_list('email', flat=True)
                 if recipient_list:
-                    send_mail('Customer feedback', comments, last_name + '' + first_name, recipient_list)
+                    send_mail('Customer feedback', comment, '%s %s <%s>' % (first_name, last_name, customer_email),
+                              recipient_list)
                 return HttpResponseRedirect('/')
         return render(request, 'core/home.html', {'form': form, 'invitation_form': invitation_form})
 
