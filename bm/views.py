@@ -610,8 +610,8 @@ class BenchmarkAggregateView(BenchmarkDetailView):
 class ExcelDownloadView(BenchmarkDetailView):
 
     @method_decorator(login_required)
-    def dispatch(self,*args, **kwargs):
-        return super(ExcelDownloadView, self).dispatch(args, **kwargs)
+    def dispatch(self, request, *args, **kwargs):
+        return super(ExcelDownloadView, self).dispatch(request, *args, **kwargs)
 
     def get(self, *args, **kwargs):
         bm_id = kwargs['bm_id']
