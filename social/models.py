@@ -30,9 +30,10 @@ class LinkedInIndustry(models.Model):
     @classmethod
     def get_proposal(cls, contacts):
         result = cls.objects\
-            .annotate(responses_count=Count('companies__employees__user__responses'))\
-            .filter(companies__employees__in=contacts.values_list('id', flat=True)).values_list('code', 'name', 'responses_count')\
-            .distinct().order_by('-responses_count')
+            .annotate(users_count=Count('companies__employees'))\
+            .filter(companies__employees__in=contacts.values_list('id', flat=True))\
+            .values_list('code', 'name', 'users_count')\
+            .distinct().order_by('-users_count')
         return [(a, b) for a, b, _ in result]
 
     def __unicode__(self):
