@@ -595,7 +595,8 @@ class BenchmarkAddRecipientsView(FormView):
                 invite.status = 0 # not send
                 invite.is_allowed_to_forward_invite = bool(form.data.get(form.prefix + '-' + contact.secondary_element))
                 self.benchmark.invites.add(invite)
-        send_invites.delay(self.benchmark.id)
+        if self.benchmark.approved:
+            send_invites.delay(self.benchmark.id)
         return super(BenchmarkAddRecipientsView, self).form_valid(form)
 
 

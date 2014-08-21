@@ -40,8 +40,8 @@ class CreateBenchmarkStep12Form(forms.Form):
 
 
 class CreateBenchmarkStep3Form(forms.Form):
-    industry = forms.MultipleChoiceField(required=False)
-    geo = forms.MultipleChoiceField(required=False)
+    industry = forms.ChoiceField(required=False)
+    geo = forms.ChoiceField(required=False)
     role = forms.CharField(max_length=200, required=False)
     name = forms.CharField(max_length=100, required=False)
 
