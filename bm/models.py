@@ -168,6 +168,7 @@ class BenchmarkMultiple(Benchmark):
         verbose_name = 'Benchmark Multiple'
 
     available_charts = [('Pie', 'Pie Chart'), ('Column', 'Column Chart')]
+    default_chart = 'Pie'
 
     @property
     def charts(self):
@@ -187,6 +188,7 @@ class BenchmarkRanking(Benchmark):
         verbose_name = 'Benchmark Ranking'
 
     available_charts = [('Pie', 'Pie Chart'), ('Column', 'Column Chart')]
+    default_chart = 'Column'
 
     @property
     def charts(self):
@@ -210,6 +212,7 @@ class BenchmarkNumeric(Benchmark):
         verbose_name = 'Benchmark Open Number'
 
     available_charts = [('Pie', 'Pie Chart'), ('Column', 'Column Chart'), ('Bell_Curve', 'Bell Curve Chart')]
+    default_chart = 'Bell_Curve'
 
     @property
     def charts(self):
@@ -231,6 +234,7 @@ class BenchmarkRange(Benchmark):
         verbose_name = 'Benchmark Range'
 
     available_charts = [('Pie', 'Pie Chart'), ('Column', 'Column Chart'), ('Line', 'Line Chart')]
+    default_chart = 'Line'
 
     @property
     def charts(self):

@@ -2,6 +2,7 @@ from datetime import datetime, timedelta
 import math
 from app import settings
 from app.settings import BENCHMARK_DURATIONS_DAYS
+from bm.tasks import benchmark_aggregate
 import re
 from bm.validators import multiple_choice_validator
 from bm.models import Question, Region, QuestionOptions
@@ -247,6 +248,7 @@ class BenchmarkDetailsForm(forms.Form):
 
     def __init__(self, benchmark, *args, **kwargs):
         super(BenchmarkDetailsForm, self).__init__(*args, **kwargs)
-        self.fields['Benchmark_Results'] = forms.ChoiceField(choices=benchmark.available_charts)
+        self.fields['Benchmark_Results'] = forms.ChoiceField(choices=benchmark.available_charts,
+                                                             initial=benchmark.default_chart)
         self.fields['Contributor_Data'] = forms.ChoiceField(choices=self.choices)
 
