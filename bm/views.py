@@ -219,6 +219,7 @@ class BenchmarkCreateWizardView(CookieWizardView):
             link = benchmark.create_link()
             benchmark.calculate_deadline()
             benchmark.save()
+        if benchmark.pk:
             benchmark_created.send(sender=self.__class__, request=self.request, benchmark=benchmark)
         return redirect('bm_dashboard')
 
