@@ -1212,7 +1212,7 @@ form[role='search'] .btn-search {
 
     .benchmark-help.search {
         margin: -45px -45px 0;
-        padding-bottom: 0;
+        /*padding-bottom: 0;*/
     }
 
     .benchmark-help label {
@@ -3221,6 +3221,15 @@ ul#answerSortable {
         margin-top: 15px;
     }
 }
+
+@media only screen and (max-width : 520px) {
+    .btn-holder label.btn.auto-width {
+        width:100%;
+        clear:both;
+        margin:5px 0!important;
+    }
+}
+
 /*Select2 owerrides*/
 .select2-drop {
     z-index: 9990;

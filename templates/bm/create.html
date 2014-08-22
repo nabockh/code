@@ -446,7 +446,6 @@
                             {% else %}
                                 <button id='go_back' name="wizard_goto_step" type="submit" value="{{ wizard.steps.prev }}" class="btn btn-default auto-width continue-btn hidden">{% trans "go back" %}</button>
                                 <label for='go_back' class='btn btn-default auto-width'><i class='fa fa-arrow-circle-o-left'></i> Go Back</label>
-                            >
                             {% endif %}
 
                         {% endif %}
@@ -464,6 +463,7 @@
 
                             {% endif %}
                         {% endif %}
+                        <div class="clearfix"></div>
                     </div>
                 </form>
             </div>
