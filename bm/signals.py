@@ -4,6 +4,7 @@ from django.contrib import messages
 from django.contrib.auth.models import User
 from django.contrib.contenttypes.models import ContentType
 from django.core.mail import send_mail
+from django.core.urlresolvers import reverse
 from django.db.models.signals import post_save, pre_save
 from django.dispatch import Signal
 from django.dispatch import receiver
@@ -25,7 +26,7 @@ def send_welcome_alert(sender, request, user, **kwargs):
         template = loader.get_template('alerts/welcome_alert_email.txt')
         context = Context({
             'user_name': user.username,
-            'link': request.get_host() + '/benchmark/create'
+            'link': request.get_host() + reverse('bm_create')
         })
         send_mail('Welcome', template.render(context), None, recipient_list)
 

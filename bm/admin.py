@@ -5,7 +5,7 @@ from django.contrib import admin
 
 # Register your models here.
 from bm.models import Benchmark, BenchmarkPending, BenchmarkApproved, BenchmarkAuditLog
-from django.contrib.admin.models import LogEntry
+from django.contrib.admin.models import LogEntry, CHANGE
 from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.contenttypes.models import ContentType
 from django.core.mail import send_mail
@@ -14,6 +14,7 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.template import loader, Context
 from django.utils.decorators import method_decorator
+from django.utils.encoding import force_unicode
 from django.views.generic import FormView
 
 from django.contrib.auth.admin import UserAdmin
@@ -105,6 +106,15 @@ decline_benchmark.short_description = "Decline selected benchmarks"
 
 
 def approve_benchmark(modeladmin, request, queryset):
+    for benchmark in queryset:
+         LogEntry.objects.log_action(
+              user_id=request.user.pk,
+              content_type_id=ContentType.objects.get_for_model(benchmark).pk,
+              object_id=benchmark.pk,
+              object_repr=force_unicode(benchmark),
+              action_flag=CHANGE,
+              change_message='Changed approved.'
+         )
     queryset.update(approved=True)
 approve_benchmark.short_description = "Approve selected benchmarks"
 
