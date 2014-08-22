@@ -319,9 +319,27 @@
                                     </div>
                                     <div class='col-md-12' id='answer_options_step3'>
                                         <label for="id_2-answer_options">Answer Options</label>
-                                        <span class="add_info">(Enter each choice on a seperate line)</span>
-                                        {{ form.answer_options }}
+                                        <div class="answer_options_area">
+                                            {{ form.answer_options }}
+                                        </div>
+                                        <div class="answer_options_inputs">
+                                            <div class='row'>
+                                                <div class="col-md-4">
+                                                    <input type="text" maxlength="45">
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <input type="text" maxlength="45">
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <a class="answer_options_add">Add More Fields...</a>
+                                                </div>
+                                            </div>
+                                            <div class="clearfix"></div>
+                                        </div>
+
                                         {{ form.answer_options.errors }}
+
+
                                     </div>
                                     <div class='col-md-12' id='units_maxDecimals_step3'>
                                         <div class='row'>

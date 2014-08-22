@@ -385,7 +385,7 @@ $( document ).ready(function() {
         //    $select.data('display', $select.css('display')).show();
         //    $select.css('display', $select.data('display'));
         //});
-        $select2 = $select.removeAttr('style').css('width', width).attr('placeholder', 'Select a State').select2({placeholder: "Select a State"});
+        $select2 = $select.removeAttr('style').css('width', width).select2();
         $select2.on("select2-open", function(){ $('.select2-offscreen > .select2-input').blur();}); // Workaround not to show cursor on iPad
     });
 
@@ -395,7 +395,7 @@ $(window).on('resize', function(){
         var $select = $(this);
         var width = $select.parents('div:eq(0)').width();
         $select.prev('.select2-container').remove();
-        $select2 = $select.removeAttr('style').css('width', width).select2({placeholder: "Select a State"});
+        $select2 = $select.removeAttr('style').css('width', width).select2();
         $select2.on("select2-open", function(){ $('.select2-offscreen > .select2-input').blur();}); // Workaround not to show cursor on iPad
     });
 });
@@ -404,7 +404,7 @@ $(document).ajaxStop(function() {
         var $select = $(this);
         var width = $select.parents('div:eq(0)').width();
         $select.prev('.select2-container').remove();
-        $select2 = $select.removeAttr('style').css('width', width).select2({placeholder: "Select a State"});
+        $select2 = $select.removeAttr('style').css('width', width).select2();
         $select2.on("select2-open", function(){ $('.select2-offscreen > .select2-input').blur();}); // Workaround not to show cursor on iPad
     });
 });
@@ -414,32 +414,34 @@ $(document).ajaxStop(function() {
 // Benchmark answer options
 
 $(function() {
-    var txt = $(".answer_options_area textarea");
-    $(document).on("submit",".benchmark-creation form",function(){
-        txt.val('');
-        $('.answer_options_inputs input[type="text"]').each(function(){
-            var input_val = $(this).val();
-            txt.val( txt.val() + input_val + "\n");
+    if ($('body .answer_options_area').length){
+        var txt = $(".answer_options_area textarea");
+        $(document).on("submit",".benchmark-creation form",function(){
+            txt.val('');
+            $('.answer_options_inputs input[type="text"]').each(function(){
+                var input_val = $(this).val();
+                txt.val( txt.val() + input_val + "\n");
+            });
         });
-    });
-    $(document).on("click",".answer_options_inputs .answer_options_add",function(){
-        $('.answer_options_inputs .col-md-4:last-child').before('<div class="col-md-4"><input type="text" value=""></div>');
-    });
-
+        $(document).on("click",".answer_options_inputs .answer_options_add",function(){
+            $('.answer_options_inputs .col-md-4:last-child').before('<div class="col-md-4"><input type="text" value=""></div>');
+        });
+    }
 });
 $( document ).ready(function() {
-    if($(".answer_options_area textarea").val() !== ""){
-        $('.answer_options_inputs .col-md-4:not(:last-child)').remove();
-    }
-    var breaks = $(".answer_options_area textarea").val().split('\n');
-    var newLines = "";
-    for(var i = 0; i < breaks.length; i ++){
-        newLine = breaks[i];
-        var trim = newLine.replace(/ /g,'');
-        if(trim !== ""){
-            $('.answer_options_inputs .col-md-4:last-child').before('<div class="col-md-4"><input type="text" value="' + newLine + '"></div>');
+    if ($('body .answer_options_area').length){
+        if($(".answer_options_area textarea").val() !== ""){
+            $('.answer_options_inputs .col-md-4:not(:last-child)').remove();
         }
-      
+        var breaks = $(".answer_options_area textarea").val().split('\n');
+        var newLines = "";
+        for(var i = 0; i < breaks.length; i ++){
+            newLine = breaks[i];
+            var trim = newLine.replace(/ /g,'');
+            if(trim !== ""){
+                $('.answer_options_inputs .col-md-4:last-child').before('<div class="col-md-4"><input type="text" value="' + newLine + '"></div>');
+            }
+        }
     }
 });
 

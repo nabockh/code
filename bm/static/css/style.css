@@ -7,7 +7,6 @@ body {
     padding-top: 180px;
     font-weight: 300;
 }
-
     body *:not(.fa) {
         font-family: Roboto !important;
     }
@@ -965,6 +964,9 @@ input.btn.full-width, .btn.full-width {
     box-shadow: none !important;
     border-radius: 0;
 }
+.styled-form .select2-container {
+    margin-bottom: 10px;
+}
 
 .styled-form textarea {
     max-width: 100%;
@@ -1275,6 +1277,9 @@ label.btn.btn-primary.auto-width.pull-right.fix {
     background: #F8F7F7;
     padding: 3px 6px;
     font-size: 12px;
+    margin-bottom: 10px;
+}
+.benchmark-creation .styled-form .select2-container {
     margin-bottom: 10px;
 }
 
@@ -2273,7 +2278,8 @@ label.btn.btn-primary.answer_btn {
     label.btn.btn-primary.answer_btn:after {
         content: "\f0a9";
         font-family: fontAwesome !important;
-        float: right;
+        position: absolute;
+        right: 20px;
     }
 
 .how-it-works-block {
@@ -2610,6 +2616,11 @@ ul#answerSortable {
 
 
 @media (min-width: 768px) {
+    body,
+    header.navbar,
+    .container {
+         min-width:0;
+    }
     .col-sm-5ths {
         width: 20%;
         float: left;
@@ -2625,6 +2636,31 @@ ul#answerSortable {
 
     .modal-sm {
         width: 360px;
+    }
+    span.beta-invite {
+        float: none;
+        font-size: 11px;
+        display: inline-block;
+    }
+    .col-md-4.features {
+        width: 33.3333%;
+        float: left;
+    }
+    
+    .col-md-4.features .big-title {
+        font-size: 50px;
+        margin-top: -25px;    
+        margin-left: -15px;
+    }
+    
+    .features.text-left > *:not(.cms_plugin) {
+        padding-left: 20px;
+    }
+    .colorblock.features {
+        background-image: url('../img/bdde_features1.jpg');
+    }
+    header.navbar .container{
+         min-width:970px;
     }
 }
 
@@ -2648,9 +2684,17 @@ ul#answerSortable {
     .container {
         width: 970px;
     }
+    .colorblock.features {
+        background-image: url('../img/bdde_features.jpg');
+    }
 }
 
 @media (max-width: 768px) {
+    body,
+    header.navbar,
+    .container {
+         min-width:0;
+    }
     .mobile {
         display: block;
     }
@@ -3063,6 +3107,11 @@ ul#answerSortable {
 }
 
 @media (max-width: 640px) {
+    body,
+    header.navbar,
+    .container {
+         min-width:0;
+    }
     .example-block {
         width: 100%;
         margin: -4px 0;
@@ -3276,4 +3325,5 @@ html[dir="rtl"] .select2-search input,
 
 .answer_options_inputs {clear:both;}
 #answer_options .errorlist {margin:0 0 10px!important;}
-#answer_options .answer_options_area {visibility:hidden;position:absolute;width:1px;height:1px;overflow:hidden;}
+.answer_options_area {visibility:hidden;position:absolute;width:1px;height:1px;overflow:hidden;}
+.answer_options_inputs a {cursor:pointer;}
