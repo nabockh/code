@@ -204,7 +204,7 @@ class BenchmarkCreateWizardView(CookieWizardView):
                     rank = QuestionRanking(label=rank, order=i)
                     question.ranks.add(rank)
             elif question.type == Question.NUMERIC or question.type == Question.RANGE:
-                question.options.add(QuestionOptions(step3.cleaned_data.get('units'), None))
+                question.options.add(QuestionOptions(units=step3.cleaned_data.get('units')))
 
             step2_data = self.storage.get_step_data('1')
             for contact in step2.selected_contacts:
