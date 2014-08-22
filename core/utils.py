@@ -1,3 +1,4 @@
+from functools import wraps
 from app import settings
 from django.http import HttpResponse
 import logging
@@ -28,10 +29,10 @@ def login_required_ajax(function=None, redirect_field_name=None):
 
 
 def celery_log(func):
-    def _decorator():
+    @wraps(func)
+    def _decorator(*args, **kwargs):
         try:
-            return func()
+            return func(*args, **kwargs)
         except:
             logger.exception('')
-    _decorator.__name__ = func.__name__
     return _decorator

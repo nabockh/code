@@ -1219,7 +1219,7 @@ form[role='search'] .btn-search {
 
     .benchmark-help.search {
         margin: -45px -45px 0;
-        padding-bottom: 0;
+        /*padding-bottom: 0;*/
     }
 
     .benchmark-help label {
@@ -1760,7 +1760,9 @@ form[role='beta-email'] {
     margin-bottom: 25px;
     box-shadow: none;
 }
-
+.panel h4.panel-title a {
+    cursor:pointer;
+}
 .panel h4.panel-title a:before {
     content: "\f146";
     padding-right: 10px;
@@ -3256,6 +3258,15 @@ ul#answerSortable {
         margin-top: 15px;
     }
 }
+
+@media only screen and (max-width : 520px) {
+    .btn-holder label.btn.auto-width {
+        width:100%;
+        clear:both;
+        margin:5px 0!important;
+    }
+}
+
 /*Select2 owerrides*/
 .select2-drop {
     z-index: 9990;

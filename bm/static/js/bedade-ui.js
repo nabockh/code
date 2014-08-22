@@ -424,7 +424,7 @@ $(function() {
             });
         });
         $(document).on("click",".answer_options_inputs .answer_options_add",function(){
-            $('.answer_options_inputs .col-md-4:last-child').before('<div class="col-md-4"><input type="text" value=""></div>');
+            $('.answer_options_inputs .col-md-4:last-child').before('<div class="col-md-4"><input type="text" value="" maxlength="45"></div>');
         });
     }
 });
@@ -439,7 +439,7 @@ $( document ).ready(function() {
             newLine = breaks[i];
             var trim = newLine.replace(/ /g,'');
             if(trim !== ""){
-                $('.answer_options_inputs .col-md-4:last-child').before('<div class="col-md-4"><input type="text" value="' + newLine + '"></div>');
+                $('.answer_options_inputs .col-md-4:last-child').before('<div class="col-md-4"><input type="text" maxlength="45" value="' + newLine + '"></div>');
             }
         }
     }
