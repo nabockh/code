@@ -627,6 +627,19 @@ input.btn.full-width, .btn.full-width {
         color: #94a6c3;
     }
 
+.how-it-works pre {
+    background: none;
+    border: none;
+    margin: 0;
+    margin-top: 0px;
+    margin-right: 0px;
+    margin-bottom: 10px;
+    margin-left: 0px;
+    padding: 0;
+    font-size: inherit;
+    line-height: inherit;
+}
+
 .how-it-works .title {
     color: #3d4d77;
     font-size: 18px;
