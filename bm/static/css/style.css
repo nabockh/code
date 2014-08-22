@@ -1179,6 +1179,7 @@ form[role='search'] .btn-search {
 
 .benchmark-creation, .open-benchmark-container {
     padding: 0 60px;
+    margin-bottom: 140px;
 }
 
 .benchmark.open img {
@@ -1219,7 +1220,7 @@ form[role='search'] .btn-search {
 
     .benchmark-help.search {
         margin: -45px -45px 0;
-        /*padding-bottom: 0;*/
+        padding-bottom: 0;
     }
 
     .benchmark-help label {
@@ -1353,7 +1354,7 @@ label.btn.btn-primary.auto-width.pull-right.fix {
         }
 
 .btn-holder {
-    margin: 0 -45px;
+    margin: 0 -45px 130px;
     clear: both;
     padding: 30px 60px;
     background: #333;
