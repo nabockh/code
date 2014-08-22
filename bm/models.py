@@ -223,7 +223,8 @@ class BenchmarkNumeric(Benchmark):
         return {
             'pie': series,
             'column': series,
-            'bell_curve': bell_curve
+            'bell_curve': bell_curve,
+            'units': self.question.first().options.first().units.encode('utf-8'),
         }
 
 
@@ -249,6 +250,7 @@ class BenchmarkRange(Benchmark):
             'pie': series1,
             'column': series1,
             'line': series2,
+            'units': self.question.first().options.first().units.encode('utf-8'),
         }
 
 
@@ -367,10 +369,10 @@ class QuestionOptions(models.Model):
     question = models.ForeignKey(Question, rel_class=models.OneToOneRel, related_name='options')
     units = models.CharField(max_length=50)
 
-    def __init__(self, units, number_of_decimal, *args, **kwargs):
+    def __init__(self, *args, **kwargs):
         super(QuestionOptions, self).__init__(*args, **kwargs)
-        self.units = units
-        self.number_of_decimal = number_of_decimal
+        if 'units' in kwargs:
+            self.units = kwargs.get('units')
 
 
 class ResponseChoice(models.Model):
