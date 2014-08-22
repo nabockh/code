@@ -23,7 +23,9 @@ def grouper(n, iterable, fillvalue=None):
     args = [iter(iterable)] * n
     return itertools.izip_longest(*args, fillvalue=fillvalue)
 
+
 @shared_task
+@celery_log
 def send_invites(benchmark_id):
     benchmark = Benchmark.objects.get(pk=benchmark_id)
     if benchmark:

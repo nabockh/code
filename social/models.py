@@ -99,6 +99,8 @@ class Contact(models.Model):
 
     @classmethod
     def send_mail(cls, user_from, subject, body, contacts):
+        if not list(contacts):
+            return
         assert isinstance(contacts[0], cls), 'Contacts should be social.Contact instances'
         recipients_without_email = []
         for contact in contacts:
