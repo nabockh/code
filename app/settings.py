@@ -167,7 +167,7 @@ TEMPLATE_DIRS = (
 
 ADMINS = (
     # ('Volodymyr', 'volodymyr.trotsyshyn@perfectial.com'),
-    ('Volodymyr', 'devova@gmail.com'),
+    ('Petro', 'petro.zdeb@perfectial.com'),
 )
 
 LOGGING = {
@@ -250,7 +250,7 @@ AUTHENTICATION_BACKENDS = (
 )
 
 SOCIAL_AUTH_PIPELINE = (
-#    'social.pipeline.beta_login',
+    'social.pipeline.beta_login',
     'social_auth.backends.pipeline.social.social_auth_user',
     'social_auth.backends.pipeline.user.get_username',
     'social_auth.backends.pipeline.user.create_user',
