@@ -167,7 +167,8 @@ TEMPLATE_DIRS = (
 
 ADMINS = (
     # ('Volodymyr', 'volodymyr.trotsyshyn@perfectial.com'),
-    ('Petro', 'petro.zdeb@perfectial.com'),
+    ('Volodymyr', 'devova@gmail.com'),
+    #('Petro', 'petro.zdeb@perfectial.com'),
 )
 
 LOGGING = {
