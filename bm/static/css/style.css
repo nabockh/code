@@ -3225,7 +3225,7 @@ ul#answerSortable {
 }
 
 @media only screen and (max-width : 520px) {
-    .btn-holder label.btn.auto-width {
+    .btn-holder .btn.auto-width {
         width:100%;
         clear:both;
         margin:5px 0!important;
