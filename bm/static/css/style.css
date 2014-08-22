@@ -420,6 +420,12 @@ span.nav-username-dropdown {
     margin: 8px 0 8px 5px;
 }
 
+
+#s2id_id_0-units {
+    width: 160px !important;
+    display: block;
+}
+
 .dropdown-container {
     position: relative;
 }
@@ -964,6 +970,7 @@ input.btn.full-width, .btn.full-width {
     box-shadow: none !important;
     border-radius: 0;
 }
+
 .styled-form .select2-container {
     margin-bottom: 10px;
 }
@@ -1288,6 +1295,13 @@ label.btn.btn-primary.auto-width.pull-right.fix {
     margin-bottom: 45px;
 }
 
+.benchmark-creation .margined .styled-form > .col-md-8 hr {
+    float: left;
+    width: 100%;
+    margin: 10px 15px 15px;
+    max-width: 540px;
+}
+
 .benchmark-creation .margined .styled-form .col-md-8.normal-padding {
     padding-right: 15px;
     margin-bottom: 0;
@@ -1436,7 +1450,11 @@ span.add_info {
     .single-contact.active {
         background-color: #eff0f2;
     }
-
+    
+    #step3Selected .single-contact.active {
+        background: none;
+    }
+    
     .single-contact p {
         margin: 0;
         font-size: 12px;
@@ -1483,6 +1501,10 @@ span.grey {
     line-height: 14px;
     display: inline-block;
 }
+
+    #step3Selected .single-contact span.deselect-btn {
+        margin: 0;
+    }
 
     .benchmark-creation .styled-form .single-contact span.deselect-btn:hover {
         color: #339999;
@@ -2703,6 +2725,12 @@ ul#answerSortable {
         display: none !important;
     }
 
+
+    #s2id_id_0-units {
+        width: auto !important;
+        display: block;
+    }
+
     .social-btns {
         display: none;
     }
@@ -2922,7 +2950,14 @@ ul#answerSortable {
         margin-bottom: 20px;
         padding-right: 15px;
     }
-
+    
+    .benchmark-creation .margined .styled-form > .col-md-8 hr {
+        float: none;
+        width: auto;
+        margin: 10px 15px 15px;
+        max-width: none;
+    }
+    
     .lined-left {
         box-shadow: none;
     }
@@ -3314,6 +3349,15 @@ html[dir="rtl"] .select2-search input,
     box-shadow:none;
 
 }
+
+.select2-results {
+    line-height: 1.6rem;
+}
+
+    .select2-results li {
+        padding: 3px 0;
+    }
+    
 .select2-results .select2-highlighted {
     background: #33626e;
 }
@@ -3326,4 +3370,4 @@ html[dir="rtl"] .select2-search input,
 .answer_options_inputs {clear:both;}
 #answer_options .errorlist {margin:0 0 10px!important;}
 .answer_options_area {visibility:hidden;position:absolute;width:1px;height:1px;overflow:hidden;}
-.answer_options_inputs a {cursor:pointer;}
+.answer_options_inputs a {cursor:pointer;padding: 10px 0; display: inline-block;font-size: 1rem;line-height: 1rem;}
