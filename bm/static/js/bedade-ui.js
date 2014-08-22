@@ -414,7 +414,7 @@ $(document).ajaxStop(function() {
 // Benchmark answer options
 
 $(function() {
-    if ($('body .answer_options_area').length){
+    if ($('body .answer_options_area').is(':visible').length){
         var txt = $(".answer_options_area textarea");
         $(document).on("submit",".benchmark-creation form",function(){
             txt.val('');
