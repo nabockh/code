@@ -451,24 +451,24 @@ class BenchmarkDetailView(FormView):
         context['question'] = benchmark.question.first()
         context['url'] = self.request.META['HTTP_HOST'] + self.request.path
         group_by_headline = QuestionResponse.objects.filter(question=benchmark.question.first()).\
-            values('user__social_profile__headline').annotate(count=Count('user__social_profile__headline'))
+            values('user__social_profile__headline').annotate(count=Count('id'))
         group_by_country = QuestionResponse.objects.filter(question=benchmark.question.first()).\
-            values('user__social_profile__location__name').annotate(count=Count('user__social_profile__location__name'))
+            values('user__social_profile__location__name').annotate(count=Count('id'))
         group_by_geo = QuestionResponse.objects.filter(question=benchmark.question.first()).\
-            values('user__social_profile__location__parent__name').annotate(count=Count('user__social_profile__location__parent__name'))
+            values('user__social_profile__location__parent__name').annotate(count=Count('id'))
         group_by_industry = QuestionResponse.objects.filter(question=benchmark.question.first()).\
-            values('user__social_profile__company___industry__name').annotate(count=Count('user__social_profile__company___industry__name'))
+            values('user__social_profile__company___industry__name').annotate(count=Count('id'))
         for dictionary in group_by_headline:
-            dictionary['role'] = dictionary['user__social_profile__headline']
+            dictionary['role'] = dictionary['user__social_profile__headline'] or "Not Available"
             del dictionary['user__social_profile__headline']
         for dictionary in group_by_geo:
-            dictionary['geo'] = dictionary['user__social_profile__location__parent__name']
+            dictionary['geo'] = dictionary['user__social_profile__location__parent__name'] or "Not Available"
             del dictionary['user__social_profile__location__parent__name']
         for dictionary in group_by_country:
-            dictionary['country'] = dictionary['user__social_profile__location__name']
+            dictionary['country'] = dictionary['user__social_profile__location__name'] or "Not Available"
             del dictionary['user__social_profile__location__name']
         for dictionary in group_by_industry:
-            dictionary['industry'] = dictionary['user__social_profile__company___industry__name']
+            dictionary['industry'] = dictionary['user__social_profile__company___industry__name'] or "Not Available"
             del dictionary['user__social_profile__company___industry__name']
         headlines = []
         for item in group_by_headline:
