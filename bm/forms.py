@@ -74,8 +74,8 @@ class CreateBenchmarkStep3Form(forms.Form):
         self.fields['industry'].choices = industries
         self.fields['industry'].initial = step0data.getlist('0-industry')
         cleaned_data = {
-            'geo': data.get('%s-%s' % (self.prefix, 'geo')) if '%s-%s' % (self.prefix, 'geo') in data else self.fields['geo'].initial,
-            'industry': data.getlist('%s-%s' % (self.prefix, 'industry')) if '%s-%s' % (self.prefix, 'industry') in data else self.fields['industry'].initial,
+            'geo': data.get('%s-%s' % (self.prefix, 'geo')) if data else self.fields['geo'].initial,
+            'industry': data.getlist('%s-%s' % (self.prefix, 'industry')) if data else self.fields['industry'].initial,
             'name': data.get('%s-%s' % (self.prefix, 'name')),
             'role': data.get('%s-%s' % (self.prefix, 'role')),
         }
@@ -87,6 +87,7 @@ class CreateBenchmarkStep3Form(forms.Form):
         if cleaned_data.get('role'):
             contact_filter['headline__icontains'] = cleaned_data.get('role')
         if cleaned_data.get('industry'):
+            print 11111
             contact_filter['company___industry__code__in'] = cleaned_data.get('industry')
         if cleaned_data.get('geo'):
             contact_filter['location__parent__id'] = cleaned_data.get('geo')
