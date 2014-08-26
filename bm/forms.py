@@ -87,7 +87,6 @@ class CreateBenchmarkStep3Form(forms.Form):
         if cleaned_data.get('role'):
             contact_filter['headline__icontains'] = cleaned_data.get('role')
         if cleaned_data.get('industry'):
-            print 11111
             contact_filter['company___industry__code__in'] = cleaned_data.get('industry')
         if cleaned_data.get('geo'):
             contact_filter['location__parent__id'] = cleaned_data.get('geo')

@@ -18,6 +18,7 @@ from django.http import HttpResponse, HttpResponseNotFound
 from django.http.response import Http404
 from django.shortcuts import redirect
 from django.template import loader, Context
+from django.utils.datastructures import MultiValueDict
 from django.utils.decorators import method_decorator
 from django.views.generic import ListView, TemplateView
 from django.views.generic.edit import FormView
@@ -572,10 +573,10 @@ class BenchmarkAddRecipientsView(FormView):
         geo = self.benchmark.geographic_coverage.first()
         params = dict(
             user=self.request.user,
-            step0data={
+            step0data=MultiValueDict({
                 '0-geo': geo.id if geo else '',
-                '0-industry': self.benchmark.industry.code,
-            },
+                '0-industry': [self.benchmark.industry.code],
+            }),
             wizard=wizard,
             prefix='1',
             except_ids=self.except_ids,
