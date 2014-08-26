@@ -413,21 +413,6 @@ $(document).ajaxStop(function() {
 
 // Benchmark answer options
 
-$(function() {
-    if ($('body .answer_options_area').is(':visible').length){
-        var txt = $(".answer_options_area textarea");
-        $(document).on("submit",".benchmark-creation form",function(){
-            txt.val('');
-            $('.answer_options_inputs input[type="text"]').each(function(){
-                var input_val = $(this).val();
-                txt.val( txt.val() + input_val + "\n");
-            });
-        });
-        $(document).on("click",".answer_options_inputs .answer_options_add",function(){
-            $('.answer_options_inputs .col-md-4:last-child').before('<div class="col-md-4"><input type="text" value="" maxlength="45"></div>');
-        });
-    }
-});
 $( document ).ready(function() {
     if ($('body .answer_options_area').length){
         if($(".answer_options_area textarea").val() !== ""){
@@ -443,6 +428,23 @@ $( document ).ready(function() {
             }
         }
     }
+    var txt = $(".answer_options_area textarea");
+    $('.benchmark-creation .btn[for="bm-submit"]').bind('click','',function(){
+            txt.val('');
+        if ($('#answer_options').css('display') != 'none' || $('#answer_options_step3').css('display') != 'none'){
+            $('.answer_options_inputs input[type="text"]').each(function(){
+                var input_val = $(this).val();
+                var trim = input_val.replace(/ /g,'');
+                if(trim !== ""){
+                    txt.val( txt.val() + input_val + "\n");
+                }
+            });
+        }
+    });
+    $(document).on("click",".answer_options_inputs .answer_options_add",function(){
+        $('.answer_options_inputs .col-md-4:last-child').before('<div class="col-md-4"><input type="text" value="" maxlength="45"></div>');
+    });
 });
+
 
 
