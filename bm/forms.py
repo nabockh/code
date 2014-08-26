@@ -43,7 +43,7 @@ class CreateBenchmarkStep12Form(forms.Form):
 
 
 class CreateBenchmarkStep3Form(forms.Form):
-    industry = forms.ChoiceField(required=False)
+    industry = forms.MultipleChoiceField(required=False)
     geo = forms.ChoiceField(required=False)
     role = forms.CharField(max_length=200, required=False)
     name = forms.CharField(max_length=100, required=False)
@@ -70,13 +70,12 @@ class CreateBenchmarkStep3Form(forms.Form):
         regions.extend(list(Region.regions.values_list('id', 'name').order_by('name')))
         self.fields['geo'].choices = regions
         self.fields['geo'].initial = step0data.get('0-geo')
-        industries = [('', 'All')]
-        industries.extend(list(LinkedInIndustry.get_proposal(user.contacts)))
+        industries = list(LinkedInIndustry.get_proposal(user.contacts))
         self.fields['industry'].choices = industries
-        self.fields['industry'].initial = step0data.get('0-industry')
+        self.fields['industry'].initial = step0data.getlist('0-industry')
         cleaned_data = {
             'geo': data.get('%s-%s' % (self.prefix, 'geo')) if '%s-%s' % (self.prefix, 'geo') in data else self.fields['geo'].initial,
-            'industry': data.get('%s-%s' % (self.prefix, 'industry')) if '%s-%s' % (self.prefix, 'industry') in data else self.fields['industry'].initial,
+            'industry': data.getlist('%s-%s' % (self.prefix, 'industry')) if '%s-%s' % (self.prefix, 'industry') in data else self.fields['industry'].initial,
             'name': data.get('%s-%s' % (self.prefix, 'name')),
             'role': data.get('%s-%s' % (self.prefix, 'role')),
         }
@@ -88,7 +87,7 @@ class CreateBenchmarkStep3Form(forms.Form):
         if cleaned_data.get('role'):
             contact_filter['headline__icontains'] = cleaned_data.get('role')
         if cleaned_data.get('industry'):
-            contact_filter['company___industry__code'] = cleaned_data.get('industry')
+            contact_filter['company___industry__code__in'] = cleaned_data.get('industry')
         if cleaned_data.get('geo'):
             contact_filter['location__parent__id'] = cleaned_data.get('geo')
         self.contacts_filtered = user.contacts.filter(name_filter, **contact_filter).exclude(id__in=except_ids)\
