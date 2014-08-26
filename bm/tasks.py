@@ -3,6 +3,7 @@ import itertools
 from bm.models import Benchmark, BenchmarkInvitation
 from datetime import datetime, timedelta
 from celery import shared_task
+from core.utils import celery_log
 from django.contrib.sites.models import Site
 from django.core.mail import send_mail
 from django.core.urlresolvers import reverse
@@ -22,7 +23,9 @@ def grouper(n, iterable, fillvalue=None):
     args = [iter(iterable)] * n
     return itertools.izip_longest(*args, fillvalue=fillvalue)
 
+
 @shared_task
+@celery_log
 def send_invites(benchmark_id):
     benchmark = Benchmark.objects.get(pk=benchmark_id)
     if benchmark:
@@ -54,6 +57,7 @@ def send_invites(benchmark_id):
 
 
 @periodic_task(run_every=crontab(minute=0, hour=0))
+@celery_log
 def send_reminders():
     current_time = datetime.now()
     days_count = timedelta(days=2)
@@ -97,6 +101,7 @@ def send_reminders():
 
 
 @periodic_task(run_every=crontab(minute=1, hour=0))
+@celery_log
 def benchmark_aggregate():
     benchmarks = Benchmark.valid.filter(end_date=datetime.now())
     for benchmark in benchmarks:
@@ -104,6 +109,7 @@ def benchmark_aggregate():
 
 
 @periodic_task(run_every=crontab(minute=0, hour=0))
+@celery_log
 def check_benchmark_results():
     # get finished benchmarks with invites status 1 or 2
     finished_benchmarks = Benchmark.valid.filter(end_date__lte=datetime.now(), invites__status__range=[1, 2])

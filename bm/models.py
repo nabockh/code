@@ -3,6 +3,7 @@ import uuid
 import math
 from app.settings import BENCHMARK_DURATIONS_DAYS
 from bm.utils import BmQuerySet, ArrayAgg
+from django.contrib.admin.models import LogEntry
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.sites.models import Site
 from django.core import urlresolvers
@@ -51,9 +52,10 @@ class BenchmarkValidManager(BenchmarkManager):
 
 class BenchmarkPendingManager(models.Manager):
     def get_queryset(self):
-        return super(BenchmarkPendingManager, self).get_queryset()\
-            .annotate(responses_count=Count('question__responses'))\
-            .filter(approved=True, end_date__gt=datetime.now())
+        return super(BenchmarkPendingManager, self).get_queryset() \
+            .annotate(responses_count=Count('question__responses')) \
+            .exclude(approved=False) \
+            .filter(end_date__gt=datetime.now())
 
 
 class Benchmark(models.Model):
@@ -108,6 +110,11 @@ class Benchmark(models.Model):
         if hasattr(self, 'responses_count'):
             return min(int(round(float(self.responses_count)/self.min_numbers_of_responses*100)), 100)
 
+    @property
+    def geography(self):
+        region = self.geographic_coverage.first()
+        return region.name if region else 'Global'
+
     def create_link(self):
         link = BenchmarkLink()
         self.links.add(link)
@@ -161,6 +168,7 @@ class BenchmarkMultiple(Benchmark):
         verbose_name = 'Benchmark Multiple'
 
     available_charts = [('Pie', 'Pie Chart'), ('Column', 'Column Chart')]
+    default_chart = 'Pie'
 
     @property
     def charts(self):
@@ -180,6 +188,7 @@ class BenchmarkRanking(Benchmark):
         verbose_name = 'Benchmark Ranking'
 
     available_charts = [('Pie', 'Pie Chart'), ('Column', 'Column Chart')]
+    default_chart = 'Column'
 
     @property
     def charts(self):
@@ -188,7 +197,8 @@ class BenchmarkRanking(Benchmark):
         series1.insert(0, ['series', 'count'])
         series2 = self.series_statistic.values('series').annotate(count=ArrayAgg('value')).order_by('series')
         series2 = [[str(s['series'])] + s['count'][::-1] for s in series2]
-        series2.insert(0, ['series'] + [str(i) for i in range(1, len(s['count']) + 1)])
+        if series2:
+            series2.insert(0, ['series'] + [str(i) for i in range(1, len(s['count']) + 1)])
         return {
             'pie': series1,
             'column': series2,
@@ -202,6 +212,7 @@ class BenchmarkNumeric(Benchmark):
         verbose_name = 'Benchmark Open Number'
 
     available_charts = [('Pie', 'Pie Chart'), ('Column', 'Column Chart'), ('Bell_Curve', 'Bell Curve Chart')]
+    default_chart = 'Bell_Curve'
 
     @property
     def charts(self):
@@ -212,7 +223,8 @@ class BenchmarkNumeric(Benchmark):
         return {
             'pie': series,
             'column': series,
-            'bell_curve': bell_curve
+            'bell_curve': bell_curve,
+            'units': self.question.first().options.first().units.encode('utf-8'),
         }
 
 
@@ -223,6 +235,7 @@ class BenchmarkRange(Benchmark):
         verbose_name = 'Benchmark Range'
 
     available_charts = [('Pie', 'Pie Chart'), ('Column', 'Column Chart'), ('Line', 'Line Chart')]
+    default_chart = 'Line'
 
     @property
     def charts(self):
@@ -237,6 +250,7 @@ class BenchmarkRange(Benchmark):
             'pie': series1,
             'column': series1,
             'line': series2,
+            'units': self.question.first().options.first().units.encode('utf-8'),
         }
 
 
@@ -343,14 +357,22 @@ class QuestionRanking(models.Model):
 
 
 class QuestionOptions(models.Model):
+    UNITS = (
+        ('$', '$'),
+        ('\xe2\x82\xac', '\xe2\x82\xac'),
+        ('\xc2\xa3', '\xc2\xa3'),
+        ('%', '%'),
+        ('year', 'year'),
+        ('trades', 'trades'),
+        ('clients', 'clients')
+    )
     question = models.ForeignKey(Question, rel_class=models.OneToOneRel, related_name='options')
     units = models.CharField(max_length=50)
-    number_of_decimal = models.PositiveSmallIntegerField(default=2)
 
-    def __init__(self, units, number_of_decimal, *args, **kwargs):
+    def __init__(self, *args, **kwargs):
         super(QuestionOptions, self).__init__(*args, **kwargs)
-        self.units = units
-        self.number_of_decimal = number_of_decimal
+        if 'units' in kwargs:
+            self.units = kwargs.get('units')
 
 
 class ResponseChoice(models.Model):
@@ -404,7 +426,8 @@ class BenchmarkPending(Benchmark):
 
     class Meta:
         proxy = True
-        verbose_name = 'Pending Benchmark'
+        verbose_name = 'Benchmark Pending'
+        verbose_name_plural = 'Benchmarks Pending'
 
     def get_admin_url(self):
         content_type = ContentType.objects.get_for_model(BenchmarkApproved)
@@ -415,8 +438,16 @@ class BenchmarkApproved(Benchmark):
 
     class Meta:
         proxy = True
-        verbose_name = 'Approved Benchmark'
+        verbose_name = 'Benchmark Approved'
+        verbose_name_plural = 'Benchmark Approved'
 
     def get_admin_url(self):
         content_type = ContentType.objects.get_for_model(self)
         return urlresolvers.reverse("admin:%s_%s_change" % (content_type.app_label, content_type.model), args=(self.id,))
+
+
+class BenchmarkAuditLog(LogEntry):
+
+    class Meta:
+        proxy = True
+        verbose_name = 'Audit Log'

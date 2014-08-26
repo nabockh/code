@@ -2,9 +2,10 @@ from datetime import datetime, timedelta
 import math
 from app import settings
 from app.settings import BENCHMARK_DURATIONS_DAYS
+from bm.tasks import benchmark_aggregate
 import re
 from bm.validators import multiple_choice_validator
-from bm.models import Question, Region
+from bm.models import Question, Region, QuestionOptions
 from django import forms
 from bm.widgets import RankingWidget
 from django.db.models import Q
@@ -17,12 +18,14 @@ class CreateBenchmarkStep12Form(forms.Form):
     industry = forms.ChoiceField()
     geo = forms.ChoiceField(required=False)
     question_label = forms.CharField(max_length=255)
-    question_text = forms.CharField(widget=forms.Textarea())
+    question_text = forms.CharField(widget=forms.Textarea(attrs={'maxlength': 10000}),
+                                    max_length=10000)
     question_type = forms.ChoiceField(choices=Question.TYPES)
     answer_options = forms.CharField(widget=forms.Textarea(), validators=[multiple_choice_validator])
-    units = forms.CharField(max_length=50)
-    max_number_of_decimal = forms.IntegerField(min_value=1, max_value=6)
-    additional_comments = forms.CharField(widget=forms.Textarea(), required=False)
+    units = forms.ChoiceField(initial='$', choices=QuestionOptions.UNITS)
+    additional_comments = forms.CharField(widget=forms.Textarea(attrs={'maxlength': 10000}),
+                                          max_length=10000,
+                                          required=False)
     min_value = 1 if settings.DEBUG else 5
     minimum_number_of_answers = forms.IntegerField(min_value=min_value, initial=5)
 
@@ -35,7 +38,6 @@ class CreateBenchmarkStep12Form(forms.Form):
         question_type = int(data and data.get(kwargs['prefix'] + '-question_type', '1') or '1')
         if question_type == Question.MULTIPLE or question_type == Question.RANKING:
             self.fields['units'].required = False
-            self.fields['max_number_of_decimal'].required = False
         elif question_type == Question.NUMERIC or question_type == Question.RANGE:
             self.fields['answer_options'].required = False
 
@@ -47,7 +49,7 @@ class CreateBenchmarkStep3Form(forms.Form):
     name = forms.CharField(max_length=100, required=False)
 
     def clean(self):
-        if hasattr(self, 'selected_contacts'):
+        if self.is_continue and hasattr(self, 'selected_contacts'):
             if len(self.selected_contacts) < self.min_number_of_answers:
                 self.errors['__all__'] = self.error_class(['Count of selected contacts should be at least %d' % self.min_number_of_answers])
         return self.cleaned_data
@@ -63,6 +65,7 @@ class CreateBenchmarkStep3Form(forms.Form):
         super(CreateBenchmarkStep3Form, self).__init__(*args, **kwargs)
         self.min_number_of_answers = self.num(step0data.get('0-minimum_number_of_answers'))
         data = kwargs.get('data') or {}
+        self.is_continue = data.get('is_continue', False) and not(data.get('add_selected') or data.get('save_and_wizard_goto_step'))
         regions = [('', 'All')]
         regions.extend(list(Region.regions.values_list('id', 'name').order_by('name')))
         self.fields['geo'].choices = regions
@@ -88,8 +91,9 @@ class CreateBenchmarkStep3Form(forms.Form):
             contact_filter['company___industry__code'] = cleaned_data.get('industry')
         if cleaned_data.get('geo'):
             contact_filter['location__parent__id'] = cleaned_data.get('geo')
-        self.contacts_filtered = user.contacts.filter(name_filter, **contact_filter).exclude(id__in=except_ids) if name_filter else \
-            user.contacts.filter(**contact_filter).exclude(id__in=except_ids)
+        self.contacts_filtered = user.contacts.filter(name_filter, **contact_filter).exclude(id__in=except_ids)\
+            .order_by('first_name') if name_filter else \
+            user.contacts.filter(**contact_filter).exclude(id__in=except_ids).order_by('first_name')
         for contact in self.contacts_filtered:
             self.fields['contact-{0}-invite'.format(contact.id)] = \
                 forms.BooleanField(widget=forms.CheckboxInput(attrs={'class': 'choose-checkbox'}), required=False)
@@ -98,12 +102,12 @@ class CreateBenchmarkStep3Form(forms.Form):
                 forms.BooleanField(widget=forms.CheckboxInput(attrs={'class': 'share-checkbox'}), required=False)
             contact.secondary_element = 'contact-{0}-secondary'.format(contact.id)
 
-        self.add_suggested_contacts(cleaned_data.get('geo'), cleaned_data.get('industry'), user)
+        self.add_suggested_contacts(cleaned_data.get('geo'), cleaned_data.get('industry'), user, except_ids)
         wizard.selected_contacts = self.add_selected_contacts(data, except_ids)
         wizard.end_date = self.end_date
 
-    def add_suggested_contacts(self, geo, industry, user=None):
-        self.suggested_contacts = Contact.get_suggested(geo, industry, user)
+    def add_suggested_contacts(self, geo, industry, user=None, exclude_ids=[]):
+        self.suggested_contacts = Contact.get_suggested(geo, industry, user, exclude_ids)
         for contact in self.suggested_contacts:
             self.fields['suggested-{0}-invite'.format(contact.id)] = \
                 forms.BooleanField(widget=forms.CheckboxInput(attrs={'class': 'choose-checkbox'}), required=False)
@@ -144,6 +148,8 @@ class CreateBenchmarkStep3Form(forms.Form):
         for contact in self.selected_contacts:
             self.fields['selected-{0}-invite'.format(contact.id)] = \
                 forms.BooleanField(initial=True, widget=forms.CheckboxInput(attrs={'class': 'choose-checkbox', 'checked': 'checked'}), required=False)
+            self.fields['contact-{0}-invite'.format(contact.id)] = \
+                forms.BooleanField(initial=True, widget=forms.CheckboxInput(attrs={'class': 'choose-checkbox', 'checked': 'checked'}), required=False)
             contact.invite_element = 'selected-{0}-invite'.format(contact.id)
             attr = {'class': 'share-checkbox'}
             if contact.id in selected_secondary_ids:
@@ -151,8 +157,12 @@ class CreateBenchmarkStep3Form(forms.Form):
                 contact.allow_secondary = True
             else:
                 contact.allow_secondary = False
+
             self.fields['selected-{0}-secondary'.format(contact.id)] = \
                 forms.BooleanField(widget=forms.CheckboxInput(attrs=attr), required=False)
+            self.fields['contact-{0}-secondary'.format(contact.id)] = \
+                forms.BooleanField(widget=forms.CheckboxInput(attrs=attr), required=False)
+
             contact.secondary_element = 'selected-{0}-secondary'.format(contact.id)
             if not contact.email:
                 count_without_email += 1
@@ -172,7 +182,6 @@ class CreateBenchmarkStep4Form(CreateBenchmarkStep12Form):
             'question_type': step0data.get('0-question_type'),
             'answer_options': step0data.get('0-answer_options'),
             'units': step0data.get('0-units'),
-            'max_number_of_decimal': step0data.get('0-max_number_of_decimal'),
             'minimum_number_of_answers': step0data.get('0-minimum_number_of_answers'),
         }
         kwargs['initial'] = initial
@@ -188,21 +197,22 @@ class AnswerMultipleChoiceForm(forms.Form):
 
 
 class NumericAnswerForm(forms.Form):
-    def __init__(self, decimals, *args, **kwargs):
-        super(NumericAnswerForm, self).__init__(*args, **kwargs)
-        number = decimals['number_of_decimal']
-        value = (pow(10, number) - 1)
-        self.fields['numeric_box'] = forms.IntegerField(max_value=value, min_value=-value)
+    numeric_box = forms.IntegerField(min_value=0, max_value=1000000)
 
 
 class RangeAnswerForm(forms.Form):
-    def __init__(self, decimals, *args, **kwargs):
+    min = forms.IntegerField(min_value=0, max_value=1000000, widget=forms.NumberInput(attrs={'placeholder': '1'}))
+    max = forms.IntegerField(min_value=0, max_value=1000000, widget=forms.NumberInput(attrs={'placeholder': '1000000'}))
+
+    def __init__(self, *args, **kwargs):
         super(RangeAnswerForm, self).__init__(*args, **kwargs)
-        number = decimals['number_of_decimal']
-        max_value = (pow(10, number) - 1)
-        min_value = (-(pow(10, number) - 1))
-        self.fields['min'] = forms.IntegerField(max_value=max_value, min_value=min_value)
-        self.fields['max'] = forms.IntegerField(max_value=max_value, min_value=min_value)
+        data = kwargs.get('data', {})
+        self.fields['max'].min_value = data.get('min', 0)
+
+    def clean_max(self):
+        if self.cleaned_data['min'] > self.cleaned_data['max']:
+            self.errors['max'] = self.error_class(['Value should be more or equal %d' % self.cleaned_data['min']])
+        return self.cleaned_data['max']
 
 
 class RankingAnswerForm(forms.Form):
@@ -240,6 +250,7 @@ class BenchmarkDetailsForm(forms.Form):
 
     def __init__(self, benchmark, *args, **kwargs):
         super(BenchmarkDetailsForm, self).__init__(*args, **kwargs)
-        self.fields['Benchmark_Results'] = forms.ChoiceField(choices=benchmark.available_charts)
+        self.fields['Benchmark_Results'] = forms.ChoiceField(choices=benchmark.available_charts,
+                                                             initial=benchmark.default_chart)
         self.fields['Contributor_Data'] = forms.ChoiceField(choices=self.choices)
 

@@ -1,10 +1,10 @@
-{% extends "bm/benchmark_details.html" %}
+{% extends "bm/details.html" %}
 {% load i18n %}
 
 {% block graphs %}
     <form action="" method="post">{% csrf_token %}
         <div class='row'>
-        <div class='col-md-7'>
+        <div class='col-md-7 centered-middle mobile-wide'>
             <div class='col-md-12 bordered bgwhite margined margin-bot'>
                 <div class='title-header'>
                     Contributor Results {{ form.Benchmark_Results }}
@@ -59,7 +59,7 @@
             </div>
         </div>
         {% if user.is_authenticated %}
-            <div class='col-md-5'>
+            <div class='col-md-5 mobile-wide'>
             <div class='col-md-12 bordered bgwhite margined margin-bot'>
                 <div class='title-header'>
                     Contributor data {{ form.Contributor_Data }}
@@ -133,6 +133,12 @@
                 </div>
             </div>
         </div>
+        {% else %}
+            <script type="text/javascript">
+                 $( document ).ready(function() { 
+                    $('body').addClass('unauth');
+                 });
+            </script>
         {% endif %}
     </div>
     </form>

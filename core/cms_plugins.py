@@ -5,7 +5,7 @@ from cms.plugin_pool import plugin_pool
 from core.models import DashboardPanel, DashboardHistory, DashboardPending, DashboardRecent, DashboardPopular, \
     ButtonInviteColleague, HomeExample, HomeHowItWorks
 from django.utils.translation import ugettext_lazy as _
-
+import django.db.models as models
 
 class DashboardPanelGroupPlugin(CMSPluginBase):
     module = _("Dashboard")
@@ -31,8 +31,9 @@ class DashboardHistoryPlugin(CMSPluginBase):
     def render(self, context, instance, placeholder):
         context['instance'] = instance
         context['placeholder'] = placeholder
+        context['max_items'] = instance.max_items
         context['history'] = Benchmark.valid.filter(owner=context['request'].user, end_date__lte=datetime.now())\
-            .order_by('-end_date')[:instance.max_items]
+            .order_by('-end_date', '-id')[:instance.max_items]
         return context
 
 
@@ -46,7 +47,7 @@ class DashboardPendingPlugin(CMSPluginBase):
         context['instance'] = instance
         context['placeholder'] = placeholder
         context['benchmarks'] = {
-            'pending': Benchmark.pending.filter(owner=context['request'].user),
+            'pending': Benchmark.pending.filter(owner=context['request'].user).order_by('-end_date', '-id'),
         }
         return context
 
@@ -61,7 +62,14 @@ class DashboardRecentPlugin(CMSPluginBase):
         context['instance'] = instance
         context['placeholder'] = placeholder
         context['benchmarks'] = {
-            'recent': Benchmark.valid.filter(owner=context['request'].user, end_date__lte=datetime.now()).order_by('-end_date')[:5],
+            'recent':Benchmark.objects \
+                .annotate(responses_count=models.Count('question__responses')) \
+                .filter(models.Q(approved=True,
+                                 responses_count__gte=models.F('min_numbers_of_responses'),
+                                 end_date__lte=datetime.now()) &
+                        (models.Q(question__responses__user=context['request'].user) |
+                         models.Q(owner=context['request'].user)) ) \
+                .order_by('-end_date', '-id')[:5]
         }
         return context
 
@@ -75,9 +83,14 @@ class DashboardPopularPlugin(CMSPluginBase):
     def render(self, context, instance, placeholder):
         context['instance'] = instance
         context['placeholder'] = placeholder
-        context['benchmarks'] = {
-            'popular': Benchmark.valid.filter(popular=True)
-        }
+        if context['request'].user.social_profile.first():
+            context['benchmarks'] = {
+                'popular': Benchmark.valid.filter(
+                                popular=True,
+                                end_date__lte=datetime.now(),
+                                _industry=context['request'].user.social_profile.first().company.industry) \
+                            .order_by('-end_date', '-id')
+            }
         return context
 
 
@@ -108,6 +121,7 @@ class HomeHowItWorksPlugin(CMSPluginBase):
     name = "How It Works"
     model = HomeHowItWorks
     render_template = "cms/home/how_it_works.html"
+    allow_children = True
 
 plugin_pool.register_plugin(DashboardPanelGroupPlugin)
 plugin_pool.register_plugin(DashboardPanelPlugin)

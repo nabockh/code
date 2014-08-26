@@ -25,11 +25,6 @@
                   <li id='faq-link'><a href="#" data-toggle="modal" data-target="#faq">FaQ</a></li>
                 </ul>             
             </nav>
-            <div class='social-btns pull-right'>
-                <a href="#"><i class='fa fa-linkedin'></i></a>
-                <a href="#"><i class='fa fa-twitter'></i></a>
-                <a href="#"><i class='fa fa-facebook'></i></a>
-            </div>
           </div>
         </header>
 
@@ -45,7 +40,8 @@
                         </ul>
                     </div>
                     <div class='col-md-4 col-xs-3'>
-                        <a href="/dashboard" class='btn btn-primary pull-right'>Go to Dashboard <i class='fa fa-arrow-circle-right'></i></a>
+                        <a href="/dashboard" class='btn btn-primary pull-right non-mobile'>Go to Dashboard <i class='fa fa-arrow-circle-right'></i></a>
+                        <a href="/dashboard" class='btn btn-primary pull-right mobile icon-only'><i class='fa fa-tasks'></i></a>
                     </div>
                 </div>
                 </div>
@@ -72,6 +68,11 @@
                     </div>
                 </div>
             </div>
+            <script type="text/javascript">
+                 $( document ).ready(function() { 
+                    $('body').addClass('unauth');
+                 });
+            </script>
         {% endif %}
         
 {% endblock %}
@@ -218,7 +219,7 @@
                         </div>
                     </div>
                 </div>
-                <div class='text-center text-teal'>Click on the examples above to read full information.</div>
+                <div class='ex-info-text text-center text-teal'>Click on the examples above to read full information.</div>
             </div>
         </div>
         <div class="colorblock about" id='about'>
@@ -273,13 +274,12 @@
                         <div class='contact-info'>
                             <div class='title'>Contact Details</div>
                             {% static_placeholder "home_contact_details" or %}
-                            <p>Bedade Inc.</p>
+                            <p>Bedade Inc.</p><br>
                             <p>Paris, France</p>
-                            <p>San Francisco, CA USA</p>
-                            <p style='margin-bottom:20px;'><a href="#">Get Directions</a></p>
-                            <p>+33 6 61 58 90 63</p>
-                            <p>+1 415 275 0280</p>
-                            <p><a href='mailto:contact@bedade.com'>contact@bedade.com</a></p>
+                            <p style='margin-bottom:20px;'>San Francisco, CA USA</p>
+                            <p><a href="tel:+33661589063"><i class='fa fa-phone'></i> +33 6 61 58 90 63 </a></p>
+                            <p style='margin-bottom:20px;'><a href="tel:+14152750280"><i class='fa fa-phone'></i> +1 415 275 0280 </a></p>
+                            <p><a href='mailto:contact@bedade.com'><i class='fa fa-envelope'></i> contact@bedade.com</a></p>
                             {% endstatic_placeholder %}
                         </div>
                     </div>

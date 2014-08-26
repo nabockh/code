@@ -99,9 +99,8 @@ $(function () {
     $( "#id_Contributor_Data" ).on('change', statisticViewChange);
     $( "#id_Benchmark_Results" ).on('change', chartTypeChange);
 
-    $('#myRecentBenchmarks .item:not(:first-child)').removeClass('active');
-    $('#popularComunityBenchmarks .item:not(:first-child)').removeClass('active');
-    
+    $('.carousel-inner .item:not(:first-child)').removeClass('active');
+
     $( ".dashboard-progress-block .progress .progress-bar" ).each(function() {
         var dataProgress = $(this).attr('aria-valuenow');
         if (dataProgress <= 33) {
@@ -376,4 +375,74 @@ $( document ).ready(function() {
             $('body').removeClass('fixed-navs')
         }
     });
+
+    //Selectbox customize
+    $('select').each(function(){
+        var $select = $(this);
+        var width = $select.parents('div:eq(0)').width();
+        $select.prev('.select2-container').remove();
+        //$select.parents().filter(':display-none').each(function(){
+        //    $select.data('display', $select.css('display')).show();
+        //    $select.css('display', $select.data('display'));
+        //});
+        $select2 = $select.removeAttr('style').css('width', width).select2();
+        $select2.on("select2-open", function(){ $('.select2-offscreen > .select2-input').blur();}); // Workaround not to show cursor on iPad
+    });
+
 });
+$(window).on('resize', function(){
+    $('select').each(function(){
+        var $select = $(this);
+        var width = $select.parents('div:eq(0)').width();
+        $select.prev('.select2-container').remove();
+        $select2 = $select.removeAttr('style').css('width', width).select2();
+        $select2.on("select2-open", function(){ $('.select2-offscreen > .select2-input').blur();}); // Workaround not to show cursor on iPad
+    });
+});
+$(document).ajaxStop(function() {
+    $('select').each(function(){
+        var $select = $(this);
+        var width = $select.parents('div:eq(0)').width();
+        $select.prev('.select2-container').remove();
+        $select2 = $select.removeAttr('style').css('width', width).select2();
+        $select2.on("select2-open", function(){ $('.select2-offscreen > .select2-input').blur();}); // Workaround not to show cursor on iPad
+    });
+});
+
+
+
+// Benchmark answer options
+
+$(function() {
+    if ($('body .answer_options_area').is(':visible').length){
+        var txt = $(".answer_options_area textarea");
+        $(document).on("submit",".benchmark-creation form",function(){
+            txt.val('');
+            $('.answer_options_inputs input[type="text"]').each(function(){
+                var input_val = $(this).val();
+                txt.val( txt.val() + input_val + "\n");
+            });
+        });
+        $(document).on("click",".answer_options_inputs .answer_options_add",function(){
+            $('.answer_options_inputs .col-md-4:last-child').before('<div class="col-md-4"><input type="text" value="" maxlength="45"></div>');
+        });
+    }
+});
+$( document ).ready(function() {
+    if ($('body .answer_options_area').length){
+        if($(".answer_options_area textarea").val() !== ""){
+            $('.answer_options_inputs .col-md-4:not(:last-child)').remove();
+        }
+        var breaks = $(".answer_options_area textarea").val().split('\n');
+        var newLines = "";
+        for(var i = 0; i < breaks.length; i ++){
+            newLine = breaks[i];
+            var trim = newLine.replace(/ /g,'');
+            if(trim !== ""){
+                $('.answer_options_inputs .col-md-4:last-child').before('<div class="col-md-4"><input type="text" maxlength="45" value="' + newLine + '"></div>');
+            }
+        }
+    }
+});
+
+

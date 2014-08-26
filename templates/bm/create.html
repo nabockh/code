@@ -185,15 +185,35 @@
                                             </div>
                                         </div>
                                     </div>
+                                    <hr>
                                     <div class='col-md-12' id='answer_options'>
                                         <label for="id_0-answer_options">Answer Options</label>
-                                        <span class="add_info">(Enter each choice on a seperate line)</span>
-                                        {{ form.answer_options }}
+                                        <!--span class="add_info">(Enter each choice on a seperate line)</span-->
+                                        <div class="answer_options_area">
+                                            {{ form.answer_options }}
+                                        </div>
+                                        <div class="answer_options_inputs">
+                                            <div class='row'>
+                                                <div class="col-md-4">
+                                                    <input type="text" maxlength="45">
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <input type="text" maxlength="45">
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <a class="answer_options_add">Add More Fields...</a>
+                                                </div>
+                                            </div>
+                                            <div class="clearfix"></div>
+                                        </div>
+
                                         {{ form.answer_options.errors }}
                                     </div>
+
                                     <div class='col-md-12' id='units_maxDecimals'>
                                         <div class='row'>
-                                            <div class='col-md-6'>
+                                            <div class='col-md-8'></div>
+                                            <div class='col-md-4'>
                                                 <label for="id_0-units">Units</label>
                                                 <span class="add_help">?
                                                     <span class='add_help_inner'>
@@ -205,7 +225,7 @@
                                                 {{ form.units }}
                                                 {{ form.units.errors }}
                                             </div>
-                                            <div class='col-md-6'>
+                                            <!-- <div class='col-md-4'>
                                                 <label for="id_0-max_number_of_decimal">maximum number of decimals</label>
                                                 <span class="add_help">?
                                                     <span class='add_help_inner'>
@@ -216,9 +236,10 @@
                                                 </span>
                                                 {{ form.max_number_of_decimal }}
                                                 {{ form.max_number_of_decimal.errors }}
-                                            </div>
+                                            </div> -->
                                         </div>
                                     </div>
+                                    <hr>
                                     <div class='col-md-12'>
                                         <div class='row'>
                                             <div class='col-md-8 normal-padding'>
@@ -300,26 +321,47 @@
                                             </div>
                                         </div>
                                     </div>
+                                    <hr>
                                     <div class='col-md-12' id='answer_options_step3'>
                                         <label for="id_2-answer_options">Answer Options</label>
-                                        <span class="add_info">(Enter each choice on a seperate line)</span>
-                                        {{ form.answer_options }}
+                                        <div class="answer_options_area">
+                                            {{ form.answer_options }}
+                                        </div>
+                                        <div class="answer_options_inputs">
+                                            <div class='row'>
+                                                <div class="col-md-4">
+                                                    <input type="text" maxlength="45">
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <input type="text" maxlength="45">
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <a class="answer_options_add">Add More Fields...</a>
+                                                </div>
+                                            </div>
+                                            <div class="clearfix"></div>
+                                        </div>
+
                                         {{ form.answer_options.errors }}
+
+
                                     </div>
                                     <div class='col-md-12' id='units_maxDecimals_step3'>
                                         <div class='row'>
-                                            <div class='col-md-6'>
+                                            <div class='col-md-8'></div>
+                                            <div class='col-md-4'>
                                                 <label for="id_2-units">Units</label>
                                                 {{ form.units }}
                                                 {{ form.units.errors }}
                                             </div>
-                                            <div class='col-md-6'>
+                                            <!-- <div class='col-md-6'>
                                                 <label for="id_2-max_number_of_decimal">maximum number of decimals</label>
                                                 {{ form.max_number_of_decimal }}
                                                 {{ form.max_number_of_decimal.errors }}
-                                            </div>
+                                            </div> -->
                                         </div>
                                     </div>
+                                    <hr>
                                     <div class='col-md-12'>
                                         <div class='row'>
                                             <div class='col-md-8 normal-padding'>
@@ -369,19 +411,10 @@
                                                         <label>{{ contact }}</label>
                                                         <p class='text-do-wrap' title='{{ contact.headline }}'>{{ contact.headline }}</p>
                                                     </div>
-
-                                                    {% if contact.allow_secondary %}
-                                                        <div class='col-md-12'>
-                                                            <input name="{{ contact.secondary_element }}" class='pre-checked' type='checkbox' checked='checked' disabled />
-                                                            <span class='grey'>Allow Sharing</span>
-                                                        </div>
-                                                    {% else %}
-                                                        <div class='col-md-12'>
-                                                            <input name="{{ contact.secondary_element }}" class='pre-checked' type='checkbox'disabled />
-                                                            <span class='grey'>Allow Sharing</span>
-                                                        </div>
-                                                    {% endif %}
-                                                    
+                                                    <div class='col-md-12'>
+                                                        <input name="{{ contact.secondary_element }}" id="{{ contact.secondary_element }}" class='pre-checked' type='checkbox' {% if contact.allow_secondary %} checked='checked' {% endif %}/>
+                                                        <label for="{{ contact.secondary_element }}">Allow Sharing</label>
+                                                    </div>
                                                 </div>
                                             </div>
                                         {% endfor %}
@@ -420,7 +453,6 @@
                             {% else %}
                                 <button id='go_back' name="wizard_goto_step" type="submit" value="{{ wizard.steps.prev }}" class="btn btn-default auto-width continue-btn hidden">{% trans "go back" %}</button>
                                 <label for='go_back' class='btn btn-default auto-width'><i class='fa fa-arrow-circle-o-left'></i> Go Back</label>
-                            >
                             {% endif %}
 
                         {% endif %}
@@ -438,6 +470,7 @@
 
                             {% endif %}
                         {% endif %}
+                        <div class="clearfix"></div>
                     </div>
                 </form>
             </div>

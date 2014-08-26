@@ -1,6 +1,8 @@
-CREATE OR REPLACE FUNCTION benchmark_aggregate(IN bm_id INTEGER)
-  RETURNS INTEGER AS $$
-DECLARE
+CREATE OR REPLACE FUNCTION benchmark_aggregate (bm_id int4)
+  RETURNS int4
+AS
+$BODY$
+  DECLARE
   type_               INTEGER;
   from_               INTEGER;
   to_                 INTEGER;
@@ -128,7 +130,8 @@ BEGIN
       min("rn".value),
       max("rn".value),
       avg("rn".value),
-      stddev("rn".value)
+      stddev("rn".value),
+      count("rn".value)
     INTO a_point
     FROM "bm_responsenumeric" AS "rn"
       INNER JOIN "bm_questionresponse" ON "bm_questionresponse"."id" = "rn"."response_id"
@@ -139,22 +142,37 @@ BEGIN
       VALUES (
         a_point.benchmark_id, a_point.min, a_point.max, a_point.avg, a_point.stddev
       );
-    v_groups_count := 3;
-    from_ := a_point.min;
-    to_ := a_point.max - from_;
-    IF to_/v_groups_count = 1 THEN
-      v_groups_count := 2;
-    END IF;
-    to_ := to_ + (v_groups_count - to_%v_groups_count);
-    v_groups_step := CEIL(to_/v_groups_count::float)::INTEGER;
+
+    v_groups_count := LEAST(10, a_point.count);
     INSERT INTO "bm_seriesstatistic" ("benchmark_id", "series", "value")
       (
         WITH ranges AS (
           SELECT
-            s::text||'-'||(s + v_groups_step - 1)::text as "range",
-            s as "r_min",
-            s + v_groups_step - 1 as "r_max"
-          FROM generate_series(from_, to_, v_groups_step) AS s)
+            "r_min"::text||'-'||"r_max"::text as "range",
+            r_min,
+            r_max
+          FROM (
+            SELECT lag("lowest", 1, -1) over(order by "lowest") + 1 as "r_min", greatest("lowest", "highest") as "r_max" from (
+              SELECT DISTINCT
+                lowest, highest
+              FROM (SELECT
+                      count("response_id"),
+                      min("value") AS "lowest",
+                      max("value") AS "highest",
+                      "r_rank"
+                    FROM (SELECT "rn"."response_id", "rn"."value",
+                                 ntile(v_groups_count) OVER (ORDER BY "value") AS "r_rank"
+                           FROM bm_responsenumeric rn
+                              INNER JOIN "bm_questionresponse" ON "bm_questionresponse"."id" = "rn"."response_id"
+                              INNER JOIN "bm_question" ON "bm_question"."id" = "bm_questionresponse"."question_id"
+                              INNER JOIN "bm_benchmark" ON "bm_benchmark"."id" = "bm_question"."benchmark_id"
+                           WHERE "bm_benchmark"."id" = bm_id
+                         ) AS ranked
+                    GROUP BY ranked.r_rank
+                    ORDER BY "lowest"
+                   ) AS uniq
+              ) as range
+            ) AS s)
         SELECT
           bm_id,
           r.range,
@@ -196,4 +214,5 @@ BEGIN
   END IF;
   RETURN bm_id;
 END;
-$$ LANGUAGE plpgsql;
+$BODY$
+LANGUAGE plpgsql VOLATILE;

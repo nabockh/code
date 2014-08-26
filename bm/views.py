@@ -23,6 +23,8 @@ from django.views.generic import ListView, TemplateView
 from django.views.generic.edit import FormView
 from bm.signals import benchmark_answered, benchmark_created
 from django.db.models import Count
+
+import json
 import StringIO
 import xlsxwriter
 
@@ -118,17 +120,16 @@ class BenchmarkCreateWizardView(CookieWizardView):
         self.storage.reset()
         return done_response
 
-
-    def render_email_preview(self, benchmark):
+    @staticmethod
+    def render_email_preview(benchmark):
         template = loader.get_template('alerts/invite.html')
         # TODO: http is hardcoded
-        benchmark.link ='http://{0}{1}'.format(Site.objects.get_current().domain, reverse('bm_answer', kwargs={'slug': 'slug'}))
+        benchmark.link ='{0}{1}'.format(Site.objects.get_current().domain, reverse('bm_answer', kwargs={'slug': 'slug'}))
         context = Context({
             'benchmark': benchmark,
         })
         response = HttpResponse("<pre>" + template.render(context) + '</pre>')
         return response
-
 
     def render_goto_step(self, goto_step, **kwargs):
         """
@@ -155,7 +156,6 @@ class BenchmarkCreateWizardView(CookieWizardView):
         context = super(BenchmarkCreateWizardView, self).get_context_data(form, **kwargs)
         if self.steps.current == '2':
             context['selected_contacts'] = self.selected_contacts if hasattr(self, 'selected_contacts') else []
-        context['contact_form'] = ContactForm()
         return context
 
     def done(self, form_list, preview=False, **kwargs):
@@ -165,14 +165,23 @@ class BenchmarkCreateWizardView(CookieWizardView):
             benchmark = Benchmark()
             benchmark.name = step3.cleaned_data['name']
             benchmark.owner = self.request.user
-            benchmark.industry = step3.cleaned_data['industry']
+            # TODO: Industry and Geo(?) must be fixed later to support multiple choice inputs
+            if isinstance(step3.cleaned_data['industry'], list):
+                benchmark.industry = step3.cleaned_data['industry'][0]
+            else:
+                benchmark.industry = step3.cleaned_data['industry']
             benchmark.min_numbers_of_responses = step3.cleaned_data['minimum_number_of_answers']
             benchmark.overview = step3.cleaned_data['additional_comments']
             if preview:
                 return benchmark
             benchmark.save()
-            if step3.cleaned_data['geo']:
-                region = Region.objects.get(pk=step3.cleaned_data['geo'])
+
+            if isinstance(step3.cleaned_data['geo'], list):
+                bm_geo =  step3.cleaned_data['geo'][0]
+            else:
+                bm_geo = step3.cleaned_data['geo']
+            if bm_geo:
+                region = Region.objects.get(pk=bm_geo)
                 benchmark.geographic_coverage.add(region)
 
             question = Question()
@@ -184,16 +193,18 @@ class BenchmarkCreateWizardView(CookieWizardView):
 
             if question.type == Question.MULTIPLE:
                 choices = step3.cleaned_data['answer_options'].split('\r\n')
+                choices = [option for option in choices if option]
                 for i, choice in enumerate(choices, start=1):
                     choice = QuestionChoice(label=choice, order=i)
                     question.choices.add(choice)
             elif question.type == Question.RANKING:
                 ranks = step3.cleaned_data['answer_options'].split('\r\n')
+                ranks = [option for option in ranks if option]
                 for i, rank in enumerate(ranks, start=1):
                     rank = QuestionRanking(label=rank, order=i)
                     question.ranks.add(rank)
             elif question.type == Question.NUMERIC or question.type == Question.RANGE:
-                question.options.add(QuestionOptions(step3.cleaned_data.get('units'), step3.cleaned_data.get('max_number_of_decimal')))
+                question.options.add(QuestionOptions(units=step3.cleaned_data.get('units')))
 
             step2_data = self.storage.get_step_data('1')
             for contact in step2.selected_contacts:
@@ -208,6 +219,7 @@ class BenchmarkCreateWizardView(CookieWizardView):
             link = benchmark.create_link()
             benchmark.calculate_deadline()
             benchmark.save()
+        if benchmark.pk:
             benchmark_created.send(sender=self.__class__, request=self.request, benchmark=benchmark)
         return redirect('bm_dashboard')
 
@@ -278,7 +290,6 @@ class BaseBenchmarkAnswerView(FormView):
         context = super(BaseBenchmarkAnswerView, self).get_context_data(**kwargs)
         context['benchmark'] = self.benchmark
         context['contributors'] = self.benchmark.invites.count()
-        context['contact_form'] = ContactForm()
         return context
 
     def post(self, request, *args, **kwargs):
@@ -290,7 +301,7 @@ class BaseBenchmarkAnswerView(FormView):
         form = self.get_form(form_class)
         if form.is_valid():
             result = self.form_valid(form)
-            benchmark_answered.send(sender=self.__class__, request=request, user=request.user)
+            benchmark_answered.send(sender=self.__class__, request=request, user=request.user, benchmark=self.benchmark)
             return result
         else:
             return self.form_invalid(form)
@@ -366,11 +377,6 @@ class RangeAnswerView(BaseBenchmarkAnswerView):
         self.benchmark = benchmark
         return super(BaseBenchmarkAnswerView, self).dispatch(self.request, *args, **kwargs)
 
-    def get_form_kwargs(self):
-        kwargs = super(RangeAnswerView, self).get_form_kwargs()
-        kwargs['decimals'] = self.benchmark.question.first().options.values('number_of_decimal')[0]
-        return kwargs
-
     def form_valid(self, form):
         if form.is_valid():
             with transaction.atomic():
@@ -394,11 +400,6 @@ class NumericAnswerView(BaseBenchmarkAnswerView):
     def dispatch(self, request, benchmark, *args, **kwargs):
         self.benchmark = benchmark
         return super(BaseBenchmarkAnswerView, self).dispatch(self.request, *args, **kwargs)
-
-    def get_form_kwargs(self):
-        kwargs = super(NumericAnswerView, self).get_form_kwargs()
-        kwargs['decimals'] = self.benchmark.question.first().options.values('number_of_decimal')[0]
-        return kwargs
 
     def form_valid(self, form):
         if form.is_valid():
@@ -450,44 +451,44 @@ class BenchmarkDetailView(FormView):
         context['question'] = benchmark.question.first()
         context['url'] = self.request.META['HTTP_HOST'] + self.request.path
         group_by_headline = QuestionResponse.objects.filter(question=benchmark.question.first()).\
-            values('user__social_profile__headline').annotate(count=Count('user__social_profile__headline'))
+            values('user__social_profile__headline').annotate(count=Count('id'))
         group_by_country = QuestionResponse.objects.filter(question=benchmark.question.first()).\
-            values('user__social_profile__location__name').annotate(count=Count('user__social_profile__location__name'))
+            values('user__social_profile__location__name').annotate(count=Count('id'))
         group_by_geo = QuestionResponse.objects.filter(question=benchmark.question.first()).\
-            values('user__social_profile__location__parent__name').annotate(count=Count('user__social_profile__location__parent__name'))
+            values('user__social_profile__location__parent__name').annotate(count=Count('id'))
         group_by_industry = QuestionResponse.objects.filter(question=benchmark.question.first()).\
-            values('user__social_profile__company___industry__name').annotate(count=Count('user__social_profile__company___industry__name'))
+            values('user__social_profile__company___industry__name').annotate(count=Count('id'))
         for dictionary in group_by_headline:
-            dictionary['role'] = dictionary['user__social_profile__headline']
+            dictionary['role'] = dictionary['user__social_profile__headline'] or "Not Available"
             del dictionary['user__social_profile__headline']
         for dictionary in group_by_geo:
-            dictionary['geo'] = dictionary['user__social_profile__location__parent__name']
+            dictionary['geo'] = dictionary['user__social_profile__location__parent__name'] or "Not Available"
             del dictionary['user__social_profile__location__parent__name']
         for dictionary in group_by_country:
-            dictionary['country'] = dictionary['user__social_profile__location__name']
+            dictionary['country'] = dictionary['user__social_profile__location__name'] or "Not Available"
             del dictionary['user__social_profile__location__name']
         for dictionary in group_by_industry:
-            dictionary['industry'] = dictionary['user__social_profile__company___industry__name']
+            dictionary['industry'] = dictionary['user__social_profile__company___industry__name'] or "Not Available"
             del dictionary['user__social_profile__company___industry__name']
         headlines = []
         for item in group_by_headline:
             first = item['count']
-            second = str(item['role'])
+            second = item['role']
             headlines.append([second, first])
         geo = []
         for item in group_by_geo:
             first = item['count']
-            second = str(item['geo'])
+            second = item['geo']
             geo.append([second, first])
         countries = []
         for item in group_by_country:
             first = item['count']
-            second = str(item['country'])
+            second = item['country']
             countries.append([second, first])
         industries = []
         for item in group_by_industry:
             first = item['count']
-            second = str(item['industry'])
+            second = item['industry']
             industries.append([second, first])
         context['role'] = list(headlines)
         context['role'].insert(0, ['role', 'count'])
@@ -497,6 +498,9 @@ class BenchmarkDetailView(FormView):
         context['countries'].insert(0, ['countries', 'count'])
         context['industries'] = list(industries)
         context['industries'].insert(0, ['industries', 'count'])
+
+        for field in ['role', 'geo', 'countries', 'industries']:
+            context[field] = json.dumps(context[field])
 
         # Count percentage in aggregated lists
         countries_percentage = list(countries)
@@ -603,7 +607,8 @@ class BenchmarkAddRecipientsView(FormView):
                 invite.status = 0 # not send
                 invite.is_allowed_to_forward_invite = bool(form.data.get(form.prefix + '-' + contact.secondary_element))
                 self.benchmark.invites.add(invite)
-        send_invites.delay(self.benchmark.id)
+        if self.benchmark.approved:
+            send_invites.delay(self.benchmark.id)
         return super(BenchmarkAddRecipientsView, self).form_valid(form)
 
 
@@ -617,8 +622,8 @@ class BenchmarkAggregateView(BenchmarkDetailView):
 class ExcelDownloadView(BenchmarkDetailView):
 
     @method_decorator(login_required)
-    def dispatch(self,*args, **kwargs):
-        return super(ExcelDownloadView, self).dispatch(args, **kwargs)
+    def dispatch(self, request, *args, **kwargs):
+        return super(ExcelDownloadView, self).dispatch(request, *args, **kwargs)
 
     def get(self, *args, **kwargs):
         bm_id = kwargs['bm_id']

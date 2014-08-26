@@ -2,6 +2,7 @@ from app import settings
 from django.core.cache import cache
 from django.core.mail import send_mail
 from django.db import models, transaction
+from django.db.models import Count
 from linkedin import linkedin
 from social.backend.linkedin import extract_access_tokens, LinkedInApplication
 from social_auth.db.django_models import USER_MODEL
@@ -28,7 +29,12 @@ class LinkedInIndustry(models.Model):
 
     @classmethod
     def get_proposal(cls, contacts):
-        return cls.objects.filter(companies__employees__in=contacts.values_list('id', flat=True)).values_list('code', 'name').distinct().order_by('name')
+        result = cls.objects\
+            .annotate(users_count=Count('companies__employees'))\
+            .filter(companies__employees__in=contacts.values_list('id', flat=True))\
+            .values_list('code', 'name', 'users_count')\
+            .distinct().order_by('-users_count')
+        return [(a, b) for a, b, _ in result]
 
     def __unicode__(self):
         return self.name
@@ -93,6 +99,8 @@ class Contact(models.Model):
 
     @classmethod
     def send_mail(cls, user_from, subject, body, contacts):
+        if not list(contacts):
+            return
         assert isinstance(contacts[0], cls), 'Contacts should be social.Contact instances'
         recipients_without_email = []
         for contact in contacts:
@@ -156,15 +164,15 @@ class Contact(models.Model):
         return contact
 
     @classmethod
-    def get_suggested(cls, geo=None, industry=None, user=None):
+    def get_suggested(cls, geo=None, industry=None, user=None, exclude_ids=[]):
         contact_filter = {}
         if industry:
             contact_filter['company___industry__code'] = industry
         if geo:
             contact_filter['location__parent__id'] = geo
 
-        return cls.objects.filter(**contact_filter) \
-                          .exclude(user=user) \
+        return cls.objects.exclude(models.Q(user=user) | models.Q(id__in=exclude_ids)) \
+                          .filter(**contact_filter) \
                           .annotate(num_responses=models.Count('user__responses'),
                                     is_active_user=models.Count('user__id')) \
                           .order_by('-is_active_user',
