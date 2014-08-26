@@ -167,7 +167,7 @@ class Contact(models.Model):
     def get_suggested(cls, geo=None, industry=None, user=None, exclude_ids=[]):
         contact_filter = {}
         if industry:
-            contact_filter['company___industry__code'] = industry
+            contact_filter['company___industry__code__in'] = industry
         if geo:
             contact_filter['location__parent__id'] = geo
 
