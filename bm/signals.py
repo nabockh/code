@@ -91,3 +91,12 @@ def log_bm_creation(benchmark, user, **kwargs):
         action_flag=CHANGE,
         change_message='Answered'
     )
+
+
+@receiver(post_save, sender=QuestionResponse)
+def notify_creator(instance, **kwargs):
+    contributor = instance.user.get_full_name()
+    response = kwargs['sender'].objects.get(pk=instance.pk)
+    benchmark = response.question.benchmark
+    send_mail('Your benchmark {0} has a new contributor'.format(benchmark.name),
+              '{0} answered your benchmark - {1}'.format(contributor, benchmark.name), None, [benchmark.owner.email])
