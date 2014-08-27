@@ -272,7 +272,8 @@ LINKEDIN_OAUTH2_EXTRA_DATA = [('id', 'id'), ]
 
 LOGIN_REDIRECT_URL = "/"
 LOGIN_ERROR_URL = "/beta"
-LOGIN_URL = '/login/linkedin'
+LOGIN_URL = '/'
+LOGIN_REAL_URL = '/login/linkedin'
 
 EMAIL_BACKEND = 'djcelery_email.backends.CeleryEmailBackend'
 EMAIL_HOST_USER = os.environ.get('SENDGRID_USERNAME', 'devova')

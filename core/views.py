@@ -1,13 +1,17 @@
 from datetime import datetime
+from app import settings
 from bm.models import Benchmark
+from django.contrib.auth import REDIRECT_FIELD_NAME
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.views import redirect_to_login
 from django.core.mail import send_mail
 from django.core.urlresolvers import reverse
 from django.db import IntegrityError
 from django.http import HttpResponseRedirect
-from django.shortcuts import render
+from django.shortcuts import render, resolve_url
+from django.utils.encoding import force_str
 from django.views.generic import TemplateView
-from core.forms import ContactForm
+from core.forms import ContactForm, TermsAndConditions
 from django.contrib.auth.models import User
 from django.utils.decorators import method_decorator
 from social.forms import EmailInvitationRequest
@@ -18,15 +22,23 @@ import django.db.models as models
 class HomeView(TemplateView):
     template_name = 'core/home.html'
 
-    def get_context_data(self, **kwargs):
+    def dispatch(self, request, *args, **kwargs):
+        kwargs['login_next'] = request.GET.get('next')
+        return super(HomeView, self).dispatch(request, *args, **kwargs)
+
+    def get_context_data(self, login_next, **kwargs):
         data = super(HomeView, self).get_context_data(**kwargs)
         data['form'] = ContactForm(request=self.request)
         data['invitation_form'] = EmailInvitationRequest(prefix='invite')
+        if login_next:
+            data['terms_and_conditions_form'] = TermsAndConditions(initial={'next': login_next})
         return data
 
     def post(self, request, *args, **kwargs):
-        if request.POST.has_key('invite-email'):
-            invitation_form = EmailInvitationRequest(request.POST, prefix='invite')
+        invitation_form = EmailInvitationRequest(request.POST, prefix='invite')
+        terms_form = TermsAndConditions(data=request.POST)
+        contact_form = ContactForm(request=request, data=request.POST)
+        if 'invite-email' in request.POST:
             if invitation_form.is_valid():
                 try:
                     login_invite = Invite()
@@ -35,20 +47,25 @@ class HomeView(TemplateView):
                 except IntegrityError:
                     return HttpResponseRedirect('/')
                 return HttpResponseRedirect('/')
+        elif 'next' in request.POST:
+            if terms_form.is_valid():
+                path = terms_form.cleaned_data['next']
+                resolved_login_url = force_str(resolve_url(settings.LOGIN_REAL_URL))
+                return redirect_to_login(path, resolved_login_url, REDIRECT_FIELD_NAME)
         else:
-            form = ContactForm(request=request, data=request.POST)
-            if form.is_valid():
-                first_name = form.cleaned_data['first_name']
-                last_name = form.cleaned_data['last_name']
-                customer_email = form.cleaned_data['email']
-                comment = form.cleaned_data['comment']
+            if contact_form.is_valid():
+                first_name = contact_form.cleaned_data['first_name']
+                last_name = contact_form.cleaned_data['last_name']
+                customer_email = contact_form.cleaned_data['email']
+                comment = contact_form.cleaned_data['comment']
                 recipient_list = User.objects.filter(is_superuser=True, email__isnull=False)\
                     .values_list('email', flat=True)
                 if recipient_list:
                     send_mail('Customer feedback', comment, '%s %s <%s>' % (first_name, last_name, customer_email),
                               recipient_list)
                 return HttpResponseRedirect('/')
-        return render(request, 'core/home.html', {'form': form, 'invitation_form': invitation_form})
+        return render(request, 'core/home.html', {'form': contact_form, 'invitation_form': invitation_form,
+                                                  'terms_and_conditions_form': terms_form})
 
 
 class DashboardView(TemplateView):
