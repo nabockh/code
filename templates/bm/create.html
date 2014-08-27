@@ -67,12 +67,12 @@
         <div class='cr_step one active'>
             <div class='step_image'></div>
             <div class='step_title'>Step 1:</div>
-            <div class='step_descr'>Define your Query</div>
+            <div class='step_descr'>Ask your question</div>
         </div>
         <div class='cr_step two'>
             <div class='step_image'></div>
             <div class='step_title'>Step 2:</div>
-            <div class='step_descr'>Add Contacts</div>
+            <div class='step_descr'>Select Contacts</div>
         </div>
         <div class='cr_step three'>
             <div class='step_image'></div>
@@ -91,12 +91,12 @@
         <div class='cr_step one done'>
             <div class='step_image'></div>
             <div class='step_title'>Step 1:</div>
-            <div class='step_descr'>Define your Query</div>
+            <div class='step_descr'>Ask your question</div>
         </div>
         <div class='cr_step two active'>
             <div class='step_image'></div>
             <div class='step_title'>Step 2:</div>
-            <div class='step_descr'>Add Contacts</div>
+            <div class='step_descr'>Select Contacts</div>
         </div>
         <div class='cr_step three'>
             <div class='step_image'></div>
@@ -109,12 +109,12 @@
         <div class='cr_step one done'>
             <div class='step_image'></div>
             <div class='step_title'>Step 1:</div>
-            <div class='step_descr'>Define your Query</div>
+            <div class='step_descr'>Ask your question</div>
         </div>
         <div class='cr_step two done'>
             <div class='step_image'></div>
             <div class='step_title'>Step 2:</div>
-            <div class='step_descr'>Add Contacts</div>
+            <div class='step_descr'>Select Contacts</div>
         </div>
         <div class='cr_step three active'>
             <div class='step_image'></div>
@@ -143,19 +143,19 @@
                         <div class='col-md-8 lined-left'>
                             <div class='row'>
                                 <div class='col-md-12'>
-                                    <label for="id_0-name">Query Name</label>
-                                    <span class="add_info">(ie 'IT SaaS Costs')</span>
+                                    <label for="id_0-name">Question Topic</label>
+                                    <span class="add_info">(ie Technology spending growth)</span>
                                     {{ form.name }}
                                     {{ form.name.errors }}
                                 </div>
                                 <div class='col-md-12'>
-                                    <label for="id_0-question_label">Your Query</label>
+                                    <label for="id_0-question_label">Your Question</label>
                                     <span class="add_info">(ie 'What is your annual Marketing budget for SaaS services')</span>
                                     {{ form.question_label }}
                                     {{ form.question_label.errors }}
                                 </div>
                                 <div class='col-md-12'>
-                                    <label for="id_0-question_text">Query Details</label>
+                                    <label for="id_0-question_text">Question details</label>
                                     <span class="add_help">?
                                         <span class='add_help_inner'>
                                             {% static_placeholder "bm_create_query_details" or %}
@@ -179,7 +179,7 @@
                                             {{ form.geo.errors }}
                                         </div>
                                         <div class='col-md-4'>
-                                            <label for="question_type">Type of Answer</label>
+                                            <label for="question_type">Type of Question</label>
                                             {{ form.question_type }}
                                             {{ form.question_type.errors }}
                                         </div>
@@ -225,18 +225,6 @@
                                             {{ form.units }}
                                             {{ form.units.errors }}
                                         </div>
-                                        <!-- <div class='col-md-4'>
-                                            <label for="id_0-max_number_of_decimal">maximum number of decimals</label>
-                                            <span class="add_help">?
-                                                <span class='add_help_inner'>
-                                                    {% static_placeholder "bm_create_max_dec_tooltip" or %}
-                                                    Lorem ipsum dolor sit amet, consectetur eta adipiscing elit. Pellentasque eu tempor tortor. Aliquam Trisque eros arcu, sed bibendum enim faucibus in. In vulputate blendit lorem ut.
-                                                    {% endstatic_placeholder %}
-                                                </span>
-                                            </span>
-                                            {{ form.max_number_of_decimal }}
-                                            {{ form.max_number_of_decimal.errors }}
-                                        </div> -->
                                     </div>
                                 </div>
                                 <hr>
@@ -279,19 +267,19 @@
                             <input id="id_benchmark_create_wizard_view-current_step" name="benchmark_create_wizard_view-current_step" type="hidden" value="2">
                             <div class='row'>
                                 <div class='col-md-12'>
-                                    <label for="id_2-name">Query Name</label>
-                                    <span class="add_info">(ie 'IT SaaS Costs')</span>
+                                    <label for="id_2-name">Question Topic</label>
+                                    <span class="add_info">(ie 'Technology spending growth')</span>
                                     {{ form.name }}
                                     {{ form.name.errors }}
                                 </div>
                                 <div class='col-md-12'>
-                                    <label for="id_2-question_label">Your Query</label>
-                                    <span class="add_info">(ie 'What is your annual Marketing budget for SaaS services')</span>
+                                    <label for="id_2-question_label">Your Question</label>
+                                    <span class="add_info">(ie 'What is the projected growth of your technology budget for next year?')</span>
                                     {{ form.question_label }}
                                     {{ form.question_label.errors }}
                                 </div>
                                 <div class='col-md-12'>
-                                    <label for="id_2-question_text">Query Details</label>
+                                    <label for="id_2-question_text">Question Details</label>
                                     <span class="add_help">?
                                         <span class='add_help_inner'>
                                             {% static_placeholder "bm_create_query_details" or %}
@@ -354,11 +342,6 @@
                                             {{ form.units }}
                                             {{ form.units.errors }}
                                         </div>
-                                        <!-- <div class='col-md-6'>
-                                            <label for="id_2-max_number_of_decimal">maximum number of decimals</label>
-                                            {{ form.max_number_of_decimal }}
-                                            {{ form.max_number_of_decimal.errors }}
-                                        </div> -->
                                     </div>
                                 </div>
                                 <hr>
@@ -381,7 +364,7 @@
                                     </div>
                                 </div>
                                 <div class='col-md-12'>
-                                    <label for="id_2-additional_comments">Write a short overview to explain the purpose of yourquery</label>
+                                    <label for="id_2-additional_comments">Write a short overview to explain the purpose of your query</label>
                                     <span class="add_help">?
                                                 <span class='add_help_inner'>
                                                     {% static_placeholder "bm_create_explain_tooltip" or %}
@@ -413,7 +396,7 @@
                                                 </div>
                                                 <div class='col-md-12'>
                                                     <input name="{{ contact.secondary_element }}" id="{{ contact.secondary_element }}" class='pre-checked' type='checkbox' {% if contact.allow_secondary %} checked='checked' {% endif %}/>
-                                                    <label for="{{ contact.secondary_element }}">Allow Sharing</label>
+                                                    <label class='nobold' for="{{ contact.secondary_element }}">Allow Forwarding</label>
                                                 </div>
                                             </div>
                                         </div>

@@ -627,6 +627,19 @@ input.btn.full-width, .btn.full-width {
         color: #94a6c3;
     }
 
+.dataTables_length label .select2-container {
+    width: auto !important;
+    margin: 0 10px;
+}
+
+.dataTables_length {
+    float: right;
+}
+
+.dataTables_filter input[type='search'] {
+    margin: 0 10px;
+}
+
 .how-it-works pre {
     background: none;
     border: none;
@@ -1023,7 +1036,7 @@ input.btn.full-width, .btn.full-width {
 .benchmark-creation .title-header.inner {
     margin: 0 10px;
     padding: 5px 10px;
-    font-size: 12px;
+    font-size: 11px;
 }
 
 .title-header .add_help {
@@ -1233,7 +1246,7 @@ form[role='search'] .btn-search {
 
     .benchmark-help.search {
         margin: -45px -45px 0;
-        /*padding-bottom: 0;*/
+        /* padding-bottom: 0; */
     }
 
     .benchmark-help label {
@@ -1241,7 +1254,7 @@ form[role='search'] .btn-search {
     }
 
 .benchmark-creation .styled-form .benchmark-help.search label {
-    display: block;
+    /* display: block; */
     margin-top: 10px;
     color: #fff;
     font-size: 12px;
@@ -1461,6 +1474,11 @@ span.add_info {
     padding: 5px 10px 10px;
 }
 
+#selectedContactList .single-contact, #step3Selected .single-contact {
+    padding: 5px 0 10px;
+}
+
+
     .single-contact.active {
         background-color: #eff0f2;
     }
@@ -1509,9 +1527,14 @@ span.grey {
     line-height: 12px;
 }
 
+.benchmark-creation .styled-form .single-contact label.nobold {
+    font-weight: 400;
+    color: #999C9E;
+}
+
 .benchmark-creation .styled-form .single-contact span.deselect-btn {
     cursor: pointer;
-    margin: 25px 0 22px;
+    /*margin: 25px 0 22px;*/
     color: #999;
     font-size: 14px;
     line-height: 14px;
@@ -1576,10 +1599,6 @@ span.grey {
                 border-color: #fff;
             }
 
-.search .row.contacts-search {
-    margin-bottom: 25px;
-}
-
 /* Bootstrap fixes according to design */
 
 .btn {
@@ -1617,6 +1636,14 @@ span.grey {
 
     .btn-default:hover {
         background-color: #6d6d6d;
+    }
+    
+.btn-nobg {
+    background-color: none;
+}
+
+    .btn-nobg:hover {
+        color: #f2f2f2 !important;
     }
 
 .styled-form .btn-holder > input[type='submit'].btn-primary {
@@ -2226,7 +2253,6 @@ table.results {
 .search-table {
     max-height: 500px;
     overflow: hidden;
-    border: 1px solid #dedede;
     border-top: none;
 }
 
@@ -3261,7 +3287,7 @@ ul#answerSortable {
             display: block;
         }
 
-    .open-benchmark-container .benchmark-help p span {
+    .open-benchmark-container .benchmark-help p span:not(.color-teal) {
         display: block;
         width: 100%;
     }

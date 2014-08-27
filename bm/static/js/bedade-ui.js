@@ -197,14 +197,14 @@ $(function () {
 
     // Becnhmark Creation Checkboxes
 
-    $('.single-contact input[type="checkbox"]').change(function() {
-        if ($('.single-contact input[type="checkbox"]:checked').length > 0) {
-            $(this).parents('.single-contact').addClass('active');
-        }
-        else {
-            $(this).parents('.single-contact').removeClass('active');
-        }
-    });
+    // $('.single-contact input[type="checkbox"]').change(function() {
+    //     if ($('.single-contact input[type="checkbox"]:checked').length > 0) {
+    //         $(this).parents('.single-contact').addClass('active');
+    //     }
+    //     else {
+    //         $(this).parents('.single-contact').removeClass('active');
+    //     }
+    // });
 
     $('.share-checkbox').change(function() {
         if ($(this).is(':checked') == true) {
@@ -224,24 +224,24 @@ $(function () {
 
     $('span.deselect-btn').click(function () {
         var id = $(this).parents('.single-contact').attr('data-contact-id');
-        $('#results .single-contact[data-contact-id='+id+']').find('.choose-checkbox, .share-checkbox').removeAttr('checked');
-        $('#selected .single-contact[data-contact-id='+id+']').find('.choose-checkbox, .share-checkbox').removeAttr('checked').end().fadeOut(500, function(){ $(this).remove();});
-        $('#recommended .single-contact[data-contact-id='+id+']').find('.choose-checkbox, .share-checkbox').removeAttr('checked');
+        $('#searchContactList .single-contact[data-contact-id='+id+']').find('.choose-checkbox, .share-checkbox').removeAttr('checked');
+        $('#selectedContactList .single-contact[data-contact-id='+id+']').find('.choose-checkbox, .share-checkbox').removeAttr('checked').end().fadeOut(500, function(){ $(this).remove();});
+        $('#recommendedContactList .single-contact[data-contact-id='+id+']').find('.choose-checkbox, .share-checkbox').removeAttr('checked');
         $('#step3Selected .single-contact[data-contact-id='+id+']').find('.choose-checkbox, .share-checkbox').removeAttr('checked').end().fadeOut(500, function(){ $(this).remove();});
     });
 
     $('.share-checkbox').on('change', function() {
         var id = $(this).parents('.single-contact').attr('data-contact-id');
         if ($(this).is(':checked') == false) {
-            $('#results .single-contact[data-contact-id='+id+']').find('.share-checkbox').prop('checked', false);
-            $('#selected .single-contact[data-contact-id='+id+']').find('.share-checkbox').prop('checked', false);
-            $('#recommended .single-contact[data-contact-id='+id+']').find('.share-checkbox').prop('checked', false);
+            $('#searchContactList .single-contact[data-contact-id='+id+']').find('.share-checkbox').prop('checked', false);
+            $('#selectedContactList .single-contact[data-contact-id='+id+']').find('.share-checkbox').prop('checked', false);
+            $('#recommendedContactList .single-contact[data-contact-id='+id+']').find('.share-checkbox').prop('checked', false);
             $('#step3Selected .single-contact[data-contact-id='+id+']').find('.share-checkbox').prop('checked', false);
         }
         else {
-            $('#results .single-contact[data-contact-id='+id+']').find('.share-checkbox').prop('checked', true);
-            $('#selected .single-contact[data-contact-id='+id+']').find('.share-checkbox').prop('checked', true);
-            $('#recommended .single-contact[data-contact-id='+id+']').find('.share-checkbox').prop('checked', true);
+            $('#searchContactList .single-contact[data-contact-id='+id+']').find('.share-checkbox').prop('checked', true);
+            $('#selectedContactList .single-contact[data-contact-id='+id+']').find('.share-checkbox').prop('checked', true);
+            $('#recommendedContactList .single-contact[data-contact-id='+id+']').find('.share-checkbox').prop('checked', true);
             $('#step3Selected .single-contact[data-contact-id='+id+']').find('.share-checkbox').prop('checked', true);
         }
     });
