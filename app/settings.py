@@ -115,8 +115,12 @@ TEMPLATE_CONTEXT_PROCESSORS = (
 
 MESSAGE_STORAGE = 'django.contrib.messages.storage.cookie.CookieStorage'
 MESSAGE_FIRST_ANSWER = 50
+MESSAGE_LOGOUT = 51
+MESSAGE_BETA = 52
 MESSAGE_TAGS = {
     MESSAGE_FIRST_ANSWER: 'first_answer',
+    MESSAGE_LOGOUT: 'logout',
+    MESSAGE_BETA: 'beta',
 }
 
 ROOT_URLCONF = 'app.urls'

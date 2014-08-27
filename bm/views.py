@@ -1,4 +1,5 @@
 from datetime import datetime
+from app.settings import DEBUG
 from bm.forms import CreateBenchmarkStep12Form, AnswerMultipleChoiceForm, \
     CreateBenchmarkStep3Form, CreateBenchmarkStep4Form, NumericAnswerForm, RangeAnswerForm, RankingAnswerForm, \
     BenchmarkDetailsForm
@@ -14,7 +15,7 @@ from django.contrib.sites.models import Site
 from django.core.exceptions import ValidationError
 from django.core.urlresolvers import reverse, reverse_lazy
 from django.db import transaction
-from django.http import HttpResponse, HttpResponseNotFound
+from django.http import HttpResponse
 from django.http.response import Http404
 from django.shortcuts import redirect
 from django.template import loader, Context
@@ -269,14 +270,24 @@ class BaseBenchmarkAnswerView(FormView):
     @method_decorator(login_required(login_url='/'))
     def dispatch(self, request, slug, *args, **kwargs):
 
-        benchmark_link = BenchmarkLink.objects.filter(slug=slug).select_related('benchmark', 'benchmark__owner',
-                                                                                'benchmark__question',
-                                                                                'benchmark___industry',
-                                                                                'benchmark__geographic_coverage',
-                                                                                'benchmark__invites').first()
+        benchmark_link = BenchmarkLink.objects\
+            .filter(slug=slug)\
+            .select_related('benchmark', 'benchmark__owner',
+                            'benchmark__question',
+                            'benchmark___industry',
+                            'benchmark__geographic_coverage',
+                            'benchmark__invites')\
+            .first()
         if not benchmark_link:
-            return HttpResponseNotFound()
+            raise Http404
         benchmark = benchmark_link.benchmark
+        user_responses_count = benchmark.question\
+            .filter(responses__user=request.user)\
+            .annotate(responses_count=Count('responses'))\
+            .values_list('responses_count', flat=True)\
+            .first()
+        if user_responses_count and not DEBUG:
+            return ForbiddenView.as_view()(self.request, *args, **kwargs)
         question_type = benchmark.question.first().type
         if question_type == Question.MULTIPLE:
             return MultipleChoiceAnswerView.as_view()(self.request, benchmark, *args, **kwargs)
@@ -414,6 +425,10 @@ class NumericAnswerView(BaseBenchmarkAnswerView):
                 question_response.data_numeric.add(bm_response_numeric)
 
         return super(NumericAnswerView, self).form_valid(form)
+
+
+class ForbiddenView(TemplateView):
+    template_name = '403.html'
 
 
 class WelcomeView(TemplateView):

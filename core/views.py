@@ -1,7 +1,9 @@
 from datetime import datetime
 from app import settings
+from app.settings import MESSAGE_LOGOUT, MESSAGE_BETA
 from bm.models import Benchmark
-from django.contrib.auth import REDIRECT_FIELD_NAME
+from django.contrib import messages
+from django.contrib.auth import REDIRECT_FIELD_NAME, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.views import redirect_to_login
 from django.core.mail import send_mail
@@ -10,7 +12,7 @@ from django.db import IntegrityError
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, resolve_url
 from django.utils.encoding import force_str
-from django.views.generic import TemplateView
+from django.views.generic import TemplateView, RedirectView
 from core.forms import ContactForm, TermsAndConditions
 from django.contrib.auth.models import User
 from django.utils.decorators import method_decorator
@@ -117,5 +119,21 @@ class ThankYouView(TemplateView):
     template_name = "general/thanks.html"
 
 
-class BetaView(TemplateView):
-    template_name = "social/beta.html"
+class BetaView(RedirectView):
+     url = '/'
+
+     def get(self, request, *args, **kwargs):
+        messages.add_message(request, MESSAGE_BETA, 'Beta')
+        return super(BetaView, self).get(request, *args, **kwargs)
+
+
+class LogoutView(RedirectView):
+    url = '/'
+
+    def get(self, request, *args, **kwargs):
+        """
+        Logs out the user and displays 'You are logged out' message.
+        """
+        logout(request)
+        messages.add_message(request, MESSAGE_LOGOUT, 'Logout')
+        return super(LogoutView, self).get(request, *args, **kwargs)
