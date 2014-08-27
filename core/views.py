@@ -24,6 +24,10 @@ class HomeView(TemplateView):
 
     def dispatch(self, request, *args, **kwargs):
         kwargs['login_next'] = request.GET.get('next')
+        if kwargs['login_next'] and request.COOKIES.get('terms'):
+            path = kwargs['login_next']
+            resolved_login_url = force_str(resolve_url(settings.LOGIN_REAL_URL))
+            return redirect_to_login(path, resolved_login_url, REDIRECT_FIELD_NAME)
         return super(HomeView, self).dispatch(request, *args, **kwargs)
 
     def get_context_data(self, login_next, **kwargs):
@@ -33,6 +37,11 @@ class HomeView(TemplateView):
         if login_next:
             data['terms_and_conditions_form'] = TermsAndConditions(initial={'next': login_next})
         return data
+
+    # def get(self, request, *args, **kwargs):
+    #     result = super(HomeView, self).get(request, *args, **kwargs)
+    #     result.set_cookie('terms', 1)
+    #     return result
 
     def post(self, request, *args, **kwargs):
         invitation_form = EmailInvitationRequest(request.POST, prefix='invite')
@@ -51,7 +60,9 @@ class HomeView(TemplateView):
             if terms_form.is_valid():
                 path = terms_form.cleaned_data['next']
                 resolved_login_url = force_str(resolve_url(settings.LOGIN_REAL_URL))
-                return redirect_to_login(path, resolved_login_url, REDIRECT_FIELD_NAME)
+                result = redirect_to_login(path, resolved_login_url, REDIRECT_FIELD_NAME)
+                result.set_cookie('terms', 1)
+                return result
         else:
             if contact_form.is_valid():
                 first_name = contact_form.cleaned_data['first_name']
