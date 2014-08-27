@@ -16,3 +16,8 @@ class ContactForm(forms.Form):
             }
             kwargs['initial'] = initial
         super(ContactForm, self).__init__(*args, **kwargs)
+
+
+class TermsAndConditions(forms.Form):
+    accept = forms.BooleanField()
+    next = forms.CharField(widget=forms.HiddenInput())
