@@ -2582,7 +2582,10 @@ ul#answerSortable {
     margin: 0 auto;
     overflow: hidden;
 }
-
+.units {
+    display: block;
+    color: #8D8D8D;
+}
 .bigChart {
     height: 300px;
     overflow: hidden;
