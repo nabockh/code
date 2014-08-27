@@ -1485,6 +1485,8 @@ span.add_info {
 .benchmark-creation .styled-form .single-contact input[type="checkbox"] {
     margin: 25px 0 22px;
     display: inline-block;
+    background:none;
+    border:0;
 }
 
     .benchmark-creation .styled-form .single-contact input[type="checkbox"].pre-checked {
@@ -2682,7 +2684,7 @@ ul#answerSortable {
         width: 360px;
     }
     span.beta-invite {
-        float: none;
+        /*float: none;*/
         font-size: 11px;
         display: inline-block;
     }
