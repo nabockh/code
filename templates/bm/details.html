@@ -9,11 +9,11 @@
     <meta property="og:description" content="{{ question.description }}" />
 
     <!-- Twitter Card data -->
-    <meta name="twitter:card" content="summary">
-    <meta name="twitter:url" content="{{ url }}">
-    <meta name="twitter:title" content="{{ benchmark.name }}">
-    <meta name="twitter:image" content="{{ STATIC_URL }}img/bdde_logo_square.png">
-    <meta name="twitter:description" content="{{ question.description }}">
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:url" content="{{ url }}" />
+    <meta name="twitter:title" content="{{ benchmark.name }}" />
+    <meta name="twitter:image" content="{{ STATIC_URL }}img/bdde_logo_square.png" />
+    <meta name="twitter:description" content="{{ question.description }}" />
 {% endblock %}
 
 
@@ -91,7 +91,7 @@
                 <div class="addthis_toolbox">
                     <div class="custom_images">
                         <a href="https://www.linkedin.com/shareArticle?summary=&ro=false&title=Bedade&mini=true&url={{ absolute_url|escape }}&source=bedade"><img src="{{ STATIC_URL }}img/linkedin.png"/></a>
-                        <a href="http://twitter.com/share?text=&url={{ absolute_url|escape }}&hashtags=bedade"><img src="{{ STATIC_URL }}img/twitter.png"/></a>
+                        <a href="http://twitter.com/share?text={{ question.description }}&url={{ absolute_url|escape }}&hashtags=bedade "><img src="{{ STATIC_URL }}img/twitter.png"/></a>
                         <a href="https://www.facebook.com/sharer/sharer.php?u={{ absolute_url|escape }}"><img src="{{ STATIC_URL }}img/facebook.png" /></a>
                     </div>
                 </div>
