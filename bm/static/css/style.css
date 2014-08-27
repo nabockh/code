@@ -2604,6 +2604,9 @@ ul#answerSortable {
     max-height: 400px;
     padding-right: 20px;
 }
+#support .modal-body-inner {
+    max-height: 470px;
+}
 
     .modal-body-inner h4 {
         color: #608a94;
