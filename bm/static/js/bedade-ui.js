@@ -372,7 +372,7 @@ $( document ).ready(function() {
         }
 
         else {
-            $('body').removeClass('fixed-navs')
+            $('body').removeClass('fixed-navs');
         }
     });
 
@@ -380,12 +380,13 @@ $( document ).ready(function() {
     $('select').each(function(){
         var $select = $(this);
         var width = $select.parents('div:eq(0)').width();
+        var param_search = 100;
+        if($(this).parent('div').hasClass('title-header')){
+            width = 150;
+            param_search = -1;
+        }
         $select.prev('.select2-container').remove();
-        //$select.parents().filter(':display-none').each(function(){
-        //    $select.data('display', $select.css('display')).show();
-        //    $select.css('display', $select.data('display'));
-        //});
-        $select2 = $select.removeAttr('style').css('width', width).select2();
+        $select2 = $select.removeAttr('style').css('width', width).select2({minimumResultsForSearch: param_search});
         $select2.on("select2-open", function(){ $('.select2-offscreen > .select2-input').blur();}); // Workaround not to show cursor on iPad
     });
 
@@ -394,8 +395,13 @@ $(window).on('resize', function(){
     $('select').each(function(){
         var $select = $(this);
         var width = $select.parents('div:eq(0)').width();
+        var param_search = 100;
+        if($(this).parent('div').hasClass('title-header')){
+            width = 150;
+            param_search = -1;
+        }
         $select.prev('.select2-container').remove();
-        $select2 = $select.removeAttr('style').css('width', width).select2();
+        $select2 = $select.removeAttr('style').css('width', width).select2({minimumResultsForSearch: param_search});
         $select2.on("select2-open", function(){ $('.select2-offscreen > .select2-input').blur();}); // Workaround not to show cursor on iPad
     });
 });
@@ -403,8 +409,13 @@ $(document).ajaxStop(function() {
     $('select').each(function(){
         var $select = $(this);
         var width = $select.parents('div:eq(0)').width();
+        var param_search = 100;
+        if($(this).parent('div').hasClass('title-header')){
+            width = 150;
+            param_search = -1;
+        }
         $select.prev('.select2-container').remove();
-        $select2 = $select.removeAttr('style').css('width', width).select2();
+        $select2 = $select.removeAttr('style').css('width', width).select2({minimumResultsForSearch: param_search});
         $select2.on("select2-open", function(){ $('.select2-offscreen > .select2-input').blur();}); // Workaround not to show cursor on iPad
     });
 });

@@ -3392,6 +3392,19 @@ html[dir="rtl"] .select2-search input,
 .select2-results .select2-highlighted {
     background: #33626e;
 }
+.title-header .select2-container {
+    float: right;
+}
+.title-header .select2-container a.select2-choice {
+    height: 25px;
+    line-height: 25px;
+}
+.title-header .select2-container a.select2-choice .select2-arrow b {
+    background: url('../img/select2.png') no-repeat 0 -1px;
+}
+.title-header .select2-dropdown-open.select2-dropdown-open a.select2-choice .select2-arrow b {
+     background-position: -18px -1px;
+}
 /*.select2-results {
     max-height:150px;
     overflow:hidden !im;
