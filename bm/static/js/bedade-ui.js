@@ -425,7 +425,7 @@ $( document ).ready(function() {
         }
     }
     var txt = $(".answer_options_area textarea");
-    $('.benchmark-creation .btn[for="bm-submit"]').bind('click','',function(){
+    $('.benchmark-creation form').bind('submit','',function(){
             txt.val('');
         if ($('#answer_options').css('display') != 'none' || $('#answer_options_step3').css('display') != 'none'){
             $('.answer_options_inputs input[type="text"]').each(function(){
@@ -442,7 +442,7 @@ $( document ).ready(function() {
             var units_input_val = $(this).closest('form').find('.units-custom').val();
             $units_select_form.text(units_input_val);
             $units_select.find('option[selected="selected"]').removeAttr('selected');
-            $units_select.append('<option selected="selected" value="' + units_input_val + '$">' + units_input_val + '</option>');
+            $units_select.append('<option selected="selected" value="' + units_input_val + '">' + units_input_val + '</option>');
         }
     });
     $(document).on("click",".answer_options_inputs .answer_options_add",function(){

@@ -212,8 +212,8 @@
 
                                 <div class='col-md-12' id='units_maxDecimals'>
                                     <div class='row'>
-                                        <div class='col-md-8'></div>
-                                        <div class='col-md-4'>
+                                        <div class='col-md-4'></div>
+                                        <div class='col-md-3'>
                                             <label for="id_0-units">Units</label>
                                             <span class="add_help">?
                                                 <span class='add_help_inner'>
@@ -223,9 +223,16 @@
                                                 </span>
                                             </span>
                                             {{ form.units }}
-                                            <input type="text" maxlength="45" class="units-custom">
-                                            {{ form.units.errors }}
                                         </div>
+                                        <div class='col-md-1'><br/><label>or</label></div>
+                                        <div class='col-md-4'>
+                                            <span class="add_info">(ie 'Custom value')</span>
+                                            <input type="text" maxlength="45" class="units-custom">
+                                        </div>
+                                    </div>
+                                    <div class='row'>
+                                        <div class='col-md-4'></div>
+                                        <div class='col-md-8'>{{ form.units.errors }}</div>
                                     </div>
                                 </div>
                                 <hr>
@@ -337,13 +344,20 @@
                                 </div>
                                 <div class='col-md-12' id='units_maxDecimals_step3'>
                                     <div class='row'>
-                                        <div class='col-md-8'></div>
-                                        <div class='col-md-4'>
+                                        <div class='col-md-4'></div>
+                                        <div class='col-md-3'>
                                             <label for="id_2-units">Units</label>
                                             {{ form.units }}
-                                            <input type="text" maxlength="45" class="units-custom">
-                                            {{ form.units.errors }}
                                         </div>
+                                        <div class='col-md-1'><br/><label>or</label></div>
+                                        <div class='col-md-4'>
+                                            <span class="add_info">(ie 'Custom value')</span>
+                                            <input type="text" maxlength="45" class="units-custom">
+                                        </div>
+                                    </div>
+                                    <div class='row'>
+                                        <div class='col-md-4'></div>
+                                        <div class='col-md-8'>{{ form.units.errors }}</div>
                                     </div>
                                 </div>
                                 <hr>
