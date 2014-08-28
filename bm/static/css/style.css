@@ -2635,7 +2635,7 @@ ul#answerSortable {
     }
 
     .bigChart > div {
-        /* margin: 50px auto; */;
+        margin: 0 auto; 
     }
 
     #donutChart.bigChart > div, .bigChart.donut > div {
