@@ -1501,13 +1501,19 @@ span.add_info {
         }
 
 .benchmark-creation .styled-form .single-contact input[type="checkbox"] {
-    margin: 25px 0 22px;
+    margin: 15px 0;
     display: inline-block;
     background:none;
     border:0;
 }
 
     .benchmark-creation .styled-form .single-contact input[type="checkbox"].pre-checked {
+        margin: 0;
+        width: auto;
+        vertical-align: middle;
+    }
+
+    .benchmark-creation .styled-form .single-contact .selected-check .share-checkbox {
         margin: 0;
         width: auto;
         vertical-align: middle;
@@ -1525,6 +1531,11 @@ span.grey {
     font-size: 12px;
     color: #339999;
     line-height: 12px;
+}
+
+.benchmark-creation .styled-form .single-contact label.btn {
+    color: #fff;
+    margin: 7px 0 3px;
 }
 
 .benchmark-creation .styled-form .single-contact label.nobold {

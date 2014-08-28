@@ -208,16 +208,16 @@ $(function () {
 
     $('.share-checkbox').change(function() {
         if ($(this).is(':checked') == true) {
-            if ($(this).parents('.col-md-2').siblings('.col-md-2').children('input[type="checkbox"]').is(':checked') == false) {
-                $(this).parents('.col-md-2').siblings('.col-md-2').children('input[type="checkbox"]').removeAttr('checked');
+            if ($(this).parents('.col-md-1').siblings('.col-md-1').children('input[type="checkbox"]').is(':checked') == false) {
+                $(this).parents('.col-md-1').siblings('.col-md-1').children('input[type="checkbox"]').removeAttr('checked');
             }
         }
     });
 
     $('.choose-checkbox').change(function() {
         if ($(this).is(':checked') == false) {
-            if ($(this).parents('.col-md-2').siblings('.col-md-2').children('input[type="checkbox"]').is(':checked') == true) {
-                $(this).parents('.col-md-2').siblings('.col-md-2').children('input[type="checkbox"]').removeAttr('checked');
+            if ($(this).parents('.col-md-4').siblings('.col-md-4').children('input[type="checkbox"]').is(':checked') == true) {
+                $(this).parents('.col-md-4').siblings('.col-md-4').children('input[type="checkbox"]').removeAttr('checked');
             }
         }
     });
