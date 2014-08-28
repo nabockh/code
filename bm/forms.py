@@ -35,6 +35,12 @@ class CreateBenchmarkStep12Form(forms.Form):
         regions.extend(list(Region.regions.values_list('id', 'name').order_by('name')))
         self.fields['geo'].choices = regions
         self.fields['industry'].choices = list(LinkedInIndustry.get_proposal(user.contacts))
+        units = data.get('0-units')
+        if not units in [v for v, _ in QuestionOptions.UNITS]:
+            choices = list(QuestionOptions.UNITS)
+            choices.insert(0, (units, units))
+            choices = tuple(choices)
+            self.fields['units'] = forms.ChoiceField(initial=units, choices=choices)
         question_type = int(data and data.get(kwargs['prefix'] + '-question_type', '1') or '1')
         if question_type == Question.MULTIPLE or question_type == Question.RANKING:
             self.fields['units'].required = False
