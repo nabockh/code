@@ -29,7 +29,7 @@ admin.site.unregister(Group)
 admin.site.unregister(Association)
 admin.site.unregister(Nonce)
 admin.site.unregister(UserSocialAuth)
-admin.site.unregister(StaticPlaceholder)
+# admin.site.unregister(StaticPlaceholder)
 
 
 class CustomUserAdmin(UserAdmin):

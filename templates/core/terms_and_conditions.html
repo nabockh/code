@@ -13,11 +13,11 @@
             <div class="modal-body">
                 <div class='modal-body-inner'>
                     <p><strong>Welcome!</strong></p>
-                    {% placeholder "terms_and_conditions_text" or %}
+                    {% static_placeholder "terms_and_conditions_text" or %}
                     <p>Bedade is a ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque ut adipiscing erat.
                         Fusce gravida euismod mollis. Nulla aliquet cursus pulvinar. Nulla lacinia dignissim sapien ut
                         hendrerit. Ready to get started?</p>
-                    {% endplaceholder %}
+                    {% endstatic_placeholder %}
                     <form method="post">
                         {% csrf_token %}
                         {{ terms_and_conditions_form.next }}
