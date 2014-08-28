@@ -18,6 +18,7 @@
 
     {% elif benchmark.question_type == 3 %}
         <div id='bellcurveChart-{{ benchmark.id }}-{{ instance.id }}' class='bigChart'></div>
+        <div class='units text-center'>In - "{{ benchmark.question.first.options.first.units }}"</div>
         <div class='benchmark-stats perc-based'>
             <div class='single-stat'>
                 <span class='title'>Min</span>
@@ -53,6 +54,7 @@
 
     {% elif benchmark.question_type == 5 %}
         <div id='lineChart-{{ benchmark.id }}-{{ instance.id }}' class='bigChart'></div>
+        <div class='units text-center'>In - "{{ benchmark.question.first.options.first.units }}"</div>
         <script type="text/javascript">
             var mainChartData_{{ benchmark.id }} = {{ benchmark.charts|safe }};
             drawLineChart(mainChartData_{{ benchmark.id }}.line, 'lineChart-{{ benchmark.id }}-{{ instance.id }}');
