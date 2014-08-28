@@ -448,6 +448,68 @@ $( document ).ready(function() {
     $(document).on("click",".answer_options_inputs .answer_options_add",function(){
         $('.answer_options_inputs .col-md-4:last-child').before('<div class="col-md-4"><input type="text" value="" maxlength="45"></div>');
     });
+    $('#recommendedContactList .add-contact-btn, #searchContactList .add-contact-btn').bind('click',function(){
+        if(!$(this).attr('disabled')){
+            var $this_parent = $(this).closest('.single-contact');
+            var this_id = $this_parent.attr('data-contact-id');
+            var this_name = $this_parent.find('label:not(.btn)').text();
+            var this_title = $this_parent.find('p:not(.grey)').text();
+            var allowed = $this_parent.find('.share-checkbox:checked').length;
+            var allowed_target = "";
+            if(allowed == 1){
+                allowed_target = "checked";
+            }
+            var clone_block = [
+                '<div data-contact-id="' + this_id + '" class="single-contact">',
+                    '<div class="row">',
+                        '<div class="col-md-10 col-xs-10">',
+                            '<div class="row">',
+                                '<div class="col-md-12">',
+                                    '<label>' + this_name + '</label>',
+                                    '<p title="' + this_title + '">' + this_title + '</p>',
+                                '</div>',
+                                '<div class="col-md-12 col-xs-12 selected-check">',
+                                    '<input type="checkbox" name="1-selected-' + this_id + '-secondary" id="id_1-selected-' + this_id + '-secondary" class="share-checkbox" ' + allowed_target + '>',
+                                    '<label for="id_1-selected-' + this_id + '-secondary" class="nobold">Allow Forwarding</label>',
+                                '</div>',
+                            '</div>',
+                        '</div>',
+                        '<div class="col-md-2 col-xs-2 text-center">',
+                            '<span class="hidden"><input type="checkbox" name="1-selected-' + this_id + '-invite" id="id_1-selected-' + this_id + '-invite" class="choose-checkbox" checked="checked"></span>',
+                            '<span class="deselect-btn"><i class="fa fa-times"></i></span>',
+                        '</div>',
+                    '</div>',
+                '</div>',
+            ].join("\n");
+
+            $('#selectedContactList').append(clone_block);
+            $(this).attr('disabled', 'disabled');
+            $('#selectedContactList .deselect-btn').click( function(){
+                var $this_parent = $(this).closest('.single-contact');
+                var this_id = $this_parent.attr('data-contact-id');
+                $target_block = $('#recommendedContactList, #searchContactList').find('.single-contact[data-contact-id="' + this_id + '"]');
+                $target_block.find('.add-contact-btn').removeAttr('disabled');
+                $this_parent.remove();
+                $target_block.find('.choose-checkbox, .share-checkbox').removeAttr('checked');
+               
+            });
+
+        }
+    });
+    $('#selectedContactList .single-contact').each(function(){
+        var this_id = $(this).attr('data-contact-id');
+        $target_block = $('#recommendedContactList, #searchContactList').find('.single-contact[data-contact-id="' + this_id + '"]');
+        $target_block.find('.add-contact-btn').attr('disabled', 'disabled');
+        
+    });
+    $('#selectedContactList .deselect-btn').click( function(){
+        var $this_parent = $(this).closest('.single-contact');
+        var this_id = $this_parent.attr('data-contact-id');
+        $target_block = $('#recommendedContactList, #searchContactList').find('.single-contact[data-contact-id="' + this_id + '"]');
+        $target_block.find('.add-contact-btn').removeAttr('disabled');
+        $this_parent.remove();
+        
+    });
 });
 $(window).on('resize', function(){
     select_prepare();

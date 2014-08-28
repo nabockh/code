@@ -463,11 +463,6 @@
 
                         <input id='bm-submit' type="submit" class="btn btn-primary auto-width continue-btn hidden" value="{% trans "Continue" %}"/>
                         <label for='bm-submit' class='btn btn-primary auto-width pull-right'> Continue <i class='fa fa-arrow-circle-o-right'></i></label>
-                        {% if wizard.steps.step1 == 2 %}
-                            <input id='add_selected' name="add_selected" type="submit" class="btn btn-primary auto-width continue-btn hidden" value="1"/>   
-                            <label for='add_selected' class='btn btn-primary auto-width pull-right fix'>Add selected <i class='fa fa-plus'></i></label> 
-
-                        {% endif %}
                     {% endif %}
                     <div class="clearfix"></div>
                 </div>
