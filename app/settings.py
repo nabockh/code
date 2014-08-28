@@ -115,8 +115,12 @@ TEMPLATE_CONTEXT_PROCESSORS = (
 
 MESSAGE_STORAGE = 'django.contrib.messages.storage.cookie.CookieStorage'
 MESSAGE_FIRST_ANSWER = 50
+MESSAGE_LOGOUT = 51
+MESSAGE_BETA = 52
 MESSAGE_TAGS = {
     MESSAGE_FIRST_ANSWER: 'first_answer',
+    MESSAGE_LOGOUT: 'logout',
+    MESSAGE_BETA: 'beta',
 }
 
 ROOT_URLCONF = 'app.urls'
@@ -143,7 +147,7 @@ LANGUAGES = [
     ('en', 'English'),
 ]
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Europe/Kiev'
 
 USE_I18N = True
 
@@ -272,7 +276,8 @@ LINKEDIN_OAUTH2_EXTRA_DATA = [('id', 'id'), ]
 
 LOGIN_REDIRECT_URL = "/"
 LOGIN_ERROR_URL = "/beta"
-LOGIN_URL = '/login/linkedin'
+LOGIN_URL = '/'
+LOGIN_REAL_URL = '/login/linkedin'
 
 EMAIL_BACKEND = 'djcelery_email.backends.CeleryEmailBackend'
 EMAIL_HOST_USER = os.environ.get('SENDGRID_USERNAME', 'devova')

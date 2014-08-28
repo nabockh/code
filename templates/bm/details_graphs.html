@@ -156,6 +156,7 @@
     var statisticIndustriesData = {{ industries|safe }};
     var statisticCountriesData = {{ countries|safe }};
     var mainChartData = {{ benchmark.charts|safe }};
+    //var units = {{ benchmark.question.first.options.first.units }};
 
 
     {% if 'Pie' in benchmark.charts_allowed %}

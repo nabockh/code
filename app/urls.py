@@ -1,4 +1,5 @@
 from app import settings
+from core.views import LogoutView
 from django.conf.urls import patterns, include, url
 
 from django.contrib import admin
@@ -9,7 +10,7 @@ import social_auth.urls
 urlpatterns = patterns(
     '',
     url(r'^admin/', include(admin.site.urls)),
-    url(r'^logout/$', 'django.contrib.auth.views.logout', {'template_name': "successfully_logget_out.html"}),
+    url(r'^logout/$', LogoutView.as_view()),
     url(r'^', include('social_auth.urls')),
     url(r'^social/', include('social.urls')),
     url(r'^', include('core.urls')),

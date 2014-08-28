@@ -10,6 +10,7 @@ from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.contenttypes.models import ContentType
 from django.core.mail import send_mail
 from django.core.urlresolvers import reverse
+from django.db.models.signals import post_save
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.template import loader, Context
@@ -28,7 +29,7 @@ admin.site.unregister(Group)
 admin.site.unregister(Association)
 admin.site.unregister(Nonce)
 admin.site.unregister(UserSocialAuth)
-admin.site.unregister(StaticPlaceholder)
+# admin.site.unregister(StaticPlaceholder)
 
 
 class CustomUserAdmin(UserAdmin):
@@ -115,6 +116,8 @@ def approve_benchmark(modeladmin, request, queryset):
               action_flag=CHANGE,
               change_message='Changed approved.'
          )
+         benchmark.approved = True
+         post_save.send(sender=BenchmarkPending, instance=benchmark)
     queryset.update(approved=True)
 approve_benchmark.short_description = "Approve selected benchmarks"
 

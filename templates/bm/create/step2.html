@@ -33,177 +33,132 @@
         <div class="col-md-5ths">
             <button id='save_and_wizard_goto_step' name="save_and_wizard_goto_step" type="submit"
                     class="btn btn-primary full-width hidden" value="1"><i class='fa fa-search'></i></button>
-            <label for='save_and_wizard_goto_step' class='btn btn-primary full-width'><i
-                    class='fa fa-search'></i></label>
-        </div>
-    </div>
-    <div class='row'>
-        <div class='col-md-12 tabulation'>
-            <ul class="nav nav-tabs" role="tablist" id='searchTabs'>
-                <li {% if not active_tab or active_tab == 1 %}class="active"{% endif %}><a href="#results">Search
-                    results</a></li>
-                <li class='tab-recommended {% if active_tab == 2 %}active{% endif %}'><a href="#recommended">Recommendations</a>
-                </li>
-                <li {% if active_tab == 3 %}class="active"{% endif %}><a href="#selected">Selected Contacts</a></li>
-            </ul>
+            <label id='src_btn' for='save_and_wizard_goto_step' class='btn btn-primary full-width'><i class='fa fa-search'></i></label>
+            <label id='rec_btn' class='btn btn-default full-width' title='View Recommended'><i class='fa fa-users'></i></label>
         </div>
     </div>
 </div>
 <div class='row'>
-    <div class="tab-content">
-        <div class="tab-pane {% if not active_tab or active_tab == 1 %}active{% endif %}" id="results">
-            <div class='col-md-8 lined-left margined'>
-                <div class="title-header inner">
-                    <div class='row'>
-                        <div class='col-md-8 col-xs-8'>Contact</div>
-                        <div class='col-md-2 col-xs-2 text-center'>Add</div>
-                        <div class='col-md-2 col-xs-2 text-center'>Share
-                            <span class="add_help">?
-                                <span class='add_help_inner'>
-                                    {% static_placeholder "bm_create_share_tooltip" or %}
-                                        Lorem ipsum dolor sit amet, consectetur eta
-                                        adipiscing elit. Pellentasque eu tempor tortor.
-                                        Aliquam Trisque eros arcu, sed bibendum enim
-                                        faucibus in. In vulputate blendit lorem ut.
-                                    {% endstatic_placeholder %}
-                                </span>
+    <div class='col-md-8 lined-left margined'>
+        <div id='recommendedContactList'>
+            <div class="title-header inner">
+                <div class='row'>
+                    <div class='col-md-6 col-xs-6'>Recommended Contacts</div>
+                    <div class='col-md-4 col-xs-4 text-center'>Allow forwarding
+                        <span class="add_help">?
+                            <span class='add_help_inner'>
+                                {% static_placeholder "bm_create_share_tooltip" or %}
+                                    Lorem ipsum dolor sit amet, consectetur eta
+                                    adipiscing elit. Pellentasque eu tempor tortor.
+                                    Aliquam Trisque eros arcu, sed bibendum enim
+                                    faucibus in. In vulputate blendit lorem ut.
+                                {% endstatic_placeholder %}
                             </span>
-                        </div>
+                        </span>
                     </div>
+                    <div class='col-md-2 col-xs-2'>Add All</div>
                 </div>
-                <div class='contact-results'>
-                    {% for contact in form.contacts_filtered %}
-                        <div class='single-contact' data-contact-id='{{ contact.id }}'>
-                            <div class='row'>
-                                <div class='col-md-8 col-xs-8'>
-                                    <label for='id_1-contact-{{ contact.id }}-invite'>{{ contact }}</label>
-
-                                    <p title='{{ contact.headline }}'>{{ contact.headline }}</p>
-
-                                    <p class='grey'
-                                       title='{{ contact.location.name }} &middot; {{ contact.company.industry }}'>{{ contact.location.name }} &middot; {{ contact.company.industry }}</p>
-                                </div>
-                                <div class='col-md-2 col-xs-2'>
-                                    {% bound_field form contact.invite_element %}
-                                </div>
-                                <div class='col-md-2 col-xs-2'>
-                                    {% bound_field form contact.secondary_element %}
-                                </div>
-                            </div>
-                        </div>
-                    {% endfor %}
-                </div>
-                <span class="contact-errors">
-                    {{ form.non_field_errors }}
-                </span>
-
             </div>
-            <div class='col-md-4 margined'>
-                <div class='tips fix'>
-                    <p class='label-like'>We Recommend...</p>
-                    <hr>
-                    <div class='suggested-contacts'>
-                        {% for contact in form.suggested_contacts|slice:":3" %}
-                            <div class='suggested-contact'>
-                                <div class='row'>
-                                    <div class='col-md-12'>
-                                        <label for='id_1-suggested-{{ contact.id }}-invite'>{{ contact }}</label>
-                                        <p title='{{ contact.headline }}'>{{ contact.headline }}</p>
-                                    </div>
-                                </div>
+            <div class='contact-results'>
+                {% for contact in form.suggested_contacts %}
+                    <div class='single-contact' data-contact-id='{{ contact.id }}'>
+                        <div class='row'>
+                            <div class='col-md-6 col-xs-6'>
+                                <label for='id_1-suggested-{{ contact.id }}-invite'>{{ contact }}</label>
+                                <p title='{{ contact.headline }}'>{{ contact.headline }}</p>
+                                <p class='grey'
+                                   title='{{ contact.location.name }} &middot; {{ contact.company.industry }}'>{{ contact.location.name }} &middot; {{ contact.company.industry }}</p>
                             </div>
-                        {% endfor %}
+                            <div class='col-md-4 col-xs-4'>                                
+                                {% bound_field form contact.secondary_element %}
+                            </div>
+                            <div class='col-md-2 col-xs-2'>
+                                <span class='hidden'>{% bound_field form contact.invite_element %}</span>
+                                <label class='btn btn-primary pull-right add-contact-btn' for='id_1-suggested-{{ contact.id }}-invite'>Add <i class="fa fa-arrow-circle-o-right"></i></label>
+                            </div>
+                        </div>
                     </div>
-                    <a class='tab-switcher' href='#recommended'>See All Recommendations →</a>
-                </div>
+                {% endfor %}
             </div>
         </div>
-        <div class="tab-pane {% if active_tab == 2 %}active{% endif %}" id="recommended">
-            <div class='col-md-12 margined'>
-                <div class="title-header inner">
-                    <div class='row'>
-                        <div class='col-md-8 col-xs-8'>Recommended Contacts</div>
-                        <div class='col-md-2 col-xs-2 text-center'>Add</div>
-                        <div class='col-md-2 col-xs-2 text-center'>Share
-                            <span class="add_help">?
-                                <span class='add_help_inner'>
-                                    {% static_placeholder "bm_create_share_tooltip" or %}
-                                        Lorem ipsum dolor sit amet, consectetur eta
-                                        adipiscing elit. Pellentasque eu tempor tortor.
-                                        Aliquam Trisque eros arcu, sed bibendum enim
-                                        faucibus in. In vulputate blendit lorem ut.
-                                    {% endstatic_placeholder %}
-                                </span>
-                            </span>
-                        </div>
-                    </div>
-                </div>
-                <div class='contact-results'>
-                    {% for contact in form.suggested_contacts %}
-                        <div class='single-contact' data-contact-id='{{ contact.id }}'>
-                            <div class='row'>
-                                <div class='col-md-8 col-xs-8'>
-                                    <label for='id_1-suggested-{{ contact.id }}-invite'>{{ contact }}</label>
 
-                                    <p title='{{ contact.headline }}'>{{ contact.headline }}</p>
-                                </div>
-                                <div class='col-md-2 col-xs-2'>
-                                    {% bound_field form contact.invite_element %}
-                                </div>
-                                <div class='col-md-2 col-xs-2'>
-                                    {% bound_field form contact.secondary_element %}
-                                </div>
-                            </div>
-                        </div>
-                    {% endfor %}
+        <div id='searchContactList'>
+            <div class="title-header inner">
+                <div class='row'>
+                    <div class='col-md-6 col-xs-6'>Contact</div>
+                    <div class='col-md-4 col-xs-4 text-center'>Allow forwarding
+                        <span class="add_help">?
+                            <span class='add_help_inner'>
+                                {% static_placeholder "bm_create_share_tooltip" or %}
+                                    Lorem ipsum dolor sit amet, consectetur eta
+                                    adipiscing elit. Pellentasque eu tempor tortor.
+                                    Aliquam Trisque eros arcu, sed bibendum enim
+                                    faucibus in. In vulputate blendit lorem ut.
+                                {% endstatic_placeholder %}
+                            </span>
+                        </span>
+                    </div>
+                    <div class='col-md-2 col-xs-2'>Add All</div>
+                    
                 </div>
             </div>
-        </div>
-        <div class="tab-pane {% if active_tab == 3 %}active{% endif %}" id="selected">
-            <div class='col-md-12 margined'>
-                <div class="title-header inner">
-                    <div class='row'>
-                        <div class='col-md-8 col-xs-8'>Selected Contacts</div>
-                        <div class='col-md-2 col-xs-2 text-center'>
-                            Share
-                            <span class="add_help">?
-                                <span class='add_help_inner'>
-                                    {% static_placeholder "bm_create_share_tooltip" or %}
-                                        Lorem ipsum dolor sit amet, consectetur eta
-                                        adipiscing elit. Pellentasque eu tempor tortor.
-                                        Aliquam Trisque eros arcu, sed bibendum enim
-                                        faucibus in. In vulputate blendit lorem ut.
-                                    {% endstatic_placeholder %}
-                                </span>
-                            </span>
-                        </div>
-                        <div class='col-md-2 col-xs-2 text-center'>
-                            Remove
-                        </div>
-                    </div>
-                </div>
-                <div class='contact-results'>
-                    {% for contact in form.selected_contacts %}
-                        <div class='single-contact' data-contact-id='{{ contact.id }}'>
-                            <div class='row'>
-                                <div class='col-md-8 col-xs-8'>
-                                    <label>{{ contact }}</label>
+            <div class='contact-results'>
+                {% for contact in form.contacts_filtered %}
+                    <div class='single-contact' data-contact-id='{{ contact.id }}'>
+                        <div class='row'>
+                            <div class='col-md-6 col-xs-6'>
+                                <label for='id_1-contact-{{ contact.id }}-invite'>{{ contact }}</label>
 
-                                    <p title='{{ contact.headline }}'>{{ contact.headline }}</p>
-                                </div>
-                                <div class='col-md-2 col-xs-2'>
-                                    {% bound_field form contact.secondary_element %}
-                                </div>
-                                <div class='col-md-2 col-xs-2 text-center'>
-                                    <span class='hidden'>{% bound_field form contact.invite_element %}</span>
-                                    <span class='deselect-btn'><i class='fa fa-times'></i></span>
-                                </div>
+                                <p title='{{ contact.headline }}'>{{ contact.headline }}</p>
+
+                                <p class='grey'
+                                   title='{{ contact.location.name }} &middot; {{ contact.company.industry }}'>{{ contact.location.name }} &middot; {{ contact.company.industry }}</p>
+                            </div>
+                            <div class='col-md-4 col-xs-4'>
+                                {% bound_field form contact.secondary_element %}
+                            </div> 
+                            <div class='col-md-2 col-xs-2'>
+                                <span class='hidden'>{% bound_field form contact.invite_element %}</span>
+                                <label class='btn btn-primary pull-right add-contact-btn' for='id_1-contact-{{ contact.id }}-invite'>Add <i class="fa fa-arrow-circle-o-right"></i></label>
                             </div>
                         </div>
-                    {% endfor %}
-                </div>
+                    </div>
+                {% endfor %}
             </div>
+            <span class="contact-errors">
+                {{ form.non_field_errors }}
+            </span>
         </div>
     </div>
 
+    <div class='col-md-4 margined'>
+        <div class='tips'>
+            <p class='label-like'>Selected Contacts</p>
+            <hr>
+            <div id='selectedContactList'>
+                {% for contact in form.selected_contacts %}
+                    <div class='single-contact' data-contact-id='{{ contact.id }}'>
+                        <div class='row'>
+                            <div class='col-md-10 col-xs-10'>
+                                <div class='row'>
+                                    <div class='col-md-12'>
+                                        <label>{{ contact }}</label>
+                                        <p title='{{ contact.headline }}'>{{ contact.headline }}</p>
+                                    </div>
+                                    <div class='col-md-12 col-xs-12 selected-check'>
+                                        {% bound_field form contact.secondary_element %}
+                                        <label class='nobold' for="id_1-selected-{{ contact.id }}-secondary">Allow Forwarding</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class='col-md-2 col-xs-2 text-center'>
+                                <span class='hidden'>{% bound_field form contact.invite_element %}</span>
+                                <span class='deselect-btn'><i class='fa fa-times'></i></span>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
 </div>

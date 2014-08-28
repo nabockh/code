@@ -51,7 +51,7 @@
                 <div class='container text-center'>
                     <div class='row'>
                         <div class='col-md-4 col-xs-4'>
-                            <a href="{% url 'socialauth_begin' backend='linkedin' %}" class="btn sign-in-btn">Sign in <span class='non-mobile'>with Linkedin</span></a>
+                            <a href="{% url 'bm_dashboard' %}" class="btn sign-in-btn">Sign in <span class='non-mobile'>with Linkedin</span></a>
                         </div>
                         <div class='col-md-8 col-xs-8'>
                             {% if invitation_form %}
@@ -76,7 +76,60 @@
         {% endif %}
         
 {% endblock %}
+{% block messages %}
+    {% if messages %}
+        {% for message in messages %}
+            {% if message.tags == 'logout' %}
+              <!-- Logout Modal -->
+              <div class="modal visible fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="firstAnsweredLabel" aria-hidden="false">
+                <div class="modal-dialog modal-lg">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true"><i class='fa fa-times-circle'></i></span><span class="sr-only">Close</span></button>
+                      <h4 class="modal-title" id="firstAnsweredLabel">Logout</h4>
+                    </div>
+                    <div class="modal-body">
+                      <div class='modal-body-inner'>
+                          <p>You are logged out!</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <script type="text/javascript">
+                $('#logoutModal').modal('show');
+                setTimeout(function() {
+                    $('#logoutModal').modal('hide');
+                }, 5000);
+              </script>
+            {% elif message.tags == 'beta' %}
+              <!-- Beta Modal -->
+              <div class="modal visible fade" id="betaModal" tabindex="-1" role="dialog" aria-labelledby="firstAnsweredLabel" aria-hidden="false">
+                <div class="modal-dialog modal-lg">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true"><i class='fa fa-times-circle'></i></span><span class="sr-only">Close</span></button>
+                      <h4 class="modal-title" id="firstAnsweredLabel">Beta</h4>
+                    </div>
+                    <div class="modal-body">
+                      <div class='modal-body-inner'>
+                          <p>Site is on beta now. Please request invitation on home page.</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <script type="text/javascript">
+                $('#betaModal').modal('show');
+              </script>
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+{% endblock %}
 {% block content %}
+        {% if terms_and_conditions_form %}
+            {% include 'core/terms_and_conditions.html' %}
+        {% endif %}
         <div class="colorblock banner" id='banner'>
             <div class='container text-center'>
                 <span class='big-title'>

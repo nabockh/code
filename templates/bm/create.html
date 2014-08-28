@@ -67,12 +67,12 @@
         <div class='cr_step one active'>
             <div class='step_image'></div>
             <div class='step_title'>Step 1:</div>
-            <div class='step_descr'>Define your Query</div>
+            <div class='step_descr'>Ask your question</div>
         </div>
         <div class='cr_step two'>
             <div class='step_image'></div>
             <div class='step_title'>Step 2:</div>
-            <div class='step_descr'>Add Contacts</div>
+            <div class='step_descr'>Select Contacts</div>
         </div>
         <div class='cr_step three'>
             <div class='step_image'></div>
@@ -91,12 +91,12 @@
         <div class='cr_step one done'>
             <div class='step_image'></div>
             <div class='step_title'>Step 1:</div>
-            <div class='step_descr'>Define your Query</div>
+            <div class='step_descr'>Ask your question</div>
         </div>
         <div class='cr_step two active'>
             <div class='step_image'></div>
             <div class='step_title'>Step 2:</div>
-            <div class='step_descr'>Add Contacts</div>
+            <div class='step_descr'>Select Contacts</div>
         </div>
         <div class='cr_step three'>
             <div class='step_image'></div>
@@ -109,12 +109,12 @@
         <div class='cr_step one done'>
             <div class='step_image'></div>
             <div class='step_title'>Step 1:</div>
-            <div class='step_descr'>Define your Query</div>
+            <div class='step_descr'>Ask your question</div>
         </div>
         <div class='cr_step two done'>
             <div class='step_image'></div>
             <div class='step_title'>Step 2:</div>
-            <div class='step_descr'>Add Contacts</div>
+            <div class='step_descr'>Select Contacts</div>
         </div>
         <div class='cr_step three active'>
             <div class='step_image'></div>
@@ -130,354 +130,344 @@
 {% endif %}
     <div class="margined no-bottom">
         <div class='row'>            
-                <form action="" method="post" class='styled-form'>
-                    {% csrf_token %}
-                    {{ wizard.management_form }}
-                    {% if wizard.form.forms %}
-                        {{ wizard.form.management_form }}
-                        {% for form in wizard.form.forms %}
-                            {{ form }}
-                        {% endfor %}
-                    {% else %}
-                        {% if wizard.steps.step1 == 1 %}
-                            <div class='col-md-8 lined-left'>
-                                <div class='row'>
-                                    <div class='col-md-12'>
-                                        <label for="id_0-name">Query Name</label>
-                                        <span class="add_info">(ie 'IT SaaS Costs')</span>
-                                        {{ form.name }}
-                                        {{ form.name.errors }}
-                                    </div>
-                                    <div class='col-md-12'>
-                                        <label for="id_0-question_label">Your Query</label>
-                                        <span class="add_info">(ie 'What is your annual Marketing budget for SaaS services')</span>
-                                        {{ form.question_label }}
-                                        {{ form.question_label.errors }}
-                                    </div>
-                                    <div class='col-md-12'>
-                                        <label for="id_0-question_text">Query Details</label>
-                                        <span class="add_help">?
-                                            <span class='add_help_inner'>
-                                                {% static_placeholder "bm_create_query_details" or %}
-                                                Lorem ipsum dolor sit amet, consectetur eta adipiscing elit. Pellentasque eu tempor tortor. Aliquam Trisque eros arcu, sed bibendum enim faucibus in. In vulputate blendit lorem ut.
-                                                {% endstatic_placeholder %}
-                                            </span>
-                                        </span>
-                                        {{ form.question_text }}
-                                        {{ form.question_text.errors }}
-                                    </div>
-                                    <div class='col-md-12'>
-                                        <div class='row'>
-                                            <div class='col-md-4'>
-                                                <label for="industry">Industry</label>
-                                                {{ form.industry }}
-                                                {{ form.industry.errors }}
-                                            </div>
-                                            <div class='col-md-4'>
-                                                <label for="geo">Geography</label>
-                                                {{ form.geo }}
-                                                {{ form.geo.errors }}
-                                            </div>
-                                            <div class='col-md-4'>
-                                                <label for="question_type">Type of Answer</label>
-                                                {{ form.question_type }}
-                                                {{ form.question_type.errors }}
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <hr>
-                                    <div class='col-md-12' id='answer_options'>
-                                        <label for="id_0-answer_options">Answer Options</label>
-                                        <!--span class="add_info">(Enter each choice on a seperate line)</span-->
-                                        <div class="answer_options_area">
-                                            {{ form.answer_options }}
-                                        </div>
-                                        <div class="answer_options_inputs">
-                                            <div class='row'>
-                                                <div class="col-md-4">
-                                                    <input type="text" maxlength="45">
-                                                </div>
-                                                <div class="col-md-4">
-                                                    <input type="text" maxlength="45">
-                                                </div>
-                                                <div class="col-md-4">
-                                                    <a class="answer_options_add">Add More Fields...</a>
-                                                </div>
-                                            </div>
-                                            <div class="clearfix"></div>
-                                        </div>
-
-                                        {{ form.answer_options.errors }}
-                                    </div>
-
-                                    <div class='col-md-12' id='units_maxDecimals'>
-                                        <div class='row'>
-                                            <div class='col-md-8'></div>
-                                            <div class='col-md-4'>
-                                                <label for="id_0-units">Units</label>
-                                                <span class="add_help">?
-                                                    <span class='add_help_inner'>
-                                                        {% static_placeholder "bm_create_units_tooltip" or %}
-                                                        Lorem ipsum dolor sit amet, consectetur eta adipiscing elit. Pellentasque eu tempor tortor. Aliquam Trisque eros arcu, sed bibendum enim faucibus in. In vulputate blendit lorem ut.
-                                                        {% endstatic_placeholder %}
-                                                    </span>
-                                                </span>
-                                                {{ form.units }}
-                                                {{ form.units.errors }}
-                                            </div>
-                                            <!-- <div class='col-md-4'>
-                                                <label for="id_0-max_number_of_decimal">maximum number of decimals</label>
-                                                <span class="add_help">?
-                                                    <span class='add_help_inner'>
-                                                        {% static_placeholder "bm_create_max_dec_tooltip" or %}
-                                                        Lorem ipsum dolor sit amet, consectetur eta adipiscing elit. Pellentasque eu tempor tortor. Aliquam Trisque eros arcu, sed bibendum enim faucibus in. In vulputate blendit lorem ut.
-                                                        {% endstatic_placeholder %}
-                                                    </span>
-                                                </span>
-                                                {{ form.max_number_of_decimal }}
-                                                {{ form.max_number_of_decimal.errors }}
-                                            </div> -->
-                                        </div>
-                                    </div>
-                                    <hr>
-                                    <div class='col-md-12'>
-                                        <div class='row'>
-                                            <div class='col-md-8 normal-padding'>
-                                                <label for="id_1-minimum_number_of_answers">Minimum responses required to validate benchmark</label>
-                                                <span class="add_help">?
-                                                    <span class='add_help_inner'>
-                                                        {% static_placeholder "bm_create_min_ans_tooltip" or %}
-                                                        Lorem ipsum dolor sit amet, consectetur eta adipiscing elit. Pellentasque eu tempor tortor. Aliquam Trisque eros arcu, sed bibendum enim faucibus in. In vulputate blendit lorem ut.
-                                                        {% endstatic_placeholder %}
-                                                    </span>
-                                                </span>
-                                            </div>
-                                            <div class='col-md-4'>
-                                                {{ form.minimum_number_of_answers }}
-                                                {{ form.minimum_number_of_answers.errors }}
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>                                
-                            </div>
-                            <div class='col-md-4'>
-                                <div class='tips'>
-                                    <p class='label-like'>BENCHMARK TIPS...</p>
-                                    <hr>
-                                    {% static_placeholder "bm_create_tips_text" or %}
-                                    <p class='title'>Get Maximum Responses TO YOUR BENCHMARK QUERY</p>
-                                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer suscipit, dui in mattis venenatis, purus lectus dictum quam, et vehicula nunc risus nec orci.</p>
-                                    <p class='title'>THIS IS ANOTHER BENCHMARK TIP TO HELP PEOPLE SUCCEED</p>
-                                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer suscipit, dui in mattis venenatis, purus lectus dictum quam, et vehicula nunc risus nec orci.</p>
-                                    {% endstatic_placeholder %}
+            <form action="" method="post" class='styled-form'>
+                {% csrf_token %}
+                {{ wizard.management_form }}
+                {% if wizard.form.forms %}
+                    {{ wizard.form.management_form }}
+                    {% for form in wizard.form.forms %}
+                        {{ form }}
+                    {% endfor %}
+                {% else %}
+                    {% if wizard.steps.step1 == 1 %}
+                        <div class='col-md-8 lined-left'>
+                            <div class='row'>
+                                <div class='col-md-12'>
+                                    <label for="id_0-name">Question Topic</label>
+                                    <span class="add_info">(ie Technology spending growth)</span>
+                                    {{ form.name }}
+                                    {{ form.name.errors }}
                                 </div>
-                            </div>
-                        {% elif wizard.steps.step1 == 2 %}
-                           {% include 'bm/create/step2.html' %}
-                        {% elif wizard.steps.step1 == 3 %}
-                            <div class='col-md-8 lined-left'>
-                                <input id="id_benchmark_create_wizard_view-current_step" name="benchmark_create_wizard_view-current_step" type="hidden" value="2">
-                                <div class='row'>
-                                    <div class='col-md-12'>
-                                        <label for="id_2-name">Query Name</label>
-                                        <span class="add_info">(ie 'IT SaaS Costs')</span>
-                                        {{ form.name }}
-                                        {{ form.name.errors }}
-                                    </div>
-                                    <div class='col-md-12'>
-                                        <label for="id_2-question_label">Your Query</label>
-                                        <span class="add_info">(ie 'What is your annual Marketing budget for SaaS services')</span>
-                                        {{ form.question_label }}
-                                        {{ form.question_label.errors }}
-                                    </div>
-                                    <div class='col-md-12'>
-                                        <label for="id_2-question_text">Query Details</label>
-                                        <span class="add_help">?
-                                            <span class='add_help_inner'>
-                                                {% static_placeholder "bm_create_query_details" or %}
-                                                Lorem ipsum dolor sit amet, consectetur eta adipiscing elit. Pellentasque eu tempor tortor. Aliquam Trisque eros arcu, sed bibendum enim faucibus in. In vulputate blendit lorem ut.
-                                                {% endstatic_placeholder %}
-                                            </span>
-                                        </span>
-                                        {{ form.question_text }}
-                                        {{ form.question_text.errors }}
-                                    </div>
-                                    <div class='col-md-12'>
-                                        <div class='row'>
-                                            <div class='col-md-4'>
-                                                <label for="industry">Industry</label>
-                                                {{ form.industry }}
-                                                {{ form.industry.errors }}
-                                            </div>
-                                            <div class='col-md-4'>
-                                                <label for="geo">Geography</label>
-                                                {{ form.geo }}
-                                                {{ form.geo.errors }}
-                                            </div>
-                                            <div class='col-md-4'>
-                                                <label for="question_type">Type of Answer</label>
-                                                {{ form.question_type }}
-                                                {{ form.question_type.errors }}
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <hr>
-                                    <div class='col-md-12' id='answer_options_step3'>
-                                        <label for="id_2-answer_options">Answer Options</label>
-                                        <div class="answer_options_area">
-                                            {{ form.answer_options }}
-                                        </div>
-                                        <div class="answer_options_inputs">
-                                            <div class='row'>
-                                                <div class="col-md-4">
-                                                    <input type="text" maxlength="45">
-                                                </div>
-                                                <div class="col-md-4">
-                                                    <input type="text" maxlength="45">
-                                                </div>
-                                                <div class="col-md-4">
-                                                    <a class="answer_options_add">Add More Fields...</a>
-                                                </div>
-                                            </div>
-                                            <div class="clearfix"></div>
-                                        </div>
-
-                                        {{ form.answer_options.errors }}
-
-
-                                    </div>
-                                    <div class='col-md-12' id='units_maxDecimals_step3'>
-                                        <div class='row'>
-                                            <div class='col-md-8'></div>
-                                            <div class='col-md-4'>
-                                                <label for="id_2-units">Units</label>
-                                                {{ form.units }}
-                                                {{ form.units.errors }}
-                                            </div>
-                                            <!-- <div class='col-md-6'>
-                                                <label for="id_2-max_number_of_decimal">maximum number of decimals</label>
-                                                {{ form.max_number_of_decimal }}
-                                                {{ form.max_number_of_decimal.errors }}
-                                            </div> -->
-                                        </div>
-                                    </div>
-                                    <hr>
-                                    <div class='col-md-12'>
-                                        <div class='row'>
-                                            <div class='col-md-8 normal-padding'>
-                                                <label for="id_2-minimum_number_of_answers">Minimum responses required to validate benchmark</label>
-                                                <span class="add_help">?
-                                                    <span class='add_help_inner'>
-                                                        {% static_placeholder "bm_create_min_ans_tooltip" or %}
-                                                        Lorem ipsum dolor sit amet, consectetur eta adipiscing elit. Pellentasque eu tempor tortor. Aliquam Trisque eros arcu, sed bibendum enim faucibus in. In vulputate blendit lorem ut.
-                                                        {% endstatic_placeholder %}
-                                                    </span>
-                                                </span>
-                                            </div>
-                                            <div class='col-md-4'>
-                                                {{ form.minimum_number_of_answers }}
-                                                {{ form.minimum_number_of_answers.errors }}
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class='col-md-12'>
-                                        <label for="id_2-additional_comments">Write a short overview to explain the purpose of yourquery</label>
-                                        <span class="add_help">?
-                                                    <span class='add_help_inner'>
-                                                        {% static_placeholder "bm_create_explain_tooltip" or %}
-                                                        Lorem ipsum dolor sit amet, consectetur eta adipiscing elit. Pellentasque eu tempor tortor. Aliquam Trisque eros arcu, sed bibendum enim faucibus in. In vulputate blendit lorem ut.
-                                                        {% endstatic_placeholder %}
-                                                    </span>
-                                                </span>
-                                        {{ form.additional_comments }}
-                                        {{ form.additional_comments.errors }}
-                                    </div>
-                                    <div class="col-md-12">
-                                        <label>End date</label>
-                                        {{ form.end_date|date }}
-                                    </div>
-                                </div>                                
-                            </div>
-                            <div class='col-md-4'>
-                                <div class='tips'>
-                                    <p class='label-like'>Selected Contacts</p>
-                                    <hr>
-                                    <div id='step3Selected'>
-                                        {% for contact in selected_contacts %}
-                                            <div class='single-contact' data-contact-id='{{ contact.id }}'>
-                                                <div class='row'>
-                                                    <div class='col-md-12'>
-                                                        <input name="{{ contact.invite_element }}" type='hidden' value='on' />
-                                                        <label>{{ contact }}</label>
-                                                        <p class='text-do-wrap' title='{{ contact.headline }}'>{{ contact.headline }}</p>
-                                                    </div>
-                                                    <div class='col-md-12'>
-                                                        <input name="{{ contact.secondary_element }}" id="{{ contact.secondary_element }}" class='pre-checked' type='checkbox' {% if contact.allow_secondary %} checked='checked' {% endif %}/>
-                                                        <label for="{{ contact.secondary_element }}">Allow Sharing</label>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        {% endfor %}
-                                        <label for="go_back" class="link-like"><i class="fa fa-cog"></i> Edit</label> 
-                                    </div>
-                                    
+                                <div class='col-md-12'>
+                                    <label for="id_0-question_label">Your Question</label>
+                                    <span class="add_info">(ie 'What is your annual Marketing budget for SaaS services')</span>
+                                    {{ form.question_label }}
+                                    {{ form.question_label.errors }}
                                 </div>
-                            </div>
-
-                            <!-- FAQ Modal -->
-                            <div class="modal fade" id="preview" tabindex="-1" role="dialog" aria-labelledby="previewLabel" aria-hidden="true">
-                              <div class="modal-dialog">
-                                <div class="modal-content">
-                                  <div class="modal-header">
-                                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true"><i class='fa fa-times-circle'></i></span><span class="sr-only">Close</span></button>
-                                    <h4 class="modal-title" id="prviewLabel">Email Preview</h4>
-                                  </div>
-                                  <div class="modal-body">
-                                    <div class='modal-body-inner'>
-                                        <!-- Insert Email Preview Here -->
+                                <div class='col-md-12'>
+                                    <label for="id_0-question_text">Question details</label>
+                                    <span class="add_help">?
+                                        <span class='add_help_inner'>
+                                            {% static_placeholder "bm_create_query_details" or %}
+                                            Lorem ipsum dolor sit amet, consectetur eta adipiscing elit. Pellentasque eu tempor tortor. Aliquam Trisque eros arcu, sed bibendum enim faucibus in. In vulputate blendit lorem ut.
+                                            {% endstatic_placeholder %}
+                                        </span>
+                                    </span>
+                                    {{ form.question_text }}
+                                    {{ form.question_text.errors }}
+                                </div>
+                                <div class='col-md-12'>
+                                    <div class='row'>
+                                        <div class='col-md-4'>
+                                            <label for="industry">Industry</label>
+                                            {{ form.industry }}
+                                            {{ form.industry.errors }}
+                                        </div>
+                                        <div class='col-md-4'>
+                                            <label for="geo">Geography</label>
+                                            {{ form.geo }}
+                                            {{ form.geo.errors }}
+                                        </div>
+                                        <div class='col-md-4'>
+                                            <label for="question_type">Type of Question</label>
+                                            {{ form.question_type }}
+                                            {{ form.question_type.errors }}
+                                        </div>
                                     </div>
-                                  </div>
+                                </div>
+                                <hr>
+                                <div class='col-md-12' id='answer_options'>
+                                    <label for="id_0-answer_options">Answer Options</label>
+                                    <!--span class="add_info">(Enter each choice on a seperate line)</span-->
+                                    <div class="answer_options_area">
+                                        {{ form.answer_options }}
+                                    </div>
+                                    <div class="answer_options_inputs">
+                                        <div class='row'>
+                                            <div class="col-md-4">
+                                                <input type="text" maxlength="45">
+                                            </div>
+                                            <div class="col-md-4">
+                                                <input type="text" maxlength="45">
+                                            </div>
+                                            <div class="col-md-4">
+                                                <a class="answer_options_add">Add More Fields...</a>
+                                            </div>
+                                        </div>
+                                        <div class="clearfix"></div>
+                                    </div>
+
+                                    {{ form.answer_options.errors }}
+                                </div>
+
+                                <div class='col-md-12' id='units_maxDecimals'>
+                                    <div class='row'>
+                                        <div class='col-md-4'></div>
+                                        <div class='col-md-3'>
+                                            <label for="id_0-units">Units</label>
+                                            <span class="add_help">?
+                                                <span class='add_help_inner'>
+                                                    {% static_placeholder "bm_create_units_tooltip" or %}
+                                                    Lorem ipsum dolor sit amet, consectetur eta adipiscing elit. Pellentasque eu tempor tortor. Aliquam Trisque eros arcu, sed bibendum enim faucibus in. In vulputate blendit lorem ut.
+                                                    {% endstatic_placeholder %}
+                                                </span>
+                                            </span>
+                                            {{ form.units }}
+                                        </div>
+                                        <div class='col-md-1'><br/><label>or</label></div>
+                                        <div class='col-md-4'>
+                                            <span class="add_info">(ie 'Custom value')</span>
+                                            <input type="text" maxlength="45" class="units-custom">
+                                        </div>
+                                    </div>
+                                    <div class='row'>
+                                        <div class='col-md-4'></div>
+                                        <div class='col-md-8'>{{ form.units.errors }}</div>
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class='col-md-12'>
+                                    <div class='row'>
+                                        <div class='col-md-8 normal-padding'>
+                                            <label for="id_1-minimum_number_of_answers">Minimum responses required to validate benchmark</label>
+                                            <span class="add_help">?
+                                                <span class='add_help_inner'>
+                                                    {% static_placeholder "bm_create_min_ans_tooltip" or %}
+                                                    Lorem ipsum dolor sit amet, consectetur eta adipiscing elit. Pellentasque eu tempor tortor. Aliquam Trisque eros arcu, sed bibendum enim faucibus in. In vulputate blendit lorem ut.
+                                                    {% endstatic_placeholder %}
+                                                </span>
+                                            </span>
+                                        </div>
+                                        <div class='col-md-4'>
+                                            {{ form.minimum_number_of_answers }}
+                                            {{ form.minimum_number_of_answers.errors }}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>                                
+                        </div>
+                        <div class='col-md-4'>
+                            <div class='tips'>
+                                <p class='label-like'>BENCHMARK TIPS...</p>
+                                <hr>
+                                {% static_placeholder "bm_create_tips_text" or %}
+                                <p class='title'>Get Maximum Responses TO YOUR BENCHMARK QUERY</p>
+                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer suscipit, dui in mattis venenatis, purus lectus dictum quam, et vehicula nunc risus nec orci.</p>
+                                <p class='title'>THIS IS ANOTHER BENCHMARK TIP TO HELP PEOPLE SUCCEED</p>
+                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer suscipit, dui in mattis venenatis, purus lectus dictum quam, et vehicula nunc risus nec orci.</p>
+                                {% endstatic_placeholder %}
+                            </div>
+                        </div>
+                    {% elif wizard.steps.step1 == 2 %}
+                       {% include 'bm/create/step2.html' %}
+                    {% elif wizard.steps.step1 == 3 %}
+                        <div class='col-md-8 lined-left'>
+                            <input id="id_benchmark_create_wizard_view-current_step" name="benchmark_create_wizard_view-current_step" type="hidden" value="2">
+                            <div class='row'>
+                                <div class='col-md-12'>
+                                    <label for="id_2-name">Question Topic</label>
+                                    <span class="add_info">(ie 'Technology spending growth')</span>
+                                    {{ form.name }}
+                                    {{ form.name.errors }}
+                                </div>
+                                <div class='col-md-12'>
+                                    <label for="id_2-question_label">Your Question</label>
+                                    <span class="add_info">(ie 'What is the projected growth of your technology budget for next year?')</span>
+                                    {{ form.question_label }}
+                                    {{ form.question_label.errors }}
+                                </div>
+                                <div class='col-md-12'>
+                                    <label for="id_2-question_text">Question Details</label>
+                                    <span class="add_help">?
+                                        <span class='add_help_inner'>
+                                            {% static_placeholder "bm_create_query_details" or %}
+                                            Lorem ipsum dolor sit amet, consectetur eta adipiscing elit. Pellentasque eu tempor tortor. Aliquam Trisque eros arcu, sed bibendum enim faucibus in. In vulputate blendit lorem ut.
+                                            {% endstatic_placeholder %}
+                                        </span>
+                                    </span>
+                                    {{ form.question_text }}
+                                    {{ form.question_text.errors }}
+                                </div>
+                                <div class='col-md-12'>
+                                    <div class='row'>
+                                        <div class='col-md-4'>
+                                            <label for="industry">Industry</label>
+                                            {{ form.industry }}
+                                            {{ form.industry.errors }}
+                                        </div>
+                                        <div class='col-md-4'>
+                                            <label for="geo">Geography</label>
+                                            {{ form.geo }}
+                                            {{ form.geo.errors }}
+                                        </div>
+                                        <div class='col-md-4'>
+                                            <label for="question_type">Type of Answer</label>
+                                            {{ form.question_type }}
+                                            {{ form.question_type.errors }}
+                                        </div>
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class='col-md-12' id='answer_options_step3'>
+                                    <label for="id_2-answer_options">Answer Options</label>
+                                    <div class="answer_options_area">
+                                        {{ form.answer_options }}
+                                    </div>
+                                    <div class="answer_options_inputs">
+                                        <div class='row'>
+                                            <div class="col-md-4">
+                                                <input type="text" maxlength="45">
+                                            </div>
+                                            <div class="col-md-4">
+                                                <input type="text" maxlength="45">
+                                            </div>
+                                            <div class="col-md-4">
+                                                <a class="answer_options_add">Add More Fields...</a>
+                                            </div>
+                                        </div>
+                                        <div class="clearfix"></div>
+                                    </div>
+
+                                    {{ form.answer_options.errors }}
+
+
+                                </div>
+                                <div class='col-md-12' id='units_maxDecimals_step3'>
+                                    <div class='row'>
+                                        <div class='col-md-4'></div>
+                                        <div class='col-md-3'>
+                                            <label for="id_2-units">Units</label>
+                                            {{ form.units }}
+                                        </div>
+                                        <div class='col-md-1'><br/><label>or</label></div>
+                                        <div class='col-md-4'>
+                                            <span class="add_info">(ie 'Custom value')</span>
+                                            <input type="text" maxlength="45" class="units-custom">
+                                        </div>
+                                    </div>
+                                    <div class='row'>
+                                        <div class='col-md-4'></div>
+                                        <div class='col-md-8'>{{ form.units.errors }}</div>
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class='col-md-12'>
+                                    <div class='row'>
+                                        <div class='col-md-8 normal-padding'>
+                                            <label for="id_2-minimum_number_of_answers">Minimum responses required to validate benchmark</label>
+                                            <span class="add_help">?
+                                                <span class='add_help_inner'>
+                                                    {% static_placeholder "bm_create_min_ans_tooltip" or %}
+                                                    Lorem ipsum dolor sit amet, consectetur eta adipiscing elit. Pellentasque eu tempor tortor. Aliquam Trisque eros arcu, sed bibendum enim faucibus in. In vulputate blendit lorem ut.
+                                                    {% endstatic_placeholder %}
+                                                </span>
+                                            </span>
+                                        </div>
+                                        <div class='col-md-4'>
+                                            {{ form.minimum_number_of_answers }}
+                                            {{ form.minimum_number_of_answers.errors }}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class='col-md-12'>
+                                    <label for="id_2-additional_comments">Write a short overview to explain the purpose of your query</label>
+                                    <span class="add_help">?
+                                                <span class='add_help_inner'>
+                                                    {% static_placeholder "bm_create_explain_tooltip" or %}
+                                                    Lorem ipsum dolor sit amet, consectetur eta adipiscing elit. Pellentasque eu tempor tortor. Aliquam Trisque eros arcu, sed bibendum enim faucibus in. In vulputate blendit lorem ut.
+                                                    {% endstatic_placeholder %}
+                                                </span>
+                                            </span>
+                                    {{ form.additional_comments }}
+                                    {{ form.additional_comments.errors }}
+                                </div>
+                                <div class="col-md-12">
+                                    <label>End date</label>
+                                    {{ form.end_date|date }}
+                                </div>
+                            </div>                                
+                        </div>
+                        <div class='col-md-4'>
+                            <div class='tips'>
+                                <p class='label-like'>Selected Contacts</p>
+                                <hr>
+                                <div id='step3Selected'>
+                                    {% for contact in selected_contacts %}
+                                        <div class='single-contact' data-contact-id='{{ contact.id }}'>
+                                            <div class='row'>
+                                                <div class='col-md-12'>
+                                                    <input name="{{ contact.invite_element }}" type='hidden' value='on' />
+                                                    <label>{{ contact }}</label>
+                                                    <p class='text-do-wrap' title='{{ contact.headline }}'>{{ contact.headline }}</p>
+                                                </div>
+                                                <div class='col-md-12'>
+                                                    <input name="{{ contact.secondary_element }}" id="{{ contact.secondary_element }}" class='pre-checked' type='checkbox' {% if contact.allow_secondary %} checked='checked' {% endif %}/>
+                                                    <label class='nobold' for="{{ contact.secondary_element }}">Allow Forwarding</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    {% endfor %}
+                                    <label for="go_back" class="link-like"><i class="fa fa-cog"></i> Edit</label> 
+                                </div>
+                                
+                            </div>
+                        </div>
+
+                        <!-- FAQ Modal -->
+                        <div class="modal fade" id="preview" tabindex="-1" role="dialog" aria-labelledby="previewLabel" aria-hidden="true">
+                          <div class="modal-dialog">
+                            <div class="modal-content">
+                              <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true"><i class='fa fa-times-circle'></i></span><span class="sr-only">Close</span></button>
+                                <h4 class="modal-title" id="prviewLabel">Email Preview</h4>
+                              </div>
+                              <div class="modal-body">
+                                <div class='modal-body-inner'>
+                                    <!-- Insert Email Preview Here -->
                                 </div>
                               </div>
                             </div>
-                        {% endif %}
+                          </div>
+                        </div>
                     {% endif %}
+                {% endif %}
 
-                    <div class='btn-holder'>
+                <div class='btn-holder'>
+                    {% if wizard.steps.step1 == 1 %}
+                        <a href="/dashboard" class='btn btn-default auto-width'>Cancel</a>
+                    {% else %}
+                    {% endif %}
+                    {% if wizard.steps.prev %}
                         {% if wizard.steps.step1 == 1 %}
-                            <a href="/dashboard" class='btn btn-default auto-width'>Cancel</a>
                         {% else %}
+                            <button id='go_back' name="wizard_goto_step" type="submit" value="{{ wizard.steps.prev }}" class="btn btn-default auto-width continue-btn hidden">{% trans "go back" %}</button>
+                            <label for='go_back' class='btn btn-default auto-width'><i class='fa fa-arrow-circle-o-left'></i> Go Back</label>
                         {% endif %}
-                        {% if wizard.steps.prev %}
-                            {% if wizard.steps.step1 == 1 %}
-                            {% else %}
-                                <button id='go_back' name="wizard_goto_step" type="submit" value="{{ wizard.steps.prev }}" class="btn btn-default auto-width continue-btn hidden">{% trans "go back" %}</button>
-                                <label for='go_back' class='btn btn-default auto-width'><i class='fa fa-arrow-circle-o-left'></i> Go Back</label>
-                            {% endif %}
 
-                        {% endif %}
-                        {% if wizard.steps.step1 == 3 %}
-                            <input id='bm-submit' type="submit" class="btn btn-primary auto-width continue-btn hidden" value="{% trans "Send invitations" %}"/>
-                            <label for='bm-submit' class='btn btn-primary auto-width pull-right'> Send Invitations <i class='fa fa-arrow-circle-o-right'></i></label>
-                            <label class="btn btn-primary auto-width pull-right fix" data-toggle="modal" data-target="#preview">Email Preview <i class='fa fa-eye'></i></label>
-                        {% else %}
+                    {% endif %}
+                    {% if wizard.steps.step1 == 3 %}
+                        <input id='bm-submit' type="submit" class="btn btn-primary auto-width continue-btn hidden" value="{% trans "Send invitations" %}"/>
+                        <label for='bm-submit' class='btn btn-primary auto-width pull-right'> Send Invitations <i class='fa fa-arrow-circle-o-right'></i></label>
+                        <label class="btn btn-primary auto-width pull-right fix" data-toggle="modal" data-target="#preview">Email Preview <i class='fa fa-eye'></i></label>
+                    {% else %}
 
-                            <input id='bm-submit' type="submit" class="btn btn-primary auto-width continue-btn hidden" value="{% trans "Continue" %}"/>
-                            <label for='bm-submit' class='btn btn-primary auto-width pull-right'> Continue <i class='fa fa-arrow-circle-o-right'></i></label>
-                            {% if wizard.steps.step1 == 2 %}
-                                <input id='add_selected' name="add_selected" type="submit" class="btn btn-primary auto-width continue-btn hidden" value="1"/>   
-                                <label for='add_selected' class='btn btn-primary auto-width pull-right fix'>Add selected <i class='fa fa-plus'></i></label> 
-
-                            {% endif %}
-                        {% endif %}
-                        <div class="clearfix"></div>
-                    </div>
-                </form>
-            </div>
-            
+                        <input id='bm-submit' type="submit" class="btn btn-primary auto-width continue-btn hidden" value="{% trans "Continue" %}"/>
+                        <label for='bm-submit' class='btn btn-primary auto-width pull-right'> Continue <i class='fa fa-arrow-circle-o-right'></i></label>
+                    {% endif %}
+                    <div class="clearfix"></div>
+                </div>
+            </form>
         </div>
-
-        
     </div>
     
 </div>
