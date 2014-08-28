@@ -443,7 +443,6 @@ $( document ).ready(function() {
             $units_select_form.text(units_input_val);
             $units_select.find('option[selected="selected"]').removeAttr('selected');
             $units_select.append('<option selected="selected" value="' + units_input_val + '$">' + units_input_val + '</option>');
-            alert("aaaaa");
         }
     });
     $(document).on("click",".answer_options_inputs .answer_options_add",function(){
