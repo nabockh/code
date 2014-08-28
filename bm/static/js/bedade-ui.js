@@ -359,6 +359,36 @@ $(function() {
     }
 });
 
+//Selectbox customize
+function select_prepare() {
+    $('select').each(function(){
+        var $select = $(this);
+        var width = $select.parents('div:eq(0)').width();
+        var param_search = 100;
+        if($(this).parent('div').hasClass('title-header')){
+            width = 150;
+            param_search = -1;
+        }
+        $select.prev('.select2-container').remove();
+        $select2 = $select.removeAttr('style').css('width', width).select2({minimumResultsForSearch: param_search});
+        $select2.on("select2-open", function(){$('.select2-offscreen > .select2-input').blur();}); // Workaround not to show cursor on iPad
+        if($select.parents('#units_maxDecimals, #units_maxDecimals_step3').length){
+           $select.on("change", function(e) {
+               $select.parents('#units_maxDecimals, #units_maxDecimals_step3').find('.units-custom').val('');
+           });
+        }
+    });
+}
+/*function units_prepare() {
+    $('#units_maxDecimals select,#units_maxDecimals_step3 select').each(function(){
+        var $select = $(this);
+        var width = $select.parents('div:eq(0)').width();
+        $select.prev('.select2-container').remove();
+        $select2 = $select.removeAttr('style').css('width', width).select2();
+
+    });
+}*/
+
 
 // Main Nav behavior on scroll
 
@@ -368,63 +398,18 @@ $( document ).ready(function() {
 
     $document.on("scroll", function () {
         if ($document.scrollTop() > navOffset) {
-            $('body').addClass('fixed-navs')
+            $('body').addClass('fixed-navs');
         }
 
         else {
             $('body').removeClass('fixed-navs');
         }
     });
+    select_prepare();
+    //units_prepare();
 
-    //Selectbox customize
-    $('select').each(function(){
-        var $select = $(this);
-        var width = $select.parents('div:eq(0)').width();
-        var param_search = 100;
-        if($(this).parent('div').hasClass('title-header')){
-            width = 150;
-            param_search = -1;
-        }
-        $select.prev('.select2-container').remove();
-        $select2 = $select.removeAttr('style').css('width', width).select2({minimumResultsForSearch: param_search});
-        $select2.on("select2-open", function(){ $('.select2-offscreen > .select2-input').blur();}); // Workaround not to show cursor on iPad
-    });
+    // Benchmark answer options
 
-});
-$(window).on('resize', function(){
-    $('select').each(function(){
-        var $select = $(this);
-        var width = $select.parents('div:eq(0)').width();
-        var param_search = 100;
-        if($(this).parent('div').hasClass('title-header')){
-            width = 150;
-            param_search = -1;
-        }
-        $select.prev('.select2-container').remove();
-        $select2 = $select.removeAttr('style').css('width', width).select2({minimumResultsForSearch: param_search});
-        $select2.on("select2-open", function(){ $('.select2-offscreen > .select2-input').blur();}); // Workaround not to show cursor on iPad
-    });
-});
-$(document).ajaxStop(function() {
-    $('select').each(function(){
-        var $select = $(this);
-        var width = $select.parents('div:eq(0)').width();
-        var param_search = 100;
-        if($(this).parent('div').hasClass('title-header')){
-            width = 150;
-            param_search = -1;
-        }
-        $select.prev('.select2-container').remove();
-        $select2 = $select.removeAttr('style').css('width', width).select2({minimumResultsForSearch: param_search});
-        $select2.on("select2-open", function(){ $('.select2-offscreen > .select2-input').blur();}); // Workaround not to show cursor on iPad
-    });
-});
-
-
-
-// Benchmark answer options
-
-$( document ).ready(function() {
     if ($('body .answer_options_area').length){
         if($(".answer_options_area textarea").val() !== ""){
             $('.answer_options_inputs .col-md-4:not(:last-child)').remove();
@@ -440,7 +425,7 @@ $( document ).ready(function() {
         }
     }
     var txt = $(".answer_options_area textarea");
-    $('.benchmark-creation .btn[for="bm-submit"]').bind('click','',function(){
+    $('.benchmark-creation form').bind('submit','',function(){
             txt.val('');
         if ($('#answer_options').css('display') != 'none' || $('#answer_options_step3').css('display') != 'none'){
             $('.answer_options_inputs input[type="text"]').each(function(){
@@ -451,11 +436,26 @@ $( document ).ready(function() {
                 }
             });
         }
+        if($("#units_maxDecimals .units-custom, #units_maxDecimals_step3 .units-custom").val() !== ""){
+            var $units_select = $(this).closest('form').find('select#id_0-units');
+            var $units_select_form = $(this).closest('form').find('select#id_0-units').prev('.select2-container').find('.select2-chosen');
+            var units_input_val = $(this).closest('form').find('.units-custom').val();
+            $units_select_form.text(units_input_val);
+            $units_select.find('option[selected="selected"]').removeAttr('selected');
+            $units_select.append('<option selected="selected" value="' + units_input_val + '">' + units_input_val + '</option>');
+        }
     });
     $(document).on("click",".answer_options_inputs .answer_options_add",function(){
         $('.answer_options_inputs .col-md-4:last-child').before('<div class="col-md-4"><input type="text" value="" maxlength="45"></div>');
     });
 });
-
+$(window).on('resize', function(){
+    select_prepare();
+    //units_prepare();
+});
+$(document).ajaxStop(function() {
+    select_prepare();
+    //units_prepare();
+});
 
 

@@ -81,9 +81,9 @@
         </div>
     </div>
     <div class='benchmark-help'>
-    {% static_placeholder "bm_create_help_text" or %}
+    {% placeholder "bm_create_help_text" or %}
     This space is reserved for instructional text. Should try to keep it pretty succinct but helpful. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed pellentesque tincidunt est, id lacinia orci lacinia eu. Aenean dignissim rutrum velit in faucibus. Nam non odio non neque porttitor dignissim in sed enim. Nunc facilisis ac mauris at eleifend. Maecenas pulvinar erat vestibulum odio aliquet suscipit. Nam venenatis nec lorem vel cursus.
-    {% endstatic_placeholder %}
+    {% endplaceholder %}
     </div>
 
 {% elif wizard.steps.step1 == 2 %}
@@ -123,9 +123,9 @@
         </div>
     </div>
     <div class='benchmark-help'>
-        {% static_placeholder "bm_create_step3_text" or %}
+        {% placeholder "bm_create_step3_text" or %}
         This space is reserved for instructional text. Should try to keep it pretty succinct but helpful. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed pellentesque tincidunt est, id lacinia orci lacinia eu. Aenean dignissim rutrum velit in faucibus. Nam non odio non neque porttitor dignissim in sed enim. Nunc facilisis ac mauris at eleifend. Maecenas pulvinar erat vestibulum odio aliquet suscipit. Nam venenatis nec lorem vel cursus.
-        {% endstatic_placeholder %}
+        {% endplaceholder %}
     </div>
 {% endif %}
     <div class="margined no-bottom">
@@ -158,9 +158,9 @@
                                     <label for="id_0-question_text">Question details</label>
                                     <span class="add_help">?
                                         <span class='add_help_inner'>
-                                            {% static_placeholder "bm_create_query_details" or %}
+                                            {% placeholder "bm_create_query_details" or %}
                                             Lorem ipsum dolor sit amet, consectetur eta adipiscing elit. Pellentasque eu tempor tortor. Aliquam Trisque eros arcu, sed bibendum enim faucibus in. In vulputate blendit lorem ut.
-                                            {% endstatic_placeholder %}
+                                            {% endplaceholder %}
                                         </span>
                                     </span>
                                     {{ form.question_text }}
@@ -212,19 +212,27 @@
 
                                 <div class='col-md-12' id='units_maxDecimals'>
                                     <div class='row'>
-                                        <div class='col-md-8'></div>
-                                        <div class='col-md-4'>
+                                        <div class='col-md-4'></div>
+                                        <div class='col-md-3'>
                                             <label for="id_0-units">Units</label>
                                             <span class="add_help">?
                                                 <span class='add_help_inner'>
-                                                    {% static_placeholder "bm_create_units_tooltip" or %}
+                                                    {% placeholder "bm_create_units_tooltip" or %}
                                                     Lorem ipsum dolor sit amet, consectetur eta adipiscing elit. Pellentasque eu tempor tortor. Aliquam Trisque eros arcu, sed bibendum enim faucibus in. In vulputate blendit lorem ut.
-                                                    {% endstatic_placeholder %}
+                                                    {% endplaceholder %}
                                                 </span>
                                             </span>
                                             {{ form.units }}
-                                            {{ form.units.errors }}
                                         </div>
+                                        <div class='col-md-1'><br/><label>or</label></div>
+                                        <div class='col-md-4'>
+                                            <span class="add_info">(ie 'Custom value')</span>
+                                            <input type="text" maxlength="45" class="units-custom">
+                                        </div>
+                                    </div>
+                                    <div class='row'>
+                                        <div class='col-md-4'></div>
+                                        <div class='col-md-8'>{{ form.units.errors }}</div>
                                     </div>
                                 </div>
                                 <hr>
@@ -234,9 +242,9 @@
                                             <label for="id_1-minimum_number_of_answers">Minimum responses required to validate benchmark</label>
                                             <span class="add_help">?
                                                 <span class='add_help_inner'>
-                                                    {% static_placeholder "bm_create_min_ans_tooltip" or %}
+                                                    {% placeholder "bm_create_min_ans_tooltip" or %}
                                                     Lorem ipsum dolor sit amet, consectetur eta adipiscing elit. Pellentasque eu tempor tortor. Aliquam Trisque eros arcu, sed bibendum enim faucibus in. In vulputate blendit lorem ut.
-                                                    {% endstatic_placeholder %}
+                                                    {% endplaceholder %}
                                                 </span>
                                             </span>
                                         </div>
@@ -252,12 +260,12 @@
                             <div class='tips'>
                                 <p class='label-like'>BENCHMARK TIPS...</p>
                                 <hr>
-                                {% static_placeholder "bm_create_tips_text" or %}
+                                {% placeholder "bm_create_tips_text" or %}
                                 <p class='title'>Get Maximum Responses TO YOUR BENCHMARK QUERY</p>
                                 <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer suscipit, dui in mattis venenatis, purus lectus dictum quam, et vehicula nunc risus nec orci.</p>
                                 <p class='title'>THIS IS ANOTHER BENCHMARK TIP TO HELP PEOPLE SUCCEED</p>
                                 <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer suscipit, dui in mattis venenatis, purus lectus dictum quam, et vehicula nunc risus nec orci.</p>
-                                {% endstatic_placeholder %}
+                                {% endplaceholder %}
                             </div>
                         </div>
                     {% elif wizard.steps.step1 == 2 %}
@@ -282,9 +290,9 @@
                                     <label for="id_2-question_text">Question Details</label>
                                     <span class="add_help">?
                                         <span class='add_help_inner'>
-                                            {% static_placeholder "bm_create_query_details" or %}
+                                            {% placeholder "bm_create_query_details" or %}
                                             Lorem ipsum dolor sit amet, consectetur eta adipiscing elit. Pellentasque eu tempor tortor. Aliquam Trisque eros arcu, sed bibendum enim faucibus in. In vulputate blendit lorem ut.
-                                            {% endstatic_placeholder %}
+                                            {% endplaceholder %}
                                         </span>
                                     </span>
                                     {{ form.question_text }}
@@ -336,12 +344,20 @@
                                 </div>
                                 <div class='col-md-12' id='units_maxDecimals_step3'>
                                     <div class='row'>
-                                        <div class='col-md-8'></div>
-                                        <div class='col-md-4'>
+                                        <div class='col-md-4'></div>
+                                        <div class='col-md-3'>
                                             <label for="id_2-units">Units</label>
                                             {{ form.units }}
-                                            {{ form.units.errors }}
                                         </div>
+                                        <div class='col-md-1'><br/><label>or</label></div>
+                                        <div class='col-md-4'>
+                                            <span class="add_info">(ie 'Custom value')</span>
+                                            <input type="text" maxlength="45" class="units-custom">
+                                        </div>
+                                    </div>
+                                    <div class='row'>
+                                        <div class='col-md-4'></div>
+                                        <div class='col-md-8'>{{ form.units.errors }}</div>
                                     </div>
                                 </div>
                                 <hr>
@@ -351,9 +367,9 @@
                                             <label for="id_2-minimum_number_of_answers">Minimum responses required to validate benchmark</label>
                                             <span class="add_help">?
                                                 <span class='add_help_inner'>
-                                                    {% static_placeholder "bm_create_min_ans_tooltip" or %}
+                                                    {% placeholder "bm_create_min_ans_tooltip" or %}
                                                     Lorem ipsum dolor sit amet, consectetur eta adipiscing elit. Pellentasque eu tempor tortor. Aliquam Trisque eros arcu, sed bibendum enim faucibus in. In vulputate blendit lorem ut.
-                                                    {% endstatic_placeholder %}
+                                                    {% endplaceholder %}
                                                 </span>
                                             </span>
                                         </div>
@@ -367,9 +383,9 @@
                                     <label for="id_2-additional_comments">Write a short overview to explain the purpose of your query</label>
                                     <span class="add_help">?
                                                 <span class='add_help_inner'>
-                                                    {% static_placeholder "bm_create_explain_tooltip" or %}
+                                                    {% placeholder "bm_create_explain_tooltip" or %}
                                                     Lorem ipsum dolor sit amet, consectetur eta adipiscing elit. Pellentasque eu tempor tortor. Aliquam Trisque eros arcu, sed bibendum enim faucibus in. In vulputate blendit lorem ut.
-                                                    {% endstatic_placeholder %}
+                                                    {% endplaceholder %}
                                                 </span>
                                             </span>
                                     {{ form.additional_comments }}
