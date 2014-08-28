@@ -17,11 +17,11 @@
                             <span class='dec lrg'>Better Decisions. Better Data.</span>
                           </div>
                           <div class="col-md-8">
-                            {% placeholder "footer_text" or %}
+                            {% static_placeholder "footer_text" or %}
                             <p class='dec'>Our goal is to get you better data, and in the process connect you to like minded experts.</p>
                             <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc sagittis pellentesque erat, in eleifend lorem ipsum metus lorem ipsum dolor tempus non. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus enim tortor, vulputate et elit in, pellentesque elementum risus. Nam eros nunc, gravida id orci in, aliquet lacinia nisl. <br><br></p>
-                            {% endplaceholder %}
-                            <p>Copyright 2014 Bedade, Inc. All Rights Reserved. <a href="#" data-toggle="modal" data-target="#privacy">Privacy</a> <span class='dec'>|</span> <a href="#" data-toggle="modal" data-target="#legal">Legal</a></p>
+                            {% endstatic_placeholder %}
+                             <p>Copyright 2014 Bedade, Inc. All Rights Reserved. <a href="#" data-toggle="modal" data-target="#privacy">Privacy</a> <span class='dec'>|</span> <a href="#" data-toggle="modal" data-target="#legal">Legal</a></p>
                           </div>
                       </div>
                       
@@ -37,7 +37,7 @@
               </div>
               <div class="modal-body">
                 <div class='modal-body-inner'>
-                    {% placeholder "footer_legal_text" or %}
+                    {% static_placeholder "footer_legal_text" or %}
                     <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed condimentum posuere libero, ut accumsan enim dapibus nec. Quisque hendrerit sollicitudin elit, non elementum est. Sed pellentesque sem a urna bibendum, placerat congue lacus porta. Nam scelerisque diam ut posuere posuere. Donec a nisl sit amet enim luctus egestas. Mauris quis ligula eu risus dictum aliquam eu quis nibh. Ut orci massa, malesuada et dictum vel, ornare eu orci. Mauris condimentum dolor quis semper ullamcorper. Sed at sem eget magna fringilla hendrerit at vel felis. Cras et venenatis nulla. Nam a est quis erat luctus tempor id vel metus.</p>
 
                     <p>Nullam faucibus ante eu posuere sollicitudin. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Morbi sit amet mattis libero. Donec cursus nulla id posuere sollicitudin. Integer metus tortor, molestie nec aliquet sit amet, varius eu tellus. Pellentesque non nisl massa. Donec accumsan varius commodo. Nunc viverra massa lorem, eu aliquam lacus blandit vel. Vivamus fermentum augue lorem, vitae viverra lacus lobortis eu. Sed volutpat elementum ultricies. Proin interdum quam nec magna tincidunt dignissim. Vestibulum sit amet vestibulum magna. Vivamus ultricies lacus at massa pulvinar tristique. Nam pulvinar nunc ac libero aliquet, vel sodales est interdum. Integer at leo et mi rutrum dignissim quis eu dui.</p>
@@ -48,7 +48,7 @@
 
                     <p>Aenean sed urna vel quam viverra posuere. Cras posuere, lacus nec tincidunt adipiscing, sapien nisl facilisis nulla, sed interdum leo enim ut mi. Phasellus sit amet ipsum sit amet nibh fringilla cursus pharetra rhoncus nulla. Donec vel rhoncus orci, eu viverra velit. Praesent convallis nec massa a dictum. Praesent luctus ipsum sit amet nisl consectetur malesuada. Nullam suscipit ipsum libero, at egestas arcu scelerisque et. Donec nec rutrum magna, vitae suscipit mauris. Nam dapibus diam non nisl tristique condimentum. Mauris luctus diam diam, tristique euismod odio condimentum vitae. Mauris vel lorem enim. Nam eget risus ut eros bibendum elementum ornare nec risus.
                     </p>
-                    {% endplaceholder %}
+                    {% endstatic_placeholder %}
                 </div>
               </div>
             </div>
@@ -65,7 +65,7 @@
               </div>
               <div class="modal-body">
                 <div class='modal-body-inner'>
-                    {% placeholder "footer_privacy_text" or %}
+                    {% static_placeholder "footer_privacy_text" or %}
                     <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed condimentum posuere libero, ut accumsan enim dapibus nec. Quisque hendrerit sollicitudin elit, non elementum est. Sed pellentesque sem a urna bibendum, placerat congue lacus porta. Nam scelerisque diam ut posuere posuere. Donec a nisl sit amet enim luctus egestas. Mauris quis ligula eu risus dictum aliquam eu quis nibh. Ut orci massa, malesuada et dictum vel, ornare eu orci. Mauris condimentum dolor quis semper ullamcorper. Sed at sem eget magna fringilla hendrerit at vel felis. Cras et venenatis nulla. Nam a est quis erat luctus tempor id vel metus.</p>
 
                     <p>Nullam faucibus ante eu posuere sollicitudin. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Morbi sit amet mattis libero. Donec cursus nulla id posuere sollicitudin. Integer metus tortor, molestie nec aliquet sit amet, varius eu tellus. Pellentesque non nisl massa. Donec accumsan varius commodo. Nunc viverra massa lorem, eu aliquam lacus blandit vel. Vivamus fermentum augue lorem, vitae viverra lacus lobortis eu. Sed volutpat elementum ultricies. Proin interdum quam nec magna tincidunt dignissim. Vestibulum sit amet vestibulum magna. Vivamus ultricies lacus at massa pulvinar tristique. Nam pulvinar nunc ac libero aliquet, vel sodales est interdum. Integer at leo et mi rutrum dignissim quis eu dui.</p>
@@ -76,7 +76,7 @@
 
                     <p>Aenean sed urna vel quam viverra posuere. Cras posuere, lacus nec tincidunt adipiscing, sapien nisl facilisis nulla, sed interdum leo enim ut mi. Phasellus sit amet ipsum sit amet nibh fringilla cursus pharetra rhoncus nulla. Donec vel rhoncus orci, eu viverra velit. Praesent convallis nec massa a dictum. Praesent luctus ipsum sit amet nisl consectetur malesuada. Nullam suscipit ipsum libero, at egestas arcu scelerisque et. Donec nec rutrum magna, vitae suscipit mauris. Nam dapibus diam non nisl tristique condimentum. Mauris luctus diam diam, tristique euismod odio condimentum vitae. Mauris vel lorem enim. Nam eget risus ut eros bibendum elementum ornare nec risus.
                     </p>
-                    {% endplaceholder %}
+                    {% endstatic_placeholder %}
                 </div>
               </div>
             </div>

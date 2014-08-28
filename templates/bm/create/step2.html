@@ -4,10 +4,10 @@
 <div class='benchmark-help search'>
     <div class='row'>
         <div class='col-md-12'>
-            {% placeholder "bm_create_step2_text" or %}
+            {% static_placeholder "bm_create_step2_text" or %}
                 Use the search fields below to narrow your network to those most relevant to your benchmark. You will be
                 able to preview &amp; edit your list before publishing.</div>
-            {% endplaceholder %}
+            {% endstatic_placeholder %}
     </div>
     <div class='row contacts-search'>
         <div class="col-md-5ths">
@@ -47,12 +47,12 @@
                     <div class='col-md-4 col-xs-4 text-center'>Allow forwarding
                         <span class="add_help">?
                             <span class='add_help_inner'>
-                                {% placeholder "bm_create_share_tooltip" or %}
+                                {% static_placeholder "bm_create_share_tooltip" or %}
                                     Lorem ipsum dolor sit amet, consectetur eta
                                     adipiscing elit. Pellentasque eu tempor tortor.
                                     Aliquam Trisque eros arcu, sed bibendum enim
                                     faucibus in. In vulputate blendit lorem ut.
-                                {% endplaceholder %}
+                                {% endstatic_placeholder %}
                             </span>
                         </span>
                     </div>
@@ -66,6 +66,8 @@
                             <div class='col-md-6 col-xs-6'>
                                 <label for='id_1-suggested-{{ contact.id }}-invite'>{{ contact }}</label>
                                 <p title='{{ contact.headline }}'>{{ contact.headline }}</p>
+                                <p class='grey'
+                                   title='{{ contact.location.name }} &middot; {{ contact.company.industry }}'>{{ contact.location.name }} &middot; {{ contact.company.industry }}</p>
                             </div>
                             <div class='col-md-4 col-xs-4'>                                
                                 {% bound_field form contact.secondary_element %}
@@ -87,12 +89,12 @@
                     <div class='col-md-4 col-xs-4 text-center'>Allow forwarding
                         <span class="add_help">?
                             <span class='add_help_inner'>
-                                {% placeholder "bm_create_share_tooltip" or %}
+                                {% static_placeholder "bm_create_share_tooltip" or %}
                                     Lorem ipsum dolor sit amet, consectetur eta
                                     adipiscing elit. Pellentasque eu tempor tortor.
                                     Aliquam Trisque eros arcu, sed bibendum enim
                                     faucibus in. In vulputate blendit lorem ut.
-                                {% endplaceholder %}
+                                {% endstatic_placeholder %}
                             </span>
                         </span>
                     </div>
