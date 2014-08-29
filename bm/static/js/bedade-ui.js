@@ -297,7 +297,6 @@ $(document).on("click","label.btn-primary",function(){
         request.done(function (response, textStatus, jqXHR){
             $('.modal-body').html(response);
             // log a message to the console
-            console.log(response);
         });
 
         // callback handler that will be called on failure
@@ -317,8 +316,6 @@ $(document).off("submit","form#contact_form");
 $(document).on("submit","form#contact_form", function(e){
         e.preventDefault();
         var csrf = document.cookie.match(/csrftoken=([\w]+)/);
-        console.log(csrf? csrf[1] : null);
-        console.log("submit start");
          $.ajax({
             type: 'post',
             url: $(this).attr('action'),
