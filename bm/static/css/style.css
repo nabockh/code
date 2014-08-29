@@ -2565,6 +2565,10 @@ ul#id_choice li > label {
         line-height: 35px; display: block;  width: 20px; text-align: center; font-weight: 100;
         color: #7A7A7A;
     }
+
+        .ui-state-default.ui-sortable-helper:after {
+            content: none;
+        }
     
     .ui-state-default label {
         margin: 0;
