@@ -205,6 +205,11 @@ $(function () {
     //         $(this).parents('.single-contact').removeClass('active');
     //     }
     // });
+    
+    
+    $('*[data-modal-close="true"]').click(function () {
+        $(this).parents('.smallModal').fadeOut(500);
+    });
 
     $('.share-checkbox').change(function() {
         if ($(this).is(':checked') == true) {

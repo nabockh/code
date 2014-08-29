@@ -19,12 +19,15 @@
                         hendrerit. Ready to get started?</p>
                     {% endstatic_placeholder %}
                     <form method="post">
-                        {% csrf_token %}
-                        {{ terms_and_conditions_form.next }}
-                        {{ terms_and_conditions_form.accept }}
-                        <label for="id_accept">Accept terms and conditions</label> <br/>
-                        {{ terms_and_conditions_form.accept.errors }}
+                        <hr>
                         <div class='row'>
+                            <div class='col-md-8'>
+                                {% csrf_token %}
+                                {{ terms_and_conditions_form.next }}
+                                {{ terms_and_conditions_form.accept }}
+                                <label for="id_accept">Accept terms and conditions</label> <br/>
+                                {{ terms_and_conditions_form.accept.errors }}
+                            </div>
                             <div class='col-md-4'>
                                 <button type="submit" class='btn btn-primary full-width btn-tour'>
                                     <span class='non-mobile'>Continue</span> and login...

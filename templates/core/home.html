@@ -81,46 +81,32 @@
         {% for message in messages %}
             {% if message.tags == 'logout' %}
               <!-- Logout Modal -->
-              <div class="modal visible fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="firstAnsweredLabel" aria-hidden="false">
-                <div class="modal-dialog modal-lg">
-                  <div class="modal-content">
-                    <div class="modal-header">
-                      <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true"><i class='fa fa-times-circle'></i></span><span class="sr-only">Close</span></button>
-                      <h4 class="modal-title" id="firstAnsweredLabel">Logout</h4>
-                    </div>
-                    <div class="modal-body">
-                      <div class='modal-body-inner'>
-                          <p>You are logged out!</p>
-                      </div>
-                    </div>
-                  </div>
+              <div class='smallModal' id='logoutModal'>
+                <div class="pop-up-bg"></div>
+                <div class="pop-up-content">
+                    <p style='font-size: 13rem; color: #648E99;'><i class='fa fa-check-circle'></i></p>
+                    <p>Successfully Logged Out</p>
                 </div>
               </div>
               <script type="text/javascript">
-                $('#logoutModal').modal('show');
+                $('#logoutModal').show();
                 setTimeout(function() {
-                    $('#logoutModal').modal('hide');
-                }, 5000);
+                    $('#logoutModal').fadeOut(500);
+                }, 1000);
               </script>
             {% elif message.tags == 'beta' %}
-              <!-- Beta Modal -->
-              <div class="modal visible fade" id="betaModal" tabindex="-1" role="dialog" aria-labelledby="firstAnsweredLabel" aria-hidden="false">
-                <div class="modal-dialog modal-lg">
-                  <div class="modal-content">
-                    <div class="modal-header">
-                      <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true"><i class='fa fa-times-circle'></i></span><span class="sr-only">Close</span></button>
-                      <h4 class="modal-title" id="firstAnsweredLabel">Beta</h4>
-                    </div>
-                    <div class="modal-body">
-                      <div class='modal-body-inner'>
-                          <p>Site is on beta now. Please request invitation on home page.</p>
-                      </div>
-                    </div>
-                  </div>
+              <!-- Beta Modal -->              
+              <div class='smallModal' id='betaModal'>
+                <div class="pop-up-bg"></div>
+                <div class="pop-up-content">
+                    <p>Bedade is in beta now.</p>
+                    <p>Please request Your invitation on the home page.</p>
+                    <a href="#" class='btn btn-primary full-width' data-modal-close='true'>Ok</a>
                 </div>
               </div>
+              
               <script type="text/javascript">
-                $('#betaModal').modal('show');
+                $('#betaModal').show();
               </script>
             {% endif %}
         {% endfor %}
