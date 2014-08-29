@@ -93,7 +93,9 @@
                             </span>
                             <span class='color-grey'>({{ benchmark.calc_average_rating }})</span>
                             {% if user.is_authenticated %}
-                                <a href='#' class="btn btn-primary btn-lg" data-toggle="modal" data-target="#rating">Rate this benchmark <i class='fa fa-star'></i></a>
+                                {% if is_contributor %}
+                                    <a href='#' class="btn btn-primary btn-lg" data-toggle="modal" data-target="#rating">Rate this benchmark <i class='fa fa-star'></i></a>
+                                {% endif %}
                             {% endif %}
                         </div>
                     </div>
