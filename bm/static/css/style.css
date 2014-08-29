@@ -2536,6 +2536,8 @@ ul#id_choice li > label {
     height: 33px;
     position: relative;
     cursor: move;
+    margin-left: 30px;
+    counter-increment: number;
 }
 
     .ui-state-default:before, .ui-widget-content .ui-state-default:before, .ui-widget-header .ui-state-default:before {
@@ -2552,7 +2554,17 @@ ul#id_choice li > label {
         text-align: center;
         font-weight: 100;
     }
-
+    
+    .ui-state-default:after, .ui-widget-content .ui-state-default:after, .ui-widget-header .ui-state-default:after {
+        content: '#'counter(number);
+        position: absolute;
+        height: 33px; 
+        top: -1px;
+        left: -30px;
+        line-height: 35px; display: block;  width: 20px; text-align: center; font-weight: 100;
+        color: #7A7A7A;
+    }
+    
     .ui-state-default label {
         margin: 0;
         line-height: 31px;
@@ -2569,6 +2581,7 @@ ul#answerSortable {
     margin-top: 10px;
     padding-top: 10px;
     border-top: 1px solid #dedede;
+    counter-reset: number;
 }
 
 /* Open Benchmark */
