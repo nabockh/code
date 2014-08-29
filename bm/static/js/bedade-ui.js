@@ -297,10 +297,6 @@ $(document).on("click","label.btn-primary",function(){
         request.done(function (response, textStatus, jqXHR){
             $('.modal-body').html(response);
             // log a message to the console
-<<<<<<< Updated upstream
-=======
-            //console.log(response);
->>>>>>> Stashed changes
         });
 
         // callback handler that will be called on failure
@@ -320,7 +316,7 @@ $(document).off("submit","form#contact_form");
 $(document).on("submit","form#contact_form", function(e){
         e.preventDefault();
         var csrf = document.cookie.match(/csrftoken=([\w]+)/);
-        $.ajax({
+         $.ajax({
             type: 'post',
             url: $(this).attr('action'),
             'csrfmiddlewaretoken' : csrf? csrf[1] : null,
