@@ -98,5 +98,10 @@ def notify_creator(instance, **kwargs):
     contributor = instance.user.get_full_name()
     response = kwargs['sender'].objects.get(pk=instance.pk)
     benchmark = response.question.benchmark
-    send_mail('Your benchmark {0} has a new contributor'.format(benchmark.name),
-              '{0} answered your benchmark - {1}'.format(contributor, benchmark.name), None, [benchmark.owner.email])
+    template = loader.get_template('alerts/benchmark_answered.html')
+    context = Context({
+        'owner': benchmark.owner.get_full_name(),
+        'benchmark': benchmark.name,
+        'contributor': contributor,
+    })
+    send_mail('Welcome', template.render(context), None, [benchmark.owner.email])

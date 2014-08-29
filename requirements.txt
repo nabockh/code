@@ -32,3 +32,4 @@ djangocms-file==0.0.1
 cmsplugin-filer==0.9.9
 Pillow==2.5.1
 South==1.0
+django-dbtemplates==1.3

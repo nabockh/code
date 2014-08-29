@@ -75,6 +75,7 @@ INSTALLED_APPS = (
     'djcelery_email',
     'social',
     'social_auth',
+    'dbtemplates',
     'bm',
     'formadmin',
     'bootstrap3',
@@ -85,6 +86,14 @@ JENKINS_TASKS = ('django_jenkins.tasks.run_pylint',
                  'django_jenkins.tasks.run_pep8',
                  'django_jenkins.tasks.run_pyflakes',
                  'django_jenkins.tasks.with_coverage',)
+
+TEMPLATE_LOADERS = (
+
+    'django.template.loaders.filesystem.Loader',
+    'django.template.loaders.app_directories.Loader',
+    'dbtemplates.loader.Loader',
+    'core.utils.ReserveLoader',
+)
 
 MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
