@@ -1501,7 +1501,7 @@ span.add_info {
         }
 
 .benchmark-creation .styled-form .single-contact input[type="checkbox"] {
-    margin: 15px 0;
+    margin: 26px 0 21px;
     display: inline-block;
     background:none;
     border:0;
@@ -1526,6 +1526,10 @@ span.grey {
     vertical-align: bottom;
 }
 
+#recommendedContactList {
+    display: none;
+}
+
 .benchmark-creation .styled-form .single-contact label, .benchmark-creation .styled-form .suggested-contact label {
     text-transform: none;
     font-size: 12px;
@@ -1535,7 +1539,10 @@ span.grey {
 
 .benchmark-creation .styled-form .single-contact label.btn {
     color: #fff;
-    margin: 7px 0 3px;
+    margin: 15px 0 12px;
+    -moz-transition: background-color 0.2s
+    -webkit-transition: background-color 0.2s
+    transition: background-color 0.2s;
 }
 
 .benchmark-creation .styled-form .single-contact label.btn[disabled='disabled'] {

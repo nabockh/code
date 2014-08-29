@@ -211,6 +211,12 @@ $(function () {
         $(this).parents('.smallModal').fadeOut(500);
     });
 
+    $('#rec_btn').click(function () {
+        $('#recommendedContactList').show();
+        $('#searchContactList').hide();
+    });
+
+
     $('.share-checkbox').change(function() {
         if ($(this).is(':checked') == true) {
             if ($(this).parents('.col-md-1').siblings('.col-md-1').children('input[type="checkbox"]').is(':checked') == false) {
