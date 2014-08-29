@@ -563,7 +563,7 @@ class BenchmarkDetailView(FormView):
                         benchmark.ratings.add(rating)
                     return HttpResponse(benchmark.calc_average_rating())
                 else:
-                    return HttpResponse(401)
+                    return
         return HttpResponse(200)
 
 
