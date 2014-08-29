@@ -463,6 +463,8 @@ class BenchmarkDetailView(FormView):
     def get_context_data(self, **kwargs):
         context = super(BenchmarkDetailView, self).get_context_data(**kwargs)
         benchmark = self.get_benchmark(**kwargs)
+        if Benchmark.objects.filter(id=benchmark.id, question__responses__user=self.request.user):
+            context['is_contributor'] = True
         context['benchmark'] = benchmark
         context['question'] = benchmark.question.first()
         context['url'] = self.request.META['HTTP_HOST'] + self.request.path
@@ -547,23 +549,20 @@ class BenchmarkDetailView(FormView):
             with transaction.atomic():
                 benchmark_id = kwargs['bm_id']
                 benchmark = self.get_benchmark(**kwargs)
-                if Benchmark.objects.filter(id=benchmark.id, question__responses__user=self.request.user):
-                    if BenchmarkRating.objects.filter(benchmark=benchmark, user=request.user).first():
-                        rating = BenchmarkRating.objects.filter(benchmark=benchmark, user=request.user).first()
-                        rating.rating = request.POST.get('rate')
-                        rating.user = request.user
-                        rating.save()
-                        benchmark.ratings.add(rating)
-                    else:
-                        rating = BenchmarkRating()
-                        rating.rating = request.POST.get('rate')
-                        rating.benchmark_id = benchmark_id
-                        rating.user = request.user
-                        rating.save()
-                        benchmark.ratings.add(rating)
-                    return HttpResponse(benchmark.calc_average_rating())
+                if BenchmarkRating.objects.filter(benchmark=benchmark, user=request.user).first():
+                    rating = BenchmarkRating.objects.filter(benchmark=benchmark, user=request.user).first()
+                    rating.rating = request.POST.get('rate')
+                    rating.user = request.user
+                    rating.save()
+                    benchmark.ratings.add(rating)
                 else:
-                    return
+                    rating = BenchmarkRating()
+                    rating.rating = request.POST.get('rate')
+                    rating.benchmark_id = benchmark_id
+                    rating.user = request.user
+                    rating.save()
+                    benchmark.ratings.add(rating)
+                return HttpResponse(benchmark.calc_average_rating())
         return HttpResponse(200)
 
 
@@ -868,25 +867,29 @@ class ExcelDownloadView(BenchmarkDetailView):
             internal_worksheet.hide()
 
         elif question_type == 5:
+            internal_worksheet = workbook.add_worksheet('Internal')
             data = [
                 [x[0] for x in contributor_results[1:]],
                 [x[1] for x in contributor_results[1:]]
             ]
             headings = ['Series', 'Count']
-            contributor_worksheet.write_row('A1', headings, bold)
-            contributor_worksheet.write_column('A2', data[0])
-            contributor_worksheet.write_column('B2', data[1])
+            internal_worksheet.write_row('A1', headings, bold)
+            internal_worksheet.write_column('A2', data[0])
+            internal_worksheet.write_column('B2', data[1])
             chart.add_series({
                 'name':         benchmark.name,
-                'categories': "='Contributor Stats'!A2:A%s" % (len(contributor_results)),
-                'values':     "='Contributor Stats'!B2:B%s" % (len(contributor_results)),
+                'categories': "='Internal'!A2:A%s" % (len(contributor_results)),
+                'values':     "='Internal'!B2:B%s" % (len(contributor_results)),
                 'line': {'dash_type': 'solid'}
             })
             chart.set_chartarea({
                 'border': {'color': 'black'},
                 'fill':   {'color': 'white'}
             })
-            contributor_worksheet.insert_chart('F3', chart)
+            contributor_headings = ['Contributor Stats']
+            contributor_worksheet.write_row('A1', contributor_headings, bold)
+            contributor_worksheet.insert_chart('A2', chart)
+            internal_worksheet.hide()
         workbook.close()
         output.seek(0)
 
