@@ -1044,6 +1044,7 @@ input.btn.full-width, .btn.full-width {
     color: #333;
     margin: 0 1px;
 }
+.title-header a {color: #fff;cursor:pointer;}
 
 .contact-info {
     float: right;
