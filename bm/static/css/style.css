@@ -1044,7 +1044,25 @@ input.btn.full-width, .btn.full-width {
     color: #333;
     margin: 0 1px;
 }
-.title-header a {color: #fff;cursor:pointer;}
+
+.title-header a {
+    color: #fff;
+    cursor:pointer;
+}
+
+    .title-header a.add-all {
+        display: inline-block;
+        color: #3D4D77;
+        background: #FFF;
+        padding: 3px 7px;
+        line-height: 14px;
+        border-radius: 4px;
+        font-weight: 900;
+    
+        float: right;
+        margin: 2px 7px 0 0;
+        white-space: nowrap;
+}
 
 .contact-info {
     float: right;
@@ -1478,7 +1496,13 @@ span.add_info {
 #selectedContactList .single-contact, #step3Selected .single-contact {
     padding: 5px 0 10px;
 }
-
+    
+    #selectedContactList {
+        max-height: 350px;
+        overflow-x: hidden !important;
+        overflow-y: auto !important;
+        padding-right: 10px;
+    }
 
     .single-contact.active {
         background-color: #eff0f2;
@@ -2555,7 +2579,7 @@ ul#id_choice li > label {
         text-align: center;
         font-weight: 100;
     }
-    
+
     .ui-state-default:after, .ui-widget-content .ui-state-default:after, .ui-widget-header .ui-state-default:after {
         content: '#'counter(number);
         position: absolute;
