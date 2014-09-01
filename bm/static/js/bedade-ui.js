@@ -282,8 +282,8 @@ $(function () {
 // End Animate Scroll to # links
 
 // Script for Ajax Email Preview on 3-rd step of BM creation
-$(document).off("click","label.btn-primary");
-$(document).on("click","label.btn-primary",function(){
+$(document).off("click","label.btn-primary[data-target='#preview']");
+$(document).on("click","label.btn-primary[data-target='#preview']",function(){
     var csrf = document.cookie.match(/csrftoken=([\w]+)/);
     var data = $('.styled-form').serialize();
     var request = $.ajax({
