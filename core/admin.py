@@ -25,6 +25,12 @@ class SimplifiedTemplateAdmin(TemplateAdmin):
     search_fields = ('name', 'content')
     actions = ['invalidate_cache', 'repopulate_cache', 'check_syntax']
 
+    #Remove delete_selected from actions for Dbtemplates app 
+    def get_actions(self, request):
+        actions = super(SimplifiedTemplateAdmin, self).get_actions(request)
+        del actions['delete_selected']
+        return actions
+
 admin.site.unregister(Template)
 admin.site.register(Template, SimplifiedTemplateAdmin)
 
