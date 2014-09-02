@@ -134,8 +134,9 @@ class BenchmarkPendingAdmin(ReadOnlyAdminMixin, admin.ModelAdmin):
     readonly_fields = [field for field in Benchmark._meta.get_all_field_names() if field not in ('approved', )]
     readonly_fields.append('question_description')
     readonly_fields.append('question_label')
+    readonly_fields.append('invited_contacts')
     fields = ('approved', 'name', 'question_label', 'question_description', 'owner',
-              'geographic_coverage', 'start_date', 'end_date', 'min_numbers_of_responses')
+              'geographic_coverage', 'start_date', 'end_date', 'min_numbers_of_responses', 'invited_contacts')
     actions = [decline_benchmark, approve_benchmark]
 
     def question_description(self, obj):
@@ -144,9 +145,12 @@ class BenchmarkPendingAdmin(ReadOnlyAdminMixin, admin.ModelAdmin):
     def question_label(self, obj):
         return obj.question.first().label
 
+    def invited_contacts(self, obj):
+        return [invitation.recipient.full_name for invitation in obj.invites.all()]
+
     question_description.short_description = 'Description'
     question_label.short_description = 'Label'
-
+    invited_contacts.short_description = 'Invited Contacts'
 
     def get_queryset(self, request):
         qs = super(BenchmarkPendingAdmin, self).get_queryset(Benchmark)
