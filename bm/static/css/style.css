@@ -1365,6 +1365,8 @@ label.btn.btn-primary.auto-width.pull-right.fix {
         color: #333;
         font-size: 12px;
     }
+    .tips .label-like .remove-all {text-transform:none;position: absolute;top:-9px;right:20px;cursor:pointer;}
+    .tips .label-like .remove-all i {margin-right:2px;}
 
     .tips p.title, .tips h4 {
         display: block;

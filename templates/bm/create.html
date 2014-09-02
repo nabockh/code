@@ -411,7 +411,7 @@
                                                     <p class='text-do-wrap' title='{{ contact.headline }}'>{{ contact.headline }}</p>
                                                 </div>
                                                 <div class='col-md-12'>
-                                                    <input name="{{ contact.secondary_element }}" id="{{ contact.secondary_element }}" class='pre-checked' type='checkbox' {% if contact.allow_secondary %} checked='checked' {% endif %}/>
+                                                    <input name="{{ contact.secondary_element }}" id="{{ contact.secondary_element }}" class='pre-checked' type='checkbox' {% if contact.allow_secondary %} checked='checked' {% endif %} disabled/>
                                                     <label class='nobold' for="{{ contact.secondary_element }}">Allow Forwarding</label>
                                                 </div>
                                             </div>

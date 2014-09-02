@@ -494,19 +494,30 @@ $( document ).ready(function() {
             });
 
         }
-            $('#selectedContactList .share-checkbox').on('click',function() {
-                var $this_parent = $(this).closest('.single-contact');
-                var this_id = $this_parent.attr('data-contact-id');
-                $target_checkbox = $('.col-md-8.lined-left.margined').find('.single-contact[data-contact-id="' + this_id + '"]').find('.share-checkbox');
-                if ($(this)[0].checked  === true) {
-                    $target_checkbox.attr('checked', true);
-                }
-                else {
-                    $target_checkbox.attr('checked', false);
-                }
-            });
+        $('#selectedContactList .share-checkbox').on('click',function() {
+            var $this_parent = $(this).closest('.single-contact');
+            var this_id = $this_parent.attr('data-contact-id');
+            $target_checkbox = $('.col-md-8.lined-left.margined').find('.single-contact[data-contact-id="' + this_id + '"]').find('.share-checkbox');
+            if ($(this)[0].checked  === true) {
+                $target_checkbox.removeAttr('checked').prop('checked', true);
+            }
+            else {
+                $target_checkbox.removeAttr('checked').prop('checked', false);
+            }
+        });
     });
 
+    $('#selectedContactList .share-checkbox').on('click',function() {
+        var $this_parent = $(this).closest('.single-contact');
+        var this_id = $this_parent.attr('data-contact-id');
+        $target_checkbox = $('.col-md-8.lined-left.margined').find('.single-contact[data-contact-id="' + this_id + '"]').find('.share-checkbox');
+        if ($(this)[0].checked  === true) {
+            $target_checkbox.removeAttr('checked').prop('checked', true);
+        }
+        else {
+            $target_checkbox.removeAttr('checked').prop('checked', false);
+        }
+    });
 
     $('#selectedContactList .single-contact').each(function(){
         var this_id = $(this).attr('data-contact-id');
@@ -523,7 +534,10 @@ $( document ).ready(function() {
         
     });
     $('.add-all').click( function(){
-        $('.add-contact-btn').click();
+        $(this).closest('.title-header').next('.contact-results').find('.add-contact-btn').click();
+    });
+    $('.tips .remove-all').click( function(){
+        $(this).closest('.tips').find('.deselect-btn').click();
     });
 
 });
