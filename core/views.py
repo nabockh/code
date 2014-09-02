@@ -46,10 +46,11 @@ class HomeView(TemplateView):
     #     return result
 
     def post(self, request, *args, **kwargs):
-        invitation_form = EmailInvitationRequest(request.POST, prefix='invite')
-        terms_form = TermsAndConditions(data=request.POST)
+        invitation_form = EmailInvitationRequest(prefix='invite')
+        terms_form = TermsAndConditions()
         contact_form = ContactForm(request=request)
         if 'invite-email' in request.POST:
+            invitation_form = EmailInvitationRequest(request.POST, prefix='invite')
             if invitation_form.is_valid():
                 try:
                     login_invite = Invite()
@@ -57,10 +58,11 @@ class HomeView(TemplateView):
                     login_invite.save()
                     messages.add_message(request, MESSAGE_BETA_INVITE, 'Your request successfully have been accepted.')
                 except IntegrityError:
-                    messages.add_message(request, MESSAGE_BETA_INVITE, 'Your request have already accepted.')
+                    messages.add_message(request, MESSAGE_BETA_INVITE, 'Please wait for approval.')
                     return HttpResponseRedirect('/')
                 return HttpResponseRedirect('/')
         elif 'next' in request.POST:
+            terms_form = TermsAndConditions(data=request.POST)
             if terms_form.is_valid():
                 path = terms_form.cleaned_data['next']
                 resolved_login_url = force_str(resolve_url(settings.LOGIN_REAL_URL))
