@@ -446,15 +446,21 @@ class BenchmarkDetailView(FormView):
     form_class = BenchmarkDetailsForm
     template_name = 'bm/details_graphs.html'
 
+    def dispatch(self, request, *args, **kwargs):
+        if not self.get_benchmark() and not DEBUG:
+            return ForbiddenView.as_view()(self.request, *args, **kwargs)
+        return super(BenchmarkDetailView, self).dispatch(request, *args, **kwargs)
+
     def get_benchmark(self, **kwargs):
 
         if hasattr(self, 'benchmark'):
             return self.benchmark
         else:
             bm_id = self.kwargs['bm_id']
-            self.benchmark = Benchmark.objects.filter(id=bm_id).select_related('question', 'responses',
-                                                                                'benchmark___industry',
-                                                                                'benchmark__geographic_coverage').first()
+            self.benchmark = Benchmark.valid.filter(id=bm_id, end_date__lte=datetime.now())\
+                .select_related('question', 'responses',
+                                'benchmark___industry',
+                                'benchmark__geographic_coverage').first()
             return self.benchmark
 
     def get_form_kwargs(self):
