@@ -99,7 +99,8 @@ class DashboardView(TemplateView):
                                                     end_date__lte=datetime.now()) \
                                       .order_by('-end_date', '-id')[:5]
         context['benchmarks'] = {
-            'pending': Benchmark.pending.filter(owner=self.request.user).order_by('-end_date', '-id'),
+            'pending': Benchmark.pending.filter(models.Q(question__responses__user=self.request.user) |
+                                                models.Q(owner=self.request.user)).order_by('-end_date', '-id'),
             'recent': Benchmark.objects \
                 .annotate(responses_count=models.Count('question__responses')) \
                 .filter(models.Q(approved=True,
