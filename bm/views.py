@@ -576,9 +576,9 @@ class BenchmarkAddRecipientsView(FormView):
     @method_decorator(login_required)
     def dispatch(self, request, bm_id, *args, **kwargs):
         self.benchmark = Benchmark.pending.filter(pk=bm_id, owner=request.user).first()
-        self.except_ids = set(self.benchmark.invites.values_list('recipient_id', flat=True))
         if not self.benchmark:
             raise Http404
+        self.except_ids = set(self.benchmark.invites.values_list('recipient_id', flat=True))
         return super(BenchmarkAddRecipientsView, self).dispatch(request, *args, **kwargs)
 
     def get_form_kwargs(self):
