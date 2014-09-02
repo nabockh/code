@@ -126,10 +126,12 @@ MESSAGE_STORAGE = 'django.contrib.messages.storage.cookie.CookieStorage'
 MESSAGE_FIRST_ANSWER = 50
 MESSAGE_LOGOUT = 51
 MESSAGE_BETA = 52
+MESSAGE_BETA_INVITE = 53
 MESSAGE_TAGS = {
     MESSAGE_FIRST_ANSWER: 'first_answer',
     MESSAGE_LOGOUT: 'logout',
     MESSAGE_BETA: 'beta',
+    MESSAGE_BETA_INVITE: 'beta_invite',
 }
 
 ROOT_URLCONF = 'app.urls'
