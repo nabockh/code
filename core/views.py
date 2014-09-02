@@ -1,6 +1,6 @@
 from datetime import datetime
 from app import settings
-from app.settings import MESSAGE_LOGOUT, MESSAGE_BETA
+from app.settings import MESSAGE_LOGOUT, MESSAGE_BETA, MESSAGE_BETA_INVITE
 from bm.models import Benchmark
 from django.contrib import messages
 from django.contrib.auth import REDIRECT_FIELD_NAME, logout
@@ -48,14 +48,16 @@ class HomeView(TemplateView):
     def post(self, request, *args, **kwargs):
         invitation_form = EmailInvitationRequest(request.POST, prefix='invite')
         terms_form = TermsAndConditions(data=request.POST)
-        contact_form = ContactForm(request=request, data=request.POST)
+        contact_form = ContactForm(request=request)
         if 'invite-email' in request.POST:
             if invitation_form.is_valid():
                 try:
                     login_invite = Invite()
                     login_invite.email = invitation_form.cleaned_data['email']
                     login_invite.save()
+                    messages.add_message(request, MESSAGE_BETA_INVITE, 'Your request successfully have been accepted.')
                 except IntegrityError:
+                    messages.add_message(request, MESSAGE_BETA_INVITE, 'Your request have already accepted.')
                     return HttpResponseRedirect('/')
                 return HttpResponseRedirect('/')
         elif 'next' in request.POST:
@@ -66,6 +68,7 @@ class HomeView(TemplateView):
                 result.set_cookie('terms', 1)
                 return result
         else:
+            contact_form = ContactForm(request=request, data=request.POST)
             if contact_form.is_valid():
                 first_name = contact_form.cleaned_data['first_name']
                 last_name = contact_form.cleaned_data['last_name']
@@ -105,12 +108,17 @@ class DashboardView(TemplateView):
                         (models.Q(question__responses__user=self.request.user) |
                          models.Q(owner=self.request.user)) ) \
                 .order_by('-end_date', '-id')[:5],
-            'popular': Benchmark.valid.filter(
+
+        }
+        # Check if user is associated with Social Profile
+        if self.request.user.social_profile.exists():
+            context['benchmarks']['popular'] = Benchmark.valid.filter(
                                 popular=True,
                                 end_date__lte=datetime.now(),
                                 _industry=self.request.user.social_profile.first().company.industry) \
                             .order_by('-end_date', '-id')
-        }
+        else:
+            context['benchmarks']['popular'] = None
         context['contact_form'] = ContactForm()
         return context
 

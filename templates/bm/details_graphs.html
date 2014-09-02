@@ -12,37 +12,79 @@
                 <div class='row'>
                     <div class='benchmark open'>
                         {% if 'Pie' in benchmark.charts_allowed %}
-                        <div id='donutChartHolder'>
-                            <div id='donutChart' class='bigChart'></div>
-                        </div>
-                        <div id='columnChartHolder'>
-                            <div id='columnChart' class='bigChart'></div>
-                        </div>
-                        <div id='bellcurveChartHolder'>
-                            <div id='bellcurveChart' class='bigChart'></div>
-                            <div class='benchmark-stats perc-based'>
-                                <div class='single-stat'>
-                                    <span class='title'>Min</span>
-                                    <span class='value' id='minVal'></span>
+                            {% if benchmark.question_type == 3 or benchmark.question_type == 5 %}
+                                <div id='donutChartHolder'>
+                                    <div id='donutChart' class='bigChart'></div>
+                                    <div class='units text-center'>Chart Data In - "{{ benchmark.question.first.options.first.units }}"</div>
                                 </div>
-                                <div class='single-stat'>
-                                    <span class='title'>Max</span>
-                                    <span class='value' id='maxVal'></span>
+                                <div id='columnChartHolder'>
+                                    <div id='columnChart' class='bigChart'></div>
+                                    <div class='units text-center'>Chart Data In - "{{ benchmark.question.first.options.first.units }}"</div>
                                 </div>
-                                <div class='single-stat'>
-                                    <span class='title'>Avg</span>
-                                    <span class='value' id='avgVal'></span>
+                                <div id='bellcurveChartHolder'>
+                                    <div id='bellcurveChart' class='bigChart'></div>
+                                    <div class='units text-center'>Chart Data In - "{{ benchmark.question.first.options.first.units }}"</div>
+                                    <div class='benchmark-stats perc-based'>
+                                        <div class='single-stat'>
+                                            <span class='title'>Min</span>
+                                            <span class='value' id='minVal'></span>
+                                        </div>
+                                        <div class='single-stat'>
+                                            <span class='title'>Max</span>
+                                            <span class='value' id='maxVal'></span>
+                                        </div>
+                                        <div class='single-stat'>
+                                            <span class='title'>Avg</span>
+                                            <span class='value' id='avgVal'></span>
+                                        </div>
+                                        <div class='single-stat'>
+                                            <span class='title'>SD</span>
+                                            <span class='value' id='sdVal'></span>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class='single-stat'>
-                                    <span class='title'>SD</span>
-                                    <span class='value' id='sdVal'></span>
+                            {%else%}
+                                <div id='donutChartHolder'>
+                                    <div id='donutChart' class='bigChart'></div>
                                 </div>
-                            </div>
-                        </div>
+                                <div id='columnChartHolder'>
+                                    <div id='columnChart' class='bigChart'></div>
+                                </div>
+                                <div id='bellcurveChartHolder'>
+                                    <div id='bellcurveChart' class='bigChart'></div>
+                                    <div class='benchmark-stats perc-based'>
+                                        <div class='single-stat'>
+                                            <span class='title'>Min</span>
+                                            <span class='value' id='minVal'></span>
+                                        </div>
+                                        <div class='single-stat'>
+                                            <span class='title'>Max</span>
+                                            <span class='value' id='maxVal'></span>
+                                        </div>
+                                        <div class='single-stat'>
+                                            <span class='title'>Avg</span>
+                                            <span class='value' id='avgVal'></span>
+                                        </div>
+                                        <div class='single-stat'>
+                                            <span class='title'>SD</span>
+                                            <span class='value' id='sdVal'></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endif %}
                         {% endif %}
-                        <div id='lineChartHolder'>
-                            <div id='lineChart' class='bigChart'></div>
-                        </div>
+                        {% if benchmark.question_type == 3 or benchmark.question_type == 5 %}
+
+                            <div id='lineChartHolder'>
+                                <div id='lineChart' class='bigChart'></div>
+                                <div class='units text-center'>Chart Data In - "{{ benchmark.question.first.options.first.units }}"</div>
+                            </div>                           
+
+                        {% else %}
+                            <div id='lineChartHolder'>
+                                <div id='lineChart' class='bigChart'></div>
+                            </div>
+                        {% endif %}
                         <div class='benchmark-footer text-center'>
                             <span class='color-blue'><i class='fa fa-user'></i> {{ benchmark.contributors }} Contributors</span>
                             <span class='separator'></span>
@@ -51,7 +93,9 @@
                             </span>
                             <span class='color-grey'>({{ benchmark.calc_average_rating }})</span>
                             {% if user.is_authenticated %}
-                                <a href='#' class="btn btn-primary btn-lg" data-toggle="modal" data-target="#rating">Rate this benchmark <i class='fa fa-star'></i></a>
+                                {% if is_contributor %}
+                                    <a href='#' class="btn btn-primary btn-lg" data-toggle="modal" data-target="#rating">Rate this benchmark <i class='fa fa-star'></i></a>
+                                {% endif %}
                             {% endif %}
                         </div>
                     </div>
@@ -156,7 +200,6 @@
     var statisticIndustriesData = {{ industries|safe }};
     var statisticCountriesData = {{ countries|safe }};
     var mainChartData = {{ benchmark.charts|safe }};
-    //var units = {{ benchmark.question.first.options.first.units }};
 
 
     {% if 'Pie' in benchmark.charts_allowed %}

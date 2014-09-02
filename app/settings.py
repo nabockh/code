@@ -55,6 +55,7 @@ INSTALLED_APPS = (
     'menus',  # helper for model independent hierarchical website navigation
     'south',  # intelligent schema and data migrations
     'sekizai',  # for javascript and css management
+    'dbtemplates',
     'core',
     'djangocms_admin_style',
     'djangocms_text_ckeditor',
@@ -85,6 +86,14 @@ JENKINS_TASKS = ('django_jenkins.tasks.run_pylint',
                  'django_jenkins.tasks.run_pep8',
                  'django_jenkins.tasks.run_pyflakes',
                  'django_jenkins.tasks.with_coverage',)
+
+TEMPLATE_LOADERS = (
+
+    'django.template.loaders.filesystem.Loader',
+    'django.template.loaders.app_directories.Loader',
+    'dbtemplates.loader.Loader',
+    'core.utils.ReserveLoader',
+)
 
 MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -117,10 +126,12 @@ MESSAGE_STORAGE = 'django.contrib.messages.storage.cookie.CookieStorage'
 MESSAGE_FIRST_ANSWER = 50
 MESSAGE_LOGOUT = 51
 MESSAGE_BETA = 52
+MESSAGE_BETA_INVITE = 53
 MESSAGE_TAGS = {
     MESSAGE_FIRST_ANSWER: 'first_answer',
     MESSAGE_LOGOUT: 'logout',
     MESSAGE_BETA: 'beta',
+    MESSAGE_BETA_INVITE: 'beta_invite',
 }
 
 ROOT_URLCONF = 'app.urls'

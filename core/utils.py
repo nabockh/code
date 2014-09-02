@@ -1,10 +1,16 @@
 from functools import wraps
+import os
 from app import settings
+from app.settings import BASE_DIR
 from django.http import HttpResponse
 import logging
+from django.conf import settings
+from django.template.base import TemplateDoesNotExist
+from django.template.loader import BaseLoader
+from django.utils._os import safe_join
+
 logging.config.dictConfig(settings.LOGGING)
 logger = logging.getLogger('bedade.background')
-
 
 
 def login_required_ajax(function=None, redirect_field_name=None):
@@ -36,3 +42,43 @@ def celery_log(func):
         except:
             logger.exception('')
     return _decorator
+
+"""
+
+Loading templates with ReserveLoader if templates are not found in DB and with Default Loaders.
+
+"""
+app_template_dirs = (
+    os.path.join(BASE_DIR,  'templates/dbtemplates'),
+)
+
+
+class ReserveLoader(BaseLoader):
+    is_usable = True
+
+    def get_template_sources(self, template_name, template_dirs=None):
+        """
+        Returns the absolute paths to "template_name", when appended to each
+        directory in "template_dirs". Any paths that don't lie inside one of the
+        template dirs are excluded from the result set, for security reasons.
+        """
+        if not template_dirs:
+            template_dirs = app_template_dirs
+        for template_dir in template_dirs:
+            try:
+                yield safe_join(template_dir, template_name)
+            except UnicodeDecodeError:
+                # The template dir name was a bytestring that wasn't valid UTF-8.
+                raise
+            except ValueError:
+                # The joined path was located outside of template_dir.
+                pass
+
+    def load_template_source(self, template_name, template_dirs=None):
+        for filepath in self.get_template_sources(template_name, template_dirs):
+            try:
+                with open(filepath, 'rb') as fp:
+                    return (fp.read().decode(settings.FILE_CHARSET), filepath)
+            except IOError:
+                pass
+        raise TemplateDoesNotExist(template_name)

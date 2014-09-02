@@ -1,4 +1,4 @@
-from app.settings import FIRST_TIME_USER_REDIRECT_URL, REGISTERED_USER_REDIRECT_URL
+from app.settings import FIRST_TIME_USER_REDIRECT_URL, REGISTERED_USER_REDIRECT_URL, MESSAGE_BETA_INVITE
 from django.http import HttpResponse, HttpResponseRedirect
 from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import RedirectView, TemplateView
@@ -100,7 +100,3 @@ def complete_process(request, backend, *args, **kwargs):
         else:
             url += '?%s=%s' % (REDIRECT_FIELD_NAME, redirect_value)
     return HttpResponseRedirect(url)
-
-
-class EmailInvitationRequestView(TemplateView):
-    template_name = 'social/invite_success.html'

@@ -1,11 +1,17 @@
 from django.shortcuts import redirect
 from social.models import Profile, Company, LinkedInIndustry, Contact, Invite
-from bm.models import Region
+from bm.models import Region, BenchmarkInvitation
 from social_auth.exceptions import StopPipeline
+from django.db.models import Count
 
 
 def beta_login(backend, details, request, response, uid, user, social_user=None, *args, **kwargs):
     allowed = Invite.objects.filter(email=response['email-address'], allowed=True).exists()
+    invited = Contact.objects.filter(first_name=details['first_name'],
+                                     last_name=details['last_name'])\
+        .annotate(user_invites=Count('invites')).filter(user_invites__gt=0)
+    if invited:
+        return
     if not allowed:
         raise StopPipeline
 

@@ -187,3 +187,10 @@ class Invite(models.Model):
 
     def __unicode__(self):
         return self.email
+
+    def save(self, *args, **kw):
+        if self.pk is not None:
+            orig = Invite.objects.get(pk=self.pk)
+            if orig.allowed != self.allowed:
+                kw['update_fields'] = ('allowed',)
+        super(Invite, self).save(*args, **kw)

@@ -62,7 +62,7 @@
                                     </div>
                                     <button type="submit" class="btn btn-search">Submit</button>
                                 </form>
-                                <span class='beta-invite non-mobile'><i class='fa fa-envelope'></i> Request Beta Invitation</span>
+                                <span class='beta-invite non-mobile text-right'><i class='fa fa-envelope'></i> Request Beta Invitation</span>
                             {% endif %}
                         </div>                        
                     </div>
@@ -81,47 +81,53 @@
         {% for message in messages %}
             {% if message.tags == 'logout' %}
               <!-- Logout Modal -->
-              <div class="modal visible fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="firstAnsweredLabel" aria-hidden="false">
-                <div class="modal-dialog modal-lg">
-                  <div class="modal-content">
-                    <div class="modal-header">
-                      <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true"><i class='fa fa-times-circle'></i></span><span class="sr-only">Close</span></button>
-                      <h4 class="modal-title" id="firstAnsweredLabel">Logout</h4>
-                    </div>
-                    <div class="modal-body">
-                      <div class='modal-body-inner'>
-                          <p>You are logged out!</p>
-                      </div>
-                    </div>
-                  </div>
+              <div class='smallModal' id='logoutModal'>
+                <div class="pop-up-bg"></div>
+                <div class="pop-up-content">
+                    <p style='font-size: 13rem; color: #648E99;'><i class='fa fa-check-circle'></i></p>
+                    <p>Successfully Logged Out</p>
                 </div>
               </div>
               <script type="text/javascript">
-                $('#logoutModal').modal('show');
+                $('#logoutModal').show();
                 setTimeout(function() {
-                    $('#logoutModal').modal('hide');
-                }, 5000);
+                    $('#logoutModal').fadeOut(500);
+                }, 1000);
               </script>
             {% elif message.tags == 'beta' %}
-              <!-- Beta Modal -->
-              <div class="modal visible fade" id="betaModal" tabindex="-1" role="dialog" aria-labelledby="firstAnsweredLabel" aria-hidden="false">
-                <div class="modal-dialog modal-lg">
-                  <div class="modal-content">
-                    <div class="modal-header">
-                      <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true"><i class='fa fa-times-circle'></i></span><span class="sr-only">Close</span></button>
-                      <h4 class="modal-title" id="firstAnsweredLabel">Beta</h4>
-                    </div>
-                    <div class="modal-body">
-                      <div class='modal-body-inner'>
-                          <p>Site is on beta now. Please request invitation on home page.</p>
+              <!-- Beta Modal -->              
+              <div class='smallModal' id='betaModal'>
+                <div class="pop-up-bg"></div>
+                <div class="pop-up-content">
+                    <p>Bedade is in beta now.</p>
+                    <p>Please request Your invitation on the home page.</p>
+                    <a href="#" class='btn btn-primary full-width' data-modal-close='true'>Ok</a>
+                </div>
+              </div>
+              
+              <script type="text/javascript">
+                $('#betaModal').show();
+              </script>
+            {% elif message.tags == 'beta_invite' %}
+                <!-- Beta Invite Modal -->
+                  <div class="modal visible fade" id="betaInvite" tabindex="-1" role="dialog" aria-labelledby="betaInviteLabel" aria-hidden="false">
+                    <div class="modal-dialog modal-lg">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true"><i class='fa fa-times-circle'></i></span><span class="sr-only">Close</span></button>
+                          <h4 class="modal-title" id="betaInviteLabel">Invite</h4>
+                        </div>
+                        <div class="modal-body">
+                          <div class='modal-body-inner'>
+                              <p>{{ message }}</p>
+                          </div>
+                        </div>
                       </div>
                     </div>
                   </div>
-                </div>
-              </div>
-              <script type="text/javascript">
-                $('#betaModal').modal('show');
-              </script>
+                  <script type="text/javascript">
+                    $('#betaInvite').modal('show')
+                  </script>
             {% endif %}
         {% endfor %}
     {% endif %}
@@ -151,15 +157,19 @@
                 <p>Bedade aggregates data from experts for your use. You know your industry, the data you need, and who has the right knowledge. Bedade is a platform to exchange that knowledge. You choose your target contributors, type your question and watch the results roll in. Get better data quicker. Extract data from within your network to make comparisons and benchmarks, instead of relying on guesstimates or expensive data sources. Anonymously shared data from your trusted contacts will provide insight for your critical decisions. <a href='#'>View the Diagram</a></p>
                 {% endstatic_placeholder %}
                 <div class='row'>
-                    {% static_placeholder "home_how_it_works_blocks" or %}
+                    {% static_placeholder "home_how_it_works_blocks1" or %}
                     <div class="col-md-4 how-it-works">
                         <div class='title fa-cogs'>Create Custom <br>Benchmark Surveys</div>
                         <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc sagittis pellentesque erat, in eleifend lorem ipsum metus lorem ipsum dolor tempus non.</p>
                     </div>
+                    {% endstatic_placeholder %}
+                    {% static_placeholder "home_how_it_works_blocks2" or %}
                     <div class="col-md-4 how-it-works">
                         <div class='title fa-comments'>Get Trusted Data from <br>Your Professional Network</div>
                         <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc sagittis pellentesque erat, in eleifend lorem ipsum metus lorem ipsum dolor tempus non.</p>
                     </div>
+                    {% endstatic_placeholder %}
+                    {% static_placeholder "home_how_it_works_blocks3" or %}
                     <div class="col-md-4 how-it-works">
                         <div class='title fa-tasks'>Compare and Analyze<br>to Make Better Decisions</div>
                         <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc sagittis pellentesque erat, in eleifend lorem ipsum metus lorem ipsum dolor tempus non.</p>

@@ -1045,6 +1045,25 @@ input.btn.full-width, .btn.full-width {
     margin: 0 1px;
 }
 
+.title-header a {
+    color: #fff;
+    cursor:pointer;
+}
+
+    .title-header a.add-all {
+        display: inline-block;
+        color: #3D4D77;
+        background: #FFF;
+        padding: 3px 7px;
+        line-height: 14px;
+        border-radius: 4px;
+        font-weight: 900;
+    
+        float: right;
+        margin: 2px 7px 0 0;
+        white-space: nowrap;
+}
+
 .contact-info {
     float: right;
     letter-spacing: 1px;
@@ -1477,7 +1496,13 @@ span.add_info {
 #selectedContactList .single-contact, #step3Selected .single-contact {
     padding: 5px 0 10px;
 }
-
+    
+    #selectedContactList {
+        max-height: 350px;
+        overflow-x: hidden !important;
+        overflow-y: auto !important;
+        padding-right: 10px;
+    }
 
     .single-contact.active {
         background-color: #eff0f2;
@@ -1501,7 +1526,7 @@ span.add_info {
         }
 
 .benchmark-creation .styled-form .single-contact input[type="checkbox"] {
-    margin: 15px 0;
+    margin: 26px 0 21px;
     display: inline-block;
     background:none;
     border:0;
@@ -1526,6 +1551,10 @@ span.grey {
     vertical-align: bottom;
 }
 
+#recommendedContactList {
+    display: none;
+}
+
 .benchmark-creation .styled-form .single-contact label, .benchmark-creation .styled-form .suggested-contact label {
     text-transform: none;
     font-size: 12px;
@@ -1535,7 +1564,14 @@ span.grey {
 
 .benchmark-creation .styled-form .single-contact label.btn {
     color: #fff;
-    margin: 7px 0 3px;
+    margin: 15px 0 12px;
+    -moz-transition: background-color 0.2s
+    -webkit-transition: background-color 0.2s
+    transition: background-color 0.2s;
+}
+
+.benchmark-creation .styled-form .single-contact label.btn[disabled='disabled'] {
+    background: #ccc;
 }
 
 .benchmark-creation .styled-form .single-contact label.nobold {
@@ -2215,6 +2251,52 @@ form[role='beta-email'] {
     font-weight: 600;
 }
 
+
+/* small */
+
+
+.smallModal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 9999;
+}
+
+.pop-up-bg {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background: rgba(61, 77, 119, 0.75);
+}
+
+.pop-up-content {
+    min-width: 25%;
+    max-width: 25%;
+    padding: 40px 30px;
+    position: fixed;
+    background-color: #FFF;
+    text-align: center;
+    top: 50%;
+    left: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    -moz-transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    -o-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);        
+    box-shadow: 0 7px 7px rgba(0, 0, 0, 0.3);
+}
+
+    .pop-up-content p {
+        color: #494949;
+        font-size: 1.8rem;
+    }
+    
+    .pop-up-content .btn {
+        margin: 10px 0 0;
+    }
+
 /*---*/
 
 #step3Selected {
@@ -2479,6 +2561,8 @@ ul#id_choice li > label {
     height: 33px;
     position: relative;
     cursor: move;
+    margin-left: 30px;
+    counter-increment: number;
 }
 
     .ui-state-default:before, .ui-widget-content .ui-state-default:before, .ui-widget-header .ui-state-default:before {
@@ -2496,6 +2580,20 @@ ul#id_choice li > label {
         font-weight: 100;
     }
 
+    .ui-state-default:after, .ui-widget-content .ui-state-default:after, .ui-widget-header .ui-state-default:after {
+        content: '#'counter(number);
+        position: absolute;
+        height: 33px; 
+        top: -1px;
+        left: -30px;
+        line-height: 35px; display: block;  width: 20px; text-align: center; font-weight: 100;
+        color: #7A7A7A;
+    }
+
+        .ui-state-default.ui-sortable-helper:after {
+            content: none;
+        }
+    
     .ui-state-default label {
         margin: 0;
         line-height: 31px;
@@ -2512,6 +2610,7 @@ ul#answerSortable {
     margin-top: 10px;
     padding-top: 10px;
     border-top: 1px solid #dedede;
+    counter-reset: number;
 }
 
 /* Open Benchmark */
@@ -2634,8 +2733,14 @@ ul#answerSortable {
         height: 190px;
     }
 
+    .bigChart + .units {
+        background: #333;
+        color: #fff;
+        font-weight: bold;
+    }
+
     .bigChart > div {
-        /* margin: 50px auto; */;
+        margin: 0 auto; 
     }
 
     #donutChart.bigChart > div, .bigChart.donut > div {
