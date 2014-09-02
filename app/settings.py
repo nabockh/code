@@ -55,6 +55,7 @@ INSTALLED_APPS = (
     'menus',  # helper for model independent hierarchical website navigation
     'south',  # intelligent schema and data migrations
     'sekizai',  # for javascript and css management
+    'dbtemplates',
     'core',
     'djangocms_admin_style',
     'djangocms_text_ckeditor',
@@ -75,7 +76,6 @@ INSTALLED_APPS = (
     'djcelery_email',
     'social',
     'social_auth',
-    'dbtemplates',
     'bm',
     'formadmin',
     'bootstrap3',

@@ -14,9 +14,9 @@ def linked_in_autoimport(sender, **kwargs):
     tasks.import_linkedin_contacts.delay(kwargs['user'])
 
 
-@receiver(pre_save, sender=Invite)
+@receiver(post_save, sender=Invite)
 def notify_invitee(instance, **kwargs):
-    if instance.allowed:
+    if instance.allowed and kwargs['update_fields']:
         template = loader.get_template('alerts/beta_notification.html')
         context = Context({
             'email': instance.email
