@@ -381,9 +381,12 @@ function select_prepare() {
         $select2 = $select.removeAttr('style').css('width', width).select2({minimumResultsForSearch: param_search});
         $select2.on("select2-open", function(){$('.select2-offscreen > .select2-input').blur();}); // Workaround not to show cursor on iPad
         if($select.parents('#units_maxDecimals, #units_maxDecimals_step3').length){
-           $select.on("change", function(e) {
-               $select.parents('#units_maxDecimals, #units_maxDecimals_step3').find('.units-custom').val('');
-           });
+            $('#units_maxDecimals select, #units_maxDecimals_step3 select').each(function(){
+               $(this).next('.units-custom').val($(this).val());
+               $(this).on("change", function(e) {
+                   $(this).next('.units-custom').val($(this).val());
+               });
+            });
         }
     });
 }
