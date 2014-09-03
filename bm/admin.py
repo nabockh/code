@@ -17,12 +17,11 @@ from django.template import loader, Context
 from django.utils.decorators import method_decorator
 from django.utils.encoding import force_unicode
 from django.views.generic import FormView
-
+from django import forms
 from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.models import User, Group
 
 from social_auth.db.django_models import Association, Nonce, UserSocialAuth
-
 
 admin.site.unregister(User)
 admin.site.unregister(Group)
@@ -127,16 +126,29 @@ def make_popular(modeladmin, request, queryset):
 make_popular.short_description = "Mark selected benchmarks as popular"
 
 
+class InvitedContactsForm(forms.ModelForm):
+    invites_list = forms.ChoiceField()
+
+    class Meta:
+        model = Benchmark
+
+    def __init__(self, *args, **kwargs):
+        super(InvitedContactsForm, self).__init__(*args, **kwargs)
+        benchmark = kwargs['instance']
+        choices = [(invite.recipient, invite.recipient) for invite in benchmark.invites.all().select_related('recipient')]
+        self.fields['invites_list'] = forms.MultipleChoiceField(choices=choices, required=False)
+
 class BenchmarkPendingAdmin(ReadOnlyAdminMixin, admin.ModelAdmin):
     class Meta:
         verbose_name = 'Pending Benchmark'
 
+    form = InvitedContactsForm
+
     readonly_fields = [field for field in Benchmark._meta.get_all_field_names() if field not in ('approved', )]
     readonly_fields.append('question_description')
     readonly_fields.append('question_label')
-    readonly_fields.append('invited_contacts')
     fields = ('approved', 'name', 'question_label', 'question_description', 'owner',
-              'geographic_coverage', 'start_date', 'end_date', 'min_numbers_of_responses', 'invited_contacts')
+              'geographic_coverage', 'start_date', 'end_date', 'min_numbers_of_responses', 'invites_list')
     actions = [decline_benchmark, approve_benchmark]
 
     def question_description(self, obj):
@@ -145,18 +157,14 @@ class BenchmarkPendingAdmin(ReadOnlyAdminMixin, admin.ModelAdmin):
     def question_label(self, obj):
         return obj.question.first().label
 
-    def invited_contacts(self, obj):
-        return [invitation.recipient.full_name for invitation in obj.invites.all()]
-
     question_description.short_description = 'Description'
     question_label.short_description = 'Label'
-    invited_contacts.short_description = 'Invited Contacts'
+
+    list_filter = ('start_date', 'owner')
 
     def get_queryset(self, request):
         qs = super(BenchmarkPendingAdmin, self).get_queryset(Benchmark)
         return qs.filter(approved=None)
-
-    list_filter = ('start_date', 'owner')
 
     def response_add(self, request, obj, post_url_continue="../%s/"):
         if '_continue' in request.POST:
@@ -233,13 +241,13 @@ class DeclineView(FormView):
 
 
 class BenchmarkApprovedAdmin(ReadOnlyAdminMixin, admin.ModelAdmin):
+    form = InvitedContactsForm
     readonly_fields = [field for field in Benchmark._meta.get_all_field_names() if field not in ('popular')]
     readonly_fields.append('question_description')
     readonly_fields.append('question_label')
     fields = ('approved', 'popular', 'name', 'question_label', 'question_description', 'owner',
-              'geographic_coverage', 'start_date', 'end_date', 'min_numbers_of_responses')
+              'geographic_coverage', 'start_date', 'end_date', 'min_numbers_of_responses', 'invites_list')
     actions = [make_popular]
-    # readonly_fields = ['related_objects']
 
     def question_description(self, obj):
         return obj.question.first().description
