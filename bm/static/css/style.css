@@ -2319,7 +2319,7 @@ form[role='beta-email'] {
 /*---*/
 
 #step3Selected {
-    height: 620px;
+    max-height: 620px;
     overflow-x: hidden;
     overflow-y: scroll;
 }
@@ -3170,10 +3170,10 @@ ul#answerSortable {
         margin: -45px -5px 0;
     }
 
-    .benchmark-creation .styled-form .benchmark-help.search label.btn.btn-primary {
+    /*.benchmark-creation .styled-form .benchmark-help.search label.btn.btn-primary {
         width: auto;
         margin-top: 20px;
-    }
+    }*/
     
     .benchmark-creation .styled-form .col-md-5ths input:not([type='submit']) {
         margin-bottom: 0;
@@ -3442,7 +3442,7 @@ ul#answerSortable {
     }
 }
 
-@media only screen and (max-width : 520px) {
+@media only screen and (max-width : 570px) {
     .btn-holder .btn.auto-width {
         width:100%;
         clear:both;
