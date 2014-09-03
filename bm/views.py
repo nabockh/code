@@ -24,7 +24,7 @@ from django.utils.decorators import method_decorator
 from django.views.generic import ListView, TemplateView
 from django.views.generic.edit import FormView
 from bm.signals import benchmark_answered, benchmark_created
-from django.db.models import Count
+from django.db.models import Count, Q
 
 import json
 import StringIO
@@ -457,7 +457,8 @@ class BenchmarkDetailView(FormView):
             return self.benchmark
         else:
             bm_id = self.kwargs['bm_id']
-            self.benchmark = Benchmark.valid.filter(id=bm_id, end_date__lte=datetime.now())\
+            f = Q(id=bm_id) if DEBUG else Q(id=bm_id, end_date__lte=datetime.now())
+            self.benchmark = Benchmark.valid.filter(f)\
                 .select_related('question', 'responses',
                                 'benchmark___industry',
                                 'benchmark__geographic_coverage').first()
