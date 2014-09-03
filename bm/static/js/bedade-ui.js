@@ -483,7 +483,7 @@ $( document ).ready(function() {
                     '</div>',
                 '</div>',
             ].join("\n");
-            $('#selectedContactList .single-contact:last-child').after(clone_block);
+            $('#selectedContactList .mCSB_container').append(clone_block);
             $(this).attr('disabled', 'disabled');
             $('#selectedContactList .deselect-btn').click( function(){
                 var $this_parent = $(this).closest('.single-contact');
