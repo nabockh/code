@@ -480,8 +480,7 @@ $( document ).ready(function() {
                     '</div>',
                 '</div>',
             ].join("\n");
-
-            $('#selectedContactList').append(clone_block);
+            $('#selectedContactList .single-contact:last-child').after(clone_block);
             $(this).attr('disabled', 'disabled');
             $('#selectedContactList .deselect-btn').click( function(){
                 var $this_parent = $(this).closest('.single-contact');
@@ -492,7 +491,6 @@ $( document ).ready(function() {
                 $target_block.find('.choose-checkbox, .share-checkbox').removeAttr('checked');
                
             });
-
         }
         $('#selectedContactList .share-checkbox').on('click',function() {
             var $this_parent = $(this).closest('.single-contact');
@@ -531,7 +529,6 @@ $( document ).ready(function() {
         $target_block = $('#recommendedContactList, #searchContactList').find('.single-contact[data-contact-id="' + this_id + '"]');
         $target_block.find('.add-contact-btn').removeAttr('disabled');
         $this_parent.remove();
-        
     });
     $('.add-all').click( function(){
         $(this).closest('.title-header').next('.contact-results').find('.add-contact-btn').click();
@@ -543,11 +540,8 @@ $( document ).ready(function() {
 });
 $(window).on('resize', function(){
     select_prepare();
-    //units_prepare();
 });
 $(document).ajaxStop(function() {
-    //select_prepare();
-    //units_prepare();
 });
 
 

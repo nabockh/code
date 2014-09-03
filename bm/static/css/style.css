@@ -1500,9 +1500,8 @@ span.add_info {
 }
     
     #selectedContactList {
-        max-height: 350px;
-        overflow-x: hidden !important;
-        overflow-y: auto !important;
+        max-height: 390px;
+        overflow: hidden;
         padding-right: 10px;
     }
 
