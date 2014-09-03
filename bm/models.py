@@ -55,7 +55,8 @@ class BenchmarkPendingManager(models.Manager):
         return super(BenchmarkPendingManager, self).get_queryset() \
             .annotate(responses_count=Count('question__responses')) \
             .exclude(approved=False) \
-            .filter(end_date__gt=datetime.now())
+            .filter(end_date__gt=datetime.now())\
+            .distinct()
 
 
 class Benchmark(models.Model):
@@ -99,6 +100,11 @@ class Benchmark(models.Model):
     @industry.setter
     def industry(self, value):
         self._industry = LinkedInIndustry.get(code=value) if str(value).isdigit() else LinkedInIndustry.get(value)
+
+    @property
+    def is_new(self):
+        delta = datetime.date(datetime.now()) - self.start_date
+        return delta.days <= 1
 
     @property
     def days_left(self):

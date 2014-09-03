@@ -1,5 +1,5 @@
 {% for benchmark in benchmarks.pending %}
-    <div class="dashboard-progress-block">
+    <div class="dashboard-progress-block{% if benchmark.is_new %} new-benchmark{% endif %}">
         <p class="title" title='{{ benchmark.name }}'>{{ benchmark.name }}</p>
 
         <p class="info">
