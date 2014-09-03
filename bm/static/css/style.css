@@ -1800,6 +1800,7 @@ form[role='beta-email'] {
 
     form[role='beta-email'] .form-control {
         height: 25px;
+        line-height: 25px;
         margin-top: 0;
         border-radius: 0;
         box-shadow: none;
@@ -1807,6 +1808,7 @@ form[role='beta-email'] {
         background: #55798a;
         border-color: #55798a;
         color: #fff;
+        padding: 0 12px;
     }
 
     form[role='beta-email'] .btn-search:hover {
