@@ -1,8 +1,9 @@
 from django.shortcuts import redirect
 from social.models import Profile, Company, LinkedInIndustry, Contact, Invite
-from bm.models import Region, BenchmarkInvitation
-from social_auth.exceptions import StopPipeline
+from bm.models import Region
+from social_auth.exceptions import StopPipeline, AuthFailed
 from django.db.models import Count
+from social.backend.linkedin import get_contacts
 
 
 def beta_login(backend, details, request, response, uid, user, social_user=None, *args, **kwargs):
@@ -13,6 +14,11 @@ def beta_login(backend, details, request, response, uid, user, social_user=None,
     if invited:
         return
     if not allowed:
+        raise StopPipeline
+
+
+def contacts_validation(backend, details, request, response, uid, user, social_user=None, *args, **kwargs):
+    if get_contacts(tokens=response['access_token']) < 10:
         raise StopPipeline
 
 

@@ -32,7 +32,22 @@ def extract_access_tokens(access_tokens):
     return UserAccess(access_tokens['oauth_token'], access_tokens['oauth_token_secret'])
 
 
-def get_contacts(user):
+def get_contacts(user=None, tokens=None):
+    if tokens:
+        oauth_token_secret = tokens.split('&')[0].split('=')[1]
+        oauth_token = tokens.split('&')[1].split('=')[1]
+        access_tokens = {'oauth_token': oauth_token, 'oauth_token_secret': oauth_token_secret}
+        user_access = extract_access_tokens(access_tokens)
+        authentication = linkedin.LinkedInDeveloperAuthentication(
+            settings.LINKEDIN_CONSUMER_KEY,
+            settings.LINKEDIN_CONSUMER_SECRET,
+            user_access.token,
+            user_access.token_secret,
+            ''
+        )
+        application = linkedin.LinkedInApplication(authentication)
+        connections = application.get_connections(selectors=['id', 'first-name', 'last-name', 'industry', 'location', 'headline', 'positions'])
+        return connections['values']
     auth = user.social_auth.first()
     user_access = extract_access_tokens(auth.tokens)
     authentication = linkedin.LinkedInDeveloperAuthentication(
