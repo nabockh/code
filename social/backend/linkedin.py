@@ -47,7 +47,10 @@ def get_contacts(user=None, tokens=None):
         )
         application = linkedin.LinkedInApplication(authentication)
         connections = application.get_connections(selectors=['id', 'first-name', 'last-name', 'industry', 'location', 'headline', 'positions'])
-        return connections['values']
+        if not connections['_total'] == 0:
+            return connections['values']
+        else:
+            return None
     auth = user.social_auth.first()
     user_access = extract_access_tokens(auth.tokens)
     authentication = linkedin.LinkedInDeveloperAuthentication(
@@ -59,4 +62,7 @@ def get_contacts(user=None, tokens=None):
     )
     application = linkedin.LinkedInApplication(authentication)
     connections = application.get_connections(selectors=['id', 'first-name', 'last-name', 'industry', 'location', 'headline', 'positions'])
-    return connections['values']
+    if not connections['_total'] == 0:
+        return connections['values']
+    else:
+        return None

@@ -18,7 +18,8 @@ def beta_login(backend, details, request, response, uid, user, social_user=None,
 
 
 def contacts_validation(backend, details, request, response, uid, user, social_user=None, *args, **kwargs):
-    if get_contacts(tokens=response['access_token']) < 10:
+    connections = get_contacts(tokens=response['access_token'])
+    if connections is None or connections < 10:
         raise StopPipeline
 
 
