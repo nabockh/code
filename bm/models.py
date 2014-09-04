@@ -268,6 +268,19 @@ class BenchmarkYesNo(Benchmark):
         proxy = True
         verbose_name = 'Benchmark Yes/No'
 
+    available_charts = [('Pie', 'Pie Chart'), ('Column', 'Column Chart')]
+    default_chart = 'Pie'
+
+    @property
+    def charts(self):
+        series = self.series_statistic.values('series', 'value')
+        series = [[str(s['series']), s['value']] for s in series]
+        series.insert(0, ['series', 'count'])
+        return {
+            'pie': series,
+            'column': series,
+        }
+
 
 class BenchmarkInvitation(models.Model):
     benchmark = models.ForeignKey(Benchmark, related_name='invites')
