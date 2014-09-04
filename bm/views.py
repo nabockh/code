@@ -131,7 +131,10 @@ class BenchmarkCreateWizardView(CookieWizardView):
         context = Context({
             'benchmark': benchmark,
         })
-        response = HttpResponse("<pre>" + template.render(context) + '</pre>')
+        response = HttpResponse("<pre contenteditable='false'>" + template.render(context)
+                                + '</pre>' + '<button type="button" class="edit-button">'
+                                             ''+'Edit'+'</button>'+'<button type="button" class="edit-button">'
+                                             ''+'Save'+'</button>')
         return response
 
     def render_goto_step(self, goto_step, **kwargs):
