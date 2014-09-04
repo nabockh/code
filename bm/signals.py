@@ -57,6 +57,8 @@ def check_new_bm_created(sender, request, benchmark, **kwargs):
         type = 'Ranking'
     elif question.type == 3:
         type = 'Numeric'
+    elif question.type == 4:
+        type = 'Yes/No'
     elif question.type == 5:
         type = 'Range'
     owner = benchmark.owner

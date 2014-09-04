@@ -92,6 +92,8 @@ class Benchmark(models.Model):
                 self.__class__ = BenchmarkNumeric
             elif self.question_type == Question.RANGE:
                 self.__class__ = BenchmarkRange
+            elif self.question_type == Question.YES_NO:
+                self.__class__ = BenchmarkYesNo
 
     @property
     def industry(self):
@@ -260,6 +262,13 @@ class BenchmarkRange(Benchmark):
         }
 
 
+class BenchmarkYesNo(Benchmark):
+
+    class Meta:
+        proxy = True
+        verbose_name = 'Benchmark Yes/No'
+
+
 class BenchmarkInvitation(models.Model):
     benchmark = models.ForeignKey(Benchmark, related_name='invites')
     sender = models.ForeignKey(USER_MODEL, blank=True, null=True, db_constraint=False, on_delete=models.SET_NULL)
@@ -300,15 +309,15 @@ class Question(models.Model):
     MULTIPLE = 1
     RANKING = 2
     NUMERIC = 3
-    SLIDING_SCALE = 4
+    YES_NO = 4
     RANGE = 5
 
     TYPES = (
         (MULTIPLE, 'Multiple'),
         (RANKING, 'Ranking'),
         (NUMERIC, 'Numeric'),
-        # (SLIDING_SCALE, 'Sliding scale'),
         (RANGE, 'Range'),
+        (YES_NO, 'Yes/No'),
     )
 
     benchmark = models.ForeignKey(Benchmark, related_name='question', rel_class=models.OneToOneRel, on_delete=models.CASCADE)
@@ -332,6 +341,8 @@ class QuestionResponse(models.Model):
             return self.data_numeric
         elif self.question.type == Question.RANGE:
             return self.data_range
+        elif self.question.type == Question.YES_NO:
+            return self.data_boolean
 
 
 class QuestionChoice(models.Model):
@@ -403,6 +414,11 @@ class ResponseRange(models.Model):
     max = models.IntegerField()
 
 
+class ResponseYesNo(models.Model):
+    response = models.ForeignKey(QuestionResponse, rel_class=models.OneToOneRel, related_name='data_boolean')
+    value = models.BooleanField()
+
+
 class BenchmarkRating(models.Model):
     benchmark = models.ForeignKey(Benchmark, related_name='ratings')
     user = models.ForeignKey(USER_MODEL, null=True)
@@ -457,3 +473,9 @@ class BenchmarkAuditLog(LogEntry):
     class Meta:
         proxy = True
         verbose_name = 'Audit Log'
+
+
+# class BmInviteEmail(models.Model):
+#     benchmark = models.ForeignKey(Benchmark, related_name='invitation_email')
+#     body = models.TextField()
+#     subject = models.CharField(max_length=50)

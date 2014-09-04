@@ -2,9 +2,10 @@ from datetime import datetime
 from app.settings import DEBUG
 from bm.forms import CreateBenchmarkStep12Form, AnswerMultipleChoiceForm, \
     CreateBenchmarkStep3Form, CreateBenchmarkStep4Form, NumericAnswerForm, RangeAnswerForm, RankingAnswerForm, \
-    BenchmarkDetailsForm
+    BenchmarkDetailsForm, YesNoAnswerForm
 from bm.models import Benchmark, Region, Question, QuestionChoice, QuestionResponse, ResponseChoice, ResponseNumeric, \
-    ResponseRange, QuestionRanking, ResponseRanking, BenchmarkInvitation, QuestionOptions, BenchmarkLink, BenchmarkRating
+    ResponseRange, QuestionRanking, ResponseRanking, BenchmarkInvitation, QuestionOptions, BenchmarkLink, BenchmarkRating, \
+    ResponseYesNo
 from core.forms import ContactForm
 from bm.tasks import send_invites
 from core.utils import login_required_ajax
@@ -299,6 +300,9 @@ class BaseBenchmarkAnswerView(FormView):
             return RangeAnswerView.as_view()(self.request, benchmark, *args, **kwargs)
         elif question_type == Question.NUMERIC:
             return NumericAnswerView.as_view()(self.request, benchmark, *args, **kwargs)
+        elif question_type == Question.YES_NO:
+            return YesNoAnswerView.as_view()(self.request, benchmark, *args, **kwargs)
+
 
     def get_context_data(self, **kwargs):
         context = super(BaseBenchmarkAnswerView, self).get_context_data(**kwargs)
@@ -427,6 +431,28 @@ class NumericAnswerView(BaseBenchmarkAnswerView):
                 question_response.data_numeric.add(bm_response_numeric)
 
         return super(NumericAnswerView, self).form_valid(form)
+
+
+class YesNoAnswerView(BaseBenchmarkAnswerView):
+    form_class = YesNoAnswerForm
+    template_name = 'bm/answer/Yes_No.html'
+
+    def dispatch(self, request, benchmark, *args, **kwargs):
+        self.benchmark = benchmark
+        return super(BaseBenchmarkAnswerView, self).dispatch(self.request, *args, **kwargs)
+
+    def form_valid(self, form):
+        if form.is_valid():
+            with transaction.atomic():
+                question_response = QuestionResponse()
+                question_response.user = self.request.user
+                question_response.question = self.benchmark.question.first()
+                question_response.save()
+                bm_response_yes_no = ResponseYesNo()
+                bm_response_yes_no.value = form.cleaned_data['Choose Yes or No:']
+                question_response.data_boolean.add(bm_response_yes_no)
+
+        return super(YesNoAnswerView, self).form_valid(form)
 
 
 class ForbiddenView(TemplateView):
