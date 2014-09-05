@@ -148,3 +148,7 @@ class LogoutView(RedirectView):
         logout(request)
         messages.add_message(request, MESSAGE_LOGOUT, 'Logout')
         return super(LogoutView, self).get(request, *args, **kwargs)
+
+
+class TermsAndConditionsView(TemplateView):
+    template_name = "core/explanation_page.html"
