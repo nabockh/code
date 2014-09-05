@@ -1,6 +1,6 @@
 from __future__ import absolute_import
 import itertools
-from bm.models import Benchmark, BenchmarkInvitation
+from bm.models import Benchmark, BenchmarkInvitation, BmInviteEmail
 from datetime import datetime, timedelta
 from celery import shared_task
 from core.utils import celery_log
@@ -14,6 +14,7 @@ from django.template import loader, Context
 from celery.schedules import crontab
 from celery.task import periodic_task
 from django.db.models import Count, Avg
+from django.template import Template
 
 INVITE_SUBJECT = 'You have been invited to benchmark'
 
@@ -32,7 +33,16 @@ def send_invites(benchmark_id):
         invites = benchmark.invites.filter(status='0').select_related('recipient', 'recipient__user', 'sender')
         subject = INVITE_SUBJECT
         context = Context({'benchmark': benchmark})
-        body = get_template('alerts/invite.html').render(context)
+        if BmInviteEmail.objects.exists():
+            email_invite = BmInviteEmail.objects.filter(benchmark_id=benchmark.id).first()
+            raw_body = email_invite.body
+            if '<LINK>' in raw_body:
+                raw_body = raw_body.replace('<LINK>', '{{ benchmark.link }}')
+            else:
+                raw_body += ('\n'+'{{ benchmark.link }}')
+            body = Template(raw_body).render(context)
+        else:
+            body = get_template('alerts/invite.html').render(context)
 
         invites_without_email = []
         for invite in invites:
@@ -54,7 +64,9 @@ def send_invites(benchmark_id):
             invite.save()
         if len(invites_without_email) > 100:
             send_invites.apply_async(benchmark_id, countdown=86400)
-
+        else:
+            if BmInviteEmail.objects.filter(benchmark_id=benchmark.id).first():
+                BmInviteEmail.objects.filter(benchmark_id=benchmark.id).first().delete()
 
 @periodic_task(run_every=crontab(minute=0, hour=0))
 @celery_log

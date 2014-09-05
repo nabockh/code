@@ -5,7 +5,7 @@ from bm.forms import CreateBenchmarkStep12Form, AnswerMultipleChoiceForm, \
     BenchmarkDetailsForm, YesNoAnswerForm
 from bm.models import Benchmark, Region, Question, QuestionChoice, QuestionResponse, ResponseChoice, ResponseNumeric, \
     ResponseRange, QuestionRanking, ResponseRanking, BenchmarkInvitation, QuestionOptions, BenchmarkLink, BenchmarkRating, \
-    ResponseYesNo
+    ResponseYesNo, BmInviteEmail
 from core.forms import ContactForm
 from bm.tasks import send_invites
 from core.utils import login_required_ajax
@@ -127,13 +127,13 @@ class BenchmarkCreateWizardView(CookieWizardView):
     def render_email_preview(benchmark):
         template = loader.get_template('alerts/invite.html')
         # TODO: http is hardcoded
-        benchmark.link ='{0}{1}'.format(Site.objects.get_current().domain, reverse('bm_answer', kwargs={'slug': 'slug'}))
+        benchmark.link = "<LINK>"
         context = Context({
             'benchmark': benchmark,
         })
-        response = HttpResponse("<pre contenteditable='false'>" + template.render(context)
+        response = HttpResponse("<pre id='default_text' contenteditable='false'>" + template.render(context)
                                 + '</pre>' + '<button type="button" class="edit-button">'
-                                             ''+'Edit'+'</button>'+'<button type="button" class="edit-button">'
+                                             ''+'Edit'+'</button>'+'<button type="button" class="save-button">'
                                              ''+'Save'+'</button>')
         return response
 
@@ -189,7 +189,11 @@ class BenchmarkCreateWizardView(CookieWizardView):
             if bm_geo:
                 region = Region.objects.get(pk=bm_geo)
                 benchmark.geographic_coverage.add(region)
-
+            if step3.cleaned_data['email_body']:
+                invite_mail = BmInviteEmail()
+                invite_mail.benchmark = benchmark
+                invite_mail.body = step3.cleaned_data['email_body']
+                invite_mail.save()
             question = Question()
             question.benchmark = benchmark
             question.label = step3.cleaned_data['question_label']

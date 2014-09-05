@@ -551,11 +551,20 @@ $(document).ajaxStop(function() {
 $( document ).ready(function() {
     $( "#preview" ).on('shown.bs.modal', function() { {
         $( '.edit-button' ).on('click', function() { {
-            console.log('fdvdfvd');
             $('pre').attr('contenteditable', true);
             }
         }
       )}
-   });
+   })
 });
 
+$( document ).ready(function() {
+    $( "#preview" ).on('shown.bs.modal', function() { {
+        $( '.save-button' ).on('click', function() { {
+            $('#email_body').text($('#default_text').text());
+            }
+            $( "#preview" ).modal('hide')
+        }
+      )}
+   })
+});

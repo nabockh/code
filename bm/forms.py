@@ -186,6 +186,8 @@ class CreateBenchmarkStep3Form(forms.Form):
 
 
 class CreateBenchmarkStep4Form(CreateBenchmarkStep12Form):
+    email_body = forms.CharField(widget=forms.Textarea(attrs={'id': 'email_body', 'hidden': True}), required=False)
+
     def __init__(self, user, step0data, end_date, *args, **kwargs):
         initial = {
             'name': step0data.get('0-name'),

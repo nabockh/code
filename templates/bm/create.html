@@ -498,6 +498,9 @@
                         <input id='bm-submit' type="submit" class="btn btn-primary auto-width continue-btn hidden" value="{% trans "Continue" %}"/>
                         <label for='bm-submit' class='btn btn-primary auto-width pull-right'> Continue <i class='fa fa-arrow-circle-o-right'></i></label>
                     {% endif %}
+                    {% if wizard.steps.step1 == 3 %}
+                        <div>{{ form.email_body }}</div>
+                    {% endif %}
                     <div class="clearfix"></div>
                 </div>
             </form>

@@ -488,7 +488,6 @@ class BenchmarkAuditLog(LogEntry):
         verbose_name = 'Audit Log'
 
 
-# class BmInviteEmail(models.Model):
-#     benchmark = models.ForeignKey(Benchmark, related_name='invitation_email')
-#     body = models.TextField()
-#     subject = models.CharField(max_length=50)
+class BmInviteEmail(models.Model):
+    benchmark = models.ForeignKey(Benchmark, related_name='invitation_email')
+    body = models.TextField()
