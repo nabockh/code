@@ -408,7 +408,11 @@ $( document ).ready(function() {
         }
     });
     select_prepare();
-    //units_prepare();
+    if ($('.carousel-inner').length){
+        if ($('.carousel-inner .item').length < 2){
+            $('.recent-benchmark-controls').hide();
+        }
+    }
 
     // Benchmark answer options
 
