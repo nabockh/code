@@ -321,9 +321,13 @@ $(document).on("submit","form#contact_form", function(e){
             url: $(this).attr('action'),
             'csrfmiddlewaretoken' : csrf? csrf[1] : null,
             data: $('#contact_form').serialize(),
-            success: function(){
+            success: function(data, textStatus, xhr){
                 $('#support').modal('toggle');
                 $("form#contact_form")[0].reset();
+                $('#contact_submitted').modal('toggle');
+                    setTimeout(function() {
+                    $('#contact_submitted').fadeOut(500);
+                }, 1000);
             }
 
             });

@@ -77,6 +77,7 @@ class HomeView(TemplateView):
                 customer_email = contact_form.cleaned_data['email']
                 comment = contact_form.cleaned_data['comment']
                 recipient_list = User.objects.filter(is_superuser=True, email__isnull=False)\
+                    .exclude(email__exact='')\
                     .values_list('email', flat=True)
                 if recipient_list:
                     send_mail('Customer feedback', comment, '%s %s <%s>' % (first_name, last_name, customer_email),
