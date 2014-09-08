@@ -43,6 +43,8 @@ DEBUG = True
 
 TEMPLATE_DEBUG = True
 
+METRICS = True
+
 ALLOWED_HOSTS = ['*']
 
 SITE_ID = 1
@@ -59,12 +61,6 @@ INSTALLED_APPS = (
     'core',
     'djangocms_admin_style',
     'djangocms_text_ckeditor',
-    # 'djangocms_file',
-    # 'cmsplugin_cascade',
-    # 'filer',
-    # 'cmsplugin_filer_file',
-    # 'cmsplugin_filer_image',
-
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -76,6 +72,7 @@ INSTALLED_APPS = (
     'djcelery_email',
     'social',
     'social_auth',
+    'metrics',
     'bm',
     'formadmin',
     'bootstrap3',
