@@ -314,22 +314,23 @@ $(document).on("click","label.btn-primary[data-target='#preview']",function(){
 
 $(document).off("submit","form#contact_form");
 $(document).on("submit","form#contact_form", function(e){
-        e.preventDefault();
-        var csrf = document.cookie.match(/csrftoken=([\w]+)/);
-         $.ajax({
-            type: 'post',
-            url: $(this).attr('action'),
-            'csrfmiddlewaretoken' : csrf? csrf[1] : null,
-            data: $('#contact_form').serialize(),
-            success: function(data, textStatus, xhr){
-                $('#support').modal('toggle');
-                $("form#contact_form")[0].reset();
-                $('#contact_submitted').modal('toggle');
-                    setTimeout(function() {
-                    $('#contact_submitted').modal('hide');
-                }, 1000);
-            }
-        });
+    e.preventDefault();
+    var csrf = document.cookie.match(/csrftoken=([\w]+)/);
+     $.ajax({
+        type: 'post',
+        url: $(this).attr('action'),
+        'csrfmiddlewaretoken' : csrf? csrf[1] : null,
+        data: $('#contact_form').serialize(),
+        success: function(data, textStatus, xhr){
+            $('#support').modal('toggle');
+            $("form#contact_form")[0].reset();
+            $('#contact_submitted').modal('toggle');
+                setTimeout(function() {
+                $('#contact_submitted').modal('hide');
+            }, 1000);
+        }
+    });
+});
 
 $(function () {
 
@@ -552,24 +553,31 @@ $(document).ajaxStop(function() {
 });
 
 
-$( document ).ready(function() {
-    $( "#preview" ).on('shown.bs.modal', function() { {
-        $( '.edit-button' ).on('click', function() { {
+$( document ).ready(function(){
+    $( "#preview" ).on('shown.bs.modal', function() {
+        $( '.edit-button' ).on('click', function() {
             $('pre').attr('contenteditable', true);
-            }
-        }
-      )}
-   })
-});
-
-$( document ).ready(function() {
-    $( "#preview" ).on('shown.bs.modal', function() { {
-        $( '.save-button' ).on('click', function() { {
+        });
+        $( '.save-button' ).on('click', function() {
             $('#email_body').text($('#default_text').text());
-            }
-            $( "#preview" ).modal('hide')
+            $( "#preview" ).modal('hide');
+        });
+    });
+
+    $(".char-fillter li").click(function() {
+        var filter_char = $(this).text();
+        if($(this).hasClass('filter-all')){
+            $("#searchContactList .single-contact").removeClass('char-fillter-apply char-filltered');
         }
-      )}
-    })
-   })
+        else{
+            $("#searchContactList .single-contact").each(function() {
+                $(this).removeClass('char-fillter-apply char-filltered').addClass('char-fillter-apply');
+                var str = $('.col-md-6.col-xs-6 label:first-child', this).text().split(' ').pop()[0].substring(0, 1);
+                if(str === filter_char){
+                    $(this).addClass('char-filltered');
+                }
+            });
+        }
+    });
+
 });

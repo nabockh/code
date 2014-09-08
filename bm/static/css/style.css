@@ -1045,6 +1045,7 @@ input.btn.full-width, .btn.full-width {
     margin: 0 10px;
     padding: 5px 10px;
     font-size: 11px;
+    clear:both;
 }
 
 .title-header .add_help {
@@ -1066,12 +1067,40 @@ input.btn.full-width, .btn.full-width {
         line-height: 14px;
         border-radius: 4px;
         font-weight: 900;
-    
         float: right;
         margin: 2px 7px 0 0;
         white-space: nowrap;
 }
-
+.char-fillter {
+    margin: 0 10px;
+}
+.char-fillter ul {
+    list-style:none;
+    margin:0;
+    padding:0;
+    display:block;
+    height:20px;
+    border-bottom:1px solid #FFF;
+}
+.char-fillter ul li {
+    display:block;
+    cursor:pointer;
+    margin:0 1px 0 0;
+    background: #33626e;
+    width:19px;
+    color:#fff;
+    text-align:center;
+    float:left;
+    line-height:19px;
+    font-size:12px;
+}
+.char-fillter ul li:last-child {
+    margin:0;
+    border:0;
+}
+#searchContactList .single-contact.char-fillter-apply:not(.char-filltered) {
+    display:none;
+}
 .contact-info {
     float: right;
     letter-spacing: 1px;
@@ -3331,6 +3360,7 @@ ul#answerSortable {
     .container {
          min-width:0;
     }
+    .char-fillter {display:none;}
     .example-block {
         width: 100%;
         margin: -4px 0;
