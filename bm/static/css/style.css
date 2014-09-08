@@ -1978,6 +1978,16 @@ form[role='beta-email'] {
         padding-right: 2px;
     }
 
+    .pending-benchmark {
+        line-height: 40px; 
+        text-align: center;
+        font-weight: bold; 
+        font-size: 11px; 
+        background: #b0b7b8;
+        color: #fff;
+        text-transform: uppercase;
+    }
+
 .dashboard-progress-block {
     border-bottom: 1px solid #dedede;
     margin-bottom: 10px;
@@ -2038,6 +2048,28 @@ form[role='beta-email'] {
     color: #4b4b4b;
     box-shadow: none;
 }
+
+/* New */
+
+.dashboard-progress-block.new-benchmark {
+    background: #F9FAFF;
+    margin: -15px -15px 15px;
+    padding: 15px 15px 0px;
+}
+    .dashboard-progress-block.new-benchmark .title:before {
+        content: 'new';
+        display: inline-block;
+        background: #8592b2;
+        color: #fff;
+        padding: 1px 10px 0;
+        margin-right: 7px;
+        font-size: 12px;
+        text-transform: uppercase;
+    }
+    
+   .dashboard-progress-block.new-benchmark .progress {
+       background: #fff;
+   }
 
 /* SLIDER */
 
@@ -3216,6 +3248,10 @@ ul#answerSortable {
 
     .progress {
         padding-right: 50px;
+    }
+    
+    .pending .progress {
+        padding-right: 0;
     }
 
     .btn.add-recipients {
