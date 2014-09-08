@@ -505,8 +505,8 @@ class BenchmarkDetailView(FormView):
     def get_context_data(self, **kwargs):
         context = super(BenchmarkDetailView, self).get_context_data(**kwargs)
         benchmark = self.get_benchmark(**kwargs)
-        if Benchmark.objects.filter(id=benchmark.id, question__responses__user=self.request.user):
-            context['is_contributor'] = True
+        if not self.request.user.is_anonymous() and Benchmark.objects.filter(id=benchmark.id, question__responses__user=self.request.user):
+                context['is_contributor'] = True
         context['benchmark'] = benchmark
         context['question'] = benchmark.question.first()
         context['url'] = self.request.META['HTTP_HOST'] + self.request.path
