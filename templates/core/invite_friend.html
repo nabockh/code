@@ -1,0 +1,45 @@
+{% load cms_tags %}
+
+<!-- Invite Collegue Modal Modal -->
+
+<div class="modal fade" id="invite_frient_modal" tabindex="-1" role="dialog" aria-labelledby="supportLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true"><i class='fa fa-times-circle'></i></span><span class="sr-only">Close</span></button>
+            <h4 class="modal-title" id="supportLabel">Invite a collegue to join Bedade</h4>
+          </div>
+          <div class="modal-body">
+            <div class='modal-body-inner'>
+                <h4>Invite your collegue to participate in Bedade!</h4>
+                <hr>
+                <h4>Please fill his email into field bellow</h4>
+                <hr>
+                <div class='row'>
+                  <div class='col-md-12'>
+                      <form id="contact_form" action="/" class='styled-form'>
+                          {% csrf_token %}
+                          <div class='row'>
+                              <div class="col-md-6">
+                                  <label for="email">Email Address</label>
+                                  <input id="id_email" name="email" type="text" aria-required="true" aria-invalid="false" class="valid">
+                                  <input type="submit" value="Submit" />
+                              </div>
+                              <div class='col-md-6'>
+
+                              </div>
+                          </div>
+                      </form>
+                  </div>
+              </div>
+            </div>
+          </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $('#invite_for_friend').on('click', function() {
+            $('#invite_frient_modal').modal('show');
+        });
+</script>
