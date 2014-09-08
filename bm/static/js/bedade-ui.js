@@ -326,14 +326,10 @@ $(document).on("submit","form#contact_form", function(e){
                 $("form#contact_form")[0].reset();
                 $('#contact_submitted').modal('toggle');
                     setTimeout(function() {
-                    $('#contact_submitted').fadeOut(500);
+                    $('#contact_submitted').modal('hide');
                 }, 1000);
             }
-
-            });
-    });
-
-// Validation of Contract Forms
+        });
 
 $(function () {
 
@@ -574,5 +570,6 @@ $( document ).ready(function() {
             $( "#preview" ).modal('hide')
         }
       )}
+    })
    })
 });
