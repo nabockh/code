@@ -1,5 +1,7 @@
 from datetime import datetime
 from app.settings import DEBUG
+from metrics.utils import event_log
+from bm import metric_events
 from bm.forms import CreateBenchmarkStep12Form, AnswerMultipleChoiceForm, \
     CreateBenchmarkStep3Form, CreateBenchmarkStep4Form, NumericAnswerForm, RangeAnswerForm, RankingAnswerForm, \
     BenchmarkDetailsForm, YesNoAnswerForm
@@ -37,6 +39,7 @@ class BenchmarkCreateWizardView(CookieWizardView):
     form_list = [CreateBenchmarkStep12Form, CreateBenchmarkStep3Form, CreateBenchmarkStep4Form]
 
     @method_decorator(login_required)
+    @event_log(event_type=dict(GET=metric_events.BM_CREATE_OPEN))
     def dispatch(self, *args, **kwargs):
         return super(BenchmarkCreateWizardView, self).dispatch(*args, **kwargs)
 
@@ -164,6 +167,7 @@ class BenchmarkCreateWizardView(CookieWizardView):
             context['selected_contacts'] = self.selected_contacts if hasattr(self, 'selected_contacts') else []
         return context
 
+    @event_log(event_type=metric_events.BM_CREATE_DONE, object='benchmark')
     def done(self, form_list, preview=False, **kwargs):
         step2 = form_list[1]
         step3 = form_list[2]
@@ -231,6 +235,7 @@ class BenchmarkCreateWizardView(CookieWizardView):
             benchmark.save()
         if benchmark.pk:
             benchmark_created.send(sender=self.__class__, request=self.request, benchmark=benchmark)
+            self.benchmark = benchmark
         return redirect('bm_dashboard')
 
 
@@ -245,6 +250,7 @@ class BenchmarkHistoryView(ListView):
         return data
 
     @method_decorator(login_required)
+    @event_log(event_type=metric_events.BM_HISTORY_OPEN)
     def dispatch(self, request, *args, **kwargs):
         return super(BenchmarkHistoryView, self).dispatch(request, *args, **kwargs)
 
@@ -331,11 +337,14 @@ class BaseBenchmarkAnswerView(FormView):
         else:
             return self.form_invalid(form)
 
+answer_event_log = event_log(event_type=dict(GET=metric_events.BM_ANSWER_OPEN, POST=metric_events.BM_ANSWER_SAVE), object='benchmark')
+
 
 class MultipleChoiceAnswerView(BaseBenchmarkAnswerView):
     form_class = AnswerMultipleChoiceForm
     template_name = 'bm/answer/Multiple.html'
 
+    @answer_event_log
     def dispatch(self, request, benchmark, *args, **kwargs):
         self.benchmark = benchmark
         return super(BaseBenchmarkAnswerView, self).dispatch(self.request, *args, **kwargs)
@@ -367,6 +376,7 @@ class RankingAnswerView(BaseBenchmarkAnswerView):
     form_class = RankingAnswerForm
     template_name = 'bm/answer/Ranking.html'
 
+    @answer_event_log
     def dispatch(self, request, benchmark, *args, **kwargs):
         self.benchmark = benchmark
         return super(BaseBenchmarkAnswerView, self).dispatch(self.request, *args, **kwargs)
@@ -398,6 +408,7 @@ class RangeAnswerView(BaseBenchmarkAnswerView):
     form_class = RangeAnswerForm
     template_name = 'bm/answer/Range.html'
 
+    @answer_event_log
     def dispatch(self, request, benchmark, *args, **kwargs):
         self.benchmark = benchmark
         return super(BaseBenchmarkAnswerView, self).dispatch(self.request, *args, **kwargs)
@@ -422,6 +433,7 @@ class NumericAnswerView(BaseBenchmarkAnswerView):
     form_class = NumericAnswerForm
     template_name = 'bm/answer/Numeric.html'
 
+    @answer_event_log
     def dispatch(self, request, benchmark, *args, **kwargs):
         self.benchmark = benchmark
         return super(BaseBenchmarkAnswerView, self).dispatch(self.request, *args, **kwargs)
@@ -444,6 +456,7 @@ class YesNoAnswerView(BaseBenchmarkAnswerView):
     form_class = YesNoAnswerForm
     template_name = 'bm/answer/Yes_No.html'
 
+    @answer_event_log
     def dispatch(self, request, benchmark, *args, **kwargs):
         self.benchmark = benchmark
         return super(BaseBenchmarkAnswerView, self).dispatch(self.request, *args, **kwargs)
@@ -479,6 +492,7 @@ class BenchmarkDetailView(FormView):
     form_class = BenchmarkDetailsForm
     template_name = 'bm/details_graphs.html'
 
+    @event_log(event_type=dict(GET=metric_events.BM_DETAIL_OPEN, POST=metric_events.BM_RATE_SAVE), object='benchmark')
     def dispatch(self, request, *args, **kwargs):
         if not self.get_benchmark() and not DEBUG:
             return ForbiddenView.as_view()(self.request, *args, **kwargs)
@@ -505,8 +519,8 @@ class BenchmarkDetailView(FormView):
     def get_context_data(self, **kwargs):
         context = super(BenchmarkDetailView, self).get_context_data(**kwargs)
         benchmark = self.get_benchmark(**kwargs)
-        if Benchmark.objects.filter(id=benchmark.id, question__responses__user=self.request.user):
-            context['is_contributor'] = True
+        if not self.request.user.is_anonymous() and Benchmark.objects.filter(id=benchmark.id, question__responses__user=self.request.user):
+                context['is_contributor'] = True
         context['benchmark'] = benchmark
         context['question'] = benchmark.question.first()
         context['url'] = self.request.META['HTTP_HOST'] + self.request.path
@@ -655,6 +669,7 @@ class BenchmarkAddRecipientsView(FormView):
         else:
             return self.form_invalid(form)
 
+    @event_log(event_type=metric_events.BM_ADD_PARTICIPANTS, object='benchmark')
     def form_valid(self, form):
         for contact in form.selected_contacts:
             if form.cleaned_data.get(contact.invite_element) or form.cleaned_data.get('contact-{0}-invite'.format(contact.id)):
@@ -681,8 +696,11 @@ class BenchmarkAggregateView(BenchmarkDetailView):
 class ExcelDownloadView(BenchmarkDetailView):
 
     @method_decorator(login_required)
+    @event_log(event_type=metric_events.BM_EXCEL_EXPORT, object='benchmark')
     def dispatch(self, request, *args, **kwargs):
-        return super(ExcelDownloadView, self).dispatch(request, *args, **kwargs)
+        if not self.get_benchmark() and not DEBUG:
+            return ForbiddenView.as_view()(self.request, *args, **kwargs)
+        return super(BenchmarkDetailView, self).dispatch(request, *args, **kwargs)
 
     def get(self, *args, **kwargs):
         bm_id = kwargs['bm_id']
@@ -690,6 +708,7 @@ class ExcelDownloadView(BenchmarkDetailView):
                                                                         'responses',
                                                                         'benchmark___industry',
                                                                         'benchmark__geographic_coverage').first()
+        self.benchmark = benchmark
         output = StringIO.StringIO()
         workbook = xlsxwriter.Workbook(output, {'in_memory': True})
         bold = workbook.add_format({'bold': True})

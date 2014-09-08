@@ -1,7 +1,9 @@
 from app.settings import FIRST_TIME_USER_REDIRECT_URL, REGISTERED_USER_REDIRECT_URL, MESSAGE_BETA_INVITE
+from bm import metric_events
 from django.http import HttpResponse, HttpResponseRedirect
 from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import RedirectView, TemplateView
+from metrics.models import Event
 from social import tasks
 from social_auth.decorators import dsa_view
 from social_auth.views import associate_complete, auth_complete, DEFAULT_REDIRECT
@@ -42,6 +44,7 @@ def complete_process(request, backend, *args, **kwargs):
             # catch is_new flag before login() might reset the instance
             is_new = getattr(user, 'is_new', False)
             login(request, user)
+            Event.log(metric_events.LOGIN, user)
             # user.social_user is the used UserSocialAuth instance defined
             # in authenticate process
             treshold = 10  # seconds

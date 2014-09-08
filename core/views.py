@@ -1,6 +1,7 @@
 from datetime import datetime
 from app import settings
 from app.settings import MESSAGE_LOGOUT, MESSAGE_BETA, MESSAGE_BETA_INVITE
+from bm import metric_events
 from bm.models import Benchmark
 from django.contrib import messages
 from django.contrib.auth import REDIRECT_FIELD_NAME, logout
@@ -16,6 +17,8 @@ from django.views.generic import TemplateView, RedirectView
 from core.forms import ContactForm, TermsAndConditions
 from django.contrib.auth.models import User
 from django.utils.decorators import method_decorator
+from metrics.models import Event
+from metrics.utils import event_log
 from social.forms import EmailInvitationRequest
 from social.models import Invite
 import django.db.models as models
@@ -30,6 +33,8 @@ class HomeView(TemplateView):
             path = kwargs['login_next']
             resolved_login_url = force_str(resolve_url(settings.LOGIN_REAL_URL))
             return redirect_to_login(path, resolved_login_url, REDIRECT_FIELD_NAME)
+        if request.user.is_authenticated():
+            Event.log(metric_events.HOME_OPEN, request.user)
         return super(HomeView, self).dispatch(request, *args, **kwargs)
 
     def get_context_data(self, login_next, **kwargs):
@@ -92,6 +97,7 @@ class DashboardView(TemplateView):
     context_object_name = 'benchmark'
 
     @method_decorator(login_required)
+    @event_log(event_type=metric_events.DASHBOARD_OPEN)
     def dispatch(self, *args, **kwargs):
         return super(DashboardView, self).dispatch(*args, **kwargs)
 
@@ -142,6 +148,7 @@ class BetaView(RedirectView):
 class LogoutView(RedirectView):
     url = '/'
 
+    @event_log(event_type=metric_events.LOGOUT)
     def get(self, request, *args, **kwargs):
         """
         Logs out the user and displays 'You are logged out' message.
