@@ -137,6 +137,8 @@ class InvitedContactsForm(forms.ModelForm):
         benchmark = kwargs['instance']
         choices = [(invite.recipient, invite.recipient) for invite in benchmark.invites.all().select_related('recipient')]
         self.fields['invites_list'] = forms.MultipleChoiceField(choices=choices, required=False)
+        self.fields['invites_list'].widget.attrs['size'] = '10'
+
 
 class BenchmarkPendingAdmin(ReadOnlyAdminMixin, admin.ModelAdmin):
     class Meta:
