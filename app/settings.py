@@ -279,7 +279,7 @@ SOCIAL_AUTH_PIPELINE = (
 LINKEDIN_CONSUMER_KEY = '77pi0tgejrq7si'
 LINKEDIN_CONSUMER_SECRET = 'ZneKr9tbVPSSrm5O'
 
-LINKEDIN_SCOPE = ['r_basicprofile', 'r_emailaddress', 'r_contactinfo', 'r_network', 'w_messages']
+LINKEDIN_SCOPE = ['r_basicprofile', 'r_emailaddress', 'r_network', 'w_messages']
 LINKEDIN_EXTRA_FIELD_SELECTORS = ['email-address', 'headline', 'industry', 'location:(country)', 'positions']
 LINKEDIN_OAUTH2_EXTRA_DATA = [('id', 'id'), ]
 
