@@ -35,6 +35,8 @@ $BODY$
     GROUP BY "point"
     ORDER BY "point";
 BEGIN
+  DELETE FROM "bm_seriesstatistic" WHERE "benchmark_id"=bm_id;
+  DELETE FROM "bm_numericstatistic" WHERE "benchmark_id"=bm_id;
   SELECT
     "bm_question"."type"
   INTO type_
