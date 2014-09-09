@@ -280,3 +280,6 @@ class BenchmarkDetailsForm(forms.Form):
                                                              initial=benchmark.default_chart)
         self.fields['Contributor_Data'] = forms.ChoiceField(choices=self.choices)
 
+
+class InviteColleagueForm(forms.Form):
+    colleague_email = forms.EmailField()
