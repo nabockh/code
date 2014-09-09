@@ -355,6 +355,18 @@ $(function () {
     });
 });
 
+$(function () {
+
+    $("#invite_colleague_form").validate({ // initialize the plugin
+
+        rules: {
+            colleague_email: {
+                required: true,
+                email: true
+            }
+        }
+    });
+});
 
 // DataTable for Search and History page
 

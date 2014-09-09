@@ -15,6 +15,7 @@ from django.shortcuts import render, resolve_url
 from django.utils.encoding import force_str
 from django.views.generic import TemplateView, RedirectView
 from core.forms import ContactForm, TermsAndConditions
+from bm.forms import InviteColleagueForm
 from django.contrib.auth.models import User
 from django.utils.decorators import method_decorator
 from metrics.models import Event
@@ -22,7 +23,8 @@ from metrics.utils import event_log
 from social.forms import EmailInvitationRequest
 from social.models import Invite
 import django.db.models as models
-
+from django.template import  Context
+from django.template.loader import get_template
 
 class HomeView(TemplateView):
     template_name = 'core/home.html'
@@ -130,7 +132,25 @@ class DashboardView(TemplateView):
         else:
             context['benchmarks']['popular'] = None
         context['contact_form'] = ContactForm()
+        context['invite_colleague_form'] = InviteColleagueForm()
         return context
+
+    def post(self, request, *args, **kwargs):
+        invite_colleague = InviteColleagueForm(data=request.POST)
+        if invite_colleague.is_valid():
+            customer_email = invite_colleague.cleaned_data['colleague_email']
+            recipient_list = [customer_email]
+            user = request.user.get_full_name()
+            if recipient_list:
+                context = Context(
+                    {
+                        'user': user,
+                        'site_link': request.build_absolute_uri(),
+                    },)
+                body = get_template('alerts/invite_collegaue_email.html').render(context)
+                send_mail('Invitation to Bedade from %s' % user, body, None, recipient_list)
+            return HttpResponseRedirect('/dashboard')
+        return render(request, 'bm/dashboard.html', {'invite_colegaue_form': invite_colleague})
 
 
 class ThankYouView(TemplateView):
