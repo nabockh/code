@@ -5,7 +5,7 @@ function drawLineChart(chartData, divId) {
     var lineChartData = google.visualization.arrayToDataTable(chartData);
 
     var lineOptions = {
-        legend: 'none',
+        legend: 'top',
         colors: ['#8592B2'],
         lineWidth: 3,
         chartArea: { 

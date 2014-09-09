@@ -2379,7 +2379,7 @@ form[role='beta-email'] {
 /*---*/
 
 #step3Selected {
-    max-height: 620px;
+    max-height: 605px;
     overflow-x: hidden;
     overflow-y: scroll;
 }

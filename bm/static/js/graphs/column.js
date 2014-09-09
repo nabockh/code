@@ -26,7 +26,7 @@ function drawColumnChart(chartData, divId) {
     var columnChartData = google.visualization.arrayToDataTable(chartData);
 
     var columnOptions = {
-        legend: { position: "none" },
+        legend: { position: "top" },
         chartArea: {  
             width: "85%", 
             height: "65%" 

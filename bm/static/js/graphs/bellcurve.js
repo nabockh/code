@@ -37,7 +37,7 @@ function drawBellcurveChart(chartData, divId) {
             curveType: 'function',
             pointSize: 0,
             enableInteractivity: false,
-            legend: 'none',
+            legend: 'top',
             colors: ['#608a94'],
             lineWidth: 3,
             intervals: { 'style':'area' },

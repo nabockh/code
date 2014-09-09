@@ -465,7 +465,8 @@ $( document ).ready(function() {
         }
     });
     $(document).on("click",".answer_options_inputs .answer_options_add",function(){
-        $('.answer_options_inputs .col-md-4:last-child').before('<div class="col-md-4"><input type="text" value="" maxlength="45"></div>');
+        $('.answer_options_inputs .col-md-4:last-child').before('<div class="col-md-4"><input type="text" value="" maxlength="45" class="ui-new-option"></div>');
+        $('.ui-new-option').focus().removeAttr('class');
     });
     $('#recommendedContactList .add-contact-btn, #searchContactList .add-contact-btn').on('click',function(){
         if(!$(this).attr('disabled')){
@@ -551,7 +552,7 @@ $( document ).ready(function() {
         $this_parent.remove();
     });
     $('.add-all').click( function(){
-        $(this).closest('.title-header').next('.contact-results').find('.add-contact-btn').click();
+        $(this).closest('.title-header').next('.contact-results').find('.add-contact-btn:visible').click();
     });
     $('.tips .remove-all').click( function(){
         $(this).closest('.tips').find('.deselect-btn').click();
