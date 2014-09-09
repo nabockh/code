@@ -189,6 +189,23 @@ BEGIN
       );
 
   END IF;
+  IF type_ = 4
+  THEN
+    INSERT INTO "bm_seriesstatistic" ("benchmark_id", "series", "value")
+      (
+        SELECT
+          bm_id,
+          CASE WHEN "bm_responseyesno"."value" THEN 'Yes' ELSE 'No' END,
+          count(1)
+        FROM "bm_responseyesno"
+          INNER JOIN "bm_questionresponse" ON "bm_questionresponse"."id" = "bm_responseyesno"."response_id"
+          INNER JOIN "bm_question" ON "bm_question"."id" = "bm_questionresponse"."question_id"
+          INNER JOIN "bm_benchmark" ON "bm_benchmark"."id" = "bm_question"."benchmark_id"
+        WHERE
+          "bm_benchmark"."id" = bm_id
+        GROUP BY "bm_responseyesno"."value"
+      );
+  END IF;
   IF type_ = 5
   THEN
     i := 0;
