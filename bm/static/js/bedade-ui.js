@@ -143,6 +143,9 @@ $(function () {
     $("html").click(function() {
         $(".example-block").removeClass('closed active');
     });
+    $(".show-terms").click(function() {
+        $(".terms-container").toggleClass('terms-show');
+    });
 
     // Tooltips
 
