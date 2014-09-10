@@ -430,6 +430,19 @@ $( document ).ready(function() {
             $('body').removeClass('fixed-navs');
         }
     });
+
+    var obHeader = $('.ob-header').offset().top - 90;
+
+    $document.on("scroll", function () {
+        if ($document.scrollTop() > obHeader) {
+            $('.ob-header').addClass('fixed');
+        }
+
+        else {
+            $('.ob-header').removeClass('fixed');
+        }
+    });
+
     select_prepare();
     if ($('.carousel-inner').length){
         if ($('.carousel-inner .item').length < 2){

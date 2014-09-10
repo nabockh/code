@@ -81,12 +81,12 @@
 <div class='container bordered bgwhite open-benchmark-container margined'>
     <div class='ob-header'>
         <div class='row'>
-            <div class='col-md-9'>
+            <div class='col-md-9 col-xs-9'>
                 <div class="ob_image"></div>
                 <div class="ob_title">{{ benchmark.name }}</div>
                 <div class="ob_descr">{{ benchmark.question.first.label }}</div>
             </div>
-            <div class='col-md-3'>
+            <div class='col-md-3 col-xs-3'>
                 <div class="addthis_toolbox">
                     <div class="custom_images text-right" >
                         <a href="https://www.linkedin.com/shareArticle?&ro=false&title={{ benchmark.name }}&mini=true&url={{ absolute_url|escape }}&source={{ absolute_url|escape }}"><img src="{{ STATIC_URL }}img/linkedin.png"/></a>
@@ -96,7 +96,7 @@
                 </div>
                 {% if user.is_authenticated %}
                     <div class='text-right'>
-                        <a href='{% url 'bm_excel' benchmark.id %}' data-export='excel'>Export Results to Excel</a>
+                        <a href='{% url 'bm_excel' benchmark.id %}' data-export='excel'>Export <span class='non-mobile'>Results</span> to Excel</a>
                     </div>
                 {% endif %}
             </div>
