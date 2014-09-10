@@ -2343,7 +2343,7 @@ form[role='beta-email'] {
     overflow:hidden;
 }
 .terms-container.terms-show{
-    height:auto;
+    height:190px;
     overflow:auto;
     max-height:190px;
 }
