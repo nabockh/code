@@ -20,7 +20,7 @@ from django.views.generic import FormView
 from django import forms
 from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.models import User, Group
-
+from core.utils import get_context_variables
 from social_auth.db.django_models import Association, Nonce, UserSocialAuth
 
 admin.site.unregister(User)
@@ -227,17 +227,13 @@ class DeclineView(FormView):
         form = self.get_form(form_class)
         if form.is_valid():
                 template = loader.get_template('alerts/declined_benchmark.html')
-                owner = form.cleaned_data['Benchmark owner']
                 email = form.cleaned_data['Owner email']
-                benchmark = form.cleaned_data['Benchmark name']
-                reason = form.cleaned_data['reason']
-                recipient_list = [email]
-                context = Context({
-                    'owner': owner,
-                    'benchmark': benchmark,
-                    'reason': reason,
-                })
-                send_mail('Declined Benchmark', template.render(context), None, recipient_list)
+                benchmark = Benchmark.objects.get(pk=args[1])
+                raw_context = get_context_variables(benchmark)
+                raw_context['reason'] = form.cleaned_data['reason']
+                raw_context['remaining_before_closure'] = benchmark.days_left
+                context = Context(raw_context)
+                send_mail('Declined Benchmark', template.render(context), None, [email])
                 return HttpResponseRedirect('/admin/bm/benchmarkpending/')
         return render(self.request, 'admin/decline_form.html', {'form': form})
 

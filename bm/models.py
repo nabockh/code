@@ -250,10 +250,9 @@ class BenchmarkRange(Benchmark):
         series = self.series_statistic.values('series', 'sub_series', 'value').order_by('id')
         series1 = [[str(s['series'] + '-' + s['sub_series']), s['value']] for s in series]
         series1.insert(0, ['series', 'Votes'])
-        series2 = [['series', 'Votes']]
+        series2 = [['points', 'Votes']]
         for s in series:
-            series2.append([int(s['series']), s['value']])
-            series2.append([int(s['sub_series']), s['value']])
+            series2.append([[int(s['series']), int(s['sub_series'])], s['value']])
         return {
             'pie': series1,
             'column': series1,

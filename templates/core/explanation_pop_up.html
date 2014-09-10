@@ -1,0 +1,47 @@
+{% load cms_tags %}
+
+<!-- Terms and conditions Modal -->
+<div class="modal visible fade" id="terms_and_conditions_form" tabindex="-1" role="dialog" aria-labelledby="firstAnsweredLabel"
+     aria-hidden="false">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true"><i
+                        class='fa fa-times-circle'></i></span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" id="firstAnsweredLabel">Welcome to Bedade!</h4>
+            </div>
+            <div class="modal-body">
+                <div class='modal-body-inner'>
+                    <p><strong>Welcome!</strong></p>
+                    {% static_placeholder "terms_and_conditions_text" or %}
+                    <p>Bedade is a ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque ut adipiscing erat.
+                        Fusce gravida euismod mollis. Nulla aliquet cursus pulvinar. Nulla lacinia dignissim sapien ut
+                        hendrerit. Ready to get started?</p>
+                    {% endstatic_placeholder %}
+                    <a href="{% url 'terms_conditions'%}">Terms and Conditions</a>
+                    <form method="post">
+                        <hr>
+                        <div class='row'>
+                            <div class='col-md-8'>
+                                {% csrf_token %}
+                                {{ terms_and_conditions_form.next }}
+                                {{ terms_and_conditions_form.accept }}
+                                <label for="id_accept">Accept terms and conditions</label> <br/>
+                                {{ terms_and_conditions_form.accept.errors }}
+                            </div>
+                            <div class='col-md-4'>
+                                <button type="submit" class='btn btn-primary full-width btn-tour'>
+                                    <span class='non-mobile'>Continue</span> and login...
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    $('#terms_and_conditions_form').modal('show')
+</script>

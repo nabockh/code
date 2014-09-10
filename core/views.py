@@ -179,4 +179,4 @@ class LogoutView(RedirectView):
 
 
 class TermsAndConditionsView(TemplateView):
-    template_name = "core/explanation_page.html"
+    template_name = "core/terms_and_conditions.html"
