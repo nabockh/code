@@ -178,5 +178,5 @@ class LogoutView(RedirectView):
         return super(LogoutView, self).get(request, *args, **kwargs)
 
 
-class TermsAndConditionsView(TemplateView):
-    template_name = "core/terms_and_conditions.html"
+# class TermsAndConditionsView(TemplateView):
+#     template_name = "core/terms_and_conditions.html"

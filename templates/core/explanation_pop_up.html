@@ -18,7 +18,10 @@
                         Fusce gravida euismod mollis. Nulla aliquet cursus pulvinar. Nulla lacinia dignissim sapien ut
                         hendrerit. Ready to get started?</p>
                     {% endstatic_placeholder %}
-                    <a href="{% url 'terms_conditions'%}">Terms and Conditions</a>
+                    <a href='#'>Terms and Conditions</a>
+                    {% static_placeholder "terms_and_conditions_large_text" or %}
+                        <p>Terms and conditions text will be here</p>
+                    {% endstatic_placeholder %}
                     <form method="post">
                         <hr>
                         <div class='row'>
