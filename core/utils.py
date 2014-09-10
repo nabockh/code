@@ -8,9 +8,25 @@ from django.conf import settings
 from django.template.base import TemplateDoesNotExist
 from django.template.loader import BaseLoader
 from django.utils._os import safe_join
+from datetime import datetime, timedelta
+from django.core.urlresolvers import reverse
+from django.contrib.sites.models import Site
+
 
 logging.config.dictConfig(settings.LOGGING)
 logger = logging.getLogger('bedade.background')
+
+
+def get_context_variables(benchmark, request=None):
+    context_vars = {}
+    context_vars['benchmark'] = benchmark
+    context_vars['number_of_invites'] = benchmark.invites.count()
+    context_vars['benchmark_name'] = benchmark.name
+    context_vars['query_details'] = benchmark.question.first().description
+    context_vars['link_to_answer'] = benchmark.link
+    context_vars['benchmark_creator'] = benchmark.owner
+    context_vars['link_to_bm_results'] = str(Site.objects.get_current()) + reverse('bm_details', args=[benchmark.id])
+    return context_vars
 
 
 def login_required_ajax(function=None, redirect_field_name=None):

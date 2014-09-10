@@ -839,6 +839,9 @@ class ExcelDownloadView(BenchmarkDetailView):
         elif question_type == 3:
             contributor_results = benchmark.charts['bell_curve']
             chart = workbook.add_chart({'type': 'scatter'})
+        elif question_type == 4:
+            contributor_results = benchmark.charts['pie']
+            chart = workbook.add_chart({'type': 'pie'})
         elif question_type == 5:
             contributor_results = benchmark.charts['line']
             chart = workbook.add_chart({'type': 'line'})
@@ -927,7 +930,24 @@ class ExcelDownloadView(BenchmarkDetailView):
 
             contributor_worksheet.insert_chart('F3', chart)
             internal_worksheet.hide()
+        elif question_type == 4:
+            no = contributor_results[1]
+            yes = contributor_results[2]
+            headings = ['Answer', 'Count']
+            contributor_worksheet.write_row('A1', headings, bold)
+            contributor_worksheet.write_row('A2', no)
+            contributor_worksheet.write_row('A3', yes)
 
+            chart.add_series({
+                'categories': '=Contributor Stats!$A$2:$A$3',
+                'values':     '=Contributor Stats!$B$2:$B$3',
+                'data_labels': {'percentage': True}
+            })
+            chart.set_chartarea({
+                'border': {'color': 'black'},
+                'fill':   {'color': 'white'}
+            })
+            contributor_worksheet.insert_chart('F3', chart)
         elif question_type == 5:
             internal_worksheet = workbook.add_worksheet('Internal')
             data = [

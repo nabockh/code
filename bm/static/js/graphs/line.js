@@ -8,6 +8,7 @@ function drawLineChart(chartData, divId) {
         legend: 'top',
         colors: ['#8592B2'],
         lineWidth: 3,
+        orientation: 'vertical',
         chartArea: { 
             width: "90%", 
             height: "80%" 
@@ -15,7 +16,7 @@ function drawLineChart(chartData, divId) {
         vAxis: { title : 'Count of Votes', textStyle: {fontSize : '1', color: '#FFFFFF'}}
     };
 
-    var lineChart = new google.visualization.ScatterChart(document.getElementById(divId))
+    var lineChart = new google.visualization.CandlestickChart(document.getElementById(divId));
 
     // main charts
     lineChart.draw(lineChartData, lineOptions);

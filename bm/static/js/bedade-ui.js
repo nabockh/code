@@ -7,10 +7,17 @@ $(function () {
             if (selectedStep1 > 2) {
                 $('#units_maxDecimals').show();
                 $('#answer_options').hide();
+                $('#units_maxDecimals').next('hr').show();
             }
             else {
                 $('#answer_options').show();
                 $('#units_maxDecimals').hide();
+                $('#units_maxDecimals').next('hr').show();
+            }
+            if (selectedStep1 == 4) {
+                $('#units_maxDecimals').hide();
+                $('#answer_options').hide();
+                $('#units_maxDecimals').next('hr').hide();
             }
     };
 
@@ -135,6 +142,9 @@ $(function () {
 
     $("html").click(function() {
         $(".example-block").removeClass('closed active');
+    });
+    $(".show-terms").click(function() {
+        $(".terms-container").toggleClass('terms-show');
     });
 
     // Tooltips
