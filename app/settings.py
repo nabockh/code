@@ -43,6 +43,8 @@ DEBUG = False
 
 TEMPLATE_DEBUG = True
 
+METRICS = True
+
 ALLOWED_HOSTS = ['*']
 
 SITE_ID = 1
@@ -59,12 +61,6 @@ INSTALLED_APPS = (
     'core',
     'djangocms_admin_style',
     'djangocms_text_ckeditor',
-    # 'djangocms_file',
-    # 'cmsplugin_cascade',
-    # 'filer',
-    # 'cmsplugin_filer_file',
-    # 'cmsplugin_filer_image',
-
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -76,6 +72,7 @@ INSTALLED_APPS = (
     'djcelery_email',
     'social',
     'social_auth',
+    'metrics',
     'bm',
     'formadmin',
     'bootstrap3',
@@ -267,6 +264,7 @@ AUTHENTICATION_BACKENDS = (
 
 SOCIAL_AUTH_PIPELINE = (
     'social.pipeline.beta_login',
+    'social.pipeline.contacts_validation',
     'social_auth.backends.pipeline.social.social_auth_user',
     'social_auth.backends.pipeline.user.get_username',
     'social_auth.backends.pipeline.user.create_user',
@@ -281,7 +279,7 @@ SOCIAL_AUTH_PIPELINE = (
 LINKEDIN_CONSUMER_KEY = '77pi0tgejrq7si'
 LINKEDIN_CONSUMER_SECRET = 'ZneKr9tbVPSSrm5O'
 
-LINKEDIN_SCOPE = ['r_basicprofile', 'r_emailaddress', 'r_contactinfo', 'r_network', 'w_messages']
+LINKEDIN_SCOPE = ['r_basicprofile', 'r_emailaddress', 'r_network', 'w_messages']
 LINKEDIN_EXTRA_FIELD_SELECTORS = ['email-address', 'headline', 'industry', 'location:(country)', 'positions']
 LINKEDIN_OAUTH2_EXTRA_DATA = [('id', 'id'), ]
 

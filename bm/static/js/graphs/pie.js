@@ -28,7 +28,7 @@ function drawPieChart(chartData, divId) {
             
     var donutOptions = {
         pieHole: 0.35,
-        legend: 'none',
+        legend: 'left',
         pieSliceText: 'label',
         tooltip: { text: 'percentage' },
         slices: pieGradient(chartData.length),

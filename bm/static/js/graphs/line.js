@@ -5,13 +5,14 @@ function drawLineChart(chartData, divId) {
     var lineChartData = google.visualization.arrayToDataTable(chartData);
 
     var lineOptions = {
-        legend: 'none',
+        legend: 'top',
         colors: ['#8592B2'],
         lineWidth: 3,
         chartArea: { 
             width: "90%", 
             height: "80%" 
-        }
+        },
+        vAxis: { title : 'Count of Votes', textStyle: {fontSize : '1', color: '#FFFFFF'}}
     };
 
     var lineChart = new google.visualization.ScatterChart(document.getElementById(divId))

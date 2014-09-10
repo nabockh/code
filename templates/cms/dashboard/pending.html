@@ -1,31 +1,52 @@
 {% for benchmark in benchmarks.pending %}
-    <div class="dashboard-progress-block">
-        <p class="title" title='{{ benchmark.name }}'>{{ benchmark.name }}</p>
-
-        <p class="info">
-            <span>
-                {{ benchmark.responses_count }}
-                {% if benchmark.responses_count <= benchmark.min_numbers_of_responses %}
-                    of {{ benchmark.min_numbers_of_responses }}
-                {% endif %}
-            </span>
-            Responces Recieved |
-            <span>{{ benchmark.days_left }} </span>
-            Days Left
-        </p>
-
-        <div class="progress">
-            <div class="progress-bar" role="progressbar" aria-valuenow="{{ benchmark.progress }}" aria-valuemin="0"
-                 aria-valuemax="100" style="width: {{ benchmark.progress }}%;">
-                {{ benchmark.progress }}%
+    {% if not benchmark.approved %}
+        <div class="dashboard-progress-block pending">
+            <p class="title" title='{{ benchmark.name }}'>{{ benchmark.name }}</p>
+            <p class="info">
+                <span>
+                    {{ benchmark.responses_count }}
+                    {% if benchmark.responses_count <= benchmark.min_numbers_of_responses %}
+                        of {{ benchmark.min_numbers_of_responses }}
+                    {% endif %}
+                </span>
+                Responces Recieved |
+                <span>{{ benchmark.days_left }} </span>
+                Days Left
+            </p>
+            <div class="progress">
+                <div class="pending-benchmark"><i class="fa fa-clock-o"></i> Awaiting Approval</div>
             </div>
-            {% if benchmark.owner == request.user %}
-            <a href="{% url 'bm_add_recipients' benchmark.id %}" class="btn btn-primary add-recipients"><span
-                    class='non-mobile'>Add contacts</span><span class='mobile'><i class='fa fa-plus-circle'></i></span></a>
-            {% endif %}
+        </div>
+    {% else %}
+        <div class="dashboard-progress-block{% if benchmark.is_new %} new-benchmark{% endif %}">
+            <p class="title" title='{{ benchmark.name }}'>{{ benchmark.name }}</p>
+            <p class="info">
+                <span>
+                    {{ benchmark.responses_count }}
+                    {% if benchmark.responses_count <= benchmark.min_numbers_of_responses %}
+                        of {{ benchmark.min_numbers_of_responses }}
+                    {% endif %}
+                </span>
+                Responces Recieved |
+                <span>{{ benchmark.days_left }} </span>
+                Days Left
+            </p>
+            <div class="progress">
+                <div class="progress-bar" role="progressbar" aria-valuenow="{{ benchmark.progress }}" aria-valuemin="0"
+                     aria-valuemax="100" style="width: {{ benchmark.progress }}%;">
+                    {{ benchmark.progress }}%
+                </div>
+                {% if benchmark.owner == request.user %}
+                <a href="{% url 'bm_add_recipients' benchmark.id %}" class="btn btn-primary add-recipients"><span
+                        class='non-mobile'>Add contacts</span><span class='mobile'><i class='fa fa-plus-circle'></i></span></a>
+                {% endif %}
+            </div>
         </div>
 
-    </div>
+    {% endif %}
+
+
+    
 
 {% empty %}
     <div><strong>You have no open benchmarks.</strong></div>

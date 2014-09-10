@@ -119,7 +119,6 @@ span.beta-invite {
 .text-teal {
     color: #608a94;
 }
-
 .text-do-wrap {
     white-space: normal !important;
     overflow: visible !important;
@@ -422,12 +421,21 @@ span.nav-username-dropdown {
 
 
 #s2id_id_0-units {
-    width: 113px !important;
+    width: 160px !important;
     display: block;
 }
 
 .dropdown-container {
     position: relative;
+}
+.units-custom {
+    border-right:0!important;
+    position:absolute;
+    top:30px;
+    top: 25px;
+    width:140px!important;
+    left: 15px;
+
 }
 
     .dropdown-container ul {
@@ -1037,6 +1045,7 @@ input.btn.full-width, .btn.full-width {
     margin: 0 10px;
     padding: 5px 10px;
     font-size: 11px;
+    clear:both;
 }
 
 .title-header .add_help {
@@ -1058,12 +1067,40 @@ input.btn.full-width, .btn.full-width {
         line-height: 14px;
         border-radius: 4px;
         font-weight: 900;
-    
         float: right;
         margin: 2px 7px 0 0;
         white-space: nowrap;
 }
-
+.char-fillter {
+    margin: 0 10px;
+}
+.char-fillter ul {
+    list-style:none;
+    margin:0;
+    padding:0;
+    display:block;
+    height:20px;
+    border-bottom:1px solid #FFF;
+}
+.char-fillter ul li {
+    display:block;
+    cursor:pointer;
+    margin:0 1px 0 0;
+    background: #33626e;
+    width:19px;
+    color:#fff;
+    text-align:center;
+    float:left;
+    line-height:19px;
+    font-size:12px;
+}
+.char-fillter ul li:last-child {
+    margin:0;
+    border:0;
+}
+#searchContactList .single-contact.char-fillter-apply:not(.char-filltered) {
+    display:none;
+}
 .contact-info {
     float: right;
     letter-spacing: 1px;
@@ -1332,6 +1369,13 @@ label.btn.btn-primary.auto-width.pull-right.fix {
     font-size: 12px;
     margin-bottom: 10px;
 }
+.benchmark-creation .styled-form input[type="text"], .benchmark-creation .styled-form input[type="number"]{
+    padding: 0 6px;
+    line-height: 32px;
+    height: 32px;
+    box-sizing:border-box;
+}
+
 .benchmark-creation .styled-form .select2-container {
     margin-bottom: 10px;
 }
@@ -1365,6 +1409,8 @@ label.btn.btn-primary.auto-width.pull-right.fix {
         color: #333;
         font-size: 12px;
     }
+    .tips .label-like .remove-all {text-transform:none;position: absolute;top:-9px;right:20px;cursor:pointer;}
+    .tips .label-like .remove-all i {margin-right:2px;}
 
     .tips p.title, .tips h4 {
         display: block;
@@ -1498,9 +1544,8 @@ span.add_info {
 }
     
     #selectedContactList {
-        max-height: 350px;
-        overflow-x: hidden !important;
-        overflow-y: auto !important;
+        max-height: 390px;
+        overflow: hidden;
         padding-right: 10px;
     }
 
@@ -1798,6 +1843,7 @@ form[role='beta-email'] {
 
     form[role='beta-email'] .form-control {
         height: 25px;
+        line-height: 25px;
         margin-top: 0;
         border-radius: 0;
         box-shadow: none;
@@ -1805,6 +1851,7 @@ form[role='beta-email'] {
         background: #55798a;
         border-color: #55798a;
         color: #fff;
+        padding: 0 12px;
     }
 
     form[role='beta-email'] .btn-search:hover {
@@ -1960,6 +2007,16 @@ form[role='beta-email'] {
         padding-right: 2px;
     }
 
+    .pending-benchmark {
+        line-height: 40px; 
+        text-align: center;
+        font-weight: bold; 
+        font-size: 11px; 
+        background: #b0b7b8;
+        color: #fff;
+        text-transform: uppercase;
+    }
+
 .dashboard-progress-block {
     border-bottom: 1px solid #dedede;
     margin-bottom: 10px;
@@ -2020,6 +2077,28 @@ form[role='beta-email'] {
     color: #4b4b4b;
     box-shadow: none;
 }
+
+/* New */
+
+.dashboard-progress-block.new-benchmark {
+    background: #F9FAFF;
+    margin: -15px -15px 15px;
+    padding: 15px 15px 0px;
+}
+    .dashboard-progress-block.new-benchmark .title:before {
+        content: 'new';
+        display: inline-block;
+        background: #8592b2;
+        color: #fff;
+        padding: 1px 10px 0;
+        margin-right: 7px;
+        font-size: 12px;
+        text-transform: uppercase;
+    }
+    
+   .dashboard-progress-block.new-benchmark .progress {
+       background: #fff;
+   }
 
 /* SLIDER */
 
@@ -2250,7 +2329,24 @@ form[role='beta-email'] {
     font-size: 14px;
     font-weight: 600;
 }
-
+.terms-container {
+    -webkit-transition-duration: 300ms;
+    -webkit-transition-timing-function: ease-out;
+    -moz-transition-duration: 300ms;
+    -moz-transition-timing-function: ease-out;
+    -ms-transition-duration: 300ms;
+    -ms-transition-timing-function: ease-out;
+    transition-duration: 300ms;
+    transition-timing-function: ease-out;
+    height:0;
+    display:block;
+    overflow:hidden;
+}
+.terms-container.terms-show{
+    height:190px;
+    overflow:auto;
+    max-height:190px;
+}
 
 /* small */
 
@@ -2300,7 +2396,7 @@ form[role='beta-email'] {
 /*---*/
 
 #step3Selected {
-    height: 620px;
+    max-height: 605px;
     overflow-x: hidden;
     overflow-y: scroll;
 }
@@ -3151,10 +3247,10 @@ ul#answerSortable {
         margin: -45px -5px 0;
     }
 
-    .benchmark-creation .styled-form .benchmark-help.search label.btn.btn-primary {
+    /*.benchmark-creation .styled-form .benchmark-help.search label.btn.btn-primary {
         width: auto;
         margin-top: 20px;
-    }
+    }*/
     
     .benchmark-creation .styled-form .col-md-5ths input:not([type='submit']) {
         margin-bottom: 0;
@@ -3198,6 +3294,10 @@ ul#answerSortable {
 
     .progress {
         padding-right: 50px;
+    }
+    
+    .pending .progress {
+        padding-right: 0;
     }
 
     .btn.add-recipients {
@@ -3313,6 +3413,7 @@ ul#answerSortable {
     .container {
          min-width:0;
     }
+    .char-fillter {display:none;}
     .example-block {
         width: 100%;
         margin: -4px 0;
@@ -3423,7 +3524,7 @@ ul#answerSortable {
     }
 }
 
-@media only screen and (max-width : 520px) {
+@media only screen and (max-width : 570px) {
     .btn-holder .btn.auto-width {
         width:100%;
         clear:both;
@@ -3499,6 +3600,7 @@ html[dir="rtl"] .select2-search input,
     line-height: 32px;
     color: #333;
     font-weight:300!important;
+    box-sizing: border-box;
 }
 .select2-container-multi .select2-choices .select2-search-choice {
     border-radius: 0;
@@ -3508,6 +3610,7 @@ html[dir="rtl"] .select2-search input,
 }
 .select2-container .select2-choice .select2-arrow {
     background:none;
+    filter:none;
     border:0;
 }
 .select2-drop-active,

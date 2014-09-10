@@ -1,6 +1,6 @@
 from __future__ import absolute_import
 import itertools
-from bm.models import Benchmark, BenchmarkInvitation
+from bm.models import Benchmark, BenchmarkInvitation, BmInviteEmail
 from datetime import datetime, timedelta
 from celery import shared_task
 from core.utils import celery_log
@@ -14,6 +14,8 @@ from django.template import loader, Context
 from celery.schedules import crontab
 from celery.task import periodic_task
 from django.db.models import Count, Avg
+from django.template import Template
+from core.utils import get_context_variables
 
 INVITE_SUBJECT = 'You have been invited to benchmark'
 
@@ -31,8 +33,18 @@ def send_invites(benchmark_id):
     if benchmark:
         invites = benchmark.invites.filter(status='0').select_related('recipient', 'recipient__user', 'sender')
         subject = INVITE_SUBJECT
-        context = Context({'benchmark': benchmark})
-        body = get_template('alerts/invite.html').render(context)
+        raw_context = get_context_variables(benchmark)
+        context = Context(raw_context)
+        if BmInviteEmail.objects.exists():
+            email_invite = BmInviteEmail.objects.filter(benchmark_id=benchmark.id).first()
+            raw_body = email_invite.body
+            if '<LINK>' in raw_body:
+                raw_body = raw_body.replace('<LINK>', '{{ benchmark.link }}')
+            else:
+                raw_body += ('\n'+'{{ benchmark.link }}')
+            body = Template(raw_body).render(context)
+        else:
+            body = get_template('alerts/invite.html').render(context)
 
         invites_without_email = []
         for invite in invites:
@@ -54,7 +66,9 @@ def send_invites(benchmark_id):
             invite.save()
         if len(invites_without_email) > 100:
             send_invites.apply_async(benchmark_id, countdown=86400)
-
+        else:
+            if BmInviteEmail.objects.filter(benchmark_id=benchmark.id).first():
+                BmInviteEmail.objects.filter(benchmark_id=benchmark.id).first().delete()
 
 @periodic_task(run_every=crontab(minute=0, hour=0))
 @celery_log
@@ -92,12 +106,13 @@ def send_reminders():
         '''
     for benchmark in approved_benchmarks:
         subject = "Reminder for {0}".format(benchmark.name)
-        context = Context({'benchmark_name': benchmark.name,
-                           'benchmark_link': benchmark.link,
-                           })
-        body = get_template('alerts/reminder_not_responded.html').render(context)
         contacts = Contact.objects.raw(query, [benchmark.id])
-        Contact.send_mail(benchmark.owner, subject, body, contacts)
+        for contact in contacts:
+            raw_context = get_context_variables(benchmark)
+            raw_context['reminder_contact'] = contact.first_name
+            context = Context(raw_context)
+            body = get_template('alerts/reminder_not_responded.html').render(context)
+            Contact.send_mail(benchmark.owner, subject, body, [contact])
 
 
 @periodic_task(run_every=crontab(minute=1, hour=0))
@@ -116,16 +131,17 @@ def check_benchmark_results():
     if finished_benchmarks:
         for benchmark in finished_benchmarks:
             subject = "Benchmark results"
-            context = Context({'benchmark_name': benchmark.name,
-                               'benchmark_link': str(Site.objects.get_current()) + reverse('bm_details', args=[benchmark.id]),
-                               })
-            body = get_template('alerts/benchmark_results.html').render(context)
             contacts = Contact.objects.filter(invites__benchmark__id=benchmark.id)\
                 .annotate(responses_count=Count('invites__benchmark__question__responses'))\
                 .filter(responses_count__gte=1)
             contacts_ids = [contact.id for contact in contacts]
             recipients = [contact.email for contact in contacts]
             recipients.append(benchmark.owner.email)
+            raw_context = get_context_variables(benchmark)
             if contacts_ids:
-                send_mail(subject, body, None, recipients)
+                for recipient in recipients:
+                    raw_context['contact_first_name'] = Contact.objects.get(email=recipient).first_name
+                    context = Context(raw_context)
+                    body = get_template('alerts/benchmark_results.html').render(context)
+                    send_mail(subject, body, None, [recipient])
                 BenchmarkInvitation.objects.filter(recipient__id__in=contacts_ids).update(status=3)

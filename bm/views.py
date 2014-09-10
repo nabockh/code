@@ -1,10 +1,13 @@
 from datetime import datetime
 from app.settings import DEBUG
+from metrics.utils import event_log
+from bm import metric_events
 from bm.forms import CreateBenchmarkStep12Form, AnswerMultipleChoiceForm, \
     CreateBenchmarkStep3Form, CreateBenchmarkStep4Form, NumericAnswerForm, RangeAnswerForm, RankingAnswerForm, \
-    BenchmarkDetailsForm
+    BenchmarkDetailsForm, YesNoAnswerForm
 from bm.models import Benchmark, Region, Question, QuestionChoice, QuestionResponse, ResponseChoice, ResponseNumeric, \
-    ResponseRange, QuestionRanking, ResponseRanking, BenchmarkInvitation, QuestionOptions, BenchmarkLink, BenchmarkRating
+    ResponseRange, QuestionRanking, ResponseRanking, BenchmarkInvitation, QuestionOptions, BenchmarkLink, BenchmarkRating, \
+    ResponseYesNo, BmInviteEmail
 from core.forms import ContactForm
 from bm.tasks import send_invites
 from core.utils import login_required_ajax
@@ -24,7 +27,7 @@ from django.utils.decorators import method_decorator
 from django.views.generic import ListView, TemplateView
 from django.views.generic.edit import FormView
 from bm.signals import benchmark_answered, benchmark_created
-from django.db.models import Count
+from django.db.models import Count, Q
 
 import json
 import StringIO
@@ -36,6 +39,7 @@ class BenchmarkCreateWizardView(CookieWizardView):
     form_list = [CreateBenchmarkStep12Form, CreateBenchmarkStep3Form, CreateBenchmarkStep4Form]
 
     @method_decorator(login_required)
+    @event_log(event_type=dict(GET=metric_events.BM_CREATE_OPEN))
     def dispatch(self, *args, **kwargs):
         return super(BenchmarkCreateWizardView, self).dispatch(*args, **kwargs)
 
@@ -126,11 +130,14 @@ class BenchmarkCreateWizardView(CookieWizardView):
     def render_email_preview(benchmark):
         template = loader.get_template('alerts/invite.html')
         # TODO: http is hardcoded
-        benchmark.link ='{0}{1}'.format(Site.objects.get_current().domain, reverse('bm_answer', kwargs={'slug': 'slug'}))
+        benchmark.link = "<LINK>"
         context = Context({
             'benchmark': benchmark,
         })
-        response = HttpResponse("<pre>" + template.render(context) + '</pre>')
+        response = HttpResponse("<pre id='default_text' contenteditable='false'>" + template.render(context)
+                                + '</pre>' + '<button type="button" class="edit-button">'
+                                             ''+'Edit'+'</button>'+'<button type="button" class="save-button">'
+                                             ''+'Save'+'</button>')
         return response
 
     def render_goto_step(self, goto_step, **kwargs):
@@ -160,6 +167,7 @@ class BenchmarkCreateWizardView(CookieWizardView):
             context['selected_contacts'] = self.selected_contacts if hasattr(self, 'selected_contacts') else []
         return context
 
+    @event_log(event_type=metric_events.BM_CREATE_DONE, object='benchmark')
     def done(self, form_list, preview=False, **kwargs):
         step2 = form_list[1]
         step3 = form_list[2]
@@ -175,7 +183,8 @@ class BenchmarkCreateWizardView(CookieWizardView):
             benchmark.min_numbers_of_responses = step3.cleaned_data['minimum_number_of_answers']
             benchmark.overview = step3.cleaned_data['additional_comments']
             if preview:
-                return benchmark
+                self.benchmark = benchmark
+                return self.benchmark
             benchmark.save()
 
             if isinstance(step3.cleaned_data['geo'], list):
@@ -185,7 +194,11 @@ class BenchmarkCreateWizardView(CookieWizardView):
             if bm_geo:
                 region = Region.objects.get(pk=bm_geo)
                 benchmark.geographic_coverage.add(region)
-
+            if step3.cleaned_data['email_body']:
+                invite_mail = BmInviteEmail()
+                invite_mail.benchmark = benchmark
+                invite_mail.body = step3.cleaned_data['email_body']
+                invite_mail.save()
             question = Question()
             question.benchmark = benchmark
             question.label = step3.cleaned_data['question_label']
@@ -223,6 +236,7 @@ class BenchmarkCreateWizardView(CookieWizardView):
             benchmark.save()
         if benchmark.pk:
             benchmark_created.send(sender=self.__class__, request=self.request, benchmark=benchmark)
+            self.benchmark = benchmark
         return redirect('bm_dashboard')
 
 
@@ -237,6 +251,7 @@ class BenchmarkHistoryView(ListView):
         return data
 
     @method_decorator(login_required)
+    @event_log(event_type=metric_events.BM_HISTORY_OPEN)
     def dispatch(self, request, *args, **kwargs):
         return super(BenchmarkHistoryView, self).dispatch(request, *args, **kwargs)
 
@@ -299,6 +314,9 @@ class BaseBenchmarkAnswerView(FormView):
             return RangeAnswerView.as_view()(self.request, benchmark, *args, **kwargs)
         elif question_type == Question.NUMERIC:
             return NumericAnswerView.as_view()(self.request, benchmark, *args, **kwargs)
+        elif question_type == Question.YES_NO:
+            return YesNoAnswerView.as_view()(self.request, benchmark, *args, **kwargs)
+
 
     def get_context_data(self, **kwargs):
         context = super(BaseBenchmarkAnswerView, self).get_context_data(**kwargs)
@@ -320,11 +338,14 @@ class BaseBenchmarkAnswerView(FormView):
         else:
             return self.form_invalid(form)
 
+answer_event_log = event_log(event_type=dict(GET=metric_events.BM_ANSWER_OPEN, POST=metric_events.BM_ANSWER_SAVE), object='benchmark')
+
 
 class MultipleChoiceAnswerView(BaseBenchmarkAnswerView):
     form_class = AnswerMultipleChoiceForm
     template_name = 'bm/answer/Multiple.html'
 
+    @answer_event_log
     def dispatch(self, request, benchmark, *args, **kwargs):
         self.benchmark = benchmark
         return super(BaseBenchmarkAnswerView, self).dispatch(self.request, *args, **kwargs)
@@ -356,6 +377,7 @@ class RankingAnswerView(BaseBenchmarkAnswerView):
     form_class = RankingAnswerForm
     template_name = 'bm/answer/Ranking.html'
 
+    @answer_event_log
     def dispatch(self, request, benchmark, *args, **kwargs):
         self.benchmark = benchmark
         return super(BaseBenchmarkAnswerView, self).dispatch(self.request, *args, **kwargs)
@@ -387,6 +409,7 @@ class RangeAnswerView(BaseBenchmarkAnswerView):
     form_class = RangeAnswerForm
     template_name = 'bm/answer/Range.html'
 
+    @answer_event_log
     def dispatch(self, request, benchmark, *args, **kwargs):
         self.benchmark = benchmark
         return super(BaseBenchmarkAnswerView, self).dispatch(self.request, *args, **kwargs)
@@ -411,6 +434,7 @@ class NumericAnswerView(BaseBenchmarkAnswerView):
     form_class = NumericAnswerForm
     template_name = 'bm/answer/Numeric.html'
 
+    @answer_event_log
     def dispatch(self, request, benchmark, *args, **kwargs):
         self.benchmark = benchmark
         return super(BaseBenchmarkAnswerView, self).dispatch(self.request, *args, **kwargs)
@@ -427,6 +451,29 @@ class NumericAnswerView(BaseBenchmarkAnswerView):
                 question_response.data_numeric.add(bm_response_numeric)
 
         return super(NumericAnswerView, self).form_valid(form)
+
+
+class YesNoAnswerView(BaseBenchmarkAnswerView):
+    form_class = YesNoAnswerForm
+    template_name = 'bm/answer/Yes_No.html'
+
+    @answer_event_log
+    def dispatch(self, request, benchmark, *args, **kwargs):
+        self.benchmark = benchmark
+        return super(BaseBenchmarkAnswerView, self).dispatch(self.request, *args, **kwargs)
+
+    def form_valid(self, form):
+        if form.is_valid():
+            with transaction.atomic():
+                question_response = QuestionResponse()
+                question_response.user = self.request.user
+                question_response.question = self.benchmark.question.first()
+                question_response.save()
+                bm_response_yes_no = ResponseYesNo()
+                bm_response_yes_no.value = form.cleaned_data['Choose Yes or No:']
+                question_response.data_boolean.add(bm_response_yes_no)
+
+        return super(YesNoAnswerView, self).form_valid(form)
 
 
 class ForbiddenView(TemplateView):
@@ -446,6 +493,7 @@ class BenchmarkDetailView(FormView):
     form_class = BenchmarkDetailsForm
     template_name = 'bm/details_graphs.html'
 
+    @event_log(event_type=dict(GET=metric_events.BM_DETAIL_OPEN, POST=metric_events.BM_RATE_SAVE), object='benchmark')
     def dispatch(self, request, *args, **kwargs):
         if not self.get_benchmark() and not DEBUG:
             return ForbiddenView.as_view()(self.request, *args, **kwargs)
@@ -457,7 +505,8 @@ class BenchmarkDetailView(FormView):
             return self.benchmark
         else:
             bm_id = self.kwargs['bm_id']
-            self.benchmark = Benchmark.valid.filter(id=bm_id, end_date__lte=datetime.now())\
+            f = Q(id=bm_id) if DEBUG else Q(id=bm_id, end_date__lte=datetime.now())
+            self.benchmark = Benchmark.valid.filter(f)\
                 .select_related('question', 'responses',
                                 'benchmark___industry',
                                 'benchmark__geographic_coverage').first()
@@ -471,8 +520,8 @@ class BenchmarkDetailView(FormView):
     def get_context_data(self, **kwargs):
         context = super(BenchmarkDetailView, self).get_context_data(**kwargs)
         benchmark = self.get_benchmark(**kwargs)
-        if Benchmark.objects.filter(id=benchmark.id, question__responses__user=self.request.user):
-            context['is_contributor'] = True
+        if not self.request.user.is_anonymous() and Benchmark.objects.filter(id=benchmark.id, question__responses__user=self.request.user):
+                context['is_contributor'] = True
         context['benchmark'] = benchmark
         context['question'] = benchmark.question.first()
         context['url'] = self.request.META['HTTP_HOST'] + self.request.path
@@ -621,6 +670,7 @@ class BenchmarkAddRecipientsView(FormView):
         else:
             return self.form_invalid(form)
 
+    @event_log(event_type=metric_events.BM_ADD_PARTICIPANTS, object='benchmark')
     def form_valid(self, form):
         for contact in form.selected_contacts:
             if form.cleaned_data.get(contact.invite_element) or form.cleaned_data.get('contact-{0}-invite'.format(contact.id)):
@@ -647,8 +697,11 @@ class BenchmarkAggregateView(BenchmarkDetailView):
 class ExcelDownloadView(BenchmarkDetailView):
 
     @method_decorator(login_required)
+    @event_log(event_type=metric_events.BM_EXCEL_EXPORT, object='benchmark')
     def dispatch(self, request, *args, **kwargs):
-        return super(ExcelDownloadView, self).dispatch(request, *args, **kwargs)
+        if not self.get_benchmark() and not DEBUG:
+            return ForbiddenView.as_view()(self.request, *args, **kwargs)
+        return super(BenchmarkDetailView, self).dispatch(request, *args, **kwargs)
 
     def get(self, *args, **kwargs):
         bm_id = kwargs['bm_id']
@@ -656,6 +709,7 @@ class ExcelDownloadView(BenchmarkDetailView):
                                                                         'responses',
                                                                         'benchmark___industry',
                                                                         'benchmark__geographic_coverage').first()
+        self.benchmark = benchmark
         output = StringIO.StringIO()
         workbook = xlsxwriter.Workbook(output, {'in_memory': True})
         bold = workbook.add_format({'bold': True})
@@ -785,6 +839,9 @@ class ExcelDownloadView(BenchmarkDetailView):
         elif question_type == 3:
             contributor_results = benchmark.charts['bell_curve']
             chart = workbook.add_chart({'type': 'scatter'})
+        elif question_type == 4:
+            contributor_results = benchmark.charts['pie']
+            chart = workbook.add_chart({'type': 'pie'})
         elif question_type == 5:
             contributor_results = benchmark.charts['line']
             chart = workbook.add_chart({'type': 'line'})
@@ -873,7 +930,24 @@ class ExcelDownloadView(BenchmarkDetailView):
 
             contributor_worksheet.insert_chart('F3', chart)
             internal_worksheet.hide()
+        elif question_type == 4:
+            no = contributor_results[1]
+            yes = contributor_results[2]
+            headings = ['Answer', 'Count']
+            contributor_worksheet.write_row('A1', headings, bold)
+            contributor_worksheet.write_row('A2', no)
+            contributor_worksheet.write_row('A3', yes)
 
+            chart.add_series({
+                'categories': '=Contributor Stats!$A$2:$A$3',
+                'values':     '=Contributor Stats!$B$2:$B$3',
+                'data_labels': {'percentage': True}
+            })
+            chart.set_chartarea({
+                'border': {'color': 'black'},
+                'fill':   {'color': 'white'}
+            })
+            contributor_worksheet.insert_chart('F3', chart)
         elif question_type == 5:
             internal_worksheet = workbook.add_worksheet('Internal')
             data = [

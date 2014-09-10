@@ -37,7 +37,7 @@ function drawBellcurveChart(chartData, divId) {
             curveType: 'function',
             pointSize: 0,
             enableInteractivity: false,
-            legend: 'none',
+            legend: 'top',
             colors: ['#608a94'],
             lineWidth: 3,
             intervals: { 'style':'area' },
@@ -47,7 +47,9 @@ function drawBellcurveChart(chartData, divId) {
                 height: "70%"
             },
             tooltip: {'trigger' : 'none'},
-            hAxis: { baselineColor : 'transparent', ticks: [{v:median[16][0], f:'- σ'}, {v:median[25][0], f:'μ'}, {v:median[34][0], f:'+ σ'}] }
+            hAxis: { baselineColor : 'transparent', ticks: [{v:median[16][0], f:'- σ'}, {v:median[25][0], f:'μ'}, {v:median[34][0], f:'+ σ'}] },
+            vAxis: { title : 'Contributed Values', textStyle: {fontSize : '1', color: '#FFFFFF'}}
+
         };
 
         var bellcurveChart = new google.visualization.LineChart(document.getElementById(divId));

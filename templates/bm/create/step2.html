@@ -11,14 +11,14 @@
     </div>
     <div class='row contacts-search'>
         <div class="col-md-5ths">
-            <label for="id_1-industry">Industry</label>
-            {{ form.industry }}
-            {{ form.industry.errors }}
-        </div>
-        <div class="col-md-5ths">
             <label for="id_1-geo">Geography</label>
             {{ form.geo }}
             {{ form.geo.errors }}
+        </div>
+        <div class="col-md-5ths">
+            <label for="id_1-industry">Industry</label>
+            {{ form.industry }}
+            {{ form.industry.errors }}
         </div>
         <div class="col-md-5ths">
             <label for="id_1-role">Role</label>
@@ -43,8 +43,8 @@
         <div id='recommendedContactList'>
             <div class="title-header inner">
                 <div class='row'>
-                    <div class='col-md-6 col-xs-6'>Recommended Contacts</div>
-                    <div class='col-md-4 col-xs-4 text-center'>Allow forwarding
+                    <div class='col-md-6 col-xs-4'>Recommended Contacts</div>
+                    <div class='col-md-4 col-xs-8 text-center'>Allow forwarding
                         <span class="add_help">?
                             <span class='add_help_inner'>
                                 {% static_placeholder "bm_create_share_tooltip" or %}
@@ -56,7 +56,7 @@
                             </span>
                         </span>
                     </div>
-                    <div class='col-md-2 col-xs-2'><a class="add-all"><i class="fa fa-plus"></i> Add All</a></div>
+                    <div class='col-md-2 col-xs-12'><a class="add-all"><i class="fa fa-plus"></i> Add All</a></div>
                 </div>
             </div>
             <div class='contact-results'>
@@ -83,10 +83,41 @@
         </div>
 
         <div id='searchContactList'>
+            <div class='char-fillter'>
+                    <ul>
+                        <li>A</li>
+                        <li>B</li>
+                        <li>C</li>
+                        <li>D</li>
+                        <li>E</li>
+                        <li>F</li>
+                        <li>G</li>
+                        <li>H</li>
+                        <li>I</li>
+                        <li>J</li>
+                        <li>K</li>
+                        <li>L</li>
+                        <li>M</li>
+                        <li>N</li>
+                        <li>O</li>
+                        <li>P</li>
+                        <li>Q</li>
+                        <li>R</li>
+                        <li>S</li>
+                        <li>T</li>
+                        <li>U</li>
+                        <li>V</li>
+                        <li>W</li>
+                        <li>X</li>
+                        <li>Y</li>
+                        <li>Z</li>
+                        <li class="filter-all">All</li>
+                    </ul>
+            </div>
             <div class="title-header inner">
                 <div class='row'>
-                    <div class='col-md-6 col-xs-6'>Contact</div>
-                    <div class='col-md-4 col-xs-4 text-center'>Allow forwarding
+                    <div class='col-md-6 col-xs-4'>Contact</div>
+                    <div class='col-md-4 col-xs-8 text-center'>Allow forwarding
                         <span class="add_help">?
                             <span class='add_help_inner'>
                                 {% static_placeholder "bm_create_share_tooltip" or %}
@@ -98,7 +129,7 @@
                             </span>
                         </span>
                     </div>
-                    <div class='col-md-2 col-xs-2'><a class="add-all"><i class="fa fa-plus"></i> Add All</a></div>
+                    <div class='col-md-2 col-xs-12'><a class="add-all"><i class="fa fa-plus"></i> Add All</a></div>
                     
                 </div>
             </div>
@@ -133,7 +164,7 @@
 
     <div class='col-md-4 margined'>
         <div class='tips'>
-            <p class='label-like'>Selected Contacts</p>
+            <p class='label-like'>Selected Contacts<a class="remove-all"><i class="fa fa-minus-circle"></i>Remove All</a></p>
             <hr>
             <div id='selectedContactList'>
                 {% for contact in form.selected_contacts %}

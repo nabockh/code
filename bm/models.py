@@ -55,7 +55,8 @@ class BenchmarkPendingManager(models.Manager):
         return super(BenchmarkPendingManager, self).get_queryset() \
             .annotate(responses_count=Count('question__responses')) \
             .exclude(approved=False) \
-            .filter(end_date__gt=datetime.now())
+            .filter(end_date__gt=datetime.now())\
+            .distinct()
 
 
 class Benchmark(models.Model):
@@ -91,6 +92,8 @@ class Benchmark(models.Model):
                 self.__class__ = BenchmarkNumeric
             elif self.question_type == Question.RANGE:
                 self.__class__ = BenchmarkRange
+            elif self.question_type == Question.YES_NO:
+                self.__class__ = BenchmarkYesNo
 
     @property
     def industry(self):
@@ -99,6 +102,11 @@ class Benchmark(models.Model):
     @industry.setter
     def industry(self, value):
         self._industry = LinkedInIndustry.get(code=value) if str(value).isdigit() else LinkedInIndustry.get(value)
+
+    @property
+    def is_new(self):
+        delta = datetime.date(datetime.now()) - self.start_date
+        return delta.days <= 1
 
     @property
     def days_left(self):
@@ -174,7 +182,7 @@ class BenchmarkMultiple(Benchmark):
     def charts(self):
         series = self.series_statistic.values('series', 'value')
         series = [[str(s['series']), s['value']] for s in series]
-        series.insert(0, ['series', 'count'])
+        series.insert(0, ['series', 'Votes'])
         return {
             'pie': series,
             'column': series,
@@ -194,11 +202,11 @@ class BenchmarkRanking(Benchmark):
     def charts(self):
         series1 = self.series_statistic.values('series', 'sub_series', 'value').order_by('series')
         series1 = [[str(s['series'] + '-' + s['sub_series']), s['value']] for s in series1]
-        series1.insert(0, ['series', 'count'])
+        series1.insert(0, ['series', 'Votes'])
         series2 = self.series_statistic.values('series').annotate(count=ArrayAgg('value')).order_by('series')
-        series2 = [[str(s['series'])] + s['count'][::-1] for s in series2]
+        series2 = [[str(s['series'])] + s['Votes'][::-1] for s in series2]
         if series2:
-            series2.insert(0, ['series'] + [str(i) for i in range(1, len(s['count']) + 1)])
+            series2.insert(0, ['series'] + [str(i) for i in range(1, len(s['Votes']) + 1)])
         return {
             'pie': series1,
             'column': series2,
@@ -218,7 +226,7 @@ class BenchmarkNumeric(Benchmark):
     def charts(self):
         series = self.series_statistic.values('series', 'sub_series', 'value').order_by('id')
         series = [[str(s['series']), s['value']] for s in series]
-        series.insert(0, ['series', 'count'])
+        series.insert(0, ['series', 'Votes'])
         bell_curve = self.numeric_statistic.values('min', 'max', 'avg', 'sd').first()
         return {
             'pie': series,
@@ -241,16 +249,35 @@ class BenchmarkRange(Benchmark):
     def charts(self):
         series = self.series_statistic.values('series', 'sub_series', 'value').order_by('id')
         series1 = [[str(s['series'] + '-' + s['sub_series']), s['value']] for s in series]
-        series1.insert(0, ['series', 'count'])
-        series2 = [['series', 'count']]
+        series1.insert(0, ['series', 'Votes'])
+        series2 = [['points', 'Votes']]
         for s in series:
-            series2.append([int(s['series']), s['value']])
-            series2.append([int(s['sub_series']), s['value']])
+            series2.append([[int(s['series']), int(s['sub_series'])], s['value']])
         return {
             'pie': series1,
             'column': series1,
             'line': series2,
             'units': self.question.first().options.first().units.encode('utf-8'),
+        }
+
+
+class BenchmarkYesNo(Benchmark):
+
+    class Meta:
+        proxy = True
+        verbose_name = 'Benchmark Yes/No'
+
+    available_charts = [('Pie', 'Pie Chart'), ('Column', 'Column Chart')]
+    default_chart = 'Pie'
+
+    @property
+    def charts(self):
+        series = self.series_statistic.values('series', 'value')
+        series = [[str(s['series']), s['value']] for s in series]
+        series.insert(0, ['series', 'Votes'])
+        return {
+            'pie': series,
+            'column': series,
         }
 
 
@@ -294,15 +321,15 @@ class Question(models.Model):
     MULTIPLE = 1
     RANKING = 2
     NUMERIC = 3
-    SLIDING_SCALE = 4
+    YES_NO = 4
     RANGE = 5
 
     TYPES = (
         (MULTIPLE, 'Multiple'),
         (RANKING, 'Ranking'),
         (NUMERIC, 'Numeric'),
-        # (SLIDING_SCALE, 'Sliding scale'),
         (RANGE, 'Range'),
+        (YES_NO, 'Yes/No'),
     )
 
     benchmark = models.ForeignKey(Benchmark, related_name='question', rel_class=models.OneToOneRel, on_delete=models.CASCADE)
@@ -326,6 +353,8 @@ class QuestionResponse(models.Model):
             return self.data_numeric
         elif self.question.type == Question.RANGE:
             return self.data_range
+        elif self.question.type == Question.YES_NO:
+            return self.data_boolean
 
 
 class QuestionChoice(models.Model):
@@ -397,6 +426,11 @@ class ResponseRange(models.Model):
     max = models.IntegerField()
 
 
+class ResponseYesNo(models.Model):
+    response = models.ForeignKey(QuestionResponse, rel_class=models.OneToOneRel, related_name='data_boolean')
+    value = models.BooleanField()
+
+
 class BenchmarkRating(models.Model):
     benchmark = models.ForeignKey(Benchmark, related_name='ratings')
     user = models.ForeignKey(USER_MODEL, null=True)
@@ -451,3 +485,8 @@ class BenchmarkAuditLog(LogEntry):
     class Meta:
         proxy = True
         verbose_name = 'Audit Log'
+
+
+class BmInviteEmail(models.Model):
+    benchmark = models.ForeignKey(Benchmark, related_name='invitation_email')
+    body = models.TextField()

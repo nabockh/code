@@ -6,8 +6,10 @@ from social.signals import invitee_approved
 
 
 def allow_email(modeladmin, request, queryset):
-    queryset.update(allowed=True)
-    invitee_approved.send(sender=None, request=request, user=request.user, queryset=queryset)
+    for invite in queryset:
+        if not invite.allowed:
+            invite.allowed = True
+            invite.save()
 allow_email.short_description = "Allow selected emails"
 
 

@@ -46,6 +46,9 @@ class CreateBenchmarkStep12Form(forms.Form):
             self.fields['units'].required = False
         elif question_type == Question.NUMERIC or question_type == Question.RANGE:
             self.fields['answer_options'].required = False
+        elif question_type == Question.YES_NO:
+            self.fields['answer_options'].required = False
+            self.fields['units'].required = False
 
 
 class CreateBenchmarkStep3Form(forms.Form):
@@ -57,7 +60,8 @@ class CreateBenchmarkStep3Form(forms.Form):
     def clean(self):
         if self.is_continue and hasattr(self, 'selected_contacts'):
             if len(self.selected_contacts) < self.min_number_of_answers:
-                self.errors['__all__'] = self.error_class(['Count of selected contacts should be at least %d' % self.min_number_of_answers])
+                self.errors['__all__'] = self.error_class(
+                    ['Count of selected contacts should be at least %d' % self.min_number_of_answers])
         return self.cleaned_data
 
     @staticmethod
@@ -71,7 +75,8 @@ class CreateBenchmarkStep3Form(forms.Form):
         super(CreateBenchmarkStep3Form, self).__init__(*args, **kwargs)
         self.min_number_of_answers = self.num(step0data.get('0-minimum_number_of_answers'))
         data = kwargs.get('data') or {}
-        self.is_continue = data.get('is_continue', False) and not(data.get('add_selected') or data.get('save_and_wizard_goto_step'))
+        self.is_continue = data.get('is_continue', False) and not (
+            data.get('add_selected') or data.get('save_and_wizard_goto_step'))
         regions = [('', 'All')]
         regions.extend(list(Region.regions.values_list('id', 'name').order_by('name')))
         self.fields['geo'].choices = regions
@@ -96,7 +101,7 @@ class CreateBenchmarkStep3Form(forms.Form):
             contact_filter['company___industry__code__in'] = cleaned_data.get('industry')
         if cleaned_data.get('geo'):
             contact_filter['location__parent__id'] = cleaned_data.get('geo')
-        self.contacts_filtered = user.contacts.filter(name_filter, **contact_filter).exclude(id__in=except_ids)\
+        self.contacts_filtered = user.contacts.filter(name_filter, **contact_filter).exclude(id__in=except_ids) \
             .order_by('first_name') if name_filter else \
             user.contacts.filter(**contact_filter).exclude(id__in=except_ids).order_by('first_name')
         for contact in self.contacts_filtered:
@@ -152,9 +157,13 @@ class CreateBenchmarkStep3Form(forms.Form):
         self.selected_contacts = Contact.objects.filter(id__in=selected_ids).select_related('user')
         for contact in self.selected_contacts:
             self.fields['selected-{0}-invite'.format(contact.id)] = \
-                forms.BooleanField(initial=True, widget=forms.CheckboxInput(attrs={'class': 'choose-checkbox', 'checked': 'checked'}), required=False)
+                forms.BooleanField(initial=True,
+                                   widget=forms.CheckboxInput(attrs={'class': 'choose-checkbox', 'checked': 'checked'}),
+                                   required=False)
             self.fields['contact-{0}-invite'.format(contact.id)] = \
-                forms.BooleanField(initial=True, widget=forms.CheckboxInput(attrs={'class': 'choose-checkbox', 'checked': 'checked'}), required=False)
+                forms.BooleanField(initial=True,
+                                   widget=forms.CheckboxInput(attrs={'class': 'choose-checkbox', 'checked': 'checked'}),
+                                   required=False)
             contact.invite_element = 'selected-{0}-invite'.format(contact.id)
             attr = {'class': 'share-checkbox'}
             if contact.id in selected_secondary_ids:
@@ -171,12 +180,14 @@ class CreateBenchmarkStep3Form(forms.Form):
             contact.secondary_element = 'selected-{0}-secondary'.format(contact.id)
             if not contact.email:
                 count_without_email += 1
-        days_to_sent_via_linkedin = math.ceil(float(count_without_email)/100)
-        self.end_date = datetime.now() + timedelta(days=days_to_sent_via_linkedin+BENCHMARK_DURATIONS_DAYS)
+        days_to_sent_via_linkedin = math.ceil(float(count_without_email) / 100)
+        self.end_date = datetime.now() + timedelta(days=days_to_sent_via_linkedin + BENCHMARK_DURATIONS_DAYS)
         return self.selected_contacts
 
 
 class CreateBenchmarkStep4Form(CreateBenchmarkStep12Form):
+    email_body = forms.CharField(widget=forms.Textarea(attrs={'id': 'email_body', 'hidden': True}), required=False)
+
     def __init__(self, user, step0data, end_date, *args, **kwargs):
         initial = {
             'name': step0data.get('0-name'),
@@ -195,10 +206,10 @@ class CreateBenchmarkStep4Form(CreateBenchmarkStep12Form):
 
 
 class AnswerMultipleChoiceForm(forms.Form):
-
     def __init__(self, choices, *args, **kwargs):
         super(AnswerMultipleChoiceForm, self).__init__(*args, **kwargs)
-        self.fields['choice'] = forms.MultipleChoiceField(choices=choices, widget=forms.CheckboxSelectMultiple(), label='Your Answer:')
+        self.fields['choice'] = forms.MultipleChoiceField(choices=choices, widget=forms.CheckboxSelectMultiple(),
+                                                          label='Your Answer:')
 
 
 class NumericAnswerForm(forms.Form):
@@ -226,8 +237,16 @@ class RankingAnswerForm(forms.Form):
         self.ranks = []
         for i, rank in enumerate(ranks):
             field_name = 'rank{0}'.format(rank[0])
-            self.fields[field_name] = forms.IntegerField(widget=RankingWidget(attrs={'label': rank[1], 'value':i}))
+            self.fields[field_name] = forms.IntegerField(widget=RankingWidget(attrs={'label': rank[1], 'value': i}))
             self.ranks.append(field_name)
+
+
+class YesNoAnswerForm(forms.Form):
+    def __init__(self, *args, **kwargs):
+        super(YesNoAnswerForm, self).__init__(*args, **kwargs)
+        self.fields['Choose Yes or No:'] = forms.TypedChoiceField(coerce=lambda x: x == 'True',
+                                                                  choices=((False, 'No'), (True, 'Yes')),
+                                                                  widget=forms.RadioSelect)
 
 
 class DeclineBenchmarkForm(forms.Form):
@@ -235,8 +254,10 @@ class DeclineBenchmarkForm(forms.Form):
 
     def __init__(self, benchmark, owner, email, *args, **kwargs):
         super(DeclineBenchmarkForm, self).__init__(*args, **kwargs)
-        self.fields['Benchmark name'] = forms.CharField(widget=forms.TextInput({'value': benchmark, 'readonly': 'readonly'}), )
-        self.fields['Benchmark owner'] = forms.CharField(widget=forms.TextInput({'value': owner, 'readonly': 'readonly'}))
+        self.fields['Benchmark name'] = forms.CharField(
+            widget=forms.TextInput({'value': benchmark, 'readonly': 'readonly'}), )
+        self.fields['Benchmark owner'] = forms.CharField(
+            widget=forms.TextInput({'value': owner, 'readonly': 'readonly'}))
         self.fields['Owner email'] = forms.EmailField(widget=forms.TextInput({'value': email, 'readonly': 'readonly'}))
 
 
@@ -259,3 +280,6 @@ class BenchmarkDetailsForm(forms.Form):
                                                              initial=benchmark.default_chart)
         self.fields['Contributor_Data'] = forms.ChoiceField(choices=self.choices)
 
+
+class InviteColleagueForm(forms.Form):
+    colleague_email = forms.EmailField()

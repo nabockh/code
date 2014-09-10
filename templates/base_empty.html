@@ -23,7 +23,7 @@
     <script src="{{ STATIC_URL }}js/bedade-ui.js"></script>
     <script src="{{ STATIC_URL }}js/jquery-ui.js"></script>
     <script src="{{ STATIC_URL }}js/jquery.ui.touch-punch.min.js"></script>
-    <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-53c393074940bc43"></script>
+{#    <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-53c393074940bc43"></script>#}
 
     {% block js %}{% endblock %}
     <title>{% block title %}Bedade{% endblock %}</title>
@@ -36,8 +36,10 @@
 
 <script>
 		$(window).load(function(){			
-			$(".contact-results, #step3Selected, #selectedContactList, .statsTable, .modal-body-inner, .search-table").mCustomScrollbar({
-				theme:"minimal"
+			$(".contact-results, #step3Selected, #selectedContactList, .statsTable, .modal-body-inner, .search-table, .terms-container").mCustomScrollbar({
+				updateOnBrowserResize: true,
+                updateOnContentResize: true,
+                theme:"minimal"
 			});			
 		});
 </script>
