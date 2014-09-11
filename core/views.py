@@ -11,8 +11,9 @@ from django.contrib.auth.views import redirect_to_login
 from django.core.mail import send_mail
 from django.core.urlresolvers import reverse
 from django.db import IntegrityError
-from django.http import HttpResponseRedirect
-from django.shortcuts import render, resolve_url
+from django.http import HttpResponseRedirect, HttpResponseForbidden
+from django.shortcuts import render, resolve_url, render_to_response
+from django.template.response import TemplateResponse
 from django.utils.encoding import force_str
 from django.views.generic import TemplateView, RedirectView
 from core.forms import ContactForm, TermsAndConditions
@@ -26,6 +27,7 @@ from social.models import Invite
 import django.db.models as models
 from django.template import  Context
 from django.template.loader import get_template
+
 
 class HomeView(TemplateView):
     template_name = 'core/home.html'
@@ -185,3 +187,15 @@ class CMSPopupsView(TemplateView):
     @method_decorator(staff_member_required)
     def dispatch(self, request, *args, **kwargs):
         return super(CMSPopupsView, self).dispatch(request, *args, **kwargs)
+
+
+def csrf_failure(request, reason=""):
+    """
+    Default view used when request fails CSRF protection
+    """
+
+    return HttpResponseRedirect('/disabled_cookies')
+
+
+class CookiesDisabled(TemplateView):
+    template_name = 'core/cookies_disabled.html'

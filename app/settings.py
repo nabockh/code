@@ -310,6 +310,8 @@ SOCIAL_AUTH_COMPLETE_URL_NAME = 'social_complete'
 FIRST_TIME_USER_REDIRECT_URL = '/dashboard'
 REGISTERED_USER_REDIRECT_URL = '/dashboard'
 
+CSRF_FAILURE_VIEW = 'core.views.csrf_failure'
+
 try:
     from local_settings import *
 except ImportError:
