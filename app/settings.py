@@ -248,6 +248,16 @@ CMS_PLACEHOLDER_CONF = {
 
 CMS_CASCADE_PLUGINS = ('bootstrap3',)
 
+CMS_TOOLBARS = [
+    # CMS Toolbars
+    'cms.cms_toolbar.PlaceholderToolbar',
+    'cms.cms_toolbar.BasicToolbar',
+    'cms.cms_toolbar.PageToolbar',
+
+    # 3rd Party Toolbar
+    'core.cms_toolbar.PopupsToolbar',
+]
+
 CACHES = {
     'default': {
         'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
