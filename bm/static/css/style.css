@@ -2860,8 +2860,16 @@ ul#answerSortable {
     .bigChart + .units {
         background: #333;
         color: #fff;
-        font-weight: bold;
+        font-weight: bold;    
+        padding: 7px 20px;
     }
+    
+        .bigChart + .units > span {
+            font-size: 30px;
+            float: right;
+            text-align: right;
+            color: #94a6c3;
+        }
 
     .bigChart > div {
         margin: 0 auto; 

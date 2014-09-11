@@ -31,6 +31,7 @@ function drawColumnChart(chartData, divId) {
             width: "85%", 
             height: "65%" 
         },
+        colors: columnGradient(),
         bar: {
             groupWidth: 50
         },

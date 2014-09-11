@@ -15,15 +15,15 @@
                             {% if benchmark.question_type == 3 or benchmark.question_type == 5 %}
                                 <div id='donutChartHolder'>
                                     <div id='donutChart' class='bigChart'></div>
-                                    <div class='units text-center'>Chart Data In - "{{ benchmark.question.first.options.first.units }}"</div>
+                                    <div class='units'>Chart Data In: <span>"{{ benchmark.question.first.options.first.units }}"</span></div>
                                 </div>
                                 <div id='columnChartHolder'>
                                     <div id='columnChart' class='bigChart'></div>
-                                    <div class='units text-center'>Chart Data In - "{{ benchmark.question.first.options.first.units }}"</div>
+                                    <div class='units'>Chart Data In: <span>"{{ benchmark.question.first.options.first.units }}"</span></div>
                                 </div>
                                 <div id='bellcurveChartHolder'>
                                     <div id='bellcurveChart' class='bigChart'></div>
-                                    <div class='units text-center'>Chart Data In - "{{ benchmark.question.first.options.first.units }}"</div>
+                                    <div class='units'>Chart Data In: <span>"{{ benchmark.question.first.options.first.units }}"</span></div>
                                     <div class='benchmark-stats perc-based'>
                                         <div class='single-stat'>
                                             <span class='title'>Min</span>
@@ -77,7 +77,7 @@
 
                             <div id='lineChartHolder'>
                                 <div id='lineChart' class='bigChart'></div>
-                                <div class='units text-center'>Chart Data In - "{{ benchmark.question.first.options.first.units }}"</div>
+                                <div class='units'>Chart Data In: <span>"{{ benchmark.question.first.options.first.units }}"</span></div>
                             </div>                           
 
                         {% else %}
