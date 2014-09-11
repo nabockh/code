@@ -4,6 +4,7 @@ from app.settings import MESSAGE_LOGOUT, MESSAGE_BETA, MESSAGE_BETA_INVITE
 from bm import metric_events
 from bm.models import Benchmark
 from django.contrib import messages
+from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth import REDIRECT_FIELD_NAME, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.views import redirect_to_login
@@ -180,3 +181,7 @@ class LogoutView(RedirectView):
 
 class CMSPopupsView(TemplateView):
     template_name = 'cms/poppups.html'
+
+    @method_decorator(staff_member_required)
+    def dispatch(self, request, *args, **kwargs):
+        return super(CMSPopupsView, self).dispatch(request, *args, **kwargs)
