@@ -58,7 +58,7 @@
                 <div class='hello'>Hello,</div>
                 <ul class='user-nav-inner'>
                     <li class='username'>{{ user.first_name }} {{ user.last_name }}</li>                            
-                    <li><a href='/logout' title='Log Out'><i class='fa fa-unlock'></i></a></li>
+                    <li><a href='/' title='Log Out'><i class='fa fa-unlock'></i></a></li>
                 </ul>
             {% else %}
                 <div class='hello'>Hello,</div>
@@ -81,39 +81,39 @@
 <div class='container bordered bgwhite open-benchmark-container margined'>
     <div class='ob-header'>
         <div class='row'>
-            <div class='col-md-8'>
+            <div class='col-md-9 col-xs-9'>
                 <div class="ob_image"></div>
                 <div class="ob_title">{{ benchmark.name }}</div>
                 <div class="ob_descr">{{ benchmark.question.first.label }}</div>
             </div>
-            <div class='col-md-4'>
+            <div class='col-md-3 col-xs-3'>
                 <div class="addthis_toolbox">
-                    <div class="custom_images">
+                    <div class="custom_images text-right" >
                         <a href="https://www.linkedin.com/shareArticle?&ro=false&title={{ benchmark.name }}&mini=true&url={{ absolute_url|escape }}&source={{ absolute_url|escape }}"><img src="{{ STATIC_URL }}img/linkedin.png"/></a>
                         <a href="http://twitter.com/share?text={{ benchmark.name }}&url={{ absolute_url|escape }}&hashtags=bedade "><img src="{{ STATIC_URL }}img/twitter.png"/></a>
                         <a href="https://www.facebook.com/sharer/sharer.php?u={{ absolute_url|escape }}"><img src="{{ STATIC_URL }}img/facebook.png" /></a>
                     </div>
                 </div>
+                {% if user.is_authenticated %}
+                    <div class='text-right'>
+                        <a href='{% url 'bm_excel' benchmark.id %}' data-export='excel'>Export <span class='non-mobile'>Results</span> to Excel</a>
+                    </div>
+                {% endif %}
             </div>
         </div>
     </div>
     <div class='benchmark-help'>
         <div class='row'>
-            <div class='col-md-9'>
+            <div class='col-md-12'>
                 <p>{{ benchmark.question.first.description }}</p>
                 <p class='info'>
                     {% if user.is_authenticated %}
-                        <span><strong>Submitted by: </strong><span class='color-teal'>{{ benchmark.owner.first_name }} {{ benchmark.owner.last_name }}</span></span>
+                        <span><strong>Created by: </strong><span class='color-teal'>{{ benchmark.owner.first_name }} {{ benchmark.owner.last_name }}</span></span>
                     {% endif %}
                     <span><strong>Industry: </strong>{{ benchmark.industry }}</span>
                     <span><strong>Geography: </strong>{{ benchmark.geography }}</span>
                     <span><strong>Published: </strong>{{ benchmark.start_date }}</span>
                 </p>
-            </div>
-            <div class='col-md-3 non-mobile'>
-                {% if user.is_authenticated %}
-                    <a href='{% url 'bm_excel' benchmark.id %}' data-export='excel'>Export Results to Excel</a>
-                {% endif %}
             </div>
         </div>
     </div>

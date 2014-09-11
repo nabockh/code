@@ -206,7 +206,7 @@ class BenchmarkRanking(Benchmark):
         series2 = self.series_statistic.values('series').annotate(count=ArrayAgg('value')).order_by('series')
         series2 = [[str(s['series'])] + s['Votes'][::-1] for s in series2]
         if series2:
-            series2.insert(0, ['series'] + [str(i) for i in range(1, len(s['Votes']) + 1)])
+            series2.insert(0, ['series'] + [str(i) for i in range(1, len(['Votes']) + 1)])
         return {
             'pie': series1,
             'column': series2,
@@ -250,9 +250,9 @@ class BenchmarkRange(Benchmark):
         series = self.series_statistic.values('series', 'sub_series', 'value').order_by('id')
         series1 = [[str(s['series'] + '-' + s['sub_series']), s['value']] for s in series]
         series1.insert(0, ['series', 'Votes'])
-        series2 = [['points', 'Votes']]
+        series2 = [['Votes', 'min', 'max', 'min', 'max']]
         for s in series:
-            series2.append([[int(s['series']), int(s['sub_series'])], s['value']])
+            series2.append([s['value'], int(s['series']), int(s['series']), int(s['sub_series']), int(s['sub_series'])])
         return {
             'pie': series1,
             'column': series1,
