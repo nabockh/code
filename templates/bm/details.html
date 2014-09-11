@@ -31,20 +31,26 @@
           <a class="navbar-brand" href="/"><img src='{{ STATIC_URL }}img/bdde_logo.png'/></a>
         </div>
         <nav class="collapse navbar-collapse bs-navbar-collapse" role="navigation">
-            <ul class='main-nav text-center dashboard-nav'>
-              <li><a href="/dashboard">Dashboard</a></li>
-              <li class="dropdown active">
-                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">Benchmarks <span class="caret"></span></a>
-                 <ul class="dropdown-menu" role="menu">
-                    <li><a href="{% url 'bm_create' %}">Create</a></li>
-                    <li><a href="/benchmark/history">My Benchmark History</a></li>
-                 </ul>
-              </li>
-              <li><a  href="#" data-toggle="modal" data-target="#support">Support</a></li>
-
-            </ul>
-            {% include 'core/search_form.html' %}
-
+            {% if user.is_authenticated %}
+                <ul class='main-nav text-center dashboard-nav'>
+                  <li><a href="/dashboard">Dashboard</a></li>
+                  <li class="dropdown active">
+                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">Benchmarks <span class="caret"></span></a>
+                     <ul class="dropdown-menu" role="menu">
+                        <li><a href="{% url 'bm_create' %}">Create</a></li>
+                        <li><a href="/benchmark/history">My Benchmark History</a></li>
+                     </ul>
+                  </li>
+                  <li><a  href="#" data-toggle="modal" data-target="#support">Support</a></li>
+                </ul>
+                {% include 'core/search_form.html' %}
+            {% else %}
+                <ul class='main-nav text-center dashboard-nav'>
+                    <li><a href="/">Home</a></li>
+                    <li><a href="/#about">About</a></li>
+                    <li id='faq-link'><a href="#" data-toggle="modal" data-target="#faq">FaQ</a></li>
+                </ul>
+            {% endif %}
         </nav>
 
       </div>
@@ -67,9 +73,13 @@
                 </ul>
             {% endif %}
             </div>
-            <div class='col-md-4 col-xs-3'>
-                <a href="{% url 'bm_create' %}" class='btn btn-primary pull-right icon-only'><span class='non-mobile'>Create new benchmark</span> <i class='fa fa-plus-circle'></i></a>
-            </div>
+            {% if user.is_authenticated %}
+                <div class='col-md-4 col-xs-3'>
+                    <a href="{% url 'bm_create' %}" class='btn btn-primary pull-right icon-only'><span class='non-mobile'>Create new benchmark</span> <i class='fa fa-plus-circle'></i></a>
+                </div>
+            {% else %}
+                <a href="{% url 'bm_dashboard' %}" style='margin: 0' class="btn sign-in-btn pull-right">Sign in <span class='non-mobile'>with Linkedin</span></a>
+            {% endif %}
         </div>
         </div>
     </div>
@@ -145,6 +155,24 @@
     </div>
   </div>
 </div>
+<script type="text/javascript">
+$( document ).ready(function() {
+    var $document = $(document);
+    var obHeader = $('.ob-header').offset().top;
+    
+    $document.on("scroll", function () {
+        if ($document.scrollTop() > (obHeader - 90)) {
+            $('.ob-header').addClass('fixed');
+        }
+
+        else {
+            $('.ob-header').removeClass('fixed');
+        }
+    });
+});
+</script>
+
+<!-- FAQ Modal -->
 
 <!-- Support Modal -->
     {% include 'core/contact_form.html' %}    

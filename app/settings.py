@@ -248,6 +248,16 @@ CMS_PLACEHOLDER_CONF = {
 
 CMS_CASCADE_PLUGINS = ('bootstrap3',)
 
+CMS_TOOLBARS = [
+    # CMS Toolbars
+    'cms.cms_toolbar.PlaceholderToolbar',
+    'cms.cms_toolbar.BasicToolbar',
+    'cms.cms_toolbar.PageToolbar',
+
+    # 3rd Party Toolbar
+    'core.cms_toolbar.PopupsToolbar',
+]
+
 CACHES = {
     'default': {
         'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
@@ -299,6 +309,8 @@ DEFAULT_FROM_EMAIL = 'Bedade <info@bedade.com>'
 SOCIAL_AUTH_COMPLETE_URL_NAME = 'social_complete'
 FIRST_TIME_USER_REDIRECT_URL = '/dashboard'
 REGISTERED_USER_REDIRECT_URL = '/dashboard'
+
+CSRF_FAILURE_VIEW = 'core.views.csrf_failure'
 
 try:
     from local_settings import *

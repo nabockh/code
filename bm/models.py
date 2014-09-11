@@ -182,7 +182,7 @@ class BenchmarkMultiple(Benchmark):
     def charts(self):
         series = self.series_statistic.values('series', 'value')
         series = [[str(s['series']), s['value']] for s in series]
-        series.insert(0, ['series', 'Votes'])
+        series.insert(0, ['series', 'votes'])
         return {
             'pie': series,
             'column': series,
@@ -202,11 +202,26 @@ class BenchmarkRanking(Benchmark):
     def charts(self):
         series1 = self.series_statistic.values('series', 'sub_series', 'value').order_by('series')
         series1 = [[str(s['series'] + '-' + s['sub_series']), s['value']] for s in series1]
-        series1.insert(0, ['series', 'Votes'])
-        series2 = self.series_statistic.values('series').annotate(count=ArrayAgg('value')).order_by('series')
-        series2 = [[str(s['series'])] + s['Votes'][::-1] for s in series2]
-        if series2:
-            series2.insert(0, ['series'] + [str(i) for i in range(1, len(['Votes']) + 1)])
+        series1.insert(0, ['series', 'count'])
+        # series2 = self.series_statistic.values('series', 'sub_series', 'value').order_by('series')
+        # series2 = [[int(s['sub_series']), s['series'], s['value']] for s in series2]
+        # series2.insert(0, ['rank', 'series', 'votes'])
+        series2 = self.series_statistic.values('series', 'sub_series', 'value').order_by('series')
+        rank_data = {}
+        for item in series2:
+            rank_data.setdefault(item['series'], []).append((item['sub_series'], item['value']))
+        series = sorted(rank_data)
+        titles = ['Ranks']
+        ranks = []
+        for s in series:
+            sub_ranks = [str(s)]
+            for rid, val in sorted(rank_data[s]):
+                titles.append('Rank '+ rid)
+                sub_ranks.append(val)
+            ranks.append(sub_ranks)
+        titles = [str(title) for title in titles]
+        series2 = map(list, zip(titles, *ranks))
+
         return {
             'pie': series1,
             'column': series2,
@@ -226,7 +241,7 @@ class BenchmarkNumeric(Benchmark):
     def charts(self):
         series = self.series_statistic.values('series', 'sub_series', 'value').order_by('id')
         series = [[str(s['series']), s['value']] for s in series]
-        series.insert(0, ['series', 'Votes'])
+        series.insert(0, ['series', 'votes'])
         bell_curve = self.numeric_statistic.values('min', 'max', 'avg', 'sd').first()
         return {
             'pie': series,
@@ -249,8 +264,8 @@ class BenchmarkRange(Benchmark):
     def charts(self):
         series = self.series_statistic.values('series', 'sub_series', 'value').order_by('id')
         series1 = [[str(s['series'] + '-' + s['sub_series']), s['value']] for s in series]
-        series1.insert(0, ['series', 'Votes'])
-        series2 = [['Votes', 'min', 'max', 'min', 'max']]
+        series1.insert(0, ['series', 'votes'])
+        series2 = [['votes', 'min', 'max', 'min', 'max']]
         for s in series:
             series2.append([s['value'], int(s['series']), int(s['series']), int(s['sub_series']), int(s['sub_series'])])
         return {

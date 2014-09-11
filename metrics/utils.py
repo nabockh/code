@@ -1,4 +1,5 @@
 from datetime import datetime
+from django.contrib.auth.models import User
 from django.http import HttpResponse
 from metrics.models import Event
 import StringIO
@@ -10,10 +11,10 @@ def _event_log(event_type=0, object=None):
         def _wrapped_view(self, request, *args, **kwargs):
             etype = event_type
             if type(event_type) == int or type(event_type) == str:
-                params = [event_type, self.request.user]
+                params = [event_type, self.request.user if isinstance(self.request.user, User) else None]
             elif type(event_type) == dict:
                 etype = event_type.get(self.request.method)
-                params = [etype, self.request.user]
+                params = [etype, self.request.user if isinstance(self.request.user, User) else None]
             else:
                 raise TypeError('"event_type" argument can be only int, str or dict')
             result = view_func(self, request, *args, **kwargs)
