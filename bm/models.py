@@ -220,8 +220,14 @@ class BenchmarkRanking(Benchmark):
                 sub_ranks.append(val)
             ranks.append(sub_ranks)
         titles = [str(title) for title in titles]
-        series2 = map(list, zip(titles, *ranks))
 
+        series2 = map(list, zip(titles, *ranks))
+        for rank in series2[1:]:
+            values = rank[1:]
+            del rank[1:]
+            for value in values:
+                value = round((float(value)/sum(values))*100)
+                rank.append(value)
         return {
             'pie': series1,
             'column': series2,
