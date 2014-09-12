@@ -346,9 +346,9 @@ class Question(models.Model):
     RANGE = 5
 
     TYPES = (
-        (MULTIPLE, 'Multiple'),
+        (MULTIPLE, 'Multiple choice'),
         (RANKING, 'Ranking'),
-        (NUMERIC, 'Numeric'),
+        (NUMERIC, 'Numerical value '),
         (RANGE, 'Range'),
         (YES_NO, 'Yes/No'),
     )
