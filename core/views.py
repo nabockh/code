@@ -150,7 +150,7 @@ class DashboardView(TemplateView):
                         'user': user,
                         'site_link': request.build_absolute_uri(),
                     },)
-                body = get_template('alerts/invite_collegaue_email.html').render(context)
+                body = get_template('alerts/invite_colleague_email.html').render(context)
                 send_mail('Invitation to Bedade from %s' % user, body, None, recipient_list)
             return HttpResponseRedirect('/dashboard')
         return render(request, 'bm/dashboard.html', {'invite_colegaue_form': invite_colleague})

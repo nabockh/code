@@ -3660,6 +3660,19 @@
          "name":"alerts/benchmark_answered.html",
          "creation_date":"2014-08-28T11:31:53Z"
       }
+   },
+{
+      "pk":12,
+      "model":"dbtemplates.template",
+      "fields":{
+         "content":"Hello!\nI want to invite you to Bedade!\n{{ user }}\nFollow this link to learn more\n{{ site_link }}",
+         "sites":[
+            1
+         ],
+         "last_changed":"2014-09-09T15:23:38.471Z",
+         "name":"dbtemplates/alerts/invite_colleague_email.html",
+         "creation_date":"2014-09-09T15:21:26Z"
+      }
    }
 ]
 
