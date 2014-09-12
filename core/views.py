@@ -199,3 +199,7 @@ def csrf_failure(request, reason=""):
 
 class CookiesDisabled(TemplateView):
     template_name = 'core/cookies_disabled.html'
+
+
+class JavascriptDisabled(TemplateView):
+    template_name = 'core/javascript_disabled.html'
