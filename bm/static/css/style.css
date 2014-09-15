@@ -904,6 +904,7 @@ input.btn.full-width, .btn.full-width {
         width: 45px;
         margin-top: 100px;
         display: block;
+        display: none\9;
         white-space: nowrap;
         text-align: left;
         -webkit-transform: rotate(-90deg);
