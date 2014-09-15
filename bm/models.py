@@ -182,6 +182,11 @@ class BenchmarkMultiple(Benchmark):
     def charts(self):
         series = self.series_statistic.values('series', 'value')
         series = [[str(s['series']), s['value']] for s in series]
+        value_sum = sum([vote[1] for vote in series])
+        for vote in series:
+            value = round((float(vote[1])/value_sum)*100)
+            del vote[1]
+            vote.append(value)
         series.insert(0, ['series', 'votes'])
         return {
             'pie': series,
@@ -247,6 +252,11 @@ class BenchmarkNumeric(Benchmark):
     def charts(self):
         series = self.series_statistic.values('series', 'sub_series', 'value').order_by('id')
         series = [[str(s['series']), s['value']] for s in series]
+        value_sum = sum([vote[1] for vote in series])
+        for vote in series:
+            value = round((float(vote[1])/value_sum)*100)
+            del vote[1]
+            vote.append(value)
         series.insert(0, ['series', 'votes'])
         bell_curve = self.numeric_statistic.values('min', 'max', 'avg', 'sd').first()
         return {
@@ -270,6 +280,11 @@ class BenchmarkRange(Benchmark):
     def charts(self):
         series = self.series_statistic.values('series', 'sub_series', 'value').order_by('id')
         series1 = [[str(s['series'] + '-' + s['sub_series']), s['value']] for s in series]
+        value_sum = sum([vote[1] for vote in series1])
+        for vote in series1:
+            value = round((float(vote[1])/value_sum)*100)
+            del vote[1]
+            vote.append(value)
         series1.insert(0, ['series', 'votes'])
         series2 = [['votes', 'min', 'max', 'min', 'max']]
         for s in series:
@@ -295,6 +310,11 @@ class BenchmarkYesNo(Benchmark):
     def charts(self):
         series = self.series_statistic.values('series', 'value')
         series = [[str(s['series']), s['value']] for s in series]
+        value_sum = series[0][1] + series[1][1]
+        for vote in series:
+            value = round((float(vote[1])/value_sum)*100)
+            del vote[1]
+            vote.append(value)
         series.insert(0, ['series', 'Votes'])
         return {
             'pie': series,
