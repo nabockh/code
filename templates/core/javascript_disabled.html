@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% load i18n %}
 
-{% block title %}Seems that your cookies are disabled!{% endblock %}
+{% block title %}Page not found{% endblock %}
 
 
 {% block navigation %}
@@ -88,8 +88,8 @@
 <div class='container'>
 	<div class='row'>
 		<div class='col-md-5'>
-            <h1>Looks like your cookies are disabled...</h1>
-			<a href="https://support.google.com/accounts/answer/61416?hl=en" class='not-found-text'>Check for solution here!</a>
+			<h1 class='not-found'>Javascript Warning</h1>
+			<div class='not-found-text'>We've detected that javascript is disabled in your browser. Please enable it to fully experience Bedade! </div>
 		</div>
 		<div class='col-md-7'>
 			<img class='not-found-img' src="{{ STATIC_URL }}img/404.png">

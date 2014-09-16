@@ -305,7 +305,7 @@ $(document).on("click","label.btn-primary[data-target='#preview']",function(){
 
     // callback handler that will be called on success
         request.done(function (response, textStatus, jqXHR){
-            $('.modal-body').html(response);
+            $('#preview .modal-body').html(response);
             // log a message to the console
         });
 
@@ -372,6 +372,18 @@ $(function () {
         rules: {
             colleague_email: {
                 required: true,
+                email: true
+            }
+        }
+    });
+});
+
+$(function () {
+
+    $("#beta_invitation_form").validate({ // initialize the plugin
+
+        rules: {
+            "invite-email": {
                 email: true
             }
         }

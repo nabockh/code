@@ -977,7 +977,7 @@ class ExcelDownloadView(BenchmarkDetailView):
 
         response = HttpResponse(output.read(),
                                 content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
-        response['Content-Disposition'] = 'attachment; filename={0}.xlsx'.format(benchmark.name)
+        response['Content-Disposition'] = 'attachment; filename="{0}.xlsx"'.format(benchmark.name)
         return response
 
     def get_context_data(self, **kwargs):

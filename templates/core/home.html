@@ -55,7 +55,7 @@
                         </div>
                         <div class='col-md-8 col-xs-8'>
                             {% if invitation_form %}
-                                <form role="beta-email" method="post">
+                                <form role="beta-email" method="post" id="beta_invitation_form">
                                     {% csrf_token %}
                                     <div class="form-group">
                                         {{ invitation_form.email }}
@@ -99,8 +99,10 @@
               <div class='smallModal' id='betaModal'>
                 <div class="pop-up-bg"></div>
                 <div class="pop-up-content">
+                    {% static_placeholder "beta_popup_text" or %}
                     <p>Bedade is in beta now.</p>
                     <p>Please request Your invitation on the home page.</p>
+                    {% endstatic_placeholder %}
                     <a href="#" class='btn btn-primary full-width' data-modal-close='true'>Ok</a>
                 </div>
               </div>

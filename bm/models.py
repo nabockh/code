@@ -53,7 +53,6 @@ class BenchmarkValidManager(BenchmarkManager):
 class BenchmarkPendingManager(models.Manager):
     def get_queryset(self):
         return super(BenchmarkPendingManager, self).get_queryset() \
-            .annotate(responses_count=Count('question__responses')) \
             .exclude(approved=False) \
             .filter(end_date__gt=datetime.now())\
             .distinct()
@@ -182,6 +181,11 @@ class BenchmarkMultiple(Benchmark):
     def charts(self):
         series = self.series_statistic.values('series', 'value')
         series = [[str(s['series']), s['value']] for s in series]
+        value_sum = sum([vote[1] for vote in series])
+        for vote in series:
+            value = round((float(vote[1])/value_sum)*100)
+            del vote[1]
+            vote.append(value)
         series.insert(0, ['series', 'votes'])
         return {
             'pie': series,
@@ -220,8 +224,14 @@ class BenchmarkRanking(Benchmark):
                 sub_ranks.append(val)
             ranks.append(sub_ranks)
         titles = [str(title) for title in titles]
-        series2 = map(list, zip(titles, *ranks))
 
+        series2 = map(list, zip(titles, *ranks))
+        for rank in series2[1:]:
+            values = rank[1:]
+            del rank[1:]
+            for value in values:
+                value = round((float(value)/sum(values))*100)
+                rank.append(value)
         return {
             'pie': series1,
             'column': series2,
@@ -241,6 +251,11 @@ class BenchmarkNumeric(Benchmark):
     def charts(self):
         series = self.series_statistic.values('series', 'sub_series', 'value').order_by('id')
         series = [[str(s['series']), s['value']] for s in series]
+        value_sum = sum([vote[1] for vote in series])
+        for vote in series:
+            value = round((float(vote[1])/value_sum)*100)
+            del vote[1]
+            vote.append(value)
         series.insert(0, ['series', 'votes'])
         bell_curve = self.numeric_statistic.values('min', 'max', 'avg', 'sd').first()
         return {
@@ -264,6 +279,11 @@ class BenchmarkRange(Benchmark):
     def charts(self):
         series = self.series_statistic.values('series', 'sub_series', 'value').order_by('id')
         series1 = [[str(s['series'] + '-' + s['sub_series']), s['value']] for s in series]
+        value_sum = sum([vote[1] for vote in series1])
+        for vote in series1:
+            value = round((float(vote[1])/value_sum)*100)
+            del vote[1]
+            vote.append(value)
         series1.insert(0, ['series', 'votes'])
         series2 = [['votes', 'min', 'max', 'min', 'max']]
         for s in series:
@@ -289,6 +309,11 @@ class BenchmarkYesNo(Benchmark):
     def charts(self):
         series = self.series_statistic.values('series', 'value')
         series = [[str(s['series']), s['value']] for s in series]
+        value_sum = series[0][1] + series[1][1]
+        for vote in series:
+            value = round((float(vote[1])/value_sum)*100)
+            del vote[1]
+            vote.append(value)
         series.insert(0, ['series', 'Votes'])
         return {
             'pie': series,
@@ -340,9 +365,9 @@ class Question(models.Model):
     RANGE = 5
 
     TYPES = (
-        (MULTIPLE, 'Multiple'),
+        (MULTIPLE, 'Multiple choice'),
         (RANKING, 'Ranking'),
-        (NUMERIC, 'Numeric'),
+        (NUMERIC, 'Numerical value '),
         (RANGE, 'Range'),
         (YES_NO, 'Yes/No'),
     )
