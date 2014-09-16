@@ -3,6 +3,9 @@ from app import settings
 from app.settings import MESSAGE_LOGOUT, MESSAGE_BETA, MESSAGE_BETA_INVITE
 from bm import metric_events
 from bm.models import Benchmark
+from cms.api import get_page_draft
+from cms.models import Page
+from cms.models.static_placeholder import StaticPlaceholder
 from django.contrib import messages
 from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth import REDIRECT_FIELD_NAME, logout
@@ -11,11 +14,11 @@ from django.contrib.auth.views import redirect_to_login
 from django.core.mail import send_mail
 from django.core.urlresolvers import reverse
 from django.db import IntegrityError
-from django.http import HttpResponseRedirect, HttpResponseForbidden
-from django.shortcuts import render, resolve_url, render_to_response
+from django.http import HttpResponseRedirect, HttpResponseForbidden, HttpResponse
+from django.shortcuts import render, resolve_url, render_to_response, get_object_or_404
 from django.template.response import TemplateResponse
 from django.utils.encoding import force_str
-from django.views.generic import TemplateView, RedirectView
+from django.views.generic import TemplateView, RedirectView, View
 from core.forms import ContactForm, TermsAndConditions
 from bm.forms import InviteColleagueForm
 from django.contrib.auth.models import User
@@ -189,6 +192,27 @@ class CMSPopupsView(TemplateView):
     @method_decorator(staff_member_required)
     def dispatch(self, request, *args, **kwargs):
         return super(CMSPopupsView, self).dispatch(request, *args, **kwargs)
+
+
+class CMSDeleteWidgets(View):
+
+    @method_decorator(staff_member_required)
+    def post(self, request, *args, **kwargs):
+        page = get_object_or_404(Page, id=kwargs.get('page'))
+        placeholders = page.placeholders.all()
+        for placeholder in placeholders:
+            placeholder.cmsplugin_set.all().delete()
+        return HttpResponse()
+
+
+class CMSDeleteStaticWidgets(View):
+
+    @method_decorator(staff_member_required)
+    def post(self, request, *args, **kwargs):
+        placeholders = StaticPlaceholder.objects.all()
+        for placeholder in placeholders:
+            placeholder.draft.cmsplugin_set.all().delete()
+        return HttpResponse()
 
 
 def csrf_failure(request, reason=""):
