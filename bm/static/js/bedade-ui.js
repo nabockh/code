@@ -378,6 +378,18 @@ $(function () {
     });
 });
 
+$(function () {
+
+    $("#beta_invitation_form").validate({ // initialize the plugin
+
+        rules: {
+            "invite-email": {
+                email: true
+            }
+        }
+    });
+});
+
 // DataTable for Search and History page
 
 $(function() {

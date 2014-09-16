@@ -55,7 +55,7 @@
                         </div>
                         <div class='col-md-8 col-xs-8'>
                             {% if invitation_form %}
-                                <form role="beta-email" method="post">
+                                <form role="beta-email" method="post" id="beta_invitation_form">
                                     {% csrf_token %}
                                     <div class="form-group">
                                         {{ invitation_form.email }}
