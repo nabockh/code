@@ -2952,6 +2952,8 @@ ul#answerSortable {
     position: fixed;
     z-index: 99999;
     background: rgb(214, 138, 138);
+    border: 2px solid rgb(162, 83, 83);
+    border-bottom: none;
     padding: 7px 15px 0;
     border-top-left-radius: 5px;
     border-top-right-radius: 5px;
@@ -2973,6 +2975,7 @@ ul#answerSortable {
     font-size: 12px;
     line-height: 14px;
     margin: 5px 0;
+    text-shadow: 1px 1px rgba(224, 178, 178, 0.88);
 }
 
 
