@@ -34,7 +34,10 @@ class CreateBenchmarkStep12Form(forms.Form):
         regions = [('', 'All')]
         regions.extend(list(Region.regions.values_list('id', 'name').order_by('name')))
         self.fields['geo'].choices = regions
-        self.fields['industry'].choices = list(LinkedInIndustry.get_proposal(user.contacts))
+        if user.is_superuser:
+            self.fields['industry'].choices = list(LinkedInIndustry.objects.values_list('code', 'name'))
+        else:
+            self.fields['industry'].choices = list(LinkedInIndustry.get_proposal(user.contacts))
         units = data and data.get('0-units') or kwargs.get('initial', {}).get('units')
         if units and not units in [v for v, _ in QuestionOptions.UNITS]:
             choices = list(QuestionOptions.UNITS)
