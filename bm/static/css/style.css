@@ -2978,6 +2978,55 @@ ul#answerSortable {
     text-shadow: 1px 1px rgba(224, 178, 178, 0.88);
 }
 
+.cms-table {
+    border: 1px solid #ddd;
+    margin-bottom: 50px;
+}
+    .cms-table td.tooltipped {
+        height: 170px;
+        vertical-align: bottom;
+        text-align: center;
+        width: 50%;
+    }
+        .cms-table td.tooltipped .add_help_inner {
+            display: block; 
+        }
+
+            .cms-table td.tooltipped .add_help_inner > span {
+                max-height: 100px;        
+                overflow-y: auto;
+                display: block;
+            }
+
+    .cms-table td.tooltip-label {
+        vertical-align: middle;
+    }
+
+    .cms-table td.cms-popup-label {
+        width: 25%;
+    }
+
+    .cms-table th {
+        background: #333;
+        color: #fff;
+    }
+
+    .cms-table td:first-child {
+        border-right: 1px solid #ddd;
+    }
+
+    .cms-table tr.cms-table-section td {
+        background: #fff !important;
+    }
+
+    .cms-table .cms-answer-help {
+        width: 375px;
+    }
+    
+    .cms-table .cms-answer-help .how-it-works-block, .cms-table .cms-answer-help .title-header.answer {
+        width: 100%;
+        margin: 0;
+    }
 
 /* RESPONSIVENESS */
 
