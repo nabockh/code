@@ -305,7 +305,7 @@ $(document).on("click","label.btn-primary[data-target='#preview']",function(){
 
     // callback handler that will be called on success
         request.done(function (response, textStatus, jqXHR){
-            $('.modal-body').html(response);
+            $('#preview .modal-body').html(response);
             // log a message to the console
         });
 
