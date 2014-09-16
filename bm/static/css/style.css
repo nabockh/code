@@ -3064,7 +3064,7 @@ ul#answerSortable {
         box-shadow: 0 3px 3px rgba(0, 0, 0, 0.2);
     
         z-index: 10;
-}
+    }
 
     ul.main-nav, ul.main-nav.dashboard-nav {
         width: 100%;
@@ -3078,7 +3078,7 @@ ul#answerSortable {
         margin-bottom: 20px;
     
         float: none;
-}
+    }
 
     .fixed-navs .container > .navbar-header {
         margin-bottom: 0;
@@ -3176,13 +3176,13 @@ ul#answerSortable {
         padding-left: 0 !important;
     
         text-align: center !important;
-}
+    }
 
     .features.text-right > * {
         padding-right: 0 !important;
     
         text-align: center !important;
-}
+    }
 
     .big-title.decored:before, .big-title.decored:after {
         width: 15%;
@@ -3303,7 +3303,7 @@ ul#answerSortable {
         padding: 20px;
     
         height: auto;
-}
+    }
 
     .benchmark-help.search {
         margin: -45px -5px 0;
@@ -3466,7 +3466,30 @@ ul#answerSortable {
         display: block !important;
     
         height: auto !important;
-}
+    }
+    #terms_and_conditions_form, #terms_and_conditions_form .modal-dialog {height:100%;}
+    #terms_and_conditions_form .modal-content {height:95%;}
+    #terms_and_conditions_form .modal-body {height:95%;}
+    #terms_and_conditions_form .modal-body-inner {height:100%;min-height:100%;max-height:none;}
+    .ob-header .ob_image {
+        height: 50px;
+        width: 50px;
+        background-size:cover;
+        top:0;
+
+    }
+    .ob-header,.ob-header.fixed {
+        position:relative;
+        margin: 0 -30px;
+        padding: 10px 15px;
+        left:auto;
+        right:auto;
+        top:0;
+    }
+    .ob-header .ob_title {
+        margin-top: 4px;
+        margin-left: 60px;
+    }
 }
 
 @media (max-width: 640px) {
