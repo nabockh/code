@@ -33,6 +33,8 @@
     <title>{% block title %}Bedade{% endblock %}</title>
 </head>
 <body>
+
+
 {% cms_toolbar %}
 {% block body %}{% endblock %}
 {% render_block "js" %}
@@ -47,5 +49,11 @@
 			});			
 		});
 </script>
+<noscript>
+        <div class='nojs'>
+            <h6>Javascript Warning</h6>
+            <p>We've detected that javascript is disabled in your browser. Please enable it to fully experience Bedade!</p>
+        </div>
+</noscript>
 </body>
 </html>

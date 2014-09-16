@@ -2948,6 +2948,33 @@ ul#answerSortable {
     content: none;
 }
 
+.nojs {
+    position: fixed;
+    z-index: 99999;
+    background: rgb(214, 138, 138);
+    padding: 7px 15px 0;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    bottom: 0;    
+    left: 50%;
+    -webkit-transform: translateX(-50%);
+    -moz-transform: translateX(-50%);
+    -o-transform: translateX(-50%);
+    -ms-transform: translateX(-50%);
+    transform: translateX(-50%);
+}
+.nojs h6 {
+    color: rgb(173, 78, 78);
+    text-shadow: 1px 1px rgb(224, 159, 159);
+    margin: 0;
+    font-size: 16px;
+}
+.nojs p {
+    font-size: 12px;
+    line-height: 14px;
+    margin: 5px 0;
+}
+
 
 /* RESPONSIVENESS */
 
