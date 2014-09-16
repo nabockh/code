@@ -2870,7 +2870,12 @@ ul#answerSortable {
             float: right;
             text-align: right;
             color: #94a6c3;
-        }
+        
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 350px;
+}
 
     .bigChart > div {
         margin: 0 auto; 
@@ -2932,6 +2937,17 @@ ul#answerSortable {
     float: none;
     margin: 0 auto;
 }
+
+#s2id_id_1-industry ul li.select2-search-field:after {
+    content: 'All';
+    color: #666;
+    padding: 0 7px;
+}
+
+#s2id_id_1-industry ul li.select2-search-choice + li.select2-search-field:after {
+    content: none;
+}
+
 
 /* RESPONSIVENESS */
 
@@ -3486,9 +3502,19 @@ ul#answerSortable {
         right:auto;
         top:0;
     }
+    
     .ob-header .ob_title {
         margin-top: 4px;
+        margin-left: 60px;    
+        font-size: 18px;
+    }
+    
+    .ob-header .ob_title, .ob-header .ob_descr{
         margin-left: 60px;
+    }
+    
+    .title-header {
+        font-size: 12px;
     }
 }
 
@@ -3498,20 +3524,46 @@ ul#answerSortable {
     .container {
          min-width:0;
     }
-    .char-fillter {display:none;}
     .example-block {
         width: 100%;
         margin: -4px 0;
         height: auto;
     }
 
+    .pop-up-content {
+        max-width: 80%;
+        width: 80%;
+    }
+
+    .user-nav ul.user-nav-inner > li {
+        font-size: 14px;
+    }
+
+    .title-header .select2-container {
+        max-width: 100px;
+    }
+
     .search .tabulation .nav-tabs > li {
         width: 32%;    
         margin-right: 1%;
     }
+    
+    .bigChart + .units > span {
+        max-width: 165px;
+    }
+
+    .addthis_toolbox, .addthis_toolbox + div {
+        width: 50%;
+        float: left;
+        margin-top: 10px;
+    }
+
+    .addthis_toolbox div {
+        text-align: left;
+    }
 
     a[data-export='excel'] {
-        margin-top: 15px;
+        margin-top: 0;
     }
 
     .will-hide {
