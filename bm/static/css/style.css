@@ -3043,8 +3043,8 @@ ul#answerSortable {
         width: 100%;
     }
     .modal-body-inner table td, .modal-body-inner table th {
-        
-        padding-bottom: 30px;
+        width: 100%;
+        padding: 0 15px 20px;
     }
 
 /* RESPONSIVENESS */
