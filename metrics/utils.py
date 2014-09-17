@@ -51,7 +51,7 @@ def queryset_to_excel(queryset):
     for row, event in enumerate(queryset, start=1):
         raw_data = [
             event.date.strftime('%Y-%m-%d %H:%M:%S'),
-            event.user.id,
+            event.user.id if event.user else '',
             str(event.user),
             str(event.type),
             str(event.object) if event.object else '',
