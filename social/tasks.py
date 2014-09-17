@@ -26,7 +26,7 @@ def import_linkedin_contacts(user):
         Contact.create(user, providers.LINKEDIN, **contact_data)
 
 
-@periodic_task(run_every=crontab(minute='0', hour='*'))
+@periodic_task(run_every=crontab(minute='0', hour='0'))
 @celery_log
 def periodic_import_linkedin_contacts():
     """
@@ -41,4 +41,3 @@ def periodic_import_linkedin_contacts():
             contacts = linkedin.get_contacts(user)
             for contact_data in contacts:
                 Contact.create(user, providers.LINKEDIN, **contact_data)
-            print 'imported succesfully for %s' % user
