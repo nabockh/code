@@ -75,7 +75,8 @@
                         </div>
                         <div class="how-it-works-block">
                             <span class="title"><i class='fa fa-question-circle'></i> Have more questions?</span>
-                            <a href='#'>Read our FAQs </a>
+{#                            <a href='#'>Read our FAQs </a>#}
+                            <a href="#" data-toggle="modal" data-target="#faq">Read our FAQs</a>
                         </div>
                     </div>
                 </div>
@@ -142,7 +143,49 @@
                 
             </div>
         </div>
-    </div>            
+    </div>
+    <!-- FAQ Modal -->
+    <div class="modal fade" id="faq" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true"><i class='fa fa-times-circle'></i></span><span class="sr-only">Close</span></button>
+            <h4 class="modal-title" id="FAQLabel">Frequently asked questions</h4>
+          </div>
+          <div class="modal-body">
+            <div class='modal-body-inner'>
+                {% static_placeholder "home_faq" or %}
+                <h4>How can i use Bedade to reach people beyond my direct contacts?</h4>
+                <p>You can access secondary connections by giving the permission to your contacts to forward your query to their own relevant contacts.</p>
+                <br>
+                <h4>How can i ensure my contacts reply?</h4>
+                <p>You are in control. In order to ensure maximum participation you should:</p>
+                <ul>
+                    <li>Ask a question that you would be willing to answer yourself</li>
+                    <li>Carefully select the contacts that you want to invite to answer</li>
+                    <li>Select contacts whith whom you have already build trust and confidence</li>
+                    <li>Select contacts that have sufficient knowledge to answer your query</li>
+                </ul>
+                <br>
+                <h4>Will they know i'm asking the question or will the question be anonymous?</h4>
+                <p>To ensure maximum level of participation, your contacts will know that you are asking this question. This level of trust ensures your contacts to know who is asking for their insights.</p>
+
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed condimentum posuere libero, ut accumsan enim dapibus nec. Quisque hendrerit sollicitudin elit, non elementum est. Sed pellentesque sem a urna bibendum, placerat congue lacus porta. Nam scelerisque diam ut posuere posuere. Donec a nisl sit amet enim luctus egestas. Mauris quis ligula eu risus dictum aliquam eu quis nibh. Ut orci massa, malesuada et dictum vel, ornare eu orci. Mauris condimentum dolor quis semper ullamcorper. Sed at sem eget magna fringilla hendrerit at vel felis. Cras et venenatis nulla. Nam a est quis erat luctus tempor id vel metus.</p>
+
+                <p>Nullam faucibus ante eu posuere sollicitudin. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Morbi sit amet mattis libero. Donec cursus nulla id posuere sollicitudin. Integer metus tortor, molestie nec aliquet sit amet, varius eu tellus. Pellentesque non nisl massa. Donec accumsan varius commodo. Nunc viverra massa lorem, eu aliquam lacus blandit vel. Vivamus fermentum augue lorem, vitae viverra lacus lobortis eu. Sed volutpat elementum ultricies. Proin interdum quam nec magna tincidunt dignissim. Vestibulum sit amet vestibulum magna. Vivamus ultricies lacus at massa pulvinar tristique. Nam pulvinar nunc ac libero aliquet, vel sodales est interdum. Integer at leo et mi rutrum dignissim quis eu dui.</p>
+
+                <p>Vivamus nec condimentum justo. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Aenean pharetra elit vitae tempor posuere. Mauris nec magna porttitor, porttitor nibh a, pharetra lectus. Phasellus congue imperdiet nunc, luctus sagittis nibh adipiscing eu. Vestibulum bibendum blandit quam eget vehicula. Sed venenatis dui id erat posuere vestibulum.</p>
+
+                <p>Nam eu mi adipiscing, lobortis est eget, fringilla quam. Cras a dui posuere, fermentum velit a, volutpat sem. Morbi a pellentesque neque. Nulla et enim cursus, commodo nisl sit amet, tempor leo. Integer vel tempus ligula, non aliquet risus. Donec sed velit consequat, vehicula velit vel, rhoncus nulla. Nam aliquet dui sed viverra imperdiet. Aenean sed eleifend tellus. Integer viverra venenatis porta.</p>
+
+                <p>Aenean sed urna vel quam viverra posuere. Cras posuere, lacus nec tincidunt adipiscing, sapien nisl facilisis nulla, sed interdum leo enim ut mi. Phasellus sit amet ipsum sit amet nibh fringilla cursus pharetra rhoncus nulla. Donec vel rhoncus orci, eu viverra velit. Praesent convallis nec massa a dictum. Praesent luctus ipsum sit amet nisl consectetur malesuada. Nullam suscipit ipsum libero, at egestas arcu scelerisque et. Donec nec rutrum magna, vitae suscipit mauris. Nam dapibus diam non nisl tristique condimentum. Mauris luctus diam diam, tristique euismod odio condimentum vitae. Mauris vel lorem enim. Nam eget risus ut eros bibendum elementum ornare nec risus.
+                </p>
+                {% endstatic_placeholder %}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
    <!-- Support Modal -->
     {% include 'core/contact_form.html' %}
 {% endblock %}
