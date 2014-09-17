@@ -28,7 +28,7 @@ from metrics.utils import event_log
 from social.forms import EmailInvitationRequest
 from social.models import Invite
 import django.db.models as models
-from django.template import  Context
+from django.template import Context
 from django.template.loader import get_template
 
 
@@ -54,7 +54,7 @@ class HomeView(TemplateView):
         return data
 
     # def get(self, request, *args, **kwargs):
-    #     result = super(HomeView, self).get(request, *args, **kwargs)
+    # result = super(HomeView, self).get(request, *args, **kwargs)
     #     result.set_cookie('terms', 1)
     #     return result
 
@@ -74,6 +74,7 @@ class HomeView(TemplateView):
                 except IntegrityError:
                     messages.add_message(request, MESSAGE_BETA_INVITE, 'Please wait for approval.')
                     return HttpResponseRedirect('/')
+            return render(request, 'core/home.html', {'form': contact_form, 'invitation_form': invitation_form,})
         elif 'next' in request.POST:
             terms_form = TermsAndConditions(data=request.POST)
             if terms_form.is_valid():
@@ -89,8 +90,8 @@ class HomeView(TemplateView):
                 last_name = contact_form.cleaned_data['last_name']
                 customer_email = contact_form.cleaned_data['email']
                 comment = contact_form.cleaned_data['comment']
-                recipient_list = User.objects.filter(is_superuser=True, email__isnull=False)\
-                    .exclude(email__exact='')\
+                recipient_list = User.objects.filter(is_superuser=True, email__isnull=False) \
+                    .exclude(email__exact='') \
                     .values_list('email', flat=True)
                 if recipient_list:
                     send_mail('Customer feedback', comment, '%s %s <%s>' % (first_name, last_name, customer_email),
@@ -109,7 +110,7 @@ class DashboardView(TemplateView):
     def dispatch(self, *args, **kwargs):
         return super(DashboardView, self).dispatch(*args, **kwargs)
 
-    def get_context_data(self,*args, **kwargs):
+    def get_context_data(self, *args, **kwargs):
         context = super(DashboardView, self).get_context_data(*args, **kwargs)
         context['user'] = self.request.user
         context['history'] = Benchmark.valid.filter(owner=self.request.user,
@@ -117,9 +118,8 @@ class DashboardView(TemplateView):
                                       .order_by('-end_date', '-id')[:5]
         context['benchmarks'] = {
             'pending': Benchmark.pending.filter(models.Q(question__responses__user=self.request.user) |
-                                                models.Q(owner=self.request.user))
-                                                .annotate(responses_count=models.Count('question__responses'))
-                                                .order_by('-end_date', '-id'),
+                                                models.Q(owner=self.request.user)) \
+                .order_by('-end_date', '-id'),
             'recent': Benchmark.objects \
                 .annotate(responses_count=models.Count('question__responses')) \
                 .filter(models.Q(approved=True,
@@ -133,10 +133,10 @@ class DashboardView(TemplateView):
         # Check if user is associated with Social Profile
         if self.request.user.social_profile.exists():
             context['benchmarks']['popular'] = Benchmark.valid.filter(
-                                popular=True,
-                                end_date__lte=datetime.now(),
-                                _industry=self.request.user.social_profile.first().company.industry) \
-                            .order_by('-end_date', '-id')
+                popular=True,
+                end_date__lte=datetime.now(),
+                _industry=self.request.user.social_profile.first().company.industry) \
+                .order_by('-end_date', '-id')
         else:
             context['benchmarks']['popular'] = None
         context['contact_form'] = ContactForm()
@@ -154,7 +154,7 @@ class DashboardView(TemplateView):
                     {
                         'user': user,
                         'site_link': request.build_absolute_uri(),
-                    },)
+                    }, )
                 body = get_template('alerts/invite_colleague_email.html').render(context)
                 send_mail('Invitation to Bedade from %s' % user, body, None, recipient_list)
             return HttpResponseRedirect('/dashboard')
@@ -166,9 +166,9 @@ class ThankYouView(TemplateView):
 
 
 class BetaView(RedirectView):
-     url = '/'
+    url = '/'
 
-     def get(self, request, *args, **kwargs):
+    def get(self, request, *args, **kwargs):
         messages.add_message(request, MESSAGE_BETA, 'Beta')
         return super(BetaView, self).get(request, *args, **kwargs)
 
@@ -195,7 +195,6 @@ class CMSPopupsView(TemplateView):
 
 
 class CMSDeleteWidgets(View):
-
     @method_decorator(staff_member_required)
     def post(self, request, *args, **kwargs):
         page = get_object_or_404(Page, id=kwargs.get('page'))
@@ -206,7 +205,6 @@ class CMSDeleteWidgets(View):
 
 
 class CMSDeleteStaticWidgets(View):
-
     @method_decorator(staff_member_required)
     def post(self, request, *args, **kwargs):
         placeholders = StaticPlaceholder.objects.all()
