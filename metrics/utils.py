@@ -52,9 +52,9 @@ def queryset_to_excel(queryset):
         raw_data = [
             event.date.strftime('%Y-%m-%d %H:%M:%S'),
             event.user.id if event.user else '',
-            str(event.user),
+            event.user.__str__().encode('utf-8') if event.user else '',
             str(event.type),
-            str(event.object) if event.object else '',
+            event.object.__str__().encode('utf-8') if event.object else '',
             event.object_id,
         ]
         worksheet.write_row(row, col, raw_data)
