@@ -51,7 +51,7 @@
             drawBellcurveChart(mainChartData_{{ benchmark.id }}.bell_curve, 'bellcurveChart-{{ benchmark.id }}-{{ instance.id }}');
         </script>
 
-    % elif benchmark.question_type == 4 %}
+    {% elif benchmark.question_type == 4 %}
         <div id='donutChart-{{ benchmark.id }}-{{ instance.id }}' class='bigChart donut'>
         <script type="text/javascript">
             var mainChartData_{{ benchmark.id }} = {{ benchmark.charts|safe }};

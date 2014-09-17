@@ -299,11 +299,15 @@ ul.user-nav-inner {
     }
 
         ul.user-nav-inner > li.username {
-            margin-left: 0;
-        
+            margin-left: 0;        
             font-size: 20px;
             line-height: 26px;
-}
+        }
+
+            ul.user-nav-inner > li.username a {
+                font-weight: 300;
+                text-decoration: none;
+            }
 
         ul.user-nav-inner > li > a {
             color: #fff;
@@ -1367,7 +1371,7 @@ form[role='search'] .btn-search {
     .benchmark-creation .styled-form label {
         text-transform: uppercase;
         color: #333;
-        font-size: 11px;
+        font-size: 10px;
         display: inline-block;
         font-weight: 600;
     }
@@ -3103,7 +3107,7 @@ ul#answerSortable {
         max-width: 970px;
         padding: 10px 60px;
         margin-left: -60px;
-        top: 110px;
+        top: 140px;
         border: 1px solid #dadada;
     }
 }

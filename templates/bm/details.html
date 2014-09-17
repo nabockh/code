@@ -64,7 +64,7 @@
             {% if user.is_authenticated %}
                 <div class='hello'>Hello,</div>
                 <ul class='user-nav-inner'>
-                    <li class='username'>{{ user.first_name }} {{ user.last_name }}</li>                            
+                    <li class='username'><a href="/dashboard">{{ user.first_name }} {{ user.last_name }}</a></li>                            
                     <li><a href='/' title='Log Out'><i class='fa fa-unlock'></i></a></li>
                 </ul>
             {% else %}
