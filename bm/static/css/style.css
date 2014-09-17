@@ -2853,6 +2853,19 @@ ul#answerSortable {
     display: block;
     color: #8D8D8D;
 }
+
+.rangeAnswer label .units {
+    display: inline;
+    padding-left: 10px;
+    font-weight: 300;
+}
+
+.styled-form.rangeAnswer label {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
 .bigChart {
     height: 300px;
     overflow: hidden;
@@ -3044,7 +3057,7 @@ ul#answerSortable {
     }
     .modal-body-inner table td, .modal-body-inner table th {
         width: 100%;
-        padding: 0 15px 20px;
+        padding: 0 15px 20px 0;
     }
 
 /* RESPONSIVENESS */

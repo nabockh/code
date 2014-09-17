@@ -8,8 +8,23 @@
     	<div class='col-md-12'>
     		<div class='styled-form rangeAnswer'>
 		    	<hr>
-		    	{{ form|bootstrap }}
-                <span class='units' title='In - {{ benchmark.question.first.options.first.units }}'>In - "{{ benchmark.question.first.options.first.units }}"</span>
+		    	<form id="range_answer" action="" method="post" class='styled-form'>
+					{% csrf_token %}
+					{{ form.non_field_errors }}
+					<div class='row'>
+						<div class="col-md-6">
+							<label for="id_min">MIN <span class='units' title='In - {{ benchmark.question.first.options.first.units }}'>(In - "{{ benchmark.question.first.options.first.units }}")</span></label>
+							
+							{{ form.min }}
+							
+						</div>
+						<div class='col-md-6'>
+							<label for="id_max">MAX <span class='units' title='In - {{ benchmark.question.first.options.first.units }}'>(In - "{{ benchmark.question.first.options.first.units }}")</span></label>
+							
+							{{ form.max }}
+						</div>
+					</div>
+				</form>
 		   	</div>
     	</div>
     </div>
