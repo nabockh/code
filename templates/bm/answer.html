@@ -43,7 +43,7 @@
                     <div class='col-md-8 col-xs-9'>
                         <div class='hello'>Hello,</div>
                         <ul class='user-nav-inner'>
-                            <li class='username'>{{ user.first_name }} {{ user.last_name }}</li>                            
+                            <li class='username'><a href="/dashboard">{{ user.first_name }} {{ user.last_name }}</a></li>                            
                             <li><a href='/logout' title='Log Out'><i class='fa fa-unlock'></i></a></li>
                         </ul>
                     </div>
@@ -62,8 +62,8 @@
                     <div class='title-header answer'><i class='fa fa-cog'></i> How it works</div>
                     <div class="how-blocks">
                         <div class="how-it-works-block">
-                            {% static_placeholder "bm_answer_how_it_works_text" or %}
                             <div class="title">Thank you for participating!</div>
+                            {% static_placeholder "bm_answer_how_it_works_text" or %}
                             <p>You were invited to this benchmark query because you have valuable information that can be used to help your professional network make better decisions.</p>
                             {% endstatic_placeholder %}
                         </div>

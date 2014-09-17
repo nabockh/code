@@ -53,6 +53,7 @@ class BenchmarkValidManager(BenchmarkManager):
 class BenchmarkPendingManager(models.Manager):
     def get_queryset(self):
         return super(BenchmarkPendingManager, self).get_queryset() \
+            .annotate(responses_count=Count('question__responses'))\
             .exclude(approved=False) \
             .filter(end_date__gt=datetime.now())\
             .distinct()
@@ -309,11 +310,18 @@ class BenchmarkYesNo(Benchmark):
     def charts(self):
         series = self.series_statistic.values('series', 'value')
         series = [[str(s['series']), s['value']] for s in series]
-        value_sum = series[0][1] + series[1][1]
-        for vote in series:
-            value = round((float(vote[1])/value_sum)*100)
-            del vote[1]
-            vote.append(value)
+        if len(series) >= 2:
+            value_sum = series[0][1] + series[1][1]
+            for vote in series:
+                value = round((float(vote[1])/value_sum)*100)
+                del vote[1]
+                vote.append(value)
+        else:
+            value_sum = 1
+            for vote in series:
+                value = round((float(vote[1])/value_sum)*100)
+                del vote[1]
+                vote.append(value)
         series.insert(0, ['series', 'Votes'])
         return {
             'pie': series,

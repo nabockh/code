@@ -299,11 +299,15 @@ ul.user-nav-inner {
     }
 
         ul.user-nav-inner > li.username {
-            margin-left: 0;
-        
+            margin-left: 0;        
             font-size: 20px;
             line-height: 26px;
-}
+        }
+
+            ul.user-nav-inner > li.username a {
+                font-weight: 300;
+                text-decoration: none;
+            }
 
         ul.user-nav-inner > li > a {
             color: #fff;
@@ -1367,7 +1371,7 @@ form[role='search'] .btn-search {
     .benchmark-creation .styled-form label {
         text-transform: uppercase;
         color: #333;
-        font-size: 11px;
+        font-size: 10px;
         display: inline-block;
         font-weight: 600;
     }
@@ -2952,6 +2956,8 @@ ul#answerSortable {
     position: fixed;
     z-index: 99999;
     background: rgb(214, 138, 138);
+    border: 2px solid rgb(162, 83, 83);
+    border-bottom: none;
     padding: 7px 15px 0;
     border-top-left-radius: 5px;
     border-top-right-radius: 5px;
@@ -2973,8 +2979,58 @@ ul#answerSortable {
     font-size: 12px;
     line-height: 14px;
     margin: 5px 0;
+    text-shadow: 1px 1px rgba(224, 178, 178, 0.88);
 }
 
+.cms-table {
+    border: 1px solid #ddd;
+    margin-bottom: 50px;
+}
+    .cms-table td.tooltipped {
+        height: 170px;
+        vertical-align: bottom;
+        text-align: center;
+        width: 50%;
+    }
+        .cms-table td.tooltipped .add_help_inner {
+            display: block; 
+        }
+
+            .cms-table td.tooltipped .add_help_inner > span {
+                max-height: 100px;        
+                overflow-y: auto;
+                display: block;
+            }
+
+    .cms-table td.tooltip-label {
+        vertical-align: middle;
+    }
+
+    .cms-table td.cms-popup-label {
+        width: 25%;
+    }
+
+    .cms-table th {
+        background: #333;
+        color: #fff;
+    }
+
+    .cms-table td:first-child {
+        border-right: 1px solid #ddd;
+    }
+
+    .cms-table tr.cms-table-section td {
+        background: #fff !important;
+    }
+
+    .cms-table .cms-answer-help {
+        width: 375px;
+    }
+    
+    .cms-table .cms-answer-help .how-it-works-block, .cms-table .cms-answer-help .title-header.answer {
+        width: 100%;
+        margin: 0;
+    }
 
 /* RESPONSIVENESS */
 
@@ -3051,7 +3107,7 @@ ul#answerSortable {
         max-width: 970px;
         padding: 10px 60px;
         margin-left: -60px;
-        top: 110px;
+        top: 140px;
         border: 1px solid #dadada;
     }
 }
