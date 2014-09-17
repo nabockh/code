@@ -3032,6 +3032,21 @@ ul#answerSortable {
         margin: 0;
     }
 
+
+    .modal-body-inner table, .modal-body-inner th, .modal-body-inner td {
+        border: none;
+        vertical-align: top;
+    }
+
+    .modal-body-inner table {
+        table-layout: fixed;
+        width: 100%;
+    }
+    .modal-body-inner table td, .modal-body-inner table th {
+        
+        padding-bottom: 30px;
+    }
+
 /* RESPONSIVENESS */
 
 
