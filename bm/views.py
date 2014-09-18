@@ -119,7 +119,7 @@ class BenchmarkCreateWizardView(CookieWizardView):
         # same data twice.
         if self.request.is_ajax():
             benchmark = self.done(final_form_list, preview=True, **kwargs)
-            return self.render_email_preview(benchmark)
+            return self.render_email_preview(benchmark, form)
 
         done_response = self.done(final_form_list, **kwargs)
 
@@ -127,12 +127,16 @@ class BenchmarkCreateWizardView(CookieWizardView):
         return done_response
 
     @staticmethod
-    def render_email_preview(benchmark):
+    def render_email_preview(benchmark, form):
         template = loader.get_template('alerts/invite.html')
         # TODO: http is hardcoded
         benchmark.link = "<LINK>"
         context = Context({
             'benchmark': benchmark,
+            'question_label': form.cleaned_data['question_label'],
+            'benchmark_name': benchmark.name,
+            'query_details': form.cleaned_data['question_text'],
+            'benchmark_creator': benchmark.owner,
         })
         response = HttpResponse("<pre id='default_text' contenteditable='false'>" + template.render(context)
                                 + '</pre>' + '<button type="button" class="edit-button">'
