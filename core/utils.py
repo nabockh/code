@@ -18,8 +18,13 @@ logger = logging.getLogger('bedade.background')
 
 
 def get_context_variables(benchmark, request=None):
+    """
+    Return variables needed for emails context
+
+    """
     context_vars = {}
     context_vars['benchmark'] = benchmark
+    context_vars['question_label'] = benchmark.question.first().label
     context_vars['number_of_invites'] = benchmark.invites.count()
     context_vars['benchmark_name'] = benchmark.name
     context_vars['query_details'] = benchmark.question.first().description
