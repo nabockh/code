@@ -883,12 +883,19 @@ class ExcelDownloadView(BenchmarkDetailView):
             chart.add_series({'values': '=Contributor Stats!$B$2:$B${0}'.format(len(contributor_results))})
             chart.add_series({'values': '=Contributor Stats!$C$2:$C${0}'.format(len(contributor_results))})
             chart.add_series({'values': '=Contributor Stats!$D$2:$D${0}'.format(len(contributor_results))})
+            chart.add_series({'values': '=Contributor Stats!$E$2:$E${0}'.format(len(contributor_results))})
+            chart.add_series({'values': '=Contributor Stats!$F$2:$F${0}'.format(len(contributor_results))})
+            chart.add_series({'values': '=Contributor Stats!$G$2:$G${0}'.format(len(contributor_results))})
+            chart.add_series({'values': '=Contributor Stats!$H$2:$H${0}'.format(len(contributor_results))})
+            chart.add_series({'values': '=Contributor Stats!$I$2:$I${0}'.format(len(contributor_results))})
+            chart.add_series({'values': '=Contributor Stats!$J$2:$J${0}'.format(len(contributor_results))})
+            chart.add_series({'values': '=Contributor Stats!$K$2:$K${0}'.format(len(contributor_results))})
             chart.set_title ({'name': benchmark.name})
             chart.set_chartarea({
                 'border': {'color': 'black'},
                 'fill':   {'color': 'white'}
             })
-            contributor_worksheet.insert_chart('F3', chart)
+            contributor_worksheet.insert_chart('A13', chart)
         elif question_type == 3:
             internal_worksheet = workbook.add_worksheet('Internal')
             data = [
