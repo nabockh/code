@@ -22,7 +22,6 @@ from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.models import User, Group
 from core.utils import get_context_variables
 from social_auth.db.django_models import Association, Nonce, UserSocialAuth
-
 admin.site.unregister(User)
 admin.site.unregister(Group)
 admin.site.unregister(Association)
@@ -239,7 +238,7 @@ class DeclineView(FormView):
 
 class BenchmarkApprovedAdmin(ReadOnlyAdminMixin, admin.ModelAdmin):
     form = InvitedContactsForm
-    readonly_fields = [field for field in Benchmark._meta.get_all_field_names() if field not in ('popular')]
+    readonly_fields = [field for field in Benchmark._meta.get_all_field_names() if field not in ('popular', 'end_date')]
     readonly_fields.append('question_description')
     readonly_fields.append('question_label')
     fields = ('approved', 'popular', 'name', 'question_label', 'question_description', 'owner',
