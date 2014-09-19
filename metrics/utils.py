@@ -52,16 +52,15 @@ def queryset_to_excel(queryset):
         raw_data = [
             event.date.strftime('%Y-%m-%d %H:%M:%S'),
             event.user.id if event.user else '',
-            event.user.__str__().encode('utf-8') if event.user else '',
+            event.user.__str__().decode('utf-8') if event.user else '',
             str(event.type),
-            event.object.__str__().encode('utf-8') if event.object else '',
+            event.object.__str__().decode('utf-8') if event.object else '',
             event.object_id,
         ]
         worksheet.write_row(row, col, raw_data)
     workbook.close()
     output.seek(0)
-
     response = HttpResponse(output.read(),
-                            content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
-    response['Content-Disposition'] = 'attachment; filename=Metrics {0}.xlsx'.format(datetime.now())
+                            content_type='application/vnd.ms-excel')
+    response['Content-Disposition'] = 'attachment; filename=Metrics_{0}.xlsx'.format(datetime.now().strftime('%Y%m%d_%H%M%S'))
     return response
