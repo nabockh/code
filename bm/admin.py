@@ -2,7 +2,7 @@ from bm.forms import DeclineBenchmarkForm, SendMailForm
 from cms.models import StaticPlaceholder
 from django.conf.urls import patterns
 from django.contrib import admin
-
+from django.contrib import messages
 # Register your models here.
 from bm.models import Benchmark, BenchmarkPending, BenchmarkApproved, BenchmarkAuditLog
 from django.contrib.admin.models import LogEntry, CHANGE
@@ -267,6 +267,10 @@ class BenchmarkApprovedAdmin(ReadOnlyAdminMixin, admin.ModelAdmin):
     def response_change(self, request, obj):
         if '_continue' in request.POST:
             return HttpResponseRedirect(obj.get_admin_url())
+        elif '_aggregate' in request.POST:
+            obj.aggregate()
+            self.message_user(request, "{0} was Aggregated!".format(obj.name), level=messages.INFO)
+            return HttpResponseRedirect('/admin/bm/benchmarkapproved/{0}'.format(obj.id))
         else:
             return super(BenchmarkApprovedAdmin, self).response_change(request, obj)
 
