@@ -100,14 +100,15 @@ def log_bm_creation(benchmark, user, **kwargs):
     )
 
 
-@receiver(post_save, sender=QuestionResponse)
-def notify_creator(instance, **kwargs):
-    # contributor = instance.user.get_full_name()
-    response = kwargs['sender'].objects.get(pk=instance.pk)
-    benchmark = response.question.benchmark
-    template = loader.get_template('alerts/benchmark_answered.html')
-    raw_context = get_context_variables(benchmark)
-    raw_context['contributor_first_name'] = instance.user.first_name
-    raw_context['remaining_before_closure'] = benchmark.days_left
-    context = Context(raw_context)
-    send_mail('Welcome', template.render(context), None, [benchmark.owner.email])
+# @receiver(post_save, sender=QuestionResponse)
+# def notify_creator(instance, **kwargs):
+#     # contributor = instance.user.get_full_name()
+#     response = kwargs['sender'].objects.get(pk=instance.pk)
+#     benchmark = response.question.benchmark
+#     template = loader.get_template('alerts/benchmark_answered.html')
+#     raw_context = get_context_variables(benchmark)
+#     raw_context['contributor_first_name'] = instance.user.first_name
+#
+#     raw_context['remaining_before_closure'] = benchmark.days_left
+#     context = Context(raw_context)
+#     send_mail('Welcome', template.render(context), None, [benchmark.owner.email])

@@ -145,3 +145,27 @@ def check_benchmark_results():
                     body = get_template('alerts/benchmark_results.html').render(context)
                     send_mail(subject, body, None, [recipient])
                 BenchmarkInvitation.objects.filter(recipient__id__in=contacts_ids).update(status=3)
+
+
+@periodic_task(run_every=crontab(minute=0, hour=0))
+@celery_log
+def new_responses():
+    """
+    Task to check new responses to user Benchmarks on daily basis
+
+    """
+    pending = Benchmark.pending.all()
+    template = loader.get_template('alerts/benchmark_answered.html')
+    for benchmark in pending:
+        today = datetime.date(datetime.now())
+        yesterday = today - timedelta(days=1)
+        contributors = benchmark.question.first().responses.\
+            filter(date__range=(yesterday, today)).\
+            values_list('user__first_name', 'user__last_name')
+        contributors_names = ', '.join([(first_name + ' ' + last_name) for first_name, last_name in contributors])
+        raw_context = get_context_variables(benchmark)
+        raw_context['remaining_before_closure'] = benchmark.days_left
+        raw_context['new_contributors'] = contributors_names
+        context = Context(raw_context)
+        if benchmark.owner.email:
+            send_mail('Welcome', template.render(context), None, [benchmark.owner.email])
