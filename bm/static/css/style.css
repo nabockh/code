@@ -452,8 +452,7 @@ span.nav-username-dropdown {
 .units-custom {
     border-right:0!important;
     position:absolute;
-    top:30px;
-    top: 25px;
+    top: 26px;
     width:140px!important;
     left: 15px;
 
@@ -851,10 +850,18 @@ input.btn.full-width, .btn.full-width {
     background-position: 0px 0px;
 }
 
+
 .example-block .title {
     font-size: 14px;
     font-weight: 500;
     line-height: 24px;
+}
+
+#examples .big-title + div .example-block p {
+    padding: 0 10px;
+    font-size: 12px !important;
+    line-height: 22px !important;
+    color: #fff !important;
 }
 
 .example-block p {
@@ -1487,10 +1494,11 @@ span.add_info {
     background: #33626e;
     color: #fff;
     height: 12px;
-    padding: 0 4px 0 3px;
+    width: 12px;
+    padding: 1px 4px 0 3px;
     text-align: center;
     line-height: 12px;
-    font-size: 11px;
+    font-size: 10px;
     font-weight: bold;
     border-radius: 6px;
     cursor: pointer;
@@ -2044,11 +2052,16 @@ form[role='beta-email'] {
     margin-bottom: 10px;
 }
 
-    .dashboard-progress-block:last-child {
+    .dashboard-progress-block:not(.new-benchmark):last-child {
         margin-bottom: 0;
         border-bottom: none;
     }
-
+    
+    .dashboard-progress-block.new-benchmark:last-child {
+        margin-bottom: -16px;
+        margin-top: -11px;
+    }
+    
     .dashboard-progress-block p.title {
         font-weight: bold;
         margin-bottom: 5px;
@@ -2887,7 +2900,8 @@ ul#answerSortable {
     }
     
         .bigChart + .units > span {
-            font-size: 30px;
+            line-height: 23px;
+            font-weight: 900;
             float: right;
             text-align: right;
             color: #94a6c3;        
@@ -2895,7 +2909,9 @@ ul#answerSortable {
             overflow: hidden;
             text-overflow: ellipsis;
             max-width: 350px;
-    }
+    
+            font-size: 18px;
+}
 
     .bigChart > div {
         margin: 0 auto;
@@ -3907,11 +3923,6 @@ html[dir="rtl"] .select2-search input,
 .title-header .select2-dropdown-open.select2-dropdown-open a.select2-choice .select2-arrow b {
      background-position: -18px -1px;
 }
-/*.select2-results {
-    max-height:150px;
-    overflow:hidden !im;
-    padding-right:10px;
-}*/
 
 .answer_options_inputs {clear:both;}
 #answer_options .errorlist {margin:0 0 10px!important;}

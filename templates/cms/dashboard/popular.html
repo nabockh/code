@@ -10,7 +10,7 @@
         <div class="carousel-inner">
             {% for benchmark in benchmarks.popular|slice:":5" %}
                 <div class="item active">
-                    {% include "cms/dashboard/bm_item.html" %}
+                    {% include "cms/dashboard/popular_bm_item.html" %}
                 </div>
             {% empty %}
 
