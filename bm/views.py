@@ -130,13 +130,13 @@ class BenchmarkCreateWizardView(CookieWizardView):
     def render_email_preview(benchmark, form):
         template = loader.get_template('alerts/invite.html')
         # TODO: http is hardcoded
-        benchmark.link = "<LINK>"
         context = Context({
             'benchmark': benchmark,
             'question_label': form.cleaned_data['question_label'],
             'benchmark_name': benchmark.name,
             'query_details': form.cleaned_data['question_text'],
             'benchmark_creator': benchmark.owner,
+            'link_to_answer': "<LINK>",
         })
         response = HttpResponse("<pre id='default_text' contenteditable='false'>" + template.render(context)
                                 + '</pre>' + '<button type="button" class="edit-button">'
