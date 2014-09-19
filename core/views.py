@@ -11,6 +11,7 @@ from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth import REDIRECT_FIELD_NAME, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.views import redirect_to_login
+from django.core.cache import get_cache
 from django.core.mail import send_mail
 from django.core.urlresolvers import reverse
 from django.db import IntegrityError
@@ -30,7 +31,6 @@ from social.models import Invite
 import django.db.models as models
 from django.template import Context
 from django.template.loader import get_template
-
 
 class HomeView(TemplateView):
     template_name = 'core/home.html'
@@ -201,6 +201,8 @@ class CMSDeleteWidgets(View):
         placeholders = page.placeholders.all()
         for placeholder in placeholders:
             placeholder.cmsplugin_set.all().delete()
+        cache = get_cache('default')
+        cache.clear()
         return HttpResponse()
 
 
@@ -210,6 +212,8 @@ class CMSDeleteStaticWidgets(View):
         placeholders = StaticPlaceholder.objects.all()
         for placeholder in placeholders:
             placeholder.draft.cmsplugin_set.all().delete()
+        cache = get_cache('default')
+        cache.clear()
         return HttpResponse()
 
 
