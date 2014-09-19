@@ -249,7 +249,7 @@ class YesNoAnswerForm(forms.Form):
     def __init__(self, *args, **kwargs):
         super(YesNoAnswerForm, self).__init__(*args, **kwargs)
         self.fields['Choose Yes or No:'] = forms.TypedChoiceField(coerce=lambda x: x == 'True',
-                                                                  choices=((False, 'No'), (True, 'Yes')),
+                                                                  choices=((True, 'Yes'), (False, 'No') ),
                                                                   widget=forms.RadioSelect)
 
 

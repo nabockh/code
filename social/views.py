@@ -48,12 +48,12 @@ def complete_process(request, backend, *args, **kwargs):
             # user.social_user is the used UserSocialAuth instance defined
             # in authenticate process
             treshold = 10  # seconds
-            if not redirect_value:
-                if is_new:
-                    first_time_user_login.send(sender=request.user, user=request.user)
-                    redirect_value = FIRST_TIME_USER_REDIRECT_URL
-                else:
-                    redirect_value = REGISTERED_USER_REDIRECT_URL
+            if is_new:
+                first_time_user_login.send(sender=request.user, user=request.user)
+                redirect_value = FIRST_TIME_USER_REDIRECT_URL
+            else:
+                redirect_value = REGISTERED_USER_REDIRECT_URL
+            social_user = user.social_user
             social_user = user.social_user
             if redirect_value:
                 request.session[REDIRECT_FIELD_NAME] = redirect_value or \

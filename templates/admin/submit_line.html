@@ -11,4 +11,5 @@
 {% if opts.object_name == 'User' %}<input type="submit" value="{% trans 'Send Mail' %}" name="_send_mail" {{ onclick_attrib }}/>{% endif %}
 {% if opts.verbose_name == 'Benchmark Pending' %}<input type="submit" value="{% trans 'Decline' %}" name="_decline" {{ onclick_attrib }}/>{% endif %}
 {% if opts.verbose_name == 'Benchmark Pending' %}<input type="submit" value="{% trans 'Approve' %}" name="_approve" {{ onclick_attrib }}/>{% endif %}
+{% if opts.verbose_name == 'Benchmark Approved' %}<input type="submit" value="{% trans 'Aggregate' %}" name="_aggregate" {{ onclick_attrib }}/>{% endif %}
 </div>

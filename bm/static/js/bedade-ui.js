@@ -226,6 +226,11 @@ $(function () {
         $('#searchContactList').hide();
     });
 
+    $('#src_btn').click(function () {
+        $('#recommendedContactList').hide();
+        $('#searchContactList').show();
+    });
+
 
     $('.share-checkbox').change(function() {
         if ($(this).is(':checked') === true) {
@@ -491,6 +496,15 @@ $( document ).ready(function() {
         $('.answer_options_inputs .col-md-4:last-child').before('<div class="col-md-4"><input type="text" value="" maxlength="45" class="ui-new-option"></div>');
         $('.ui-new-option').focus().removeAttr('class');
     });
+
+    if ($('#id_1-name').val() || $('#id_1-role').val()) {
+        $('#recommendedContactList').hide();
+        $('#searchContactList').show();
+    } else {
+        $('#recommendedContactList').show();
+        $('#searchContactList').hide();
+    }
+
     $('#recommendedContactList .add-contact-btn, #searchContactList .add-contact-btn').on('click',function(){
         if(!$(this).attr('disabled')){
             var $this_parent = $(this).closest('.single-contact');

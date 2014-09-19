@@ -11,7 +11,7 @@ def beta_login(backend, details, request, response, uid, user, social_user=None,
     invited = Contact.objects.filter(first_name=details['first_name'],
                                      last_name=details['last_name'])\
         .annotate(user_invites=Count('invites')).filter(user_invites__gt=0)
-    if invited:
+    if invited.exists():
         return
     if not allowed:
         raise StopPipeline

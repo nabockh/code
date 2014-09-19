@@ -119,7 +119,7 @@ class BenchmarkCreateWizardView(CookieWizardView):
         # same data twice.
         if self.request.is_ajax():
             benchmark = self.done(final_form_list, preview=True, **kwargs)
-            return self.render_email_preview(benchmark)
+            return self.render_email_preview(benchmark, form)
 
         done_response = self.done(final_form_list, **kwargs)
 
@@ -127,12 +127,16 @@ class BenchmarkCreateWizardView(CookieWizardView):
         return done_response
 
     @staticmethod
-    def render_email_preview(benchmark):
+    def render_email_preview(benchmark, form):
         template = loader.get_template('alerts/invite.html')
         # TODO: http is hardcoded
-        benchmark.link = "<LINK>"
         context = Context({
             'benchmark': benchmark,
+            'question_label': form.cleaned_data['question_label'],
+            'benchmark_name': benchmark.name,
+            'query_details': form.cleaned_data['question_text'],
+            'benchmark_creator': benchmark.owner,
+            'link_to_answer': "<LINK>",
         })
         response = HttpResponse("<pre id='default_text' contenteditable='false'>" + template.render(context)
                                 + '</pre>' + '<button type="button" class="edit-button">'
@@ -879,12 +883,19 @@ class ExcelDownloadView(BenchmarkDetailView):
             chart.add_series({'values': '=Contributor Stats!$B$2:$B${0}'.format(len(contributor_results))})
             chart.add_series({'values': '=Contributor Stats!$C$2:$C${0}'.format(len(contributor_results))})
             chart.add_series({'values': '=Contributor Stats!$D$2:$D${0}'.format(len(contributor_results))})
+            chart.add_series({'values': '=Contributor Stats!$E$2:$E${0}'.format(len(contributor_results))})
+            chart.add_series({'values': '=Contributor Stats!$F$2:$F${0}'.format(len(contributor_results))})
+            chart.add_series({'values': '=Contributor Stats!$G$2:$G${0}'.format(len(contributor_results))})
+            chart.add_series({'values': '=Contributor Stats!$H$2:$H${0}'.format(len(contributor_results))})
+            chart.add_series({'values': '=Contributor Stats!$I$2:$I${0}'.format(len(contributor_results))})
+            chart.add_series({'values': '=Contributor Stats!$J$2:$J${0}'.format(len(contributor_results))})
+            chart.add_series({'values': '=Contributor Stats!$K$2:$K${0}'.format(len(contributor_results))})
             chart.set_title ({'name': benchmark.name})
             chart.set_chartarea({
                 'border': {'color': 'black'},
                 'fill':   {'color': 'white'}
             })
-            contributor_worksheet.insert_chart('F3', chart)
+            contributor_worksheet.insert_chart('A13', chart)
         elif question_type == 3:
             internal_worksheet = workbook.add_worksheet('Internal')
             data = [
