@@ -28,15 +28,15 @@ function drawPieChart(chartData, divId) {
             
     var donutOptions = {
         pieHole: 0.35,
-        legend: 'left',
+        legend: { position: "bottom" },
         pieSliceText: 'label',
         tooltip: { text: 'percentage' },
         slices: pieGradient(chartData.length),
-        chartArea: { 
+        chartArea: {
+            top: '5%',
             width: "90%", 
-            height: "90%" 
+            height: "80%" 
         }
-
     };
 
    

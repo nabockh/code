@@ -1,6 +1,6 @@
 function columnGradient(slices){
-    var startColor = { r : 32, g : 44, b : 69};
-    var endColor = { r : 96, g : 138, b : 148};
+    var startColor = { r : 96, g : 138, b : 148};
+    var endColor = { r : 32, g : 44, b : 69};
     var slices = mainChartData.column.length;
     var results = [];
 
@@ -23,8 +23,16 @@ function drawColumnChart(chartData, divId) {
     if (typeof google == 'undefined') {
         throw new Exception();
     }
-    var columnChartData = google.visualization.arrayToDataTable(chartData);
+    if(chartData.length > 1){
+        for(var i = 1; i < chartData.length; ++i){
+            for(var j = 1; j < chartData[i].length; ++j){
+                chartData[i][j] = {"v": chartData[i][j], "f": chartData[i][j]+"%"};
+            }
+        }
+    }
 
+    var columnChartData = google.visualization.arrayToDataTable(chartData);
+ 
     var columnOptions = {
         legend: { position: "top" },
         chartArea: {  
@@ -33,9 +41,9 @@ function drawColumnChart(chartData, divId) {
         },
         colors: columnGradient(),
         bar: {
-            groupWidth: 50
+            groupWidth: "80%"
         },
-        vAxis: { title : 'Count of Votes', textStyle: {fontSize : '1', color: '#FFFFFF'}},
+        vAxis: { title : '', textStyle: {fontSize : '1', color: '#FFFFFF'}},
     };
  
 

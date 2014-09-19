@@ -556,7 +556,7 @@ input.btn.full-width, .btn.full-width {
     margin-bottom: 40px;
 }
 
-.big-title + div *, .colorblock .cms_plugin span {
+.big-title + div *:not(.example-block):not(.big-icon):not(.will-hide), .colorblock .cms_plugin span {
     line-height: inherit !important;
     font-size: inherit !important;
     margin-bottom: inherit !important;
@@ -2858,6 +2858,10 @@ ul#answerSortable {
     display: inline;
     padding-left: 10px;
     font-weight: 300;
+    float: right;
+    max-width: 200px;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .styled-form.rangeAnswer label {
@@ -2868,6 +2872,7 @@ ul#answerSortable {
 
 .bigChart {
     height: 300px;
+    min-width: 
     overflow: hidden;
 }
 
@@ -2886,16 +2891,15 @@ ul#answerSortable {
             font-size: 30px;
             float: right;
             text-align: right;
-            color: #94a6c3;
-        
+            color: #94a6c3;        
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
             max-width: 350px;
-}
+    }
 
     .bigChart > div {
-        margin: 0 auto; 
+        margin: 0 auto;
     }
 
     #donutChart.bigChart > div, .bigChart.donut > div {
@@ -3135,7 +3139,7 @@ ul#answerSortable {
         max-width: 970px;
         padding: 10px 60px;
         margin-left: -60px;
-        top: 140px;
+        top: 110px;
         border: 1px solid #dadada;
     }
 }
