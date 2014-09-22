@@ -138,9 +138,9 @@ class BenchmarkCreateWizardView(CookieWizardView):
             'benchmark_creator': benchmark.owner,
             'link_to_answer': "<LINK>",
         })
-        response = HttpResponse("<pre id='default_text' contenteditable='false'>" + template.render(context)
-                                + '</pre>' + '<button type="button" class="edit-button">'
-                                             ''+'Edit'+'</button>'+'<button type="button" class="save-button">'
+        response = HttpResponse("<pre  id='default_text' contenteditable='true'>"
+                                + template.render(context)
+                                + '</pre>' + '<button type="button" class="save-button">'
                                              ''+'Save'+'</button>')
         return response
 

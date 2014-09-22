@@ -3930,6 +3930,10 @@ html[dir="rtl"] .select2-search input,
      background-position: -18px -1px;
 }
 
+#default_text {
+    background-color: #FFFFFF;
+}
+
 .answer_options_inputs {clear:both;}
 #answer_options .errorlist {margin:0 0 10px!important;}
 .answer_options_area {position:absolute;width:1px;height:1px;overflow:hidden;}
