@@ -26,7 +26,7 @@ function drawLineChart(chartData, divId) {
     var lineChartData = google.visualization.arrayToDataTable(chartData);
 
     var lineOptions = {
-        legend: 'top',
+        legend: 'none',
         colors: ['#8592B2'],
         lineWidth: 3,
         orientation: 'vertical',
