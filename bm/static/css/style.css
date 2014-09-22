@@ -199,7 +199,8 @@ ul.main-nav {
             }
 
         ul.main-nav > li.active > a {
-            box-shadow: 0 22px #fff, 0 30px #425380;
+            border-bottom: 5px solid #425380; 
+            padding-bottom: 25px;
         }
 
 .social-btns > a {
@@ -345,7 +346,7 @@ ul.user-nav-inner {
     }
 
         .fixed-navs #top.navbar-default ul.main-nav > li.active > a {
-            box-shadow: 0 15px #fff, 0 20px #425380;
+            padding-bottom: 15px;
         }
 
 .fixed-navs .user-nav .btn.sign-in-btn {
@@ -3079,6 +3080,11 @@ ul#answerSortable {
         padding: 0 15px 20px 0;
     }
 
+    .google-visualization-tooltip {
+        width: auto !important;
+        padding: 5px;
+    }
+
 /* RESPONSIVENESS */
 
 
@@ -3922,6 +3928,10 @@ html[dir="rtl"] .select2-search input,
 }
 .title-header .select2-dropdown-open.select2-dropdown-open a.select2-choice .select2-arrow b {
      background-position: -18px -1px;
+}
+
+#default_text {
+    background-color: #FFFFFF;
 }
 
 .answer_options_inputs {clear:both;}
