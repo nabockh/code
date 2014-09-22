@@ -600,10 +600,6 @@ $(document).ajaxStop(function() {
 
 $( document ).ready(function(){
     $( "#preview" ).on('shown.bs.modal', function() {
-        $( '.edit-button' ).on('click', function() {
-            $('pre').attr('contenteditable', true);
-            $('#default_text').css('background-color', '#FFFFFF');
-        });
         $( '.save-button' ).on('click', function() {
             $('#email_body').text($('#default_text').text());
             $( "#preview" ).modal('hide');
