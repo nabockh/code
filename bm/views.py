@@ -286,11 +286,13 @@ class BaseBenchmarkAnswerView(FormView):
     success_url = '/dashboard'
     benchmark = None
 
-    @method_decorator(login_required(login_url='/'))
+    @method_decorator(login_required)
     def dispatch(self, request, slug, *args, **kwargs):
 
         benchmark_link = BenchmarkLink.objects\
-            .filter(slug=slug)\
+            .filter(Q(benchmark__invites__recipient__user=request.user) |
+                    Q(benchmark__invites__recipient__user__contacts__user=request.user),
+                    slug=slug,)\
             .select_related('benchmark', 'benchmark__owner',
                             'benchmark__question',
                             'benchmark___industry',
