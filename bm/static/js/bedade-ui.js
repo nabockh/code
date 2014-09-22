@@ -222,6 +222,7 @@ $(function () {
     });
 
     $('#rec_btn').click(function () {
+        $( ".char-fillter li.filter-all" ).trigger( "click" );
         $('#recommendedContactList').show();
         $('#searchContactList').hide();
     });
@@ -610,10 +611,10 @@ $( document ).ready(function(){
     $(".char-fillter li").click(function() {
         var filter_char = $(this).text();
         if($(this).hasClass('filter-all')){
-            $("#searchContactList .single-contact").removeClass('char-fillter-apply char-filltered');
+            $("#searchContactList .single-contact, #recommendedContactList .single-contact").removeClass('char-fillter-apply char-filltered');
         }
         else{
-            $("#searchContactList .single-contact").each(function() {
+            $("#searchContactList .single-contact, #recommendedContactList .single-contact").each(function() {
                 $(this).removeClass('char-fillter-apply char-filltered').addClass('char-fillter-apply');
                 var str = $('.col-md-6.col-xs-6 label:first-child', this).text().split(' ').pop()[0].substring(0, 1);
                 if(str === filter_char){
