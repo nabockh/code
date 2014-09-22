@@ -226,11 +226,6 @@ $(function () {
         $('#searchContactList').hide();
     });
 
-    $('#src_btn').click(function () {
-        $('#recommendedContactList').hide();
-        $('#searchContactList').show();
-    });
-
 
     $('.share-checkbox').change(function() {
         if ($(this).is(':checked') === true) {
@@ -497,12 +492,12 @@ $( document ).ready(function() {
         $('.ui-new-option').focus().removeAttr('class');
     });
 
-    if ($('#id_1-name').val() || $('#id_1-role').val()) {
-        $('#recommendedContactList').hide();
-        $('#searchContactList').show();
-    } else {
+    if ($('#from1_flag').length > 0) {
         $('#recommendedContactList').show();
         $('#searchContactList').hide();
+    } else {
+        $('#recommendedContactList').hide();
+        $('#searchContactList').show();
     }
 
     $('#recommendedContactList .add-contact-btn, #searchContactList .add-contact-btn').on('click',function(){

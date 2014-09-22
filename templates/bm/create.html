@@ -321,6 +321,9 @@
                             </div>
                         </div>
                     {% elif wizard.steps.step1 == 2 %}
+                       {% if 'is_continue' in request.POST  %}
+                           <input id="from1_flag" type="hidden"/>
+                       {% endif %}
                        {% include 'bm/create/step2.html' %}
                     {% elif wizard.steps.step1 == 3 %}
                         <div class='col-md-8 lined-left'>
