@@ -36,7 +36,7 @@
                      aria-valuemax="100" style="width: {{ benchmark.progress }}%;">
                     {{ benchmark.progress }}%
                 </div>
-                {% if benchmark.owner == request.user %}
+                {% if benchmark.owner == user %}
                 <a href="{% url 'bm_add_recipients' benchmark.id %}" class="btn btn-primary add-recipients"><span
                         class='non-mobile'>Add contacts</span><span class='mobile'><i class='fa fa-plus-circle'></i></span></a>
                 {% endif %}
