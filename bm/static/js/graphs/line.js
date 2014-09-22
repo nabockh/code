@@ -3,22 +3,25 @@ function drawLineChart(chartData, divId) {
         throw new Exception();
     }
 
-    // function createCustomHTMLContent(ChartData) {
-    //     for(var i = 0; i < chartData.length; ++i){
-    //         var votes = chartData;
-    //         return 'Votes: ' + votes
-    //     }
+    function createCustomHTMLContent(chartData) {
+        for(var i = 0; i < chartData.length; ++i){
+            var votes = chartData[0];
+            var min = chartData[1];
+            var max = chartData[3];
+            return '<div style="padding:5px 5px 5px 5px;">' +
+      'Contributors: ' + '<b>' + votes + '</b>' + '<br/>'+ '<span style="display: block; border-bottom: 1px solid #ccc; padding-top: 5px; margin-bottom: 5px;"></span>' + 'Range: ' + '<b>' + min + ' - ' + max + '</b>' + '</div>';
+        }
         
-    // };
+    };
 
-    // for(var i = 0; i < chartData.length; ++i){
-    //     if(i==0){
-    //         chartData[i].push({type: 'string', role: 'tooltip'});
-    //     }
-    //     else{
-    //         chartData[i].push(createCustomHTMLContent());
-    //     }
-    // }
+    for(var i = 0; i < chartData.length; ++i){
+        if(i==0){
+            chartData[i].push({'type': 'string', 'role': 'tooltip', 'p': {'html': true}});
+        }
+        else{
+            chartData[i].push(createCustomHTMLContent(chartData[i]));
+        }
+    }
 
     var lineChartData = google.visualization.arrayToDataTable(chartData);
 
@@ -31,7 +34,7 @@ function drawLineChart(chartData, divId) {
             width: "85%", 
             height: "60%"
         },
-        // tooltip: { isHtml : true },
+        tooltip: { isHtml : true },
         bar: {groupWidth: '2'},
         vAxis: { title : 'Number of Contributors', titleTextStyle: {color: '#33626e'}, textStyle: {fontSize: '1'}, format:'#', gridlines: {count : "-1"}},
         hAxis: { title : 'Values', titleTextStyle: {color: '#33626e'}}

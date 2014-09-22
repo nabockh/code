@@ -1,7 +1,6 @@
 function columnGradient(slices){
     var startColor = { r : 96, g : 138, b : 148};
     var endColor = { r : 32, g : 44, b : 69};
-    var slices = mainChartData.column.length;
     var results = [];
 
     var deltaR = ((endColor.r - startColor.r) / slices);
@@ -39,7 +38,7 @@ function drawColumnChart(chartData, divId) {
             width: "85%", 
             height: "65%" 
         },
-        colors: columnGradient(),
+        colors: columnGradient(chartData.length),
         bar: {
             groupWidth: "80%"
         },

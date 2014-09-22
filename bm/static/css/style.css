@@ -199,7 +199,8 @@ ul.main-nav {
             }
 
         ul.main-nav > li.active > a {
-            box-shadow: 0 22px #fff, 0 30px #425380;
+            border-bottom: 5px solid #425380; 
+            padding-bottom: 25px;
         }
 
 .social-btns > a {
@@ -345,7 +346,7 @@ ul.user-nav-inner {
     }
 
         .fixed-navs #top.navbar-default ul.main-nav > li.active > a {
-            box-shadow: 0 15px #fff, 0 20px #425380;
+            padding-bottom: 15px;
         }
 
 .fixed-navs .user-nav .btn.sign-in-btn {
@@ -3077,6 +3078,11 @@ ul#answerSortable {
     .modal-body-inner table td, .modal-body-inner table th {
         width: 100%;
         padding: 0 15px 20px 0;
+    }
+
+    .google-visualization-tooltip {
+        width: auto !important;
+        padding: 5px;
     }
 
 /* RESPONSIVENESS */
