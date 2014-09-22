@@ -285,7 +285,7 @@ class BenchmarkRange(Benchmark):
             value = round((float(vote[1])/value_sum)*100)
             del vote[1]
             vote.append(value)
-        series1.insert(0, ['series', 'Contributors: '])
+        series1.insert(0, ['series', 'Contributors'])
         series2 = [['votes', 'min', 'max', 'min', 'max']]
         for s in series:
             series2.append([s['value'], int(s['series']), int(s['series']), int(s['sub_series']), int(s['sub_series'])])
