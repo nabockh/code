@@ -4,10 +4,9 @@
     <div class='container bordered bgwhite benchmark-creation margined'>
         <div class="margined no-bottom">
             <div class='row'>
-                 <form action="" method="post" class='styled-form'>{% csrf_token %}
-                    <table>
+                 <form action="" method="post" class='styled-form'>
+                    {% csrf_token %}
                     {% include 'bm/create/step2.html' %}
-                    </table>
                      <div class='btn-holder'>
                         <a href="{% url 'bm_dashboard' %}" class='btn btn-default auto-width'>Cancel</a>
                         <input id='bm-submit' name="send_invitations" type="submit" class="btn btn-primary auto-width continue-btn hidden" value="Send invitations"/>
