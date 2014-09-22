@@ -720,7 +720,10 @@ class ExcelDownloadView(BenchmarkDetailView):
         bold = workbook.add_format({'bold': True})
         question = benchmark.question.first()
         description = question.description
-        owner = benchmark.owner.first_name + ' ' +benchmark.owner.last_name
+        if benchmark.owner:
+            owner = benchmark.owner.first_name + ' ' + benchmark.owner.last_name
+        else:
+            owner = None
         basic_info = [benchmark.name, question.label, description]
         if owner:
             basic_info.append(owner)
