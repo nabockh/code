@@ -19,7 +19,7 @@ class CreateBenchmarkStep12Form(forms.Form):
     geo = forms.ChoiceField(required=False)
     question_label = forms.CharField(max_length=255)
     question_text = forms.CharField(widget=forms.Textarea(attrs={'maxlength': 10000}),
-                                    max_length=10000)
+                                    max_length=10000, required=False)
     question_type = forms.ChoiceField(choices=Question.TYPES)
     answer_options = forms.CharField(widget=forms.Textarea(), validators=[multiple_choice_validator])
     units = forms.ChoiceField(initial='$', choices=QuestionOptions.UNITS)
@@ -65,7 +65,7 @@ class CreateBenchmarkStep3Form(forms.Form):
         if self.is_continue and hasattr(self, 'selected_contacts'):
             if len(self.selected_contacts) < self.min_number_of_answers:
                 self.errors['__all__'] = self.error_class(
-                    ['Count of selected contacts should be at least %d' % self.min_number_of_answers])
+                    ['You need to select at least  %d contacts to proceed' % self.min_number_of_answers])
         return self.cleaned_data
 
     @staticmethod
