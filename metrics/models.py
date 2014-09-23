@@ -8,7 +8,7 @@ from django.core.cache import cache
 # import keen
 
 
-# TYPE_HTTP_REQUEST = 'HttpRequest'
+TYPE_HTTP_REQUEST = 'HttpRequest'
 # keen.project_id = KEEN_PROJECT_ID
 # keen.write_key = KEEN_WRITE_KEY
 # keen.read_key = KEEN_READ_KEY
