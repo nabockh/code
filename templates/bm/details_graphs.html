@@ -221,7 +221,19 @@
             $("#avgVal").text(mainChartData.bell_curve.avg);
             var sd = mainChartData.bell_curve.sd.toFixed(1); 
             $("#sdVal").text(sd);
+
+            $( ".single-stat .value" ).each(function() {
+                var len = $(this).text().length;
+                if (len >= 6) {
+                    $(this).addClass('more');
+                }
+                else {
+                    $(this).removeClass('more');
+                }
+            });
         });
+
+
         drawBellcurveChart(mainChartData.bell_curve, 'bellcurveChart');
 
 
@@ -231,7 +243,7 @@
     drawStatsChart(statisticGeoData, 'geoChart');
     drawStatsChart(statisticIndustriesData, 'industryChart');
     drawStatsChart(statisticCountriesData, 'countryChart');
-    
+
 </script>
 
 

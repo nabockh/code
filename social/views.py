@@ -54,7 +54,6 @@ def complete_process(request, backend, *args, **kwargs):
             else:
                 redirect_value = REGISTERED_USER_REDIRECT_URL
             social_user = user.social_user
-            social_user = user.social_user
             if redirect_value:
                 request.session[REDIRECT_FIELD_NAME] = redirect_value or \
                                                        DEFAULT_REDIRECT

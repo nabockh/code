@@ -173,7 +173,7 @@
                                     {{ form.question_label.errors }}
                                 </div>
                                 <div class='col-md-12'>
-                                    <label for="id_0-question_text">Question details</label>
+                                    <label for="id_0-question_text">Additional details</label>
                                     <span class="add_help">?
                                         <span class='add_help_inner'>
                                             <span>
@@ -336,13 +336,13 @@
                                     {{ form.name.errors }}
                                 </div>
                                 <div class='col-md-12'>
-                                    <label for="id_2-question_label">Your Question</label>
+                                    <label for="id_2-question_label">Your QuestionQuestion</label>
                                     <span class="add_info">(ie 'What is the projected growth of your technology budget for next year?')</span>
                                     {{ form.question_label }}
                                     {{ form.question_label.errors }}
                                 </div>
                                 <div class='col-md-12'>
-                                    <label for="id_2-question_text">Question Details</label>
+                                    <label for="id_2-question_text">Additional details</label>
                                     <span class="add_help">?
                                         <span class='add_help_inner'>
                                             <span>
@@ -523,8 +523,8 @@
                         <input id='bm-submit' type="submit" class="btn btn-primary auto-width continue-btn hidden" value="{% trans "Send invitations" %}"/>
                         <label for='bm-submit' class='btn btn-primary auto-width pull-right'> Send Invitations <i class='fa fa-arrow-circle-o-right'></i></label>
                         <label class="btn btn-primary auto-width pull-right fix" data-toggle="modal" data-target="#preview">Email Preview <i class='fa fa-eye'></i></label>
+{#                        <label class="btn btn-primary auto-width pull-right fix" data-toggle="modal" data-target="#answer_preview">Answer Form Preview<i class='fa fa-eye'></i></label>#}
                     {% else %}
-
                         <input id='bm-submit' name="is_continue" type="submit" class="btn btn-primary auto-width continue-btn hidden" value="{% trans "Continue" %}"/>
                         <label for='bm-submit' class='btn btn-primary auto-width pull-right'> Continue <i class='fa fa-arrow-circle-o-right'></i></label>
                     {% endif %}
@@ -538,6 +538,104 @@
     </div>
     
 </div>
+{% if wizard.steps.step1 == 3 %}
+<!-- Answer Form Preview  -->
+     <div class="modal fade" id="answer_preview" tabindex="-1" role="dialog" aria-labelledby="previewLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true"><i class='fa fa-times-circle'></i></span><span class="sr-only">Close</span></button>
+            <h4 class="modal-title" id="prviewLabel">Answer form Preview</h4>
+          </div>
+          <div class="modal-body">
+            <div class='modal-body-inner'>
+                 <div class='col-md-7'>
+                    <div class='col-md-12 bordered bgwhite margin-bot padding-bot'>
+                        <div class='title-header answer'><i class='fa fa-check'></i> Contribute to benchmark</div>
+                        <div class='row'>
+                            <div class='bm-answer'>
+                                <div class='row'>
+                                    <div class='col-md-3 col-xs-4'>
+                                        <p><strong>Benchmark:</strong></p>
+                                    </div>
+                                    <div class='col-md-9 col-xs-8'>
+                                        <p>{{  wizard.form.initial.name }}</p>
+                                    </div>
+                                </div>
+                                <div class='row'>
+                                    <div class='col-md-3 col-xs-4'>
+                                        <p><strong>Created By:</strong></p>
+                                    </div>
+                                    <div class='col-md-9 col-xs-8'>
+                                        <p class='text-green'>{{ request.user.first_name }} {{ request.user.last_name }}</p>
+                                    </div>
+                                </div>
+                                <div class='row'>
+                                    <div class='col-md-3 col-xs-4'>
+                                        <p><strong>Industry:</strong></p>
+                                    </div>
+                                    <div class='col-md-9 col-xs-8'>
+                                        {% if wizard.form.initial.industry == '' %}
+                                            <p>All</p>
+                                        {% else %}
+                                            <p>{{ wizard.form.initial.industry }}</p>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                <div class='row'>
+                                    <div class='col-md-3 col-xs-4'>
+                                        <p><strong>Geography:</strong></p>
+                                    </div>
+                                    <div class='col-md-9 col-xs-8'>
+                                        <p>{{ wizard.form.initial.geo }}</p>
+                                    </div>
+                                </div>
+                                <hr>
+                                <p><strong>{{ wizard.form.initial.question_label }}</strong></p>
+                                <p>{{ wizard.form.initial.question_text }}</p>
+                                <form action="" method="post">
+                                    {% csrf_token %}
+                                    {% block answer_form %}
+                                        {% if numeric_form %}
+                                                <div class='styled-form numericAnswer'>
+                                                    <hr>
+                                                    <div class='row'>
+                                                        <div class='col-md-3'></div>
+                                                        <div class='col-md-9'><span class='units' title='In - {{ wizard.form.initial.units }}'>In - "{{ wizard.form.initial.units }}"</span></div>
+                                                        <div class='col-md-3'>
+                                                            <label class="control-label visible" for="id_numeric_box">Your Answer:</label>
+                                                        </div>
+                                                        <div class='col-md-9'>
+                                                            {{ numeric_form|bootstrap }}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                        {% endif %}
+                                    {% endblock %}
+                                    <hr>
+                                    <div class='row'>
+                                        <div class='col-md-5'>
+                                            <input type="submit" value="{% trans "submit" %}" id='answer_btn' class='hidden'/>
+                                            <label for='answer_btn' class='btn btn-primary answer_btn'>Submit Answer</label>
+                                        </div>
+                                        <div class='col-md-7'>
+                                            <span class='answer-footer-text'><strong>{{ wizard.form.initial.minimum_number_of_answers }}</strong> people were invited to participate</span>
+                                            <span class='answer-footer-text'>Results will be published on <strong>{{ wizard.form.initial.end_date }}</strong></span>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+{% endif %}
     <!-- Support Modal -->
     {% include 'core/contact_form.html' %}
 {% endblock %}

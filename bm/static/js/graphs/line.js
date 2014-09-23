@@ -4,14 +4,10 @@ function drawLineChart(chartData, divId) {
     }
 
     function createCustomHTMLContent(chartData) {
-        for(var i = 0; i < chartData.length; ++i){
-            var votes = chartData[0];
-            var min = chartData[1];
-            var max = chartData[3];
-            return '<div style="padding:5px 5px 5px 5px;">' +
-      'Contributors: ' + '<b>' + votes + '</b>' + '<br/>'+ '<span style="display: block; border-bottom: 1px solid #ccc; padding-top: 5px; margin-bottom: 5px;"></span>' + 'Range: ' + '<b>' + min + ' - ' + max + '</b>' + '</div>';
-        }
-        
+        var votes = chartData[0];
+        var min = chartData[1];
+        var max = chartData[3];
+        return '<div style="padding:5px 5px 5px 5px;">' + 'Contributors: ' + '<b>' + votes + '</b>' + '<br/>'+ '<span style="display: block; border-bottom: 1px solid #ccc; padding-top: 5px; margin-bottom: 5px;"></span>' + 'Range: ' + '<b>' + min + ' - ' + max + '</b>' + '</div>';
     };
 
     for(var i = 0; i < chartData.length; ++i){
@@ -31,12 +27,12 @@ function drawLineChart(chartData, divId) {
         lineWidth: 3,
         orientation: 'vertical',
         chartArea: {
-            width: "85%", 
+            width: "75%", 
             height: "60%"
         },
         tooltip: { isHtml : true },
         bar: {groupWidth: '2'},
-        vAxis: { title : 'Number of Contributors', titleTextStyle: {color: '#33626e'}, textStyle: {fontSize: '1'}, format:'#', gridlines: {count : "-1"}},
+        vAxis: { title : 'Number of Contributors', titleTextStyle: {color: '#33626e'}, viewWindow: { min: 0, max: 100}, ticks: [{v:0, f: '0'}, {v:25, f: '25%'}, {v:50, f: '50%'}, {v:75, f: '75%'}, {v:100, f: '100%'}]},
         hAxis: { title : 'Values', titleTextStyle: {color: '#33626e'}}
     };
 

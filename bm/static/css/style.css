@@ -1129,7 +1129,7 @@ input.btn.full-width, .btn.full-width {
     margin:0;
     border:0;
 }
-#searchContactList .single-contact.char-fillter-apply:not(.char-filltered) {
+#searchContactList .single-contact.char-fillter-apply:not(.char-filltered), #recommendedContactList .single-contact.char-fillter-apply:not(.char-filltered) {
     display:none;
 }
 .contact-info {
@@ -3083,6 +3083,13 @@ ul#answerSortable {
     .google-visualization-tooltip {
         width: auto !important;
         padding: 5px;
+    }
+
+    .benchmark-stats .single-stat > span.value.more {
+        font-size: 24px;    
+        overflow: hidden;
+        text-overflow: ellipsis;
+        padding: 15px 10px 5px;
     }
 
 /* RESPONSIVENESS */

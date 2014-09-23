@@ -47,6 +47,16 @@
                 $("#avgVal-{{ benchmark.id }}").text(mainChartData_{{ benchmark.id }}.bell_curve.avg);
                 var sd = mainChartData_{{ benchmark.id }}.bell_curve.sd.toFixed(1);
                 $("#sdVal-{{ benchmark.id }}").text(sd);
+
+                $( ".single-stat .value" ).each(function() {
+                    var len = $(this).text().length;
+                    if (len >= 6) {
+                        $(this).addClass('more');
+                    }
+                    else {
+                        $(this).removeClass('more');
+                    }
+                });
             });
             drawBellcurveChart(mainChartData_{{ benchmark.id }}.bell_curve, 'bellcurveChart-{{ benchmark.id }}-{{ instance.id }}');
         </script>
