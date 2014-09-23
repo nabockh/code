@@ -5,10 +5,10 @@ from django.contrib.contenttypes.generic import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
 from django.db import models
 from django.core.cache import cache
-import keen
+# import keen
 
 
-# TYPE_HTTP_REQUEST = 'HttpRequest'
+TYPE_HTTP_REQUEST = 'HttpRequest'
 # keen.project_id = KEEN_PROJECT_ID
 # keen.write_key = KEEN_WRITE_KEY
 # keen.read_key = KEEN_READ_KEY
