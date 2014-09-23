@@ -65,7 +65,7 @@ class CreateBenchmarkStep3Form(forms.Form):
         if self.is_continue and hasattr(self, 'selected_contacts'):
             if len(self.selected_contacts) < self.min_number_of_answers:
                 self.errors['__all__'] = self.error_class(
-                    ['Count of selected contacts should be at least %d' % self.min_number_of_answers])
+                    ['You need to select at least  %d contacts to proceed' % self.min_number_of_answers])
         return self.cleaned_data
 
     @staticmethod
