@@ -35,14 +35,14 @@ function drawColumnChart(chartData, divId) {
     var columnOptions = {
         legend: { position: "top" },
         chartArea: {  
-            width: "85%", 
+            width: "70%", 
             height: "65%" 
         },
         colors: columnGradient(chartData.length),
         bar: {
             groupWidth: "80%"
         },
-        vAxis: { title : '', textStyle: {fontSize : '1', color: '#FFFFFF'}},
+        vAxis: { title : '', viewWindow: { min: 0, max: 100}, ticks: [{v:0, f: '0'}, {v:25, f: '25%'}, {v:50, f: '50%'}, {v:75, f: '75%'}, {v:100, f: '100%'}]},
     };
  
 
