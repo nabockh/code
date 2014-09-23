@@ -5,7 +5,7 @@ from django.contrib.contenttypes.generic import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
 from django.db import models
 from django.core.cache import cache
-import keen
+# import keen
 
 
 # TYPE_HTTP_REQUEST = 'HttpRequest'
