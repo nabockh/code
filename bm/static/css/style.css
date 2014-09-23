@@ -3085,12 +3085,27 @@ ul#answerSortable {
         padding: 5px;
     }
 
-    .benchmark-stats .single-stat > span.value.more {
+    .benchmark-stats.more .single-stat > span.value {
         font-size: 24px;    
         overflow: hidden;
         text-overflow: ellipsis;
         padding: 15px 10px 5px;
     }
+
+    ul.user-nav-inner > li > a.log-out {
+        text-decoration: none;
+        color: #33626e;
+        font-size: 14px;
+        font-weight: 400;
+    }
+
+        .fixed-navs ul.user-nav-inner > li > a.log-out {
+            font-size: 12px;
+        }
+        
+        ul.user-nav-inner > li > a.log-out:hover {
+            color: #fff;
+        }
 
 /* RESPONSIVENESS */
 
