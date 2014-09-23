@@ -3085,6 +3085,13 @@ ul#answerSortable {
         padding: 5px;
     }
 
+    .benchmark-stats .single-stat > span.value.more {
+        font-size: 24px;    
+        overflow: hidden;
+        text-overflow: ellipsis;
+        padding: 15px 10px 5px;
+    }
+
 /* RESPONSIVENESS */
 
 

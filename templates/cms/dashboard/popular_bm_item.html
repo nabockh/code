@@ -4,7 +4,7 @@
         <div id='popular-donutChart-{{ benchmark.id }}-{{ instance.id }}' class='bigChart donut'>
         <script type="text/javascript">
             var popular_mainChartData_{{ benchmark.id }} = {{ benchmark.charts|safe }};
-            drawPieChart(mainChartData_{{ benchmark.id }}.pie, 'popular-donutChart-{{ benchmark.id }}-{{ instance.id }}');
+            drawPieChart(popular_mainChartData_{{ benchmark.id }}.pie, 'popular-donutChart-{{ benchmark.id }}-{{ instance.id }}');
         </script>
         </div>
 
@@ -12,7 +12,7 @@
         <div id='popular-columnChart-{{ benchmark.id }}-{{ instance.id }}' class='bigChart'></div>
         <script type="text/javascript">
             var popular_mainChartData_{{ benchmark.id }} = {{ benchmark.charts|safe }};
-            drawColumnChart(mainChartData_{{ benchmark.id }}.column, 'popular-columnChart-{{ benchmark.id }}-{{ instance.id }}');
+            drawColumnChart(popular_mainChartData_{{ benchmark.id }}.column, 'popular-columnChart-{{ benchmark.id }}-{{ instance.id }}');
         </script>
 
 
@@ -42,20 +42,30 @@
             var popular_mainChartData_{{ benchmark.id }} = {{ benchmark.charts|safe }};
 
             $(function () {
-                $("#minVal-{{ benchmark.id }}").text(mainChartData_{{ benchmark.id }}.bell_curve.min);
-                $("#maxVal-{{ benchmark.id }}").text(mainChartData_{{ benchmark.id }}.bell_curve.max);
-                $("#avgVal-{{ benchmark.id }}").text(mainChartData_{{ benchmark.id }}.bell_curve.avg);
-                var sd = mainChartData_{{ benchmark.id }}.bell_curve.sd.toFixed(1);
+                $("#minVal-{{ benchmark.id }}").text(popular_mainChartData_{{ benchmark.id }}.bell_curve.min);
+                $("#maxVal-{{ benchmark.id }}").text(popular_mainChartData_{{ benchmark.id }}.bell_curve.max);
+                $("#avgVal-{{ benchmark.id }}").text(popular_mainChartData_{{ benchmark.id }}.bell_curve.avg);
+                var sd = popular_mainChartData_{{ benchmark.id }}.bell_curve.sd.toFixed(1);
                 $("#sdVal-{{ benchmark.id }}").text(sd);
+
+                $( ".single-stat .value" ).each(function() {
+                    var len = $(this).text().length;
+                    if (len >= 6) {
+                        $(this).addClass('more');
+                    }
+                    else {
+                        $(this).removeClass('more');
+                    }
+                });
             });
-            drawBellcurveChart(mainChartData_{{ benchmark.id }}.bell_curve, 'popular-bellcurveChart-{{ benchmark.id }}-{{ instance.id }}');
+            drawBellcurveChart(popular_mainChartData_{{ benchmark.id }}.bell_curve, 'popular-bellcurveChart-{{ benchmark.id }}-{{ instance.id }}');
         </script>
 
     {% elif benchmark.question_type == 4 %}
         <div id='popular-donutChart-{{ benchmark.id }}-{{ instance.id }}' class='bigChart donut'>
         <script type="text/javascript">
             var popular_mainChartData_{{ benchmark.id }} = {{ benchmark.charts|safe }};
-            drawPieChart(mainChartData_{{ benchmark.id }}.pie, 'popular-donutChart-{{ benchmark.id }}-{{ instance.id }}');
+            drawPieChart(popular_mainChartData_{{ benchmark.id }}.pie, 'popular-donutChart-{{ benchmark.id }}-{{ instance.id }}');
         </script>
         </div>
 
@@ -65,7 +75,7 @@
         <div class='units'>Chart Data In: <span title='{{ benchmark.question.first.options.first.units }}'>"{{ benchmark.question.first.options.first.units }}"</span></div>
         <script type="text/javascript">
             var popular_mainChartData_{{ benchmark.id }} = {{ benchmark.charts|safe }};
-            drawLineChart(mainChartData_{{ benchmark.id }}.line, 'popular-lineChart-{{ benchmark.id }}-{{ instance.id }}');
+            drawLineChart(popular_mainChartData_{{ benchmark.id }}.line, 'popular-lineChart-{{ benchmark.id }}-{{ instance.id }}');
         </script>
     {% endif %}
 
