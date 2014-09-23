@@ -233,6 +233,8 @@ class BenchmarkRanking(Benchmark):
             for value in values:
                 value = round((float(value)/sum(values))*100)
                 rank.append(value)
+        if len(series2) == 11:
+            series2.insert(10, series2.pop(2))
         return {
             'pie': series1,
             'column': series2,
