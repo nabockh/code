@@ -1,12 +1,17 @@
 from app.settings import METRICS
+# from app.settings import KEEN_PROJECT_ID, KEEN_WRITE_KEY, KEEN_READ_KEY
 from django.contrib.auth.models import User
 from django.contrib.contenttypes.generic import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
 from django.db import models
 from django.core.cache import cache
+# import keen
+
 
 TYPE_HTTP_REQUEST = 'HttpRequest'
-
+# keen.project_id = KEEN_PROJECT_ID
+# keen.write_key = KEEN_WRITE_KEY
+# keen.read_key = KEEN_READ_KEY
 
 class EventType(models.Model):
     name = models.CharField(max_length=255, unique=True)
@@ -49,4 +54,16 @@ class Event(models.Model):
             if object:
                 obj.object = object
             obj.save()
+            # if object:
+            #     keen.add_event(event_type, {
+            #         'object_name': object.__str__().decode('utf-8'),
+            #         'object_id': object.id if object else '',
+            #         'user': user.get_full_name() if user else '',
+            #         'user_id': user.id if user else '',
+            #     })
+            # else:
+            #     keen.add_event(event_type, {
+            #         'user': user.get_full_name() if user else '',
+            #         'user_id': user.id if user else '',
+            #     })
             return obj

@@ -169,6 +169,17 @@ class BenchmarkCreateWizardView(CookieWizardView):
         context = super(BenchmarkCreateWizardView, self).get_context_data(form, **kwargs)
         if self.steps.current == '2':
             context['selected_contacts'] = self.selected_contacts if hasattr(self, 'selected_contacts') else []
+            question_type = form.initial['question_type']
+            # if question_type == '1':
+            #     context['multiple_form'] = AnswerMultipleChoiceForm()
+            # elif question_type == '2':
+            #     context['ranking_form'] = RankingAnswerForm()
+            if question_type == '3':
+                context['numeric_form'] = NumericAnswerForm()
+            elif question_type == '4':
+                context['yes_no_form'] = YesNoAnswerForm()
+            elif question_type == '5':
+                context['range_form'] = RangeAnswerForm()
         return context
 
     @event_log(event_type=metric_events.BM_CREATE_DONE, object='benchmark')
