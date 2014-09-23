@@ -13,16 +13,26 @@ $BODY$
   aggregated_rank     RECORD;
   v_groups_count      INTEGER;
   v_groups_step       INTEGER;
-  point1              INTEGER;
-  point2              INTEGER;
-  count1              INTEGER;
-  count2              INTEGER;
+  point1              RECORD;
+  point2              RECORD;
   i                   INTEGER;
   a_point             RECORD;
-    curs CURSOR (bid INTEGER) FOR
+  curs CURSOR (bid INTEGER) FOR
+  select 
+    point, 
+    (select count(*) from 
+                    "bm_responserange" AS "r"
+                    INNER JOIN "bm_questionresponse"
+                      ON "bm_questionresponse"."id" = "r"."response_id"
+                    INNER JOIN "bm_question"
+                      ON "bm_question"."id" = "bm_questionresponse"."question_id"
+                    INNER JOIN "bm_benchmark"
+                      ON "bm_benchmark"."id" = "bm_question"."benchmark_id"
+         WHERE "bm_benchmark"."id" = bid and
+           point between r.min and r.max)
+  from (
     SELECT
-      generate_series(r.min, r.max) AS "point",
-      count(1)
+      generate_series(min(r.min), max(r.max)) AS "point"
     FROM
       "bm_responserange" AS "r"
       INNER JOIN "bm_questionresponse"
@@ -32,8 +42,7 @@ $BODY$
       INNER JOIN "bm_benchmark"
         ON "bm_benchmark"."id" = "bm_question"."benchmark_id"
     WHERE "bm_benchmark"."id" = bid
-    GROUP BY "point"
-    ORDER BY "point";
+  ) as points;
 BEGIN
   DELETE FROM "bm_seriesstatistic" WHERE "benchmark_id"=bm_id;
   DELETE FROM "bm_numericstatistic" WHERE "benchmark_id"=bm_id;
@@ -213,23 +222,37 @@ BEGIN
       IF i = 0
       THEN
         i := 1;
-        point1 := a_point.point;
+        point1 := a_point;
         point2 := point1;
-        count1 := a_point.count;
       ELSE
-        IF a_point.count != count1
+        IF a_point.count != point1.count 
         THEN
-          INSERT INTO "bm_seriesstatistic" ("benchmark_id", "series", "sub_series", "value")
-          VALUES (bm_id, point1, point2, count1);
-          count1 := a_point.count;
-          point1 := a_point.point;
+          IF point2.count = 0
+          THEN
+            INSERT INTO "bm_seriesstatistic" ("benchmark_id", "series", "sub_series", "value")
+            VALUES (bm_id, point2.point, point2.point, point2.count);  
+            point1 := a_point;
+          ELSE
+            IF a_point.count > point1.count
+            THEN
+              point2 = a_point;
+            END IF; 
+            INSERT INTO "bm_seriesstatistic" ("benchmark_id", "series", "sub_series", "value")
+            VALUES (bm_id, point1.point, point2.point, point1.count);
+            IF a_point.count < point1.count 
+            THEN
+              point1 := point2;
+              point1.count := a_point.count;
+            ELSE
+              point1 := a_point;
+            END IF;
+          END IF;
         END IF;
-        point2 := a_point.point;
-        count2 := a_point.count;
+        point2 := a_point;
       END IF;
     END LOOP;
     INSERT INTO "bm_seriesstatistic" ("benchmark_id", "series", "sub_series", "value")
-    VALUES (bm_id, point1, point2, count2);
+    VALUES (bm_id, point1.point, point2.point, point2.count);
   END IF;
   RETURN bm_id;
 END;
