@@ -7,7 +7,7 @@ from core.utils import celery_log
 from django.contrib.sites.models import Site
 from django.core.mail import send_mail
 from django.core.urlresolvers import reverse
-from django.db.models import F
+from django.db.models import Q
 from django.template.loader import get_template
 from social.models import Contact
 from django.template import loader, Context
@@ -115,12 +115,18 @@ def send_reminders():
             Contact.send_mail(benchmark.owner, subject, body, [contact])
 
 
-@periodic_task(run_every=crontab(minute=1, hour=0))
+@periodic_task(bind=True, run_every=crontab(minute=1, hour=0), default_retry_delay=30*60)
 @celery_log
-def benchmark_aggregate():
-    benchmarks = Benchmark.valid.filter(end_date=datetime.now())
+def benchmark_aggregate(self):
+    today = datetime.now()
+    benchmarks = Benchmark.valid.annotate(series_cnt=Count('series_statistic')) \
+                                .filter(Q(end_date=today, series_cnt=0) |
+                                        Q(end_date__lt=today, series_cnt=0))
     for benchmark in benchmarks:
-        benchmark.aggregate()
+        try:
+            benchmark.aggregate()
+        except Exception as exc:
+            self.retry(exc=exc, max_retries=10)
 
 
 @periodic_task(run_every=crontab(minute=0, hour=0))
@@ -145,7 +151,6 @@ def check_benchmark_results():
                     body = get_template('alerts/benchmark_results.html').render(context)
                     send_mail(subject, body, None, [recipient])
                 BenchmarkInvitation.objects.filter(recipient__id__in=contacts_ids).update(status=3)
-
 
 @periodic_task(run_every=crontab(minute=0, hour=0))
 @celery_log
