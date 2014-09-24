@@ -190,10 +190,20 @@ class CreateBenchmarkStep4Form(CreateBenchmarkStep12Form):
     email_body = forms.CharField(widget=forms.Textarea(attrs={'id': 'email_body', 'hidden': True}), required=False)
 
     def __init__(self, user, step0data, end_date, *args, **kwargs):
+        if step0data.get('0-geo') == u'':
+            geo_name = 'Global'
+        else:
+            geo_name = Region.objects.get(id=int(step0data.get('0-geo'))).name
+        if step0data.get('0-industry') == u'':
+            industry_name = 'All'
+        else:
+            industry_name = LinkedInIndustry.objects.get(code=int(step0data.get('0-industry'))).name
         initial = {
             'name': step0data.get('0-name'),
             'geo': step0data.get('0-geo'),
+            'geo_name': geo_name,
             'industry': step0data.get('0-industry'),
+            'industry_name': industry_name,
             'question_label': step0data.get('0-question_label'),
             'question_text': step0data.get('0-question_text'),
             'question_type': step0data.get('0-question_type'),
