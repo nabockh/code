@@ -589,11 +589,7 @@
                                         <p><strong>Industry:</strong></p>
                                     </div>
                                     <div class='col-md-9 col-xs-8'>
-                                        {% if wizard.form.initial.industry == '' %}
-                                            <p>All</p>
-                                        {% else %}
-                                            <p>{{ wizard.form.initial.industry }}</p>
-                                        {% endif %}
+                                            <p>{{ wizard.form.initial.industry_name }}</p>
                                     </div>
                                 </div>
                                 <div class='row'>
@@ -601,7 +597,7 @@
                                         <p><strong>Geography:</strong></p>
                                     </div>
                                     <div class='col-md-9 col-xs-8'>
-                                        <p>{{ wizard.form.initial.geo }}</p>
+                                        <p>{{ wizard.form.initial.geo_name }}</p>
                                     </div>
                                 </div>
                                 <hr>
