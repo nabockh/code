@@ -44,10 +44,10 @@ function drawBellcurveChart(chartData, divId) {
             series: [{'color': '#33626e'}],
             chartArea: {
                 width: "80%",
-                height: "70%"
+                height: "65%"
             },
             tooltip: {'trigger' : 'none'},
-            hAxis: { baselineColor : 'transparent', textStyle: {fontSize : '10'}, ticks: [{v:median[16][0], f:'- σ' + ' ( ' + Math.round((chartData.avg - chartData.sd), 1) + ' )'}, {v:median[25][0], f:'μ' + ' ( ' + chartData.avg + ' )'}, {v:median[34][0], f:'+ σ' + ' ( ' + Math.round((chartData.avg + chartData.sd), 1) + ' )'}] },
+            hAxis: { baselineColor : 'transparent', textStyle: {fontSize : '9'}, ticks: [{v:median[16][0], f:' ( ' + Math.round((chartData.avg - chartData.sd), 1) + ' )' + '\n' + '- σ'}, {v:median[25][0], f:' ( ' + chartData.avg + ' )' + '\n' + 'μ'}, {v:median[34][0], f:' ( ' + Math.round((chartData.avg + chartData.sd), 1) + ' )' + '\n' + '+ σ'}] },
             vAxis: { title : 'Contributed Values', textStyle: {fontSize : '1', color: '#FFFFFF'}}
 
         };
