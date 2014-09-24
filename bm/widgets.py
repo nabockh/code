@@ -7,4 +7,4 @@ class RankingWidget(HiddenInput):
 
     def render(self, name, value, attrs=None):
         output = super(RankingWidget, self).render(name, value, attrs)
-        return safe(str(output) + ('<label for={0}>{1}</label>'.format(attrs['id'], self.attrs['label'])))
+        return safe(output + ('<label for=%s>%s</label>' % (attrs['id'], self.attrs['label'])))
