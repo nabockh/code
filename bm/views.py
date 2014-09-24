@@ -198,7 +198,6 @@ class BenchmarkCreateWizardView(CookieWizardView):
             else:
                 benchmark.industry = step3.cleaned_data['industry']
             benchmark.min_numbers_of_responses = step3.cleaned_data['minimum_number_of_answers']
-            benchmark.overview = step3.cleaned_data['additional_comments']
             if preview:
                 self.benchmark = benchmark
                 return self.benchmark
