@@ -291,6 +291,11 @@ class BenchmarkRange(Benchmark):
         series2 = [['votes', 'min', 'max', 'min', 'max']]
         for s in series:
             series2.append([s['value'], int(s['series']), int(s['series']), int(s['sub_series']), int(s['sub_series'])])
+        value_sum = sum([vote[0] for vote in series2[1:]])
+        for vote in series2[1:]:
+            value = round((float(vote[0])/value_sum)*100)
+            del vote[0]
+            vote.insert(0, value)
         return {
             'pie': series1,
             'column': series1,
