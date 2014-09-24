@@ -7,7 +7,7 @@ function drawLineChart(chartData, divId) {
         var votes = chartData[0];
         var min = chartData[1];
         var max = chartData[3];
-        return '<div style="padding:5px 5px 5px 5px;">' + 'Contributors: ' + '<b>' + votes + '</b>' + '<br/>'+ '<span style="display: block; border-bottom: 1px solid #ccc; padding-top: 5px; margin-bottom: 5px;"></span>' + 'Range: ' + '<b>' + min + ' - ' + max + '</b>' + '</div>';
+        return '<div style="padding:5px 5px 5px 5px;">' + 'Contributors: ' + '<b>' + votes + '%' + '</b>' + '<br/>'+ '<span style="display: block; border-bottom: 1px solid #ccc; padding-top: 5px; margin-bottom: 5px;"></span>' + 'Range: ' + '<b>' + min + ' - ' + max + '</b>' + '</div>';
     };
 
     for(var i = 0; i < chartData.length; ++i){
@@ -17,7 +17,11 @@ function drawLineChart(chartData, divId) {
         else{
             chartData[i].push(createCustomHTMLContent(chartData[i]));
         }
-    }
+    };
+
+    chartData = chartData.filter(function(element, index){
+        return index == 0 || element[0] > 0;
+    });
 
     var lineChartData = google.visualization.arrayToDataTable(chartData);
 

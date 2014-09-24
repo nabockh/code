@@ -171,10 +171,10 @@ class BenchmarkCreateWizardView(CookieWizardView):
             context['selected_contacts'] = self.selected_contacts if hasattr(self, 'selected_contacts') else []
             question_type = form.initial['question_type']
             if question_type == '1':
-                choices = [(i, i) for i in (str(context['form'].initial['answer_options']).strip().split('\r\n'))]
+                choices = [(i, i) for i in (form.initial['answer_options'].split('\r\n')[:-1])]
                 context['multiple_form'] = AnswerMultipleChoiceForm(choices)
             elif question_type == '2':
-                ranks = [i for i in enumerate((str(context['form'].initial['answer_options']).strip().split('\r\n')), 1)]
+                ranks = [(i, answ) for i, answ in enumerate((form.initial['answer_options'].split('\r\n')[:-1]), 1)]
                 context['ranking_form'] = RankingAnswerForm(ranks)
             if question_type == '3':
                 context['numeric_form'] = NumericAnswerForm()
