@@ -3094,10 +3094,14 @@ ul#answerSortable {
 
     ul.user-nav-inner > li > a.log-out {
         text-decoration: none;
-        color: #33626e;
-        font-size: 14px;
-        font-weight: 400;
-    }
+        color: #fff;
+        font-size: 12px;
+        font-weight: 300;
+    
+        background: #33626e;
+        border-radius: 3px;
+        padding: 2px 9px 3px;
+}
 
         .fixed-navs ul.user-nav-inner > li > a.log-out {
             font-size: 12px;
@@ -3105,7 +3109,9 @@ ul#answerSortable {
         
         ul.user-nav-inner > li > a.log-out:hover {
             color: #fff;
-        }
+        
+            background: #5D828B;
+}
 
 /* RESPONSIVENESS */
 

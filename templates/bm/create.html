@@ -48,7 +48,7 @@
                         <div class='hello'>Hello,</div>
                         <ul class='user-nav-inner'>
                             <li class='username'><a href="/dashboard">{{ user.first_name }} {{ user.last_name }}</a></li>                            
-                            <li><a class='log-out' href='/logout' title='Log Out'>(Log Out)</a></li>
+                            <li><a class='log-out' href='/logout' title='Log Out'>Log Out</a></li>
                         </ul>
                     </div>
                     <div class='col-md-4 col-xs-3'>
@@ -533,7 +533,7 @@
                         <input id='bm-submit' type="submit" class="btn btn-primary auto-width continue-btn hidden" value="{% trans "Send invitations" %}"/>
                         <label for='bm-submit' class='btn btn-primary auto-width pull-right'> Send Invitations <i class='fa fa-arrow-circle-o-right'></i></label>
                         <label class="btn btn-primary auto-width pull-right fix" data-toggle="modal" data-target="#preview">Email Preview <i class='fa fa-eye'></i></label>
-{#                        <label class="btn btn-primary auto-width pull-right fix" data-toggle="modal" data-target="#answer_preview">Answer Form Preview<i class='fa fa-eye'></i></label>#}
+                        <label class="btn btn-primary auto-width pull-right fix" data-toggle="modal" data-target="#answer_preview">Answer Form Preview<i class='fa fa-eye'></i></label>
                     {% else %}
                         <input id='bm-submit' name="is_continue" type="submit" class="btn btn-primary auto-width continue-btn hidden" value="{% trans "Continue" %}"/>
                         <label for='bm-submit' class='btn btn-primary auto-width pull-right'> Continue <i class='fa fa-arrow-circle-o-right'></i></label>
