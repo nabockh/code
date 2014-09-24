@@ -172,5 +172,5 @@ def new_responses():
         raw_context['remaining_before_closure'] = benchmark.days_left
         raw_context['new_contributors'] = contributors_names
         context = Context(raw_context)
-        if benchmark.owner.email:
+        if benchmark.owner and contributors_names:
             send_mail('Welcome', template.render(context), None, [benchmark.owner.email])
