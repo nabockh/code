@@ -19,8 +19,8 @@ function drawLineChart(chartData, divId) {
         }
     };
 
-    chartData = chartData.filter(function(element){
-        return element[0] > 0;
+    chartData = chartData.filter(function(element, index){
+        return index == 0 || element[0] > 0;
     });
 
     var lineChartData = google.visualization.arrayToDataTable(chartData);
