@@ -289,7 +289,7 @@
                                 <div class='col-md-12'>
                                     <div class='row'>
                                         <div class='col-md-8 normal-padding'>
-                                            <label for="id_1-minimum_number_of_answers">Minimum responses required to validate benchmark</label>
+                                            <label for="id_1-minimum_number_of_answers">Minimum number of responses to validate benchmark</label>
                                             <span class="add_help">?
                                                 <span class='add_help_inner'>
                                                     <span>
@@ -655,7 +655,7 @@
                                             <label for='answer_btn' class='btn btn-primary answer_btn'>Submit Answer</label>
                                         </div>
                                         <div class='col-md-7'>
-                                            <span class='answer-footer-text'><strong>{{ wizard.form.initial.minimum_number_of_answers }}</strong> people were invited to participate</span>
+                                            <span class='answer-footer-text'><strong>{{ selected_contacts.count }}</strong> people were invited to participate</span>
                                             <span class='answer-footer-text'>Results will be published on <strong>{{ wizard.form.initial.end_date }}</strong></span>
                                         </div>
                                     </div>

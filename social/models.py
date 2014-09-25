@@ -187,8 +187,8 @@ class Contact(models.Model):
         if geo:
             contact_filter['location__parent__id'] = geo
 
-        return cls.objects.exclude(models.Q(user=user) | models.Q(id__in=exclude_ids)) \
-                          .filter(**contact_filter) \
+        return cls.objects.exclude(models.Q(id__in=exclude_ids)) \
+                          .filter(owners=user, **contact_filter) \
                           .annotate(num_responses=models.Count('user__responses'),
                                     is_active_user=models.Count('user__id')) \
                           .order_by('-is_active_user',
