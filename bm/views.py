@@ -304,9 +304,7 @@ class BaseBenchmarkAnswerView(FormView):
     def dispatch(self, request, slug, *args, **kwargs):
 
         benchmark_link = BenchmarkLink.objects\
-            .filter(Q(benchmark__invites__recipient__user=request.user) |
-                    Q(benchmark__invites__recipient__user__contacts__user=request.user),
-                    slug=slug,)\
+            .filter(slug=slug,)\
             .select_related('benchmark', 'benchmark__owner',
                             'benchmark__question',
                             'benchmark___industry',
@@ -327,7 +325,7 @@ class BaseBenchmarkAnswerView(FormView):
             return ForbiddenView.as_view()(self.request, *args, **kwargs)
 
         friendly_contact = benchmark.invites.filter(
-                                Q(recipient__user=request.user) |
+                                 Q(recipient__user=request.user) |
                                  Q(sender__contacts__user=request.user) |
                                  Q(is_allowed_to_forward_invite=True,
                                    recipient__owners__contact__user=request.user)).first()
