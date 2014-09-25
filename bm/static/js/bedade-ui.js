@@ -107,13 +107,6 @@ $(function () {
 
     $('.carousel-inner .item:not(:first-child)').removeClass('active');
 
-    $('.carousel-inner').each(function() {
-        var slideCount = $(this).find('.item').length;
-        if (slideCount == 1) {
-            $(this).find('.recent-benchmark-controls').hide();
-        } 
-    });
-
     $( ".dashboard-progress-block .progress .progress-bar" ).each(function() {
         var dataProgress = $(this).attr('aria-valuenow');
         if (dataProgress <= 33) {
