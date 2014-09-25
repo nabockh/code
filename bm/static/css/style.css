@@ -3719,7 +3719,7 @@ ul#answerSortable {
     }
     
     .bigChart + .units > span {
-        max-width: 165px;
+        max-width: 150px;
     }
 
     .addthis_toolbox, .addthis_toolbox + div {
