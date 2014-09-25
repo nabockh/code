@@ -99,7 +99,6 @@ $(function () {
     sectionStateChangeStep3();
     statisticViewChange();
     chartTypeChange();
-    
 
     $( "#id_0-question_type" ).on('change', sectionStateChangeStep1);
     $( "#id_2-question_type" ).on('change', sectionStateChangeStep3);
@@ -107,6 +106,13 @@ $(function () {
     $( "#id_Benchmark_Results" ).on('change', chartTypeChange);
 
     $('.carousel-inner .item:not(:first-child)').removeClass('active');
+
+    $('.carousel-inner').each(function() {
+        var slideCount = $(this).find('.item').length;
+        if (slideCount == 1) {
+            $(this).find('.recent-benchmark-controls').hide();
+        } 
+    });
 
     $( ".dashboard-progress-block .progress .progress-bar" ).each(function() {
         var dataProgress = $(this).attr('aria-valuenow');
@@ -249,8 +255,9 @@ $(function () {
         $('#searchContactList .single-contact[data-contact-id='+id+']').find('.choose-checkbox, .share-checkbox').removeAttr('checked');
         $('#selectedContactList .single-contact[data-contact-id='+id+']').find('.choose-checkbox, .share-checkbox').removeAttr('checked').end().fadeOut(500, function(){ $(this).remove();});
         $('#recommendedContactList .single-contact[data-contact-id='+id+']').find('.choose-checkbox, .share-checkbox').removeAttr('checked');
-        $('#step3Selected .single-contact[data-contact-id='+id+']').find('.choose-checkbox, .share-checkbox').removeAttr('checked').end().fadeOut(500, function(){ $(this).remove();});
+        $('#step3Selected .single-contact[data-contact-id='+id+']').find('.deChecker').attr('value', '').end().fadeOut(500, function(){ $(this).remove();});
     });
+
 
     $('.col-md-8.lined-left.margined .share-checkbox').on('click', function() {
         var id = $(this).parents('.single-contact').attr('data-contact-id');
