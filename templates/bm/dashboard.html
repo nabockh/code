@@ -86,26 +86,18 @@
               </script>
             {% elif message.tags == 'bm_created' %}
               <!-- Benchmark Created Modal -->
-              <div class="modal visible fade" id="benchmarkCreated" tabindex="-1" role="dialog" aria-labelledby="firstAnsweredLabel" aria-hidden="false">
-                <div class="modal-dialog modal-lg">
-                  <div class="modal-content">
-                    <div class="modal-header">
-                      <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true"><i class='fa fa-times-circle'></i></span><span class="sr-only">Close</span></button>
-                      <h4 class="modal-title" id="firstAnsweredLabel">Benchmark created!</h4>
-                    </div>
-                    <div class="modal-body">
-                      <div class='modal-body-inner'>
-                          <p><strong>Hello, {{ user.first_name }}!</strong></p>
-                          {% static_placeholder "benchmark_created_popup_text" or %}
-                          <p>Benchmark was created succesfully!</p>
-                          {% endstatic_placeholder %}
-                      </div>
-                    </div>
-                  </div>
+              <div class='smallModal' id='bmCreated'>
+                <div class="pop-up-bg"></div>
+                <div class="pop-up-content">
+                    <p style='font-size: 13rem; color: #648E99;'><i class='fa fa-check-circle'></i></p>
+                    <p>Benchmark was created succesfully!</p>
                 </div>
               </div>
               <script type="text/javascript">
-                $('#benchmarkCreated').modal('show')
+                $('#bmCreated').show();
+                setTimeout(function() {
+                    $('#bmCreated').fadeOut(500);
+                }, 2500);
               </script>
             {% endif %}
 
