@@ -28,6 +28,7 @@ from django.views.generic import ListView, TemplateView
 from django.views.generic.edit import FormView
 from bm.signals import benchmark_answered, benchmark_created
 from django.db.models import Count, Q
+from social.models import Contact
 
 import json
 import StringIO
@@ -303,9 +304,7 @@ class BaseBenchmarkAnswerView(FormView):
     def dispatch(self, request, slug, *args, **kwargs):
 
         benchmark_link = BenchmarkLink.objects\
-            .filter(Q(benchmark__invites__recipient__user=request.user) |
-                    Q(benchmark__invites__recipient__user__contacts__user=request.user),
-                    slug=slug,)\
+            .filter(slug=slug,)\
             .select_related('benchmark', 'benchmark__owner',
                             'benchmark__question',
                             'benchmark___industry',
@@ -324,6 +323,15 @@ class BaseBenchmarkAnswerView(FormView):
             .first()
         if user_responses_count and not DEBUG:
             return ForbiddenView.as_view()(self.request, *args, **kwargs)
+
+        friendly_contact = benchmark.invites.filter(
+                                 Q(recipient__user=request.user) |
+                                 Q(sender__contacts__user=request.user) |
+                                 Q(is_allowed_to_forward_invite=True,
+                                   recipient__owners__contact__user=request.user)).first()
+        if not friendly_contact:
+            return ForbiddenView.as_view()(self.request, *args, **kwargs)
+
         question_type = benchmark.question.first().type
         if question_type == Question.MULTIPLE:
             return MultipleChoiceAnswerView.as_view()(self.request, benchmark, *args, **kwargs)
