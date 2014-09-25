@@ -440,34 +440,40 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class='col-md-12'>
-                                    <label for="id_2-customize_email">Customize the email being sent to your contacts </label>
-                                    <span class="add_help">?
-                                                <span class='add_help_inner'>
-                                                    <span>
-{#                                                        {% static_placeholder "bm_create_explain_tooltip" or %}#}
-                                                        Lorem ipsum dolor sit amet, consectetur eta adipiscing elit. Pellentasque eu tempor tortor. Aliquam Trisque eros arcu, sed bibendum enim faucibus in. In vulputate blendit lorem ut.
-{#                                                        {% endstatic_placeholder %}#}
-                                                    </span>
-                                                </span>
-                                            </span>
-                                </div>
-                                <div class='col-md-12'>
-                                    <label for="id_2-view_form">View the answer form your contact will see </label>
-                                    <span class="add_help">?
-                                                <span class='add_help_inner'>
-                                                    <span>
-{#                                                        {% static_placeholder "bm_create_explain_tooltip" or %}#}
-                                                        Lorem ipsum dolor sit amet, consectetur eta adipiscing elit. Pellentasque eu tempor tortor. Aliquam Trisque eros arcu, sed bibendum enim faucibus in. In vulputate blendit lorem ut.
-{#                                                        {% endstatic_placeholder %}#}
-                                                    </span>
-                                                </span>
-                                            </span>
-                                </div>
+                                <hr>
                                 <div class="col-md-12">
                                     <label>End date: </label>
                                     {{ form.end_date|date }}
                                 </div>
+                                <hr>
+                                <div class='col-md-12'>
+                                    <label for="id_2-customize_email">Customize the email being sent to your contacts </label>
+                                    <span class="add_help">?
+                                        <span class='add_help_inner'>
+                                            <span>
+{#                                                        {% static_placeholder "bm_create_explain_tooltip" or %}#}
+                                                Lorem ipsum dolor sit amet, consectetur eta adipiscing elit. Pellentasque eu tempor tortor. Aliquam Trisque eros arcu, sed bibendum enim faucibus in. In vulputate blendit lorem ut.
+{#                                                        {% endstatic_placeholder %}#}
+                                            </span>
+                                        </span>
+                                    </span>
+                                    <label class="btn btn-primary auto-width pull-right smaller" data-toggle="modal" data-target="#preview">Email Preview <i class='fa fa-eye'></i></label>
+                                </div>
+                                <div class='col-md-12'>
+                                    <label for="id_2-view_form">View the answer form your contact will see </label>
+
+                                    <span class="add_help">?
+                                        <span class='add_help_inner'>
+                                            <span>
+{#                                              {% static_placeholder "bm_create_explain_tooltip" or %}#}
+                                                Lorem ipsum dolor sit amet, consectetur eta adipiscing elit. Pellentasque eu tempor tortor. Aliquam Trisque eros arcu, sed bibendum enim faucibus in. In vulputate blendit lorem ut.
+{#                                                        {% endstatic_placeholder %}#}
+                                            </span>
+                                        </span>
+                                    </span>
+                                    <label class="btn btn-primary auto-width pull-right smaller" data-toggle="modal" data-target="#answer_preview">Answer Form Preview<i class='fa fa-eye'></i></label>
+                                </div>
+                                
                             </div>                                
                         </div>
                         <div class='col-md-4'>
@@ -532,8 +538,6 @@
                     {% if wizard.steps.step1 == 3 %}
                         <input id='bm-submit' type="submit" class="btn btn-primary auto-width continue-btn hidden" value="{% trans "Send invitations" %}"/>
                         <label for='bm-submit' class='btn btn-primary auto-width pull-right'> Send Invitations <i class='fa fa-arrow-circle-o-right'></i></label>
-                        <label class="btn btn-primary auto-width pull-right fix" data-toggle="modal" data-target="#preview">Email Preview <i class='fa fa-eye'></i></label>
-                        <label class="btn btn-primary auto-width pull-right fix" data-toggle="modal" data-target="#answer_preview">Answer Form Preview<i class='fa fa-eye'></i></label>
                     {% else %}
                         <input id='bm-submit' name="is_continue" type="submit" class="btn btn-primary auto-width continue-btn hidden" value="{% trans "Continue" %}"/>
                         <label for='bm-submit' class='btn btn-primary auto-width pull-right'> Continue <i class='fa fa-arrow-circle-o-right'></i></label>
@@ -549,6 +553,7 @@
     
 </div>
 {% if wizard.steps.step1 == 3 %}
+
 <!-- Answer Form Preview  -->
      <div class="modal fade" id="answer_preview" tabindex="-1" role="dialog" aria-labelledby="previewLabel" aria-hidden="true">
       <div class="modal-dialog">
@@ -557,9 +562,8 @@
             <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true"><i class='fa fa-times-circle'></i></span><span class="sr-only">Close</span></button>
             <h4 class="modal-title" id="prviewLabel">Answer form Preview</h4>
           </div>
-          <div class="modal-body">
-            <div class='modal-body-inner'>
-                 <div class='col-md-7'>
+          <div class="modal-body clearfix">
+                 <div class='col-md-12'>
                     <div class='col-md-12 bordered bgwhite margin-bot padding-bot'>
                         <div class='title-header answer'><i class='fa fa-check'></i> Contribute to benchmark</div>
                         <div class='row'>
@@ -585,11 +589,7 @@
                                         <p><strong>Industry:</strong></p>
                                     </div>
                                     <div class='col-md-9 col-xs-8'>
-                                        {% if wizard.form.initial.industry == '' %}
-                                            <p>All</p>
-                                        {% else %}
-                                            <p>{{ wizard.form.initial.industry }}</p>
-                                        {% endif %}
+                                            <p>{{ wizard.form.initial.industry_name }}</p>
                                     </div>
                                 </div>
                                 <div class='row'>
@@ -597,7 +597,7 @@
                                         <p><strong>Geography:</strong></p>
                                     </div>
                                     <div class='col-md-9 col-xs-8'>
-                                        <p>{{ wizard.form.initial.geo }}</p>
+                                        <p>{{ wizard.form.initial.geo_name }}</p>
                                     </div>
                                 </div>
                                 <hr>
@@ -655,8 +655,7 @@
                             </div>
                         </div>
                     </div>
-                </div>
-            </div>
+                </di clearfixv>
 
             </div>
           </div>

@@ -7,7 +7,7 @@ from core.utils import celery_log
 from django.contrib.sites.models import Site
 from django.core.mail import send_mail
 from django.core.urlresolvers import reverse
-from django.db.models import Q
+from django.db.models import Q, F
 from django.template.loader import get_template
 from social.models import Contact
 from django.template import loader, Context
@@ -16,6 +16,7 @@ from celery.task import periodic_task
 from django.db.models import Count, Avg
 from django.template import Template
 from core.utils import get_context_variables
+from django.contrib.auth.models import User
 
 INVITE_SUBJECT = 'You have been invited to benchmark'
 
@@ -120,14 +121,26 @@ def send_reminders():
 def benchmark_aggregate(self):
     today = datetime.now()
     benchmarks = Benchmark.valid.annotate(series_cnt=Count('series_statistic')) \
-                                .filter(Q(end_date=today, series_cnt=0) |
-                                        Q(end_date__lt=today, series_cnt=0))
+                                .filter(end_date__lte=today, series_cnt=0)
     for benchmark in benchmarks:
         try:
             benchmark.aggregate()
         except Exception as exc:
             self.retry(exc=exc, max_retries=10)
 
+
+@periodic_task(run_every=crontab(minute=0, hour=0))
+@celery_log
+def check_response_count():
+    # template = loader.get_template('alerts/benchmark_answered.html')
+    today = datetime.now()
+    benchmarks = Benchmark.objects.annotate(responses_count=Count('question__responses'))\
+        .filter(end_date__lte=today, responses_count__lt=F('min_numbers_of_responses'), approved=True)
+    benchmark_names = ', '.join([benchmark.name for benchmark in benchmarks])
+    recipient_list = User.objects.filter(is_superuser=True).values_list('email', flat=True)
+    if recipient_list:
+        send_mail('Welcome', 'Hi! Current benchmarks has not reached min_number_of_responses: %s' %
+                  benchmark_names, None, recipient_list)
 
 @periodic_task(run_every=crontab(minute=0, hour=0))
 @celery_log
@@ -152,6 +165,7 @@ def check_benchmark_results():
                     send_mail(subject, body, None, [recipient])
                 BenchmarkInvitation.objects.filter(recipient__id__in=contacts_ids).update(status=3)
 
+
 @periodic_task(run_every=crontab(minute=0, hour=0))
 @celery_log
 def new_responses():
@@ -167,10 +181,17 @@ def new_responses():
         contributors = benchmark.question.first().responses.\
             filter(date__range=(yesterday, today)).\
             values_list('user__first_name', 'user__last_name')
-        contributors_names = ', '.join([(first_name + ' ' + last_name) for first_name, last_name in contributors])
-        raw_context = get_context_variables(benchmark)
-        raw_context['remaining_before_closure'] = benchmark.days_left
-        raw_context['new_contributors'] = contributors_names
-        context = Context(raw_context)
-        if benchmark.owner.email:
-            send_mail('Welcome', template.render(context), None, [benchmark.owner.email])
+        if contributors.exists():
+            contributors_names = str(', '.join([(first_name + ' ' + last_name) for first_name, last_name in contributors]))
+            # raw_context = get_context_variables(benchmark)
+            # raw_context['remaining_before_closure'] = benchmark.days_left
+            # raw_context[] = contributors_names
+            context = Context({
+                'benchmark_name': benchmark.name,
+                'query_details': benchmark.question.first().description,
+                'link_to_answer': benchmark.link,
+                'new_contributors': contributors_names,
+                'benchmark_creator': benchmark.owner.get_full_name()
+            })
+            if benchmark.owner.email:
+                send_mail('Welcome', template.render(context), None, [benchmark.owner.email])

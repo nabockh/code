@@ -1393,6 +1393,12 @@ label.btn.btn-primary.auto-width.pull-right.fix {
     margin-right: 10px;
 }
 
+.benchmark-creation .styled-form .btn.smaller {
+    padding: 5px 9px;
+    font-size: 12px;
+    margin: 3px 0;
+}
+
 .benchmark-creation .styled-form input:not([type='submit']), .benchmark-creation .styled-form textarea, .benchmark-creation .styled-form select {
     background: #F8F7F7;
     padding: 3px 6px;
