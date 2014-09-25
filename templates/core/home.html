@@ -155,9 +155,14 @@
         <div class="colorblock" id='how-it-works'>
             <div class='container'>
                 <span class='big-title text-center'>How it works</span>
-                {% static_placeholder "home_how_it_works" or %}
-                <p>Bedade aggregates data from experts for your use. You know your industry, the data you need, and who has the right knowledge. Bedade is a platform to exchange that knowledge. You choose your target contributors, type your question and watch the results roll in. Get better data quicker. Extract data from within your network to make comparisons and benchmarks, instead of relying on guesstimates or expensive data sources. Anonymously shared data from your trusted contacts will provide insight for your critical decisions. <a href='#'>View the Diagram</a></p>
-                {% endstatic_placeholder %}
+                <p style='margin-bottom: 10px;'>
+                    {% static_placeholder "home_how_it_works" or %}
+                        <span>Bedade aggregates data from experts for your use. You know your industry, the data you need, and who has the right knowledge. Bedade is a platform to exchange that knowledge. You choose your target contributors, type your question and watch the results roll in. Get better data quicker. Extract data from within your network to make comparisons and benchmarks, instead of relying on guesstimates or expensive data sources. Anonymously shared data from your trusted contacts will provide insight for your critical decisions.</span>
+                    {% endstatic_placeholder %}
+                </p>
+                
+                <p style='display: block; margin-bottom: 50px;'>See Bedade’s  <a data-toggle="modal" data-target="#valueProp" class='clickable'>Value proposition</a> and <a data-toggle="modal" data-target="#takeTour" class='clickable openTour'>Take a tour</a>.</p>
+
                 <div class='row'>
                     {% static_placeholder "home_how_it_works_blocks1" or %}
                     <div class="col-md-4 how-it-works">
@@ -401,10 +406,57 @@
           </div>
         </div>
 
+        <!-- Value Prop Modal -->
+        <div class="modal fade" id="valueProp" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+          <div class="modal-dialog imageSlider">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true"><i class='fa fa-times-circle'></i></span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title">How it works</h4>
+              </div>
+              <div class="modal-body">
+                <div class='modal-body-inner slided'>
+                    <img src="{{ STATIC_URL }}img/valueProp.png" />
+                    <p class='text-center'><a class='btn btn-primary openTour' data-dismiss="modal" data-toggle="modal" data-target="#takeTour">Take the Tour <i style='padding-left: 10px' class='fa fa-chevron-circle-right'></i></a></p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+        <!-- Take a tour Modal -->
+        <div class="modal fade" id="takeTour" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+          <div class="modal-dialog imageSlider">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true"><i class='fa fa-times-circle'></i></span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title">Take the tour</h4>
+              </div>
+              <div class="modal-body">
+                <div class='modal-body-inner.slided'>
+                    <div id='takeTourSlider'>
+                        <ul class="bjqs">
+                            <li><img src="{{ STATIC_URL }}img/tourStep1.png" /><a class='hide-btn'></a></li>
+                            <li><img src="{{ STATIC_URL }}img/tourStep2.png" /></li>
+                            <li><img src="{{ STATIC_URL }}img/tourStep3.png" /></li>
+                            <li><img src="{{ STATIC_URL }}img/tourStep4.png" /></li>
+                            <li><img src="{{ STATIC_URL }}img/tourStep5.png" /><a href='{% url 'bm_create' %}' class='btn btn-primary getdatanow'>Get Data Now  <i style='padding-left: 10px' class='fa fa-chevron-circle-right'></i></a></li>
+                        </ul>
+                    </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+
         <script type="text/javascript">
             // Main Nav behavior on scroll
 
             $( document ).ready(function() {
+    
                 var $document = $(document);
                 var firstOffset = $('.colorblock#how-it-works').offset().top -90;
                 var secondOffset = $('.colorblock#features').offset().top - 90;

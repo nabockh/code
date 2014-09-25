@@ -127,7 +127,24 @@ $(function () {
 
 
 $(function () {
+    $('#takeTour').on('shown.bs.modal', function (e) {        
+        if ($('#takeTour').find('.bjqs-wrapper').length <= 0) {
+            $('#takeTourSlider').bjqs({
+                height: 411,
+                width: 780,
+                responsive  : true,
+                automatic : false,
+                animtype : 'slide',
+                showmarkers : false,
+                usecaptions : false,
+                randomstart : false,
+                nexttext : 'Next Step',
+                prevtext : 'Previous Step'
+            });
 
+            $('.bjqs-controls li a').addClass('btn btn-primary');
+        };
+    });
     setTimeout(function () {
             $('.preloader').fadeOut( "slow" );
     }, 1000);
