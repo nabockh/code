@@ -148,8 +148,13 @@ $(function () {
 
     // Tooltips
 
-    $('.add_help').on('click', function() {
-       $(this).children('.add_help_inner').toggleClass('visible');
+    $('.add_help').on('click', function(e) {
+       $(this).children('.add_help_inner').addClass('visible');
+       e.stopPropagation();
+    });
+
+    $("html").click(function() {
+        $(".add_help_inner").removeClass('visible');
     });
 
     // Rating Functionality
