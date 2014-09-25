@@ -6,6 +6,7 @@ from django.db.models import Count
 from linkedin import linkedin
 from social.backend.linkedin import extract_access_tokens, LinkedInApplication
 from social_auth.db.django_models import USER_MODEL
+import random
 
 
 class LinkedInIndustry(models.Model):
@@ -131,12 +132,27 @@ class Contact(models.Model):
                 if kwargs.get('positions').get('values'):
                     for position in kwargs.get('positions').get('values'):
                         if position.get('isCurrent'):
-                            company = Company.objects.filter(code=position.get('company', {}).get('id')).first()
+                            company = None
+                            company_id = position.get('company', {}).get('id')
+                            if company_id:
+                                company = Company.objects.filter(code=position.get('company', {}).get('id')).first()
+                            if not company:
+                                company = Company.objects.filter(name=position.get('company', {}).get('name')).first()
                             if company:
+                                if company_id and company.code != company_id:
+                                    company.code = company_id
+                                    company.save()
                                 contact.company = company
                             else:
                                 company = Company()
-                                company.code = position.get('company', {}).get('id')
+                                if position.get('company', {}).get('id'):
+                                    company.code = position.get('company', {}).get('id')
+                                else:
+                                    while True:
+                                        rand_code = random.randint(100000, 2147483647)
+                                        if not Company.objects.filter(code=rand_code).exists():
+                                            break
+                                    company.code = rand_code
                                 company.name = position.get('company', {}).get('name')
                                 company.industry = LinkedInIndustry.objects.filter(name=kwargs.get('industry', {})).first()
                                 company.save()
