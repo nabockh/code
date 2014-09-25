@@ -77,7 +77,20 @@
         <div id='recommendedContactList'>
             <div class="title-header inner">
                 <div class='row'>
-                    <div class='col-md-6 col-xs-4'>Recommended Contacts</div>
+                    <div class='col-md-6 col-xs-4'>Recommended Contacts
+                        <span class="add_help">?
+                            <span class='add_help_inner'>
+                                <span>
+                                    {% static_placeholder "bm_create_recommended_tooltip" or %}
+                                        Lorem ipsum dolor sit amet, consectetur eta
+                                        adipiscing elit. Pellentasque eu tempor tortor.
+                                        Aliquam Trisque eros arcu, sed bibendum enim
+                                        faucibus in. In vulputate blendit lorem ut.
+                                    {% endstatic_placeholder %}
+                                </span>
+                            </span>
+                        </span>
+                    </div>
                     <div class='col-md-4 col-xs-8 text-center'>Allow forwarding
                         <span class="add_help">?
                             <span class='add_help_inner'>
