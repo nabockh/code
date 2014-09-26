@@ -141,7 +141,7 @@ class BenchmarkCreateWizardView(CookieWizardView):
         })
         response = HttpResponse("<pre  id='default_text' contenteditable='true'>"
                                 + template.render(context)
-                                + '</pre>' + '<button type="button" class="save-button">'
+                                + '</pre>' + '<button type="button" class="save-button" data-dismiss="modal">' 
                                              ''+'Save'+'</button>')
         return response
 

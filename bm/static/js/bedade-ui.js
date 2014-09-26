@@ -623,12 +623,15 @@ $(document).ajaxStop(function() {
 
 $( document ).ready(function(){
     $( "#preview" ).on('shown.bs.modal', function() {
+        $('#default_text').focus();
         $( '.save-button' ).on('click', function() {
-            $('#email_body').text($('#default_text').text());
+            var editedText = $('#default_text').text();
+            $('#email_body').text(editedText);
             $( "#preview" ).modal('hide');
-            $('#default_text').css('background-color', '#F5F5F5');
         });
     });
+
+    
 
     $(".char-fillter li").click(function() {
         var filter_char = $(this).text();
