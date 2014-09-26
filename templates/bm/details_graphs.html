@@ -224,17 +224,17 @@
 
             $( ".single-stat .value" ).each(function() {
                     var len = $(this).text().length;
-                    if (len >= 5) {
-                        $(this).parents('.benchmark-stats').addClass('sixish');
+                    if (len >= 4) {
+                        $(this).parents('.benchmark-stats').addClass('fourPlus');
                     }                    
 
-                    else if (len >= 7) {
+                    else if (len >= 6) {
                         $(this).parents('.benchmark-stats').addClass('more');
                     }
 
 
                     else {
-                        $(this).parents('.benchmark-stats').removeClass('more sixish');
+                        $(this).parents('.benchmark-stats').removeClass('more fourPlus');
                     }
             });
         });

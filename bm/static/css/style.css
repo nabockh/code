@@ -3131,7 +3131,7 @@ a.hide-btn.right {left: auto; right: 0;}
         padding: 5px;
     }
 
-    .benchmark-stats.sixish .single-stat > span.value {
+    .benchmark-stats.fourPlus .single-stat > span.value {
         font-size: 24px;    
         overflow: hidden;
         text-overflow: ellipsis;
