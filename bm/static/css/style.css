@@ -2445,6 +2445,7 @@ form[role='beta-email'] {
     max-height: 605px;
     overflow-x: hidden;
     overflow-y: scroll;
+    padding-right: 10px;
 }
 
 .benchmark-creation .styled-form label.link-like {
