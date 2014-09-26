@@ -326,7 +326,6 @@ class BaseBenchmarkAnswerView(FormView):
 
         friendly_contact = benchmark.invites.filter(
                                  Q(recipient__user=request.user) |
-                                 Q(sender__contacts__user=request.user) |
                                  Q(is_allowed_to_forward_invite=True,
                                    recipient__owners__contact__user=request.user)).first()
         if not friendly_contact:
