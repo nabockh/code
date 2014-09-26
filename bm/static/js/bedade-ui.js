@@ -99,7 +99,6 @@ $(function () {
     sectionStateChangeStep3();
     statisticViewChange();
     chartTypeChange();
-    
 
     $( "#id_0-question_type" ).on('change', sectionStateChangeStep1);
     $( "#id_2-question_type" ).on('change', sectionStateChangeStep3);
@@ -128,7 +127,24 @@ $(function () {
 
 
 $(function () {
+    $('#takeTour').on('shown.bs.modal', function (e) {        
+        if ($('#takeTour').find('.bjqs-wrapper').length <= 0) {
+            $('#takeTourSlider').bjqs({
+                height: 411,
+                width: 780,
+                responsive  : true,
+                automatic : false,
+                animtype : 'slide',
+                showmarkers : false,
+                usecaptions : false,
+                randomstart : false,
+                nexttext : 'Next Step',
+                prevtext : 'Previous Step'
+            });
 
+            $('.bjqs-controls li a').addClass('btn btn-primary');
+        };
+    });
     setTimeout(function () {
             $('.preloader').fadeOut( "slow" );
     }, 1000);
@@ -149,8 +165,13 @@ $(function () {
 
     // Tooltips
 
-    $('.add_help').on('click', function() {
-       $(this).children('.add_help_inner').toggleClass('visible');
+    $('.add_help').on('click', function(e) {
+       $(this).children('.add_help_inner').addClass('visible');
+       e.stopPropagation();
+    });
+
+    $("html").click(function() {
+        $(".add_help_inner").removeClass('visible');
     });
 
     // Rating Functionality
@@ -249,8 +270,9 @@ $(function () {
         $('#searchContactList .single-contact[data-contact-id='+id+']').find('.choose-checkbox, .share-checkbox').removeAttr('checked');
         $('#selectedContactList .single-contact[data-contact-id='+id+']').find('.choose-checkbox, .share-checkbox').removeAttr('checked').end().fadeOut(500, function(){ $(this).remove();});
         $('#recommendedContactList .single-contact[data-contact-id='+id+']').find('.choose-checkbox, .share-checkbox').removeAttr('checked');
-        $('#step3Selected .single-contact[data-contact-id='+id+']').find('.choose-checkbox, .share-checkbox').removeAttr('checked').end().fadeOut(500, function(){ $(this).remove();});
+        $('#step3Selected .single-contact[data-contact-id='+id+']').find('.deChecker').attr('value', '').end().fadeOut(500, function(){ $(this).remove();});
     });
+
 
     $('.col-md-8.lined-left.margined .share-checkbox').on('click', function() {
         var id = $(this).parents('.single-contact').attr('data-contact-id');

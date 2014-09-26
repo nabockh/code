@@ -210,7 +210,7 @@ class CreateBenchmarkStep4Form(CreateBenchmarkStep12Form):
             'answer_options': step0data.get('0-answer_options'),
             'units': step0data.get('0-units'),
             'minimum_number_of_answers': step0data.get('0-minimum_number_of_answers'),
-            'end_date': end_date
+            'end_date': end_date.date()
         }
         kwargs['initial'] = initial
         super(CreateBenchmarkStep4Form, self).__init__(user, *args, **kwargs)

@@ -17,13 +17,12 @@
                 <div class='col-md-12 margin-bot'>
                     <div class='recent-empty'>
                         <strong>You have not yet created any benchmarks.</strong>
-
-                        <p>Start benefiting from the questions YOU ask. in just three easy steps you can create your own
-                            benchmark queries and send them to your most trusted professional contacts.</p>
+                        <p>
+                            Start benefiting from the questions YOU ask. In just three easy steps you can create your own benchmark queries and send them to your most trusted professional contacts.
+                        </p>
                         <img src='{{ STATIC_URL }}img/guide.png'/>
                     </div>
-                    <a href="{% url 'bm_create' %}" class='btn btn-primary'>Create new benchmark <i
-                            class='fa fa-plus-circle'></i></a>
+                    <p style='margin: 0; text-align: center;'><a href="{% url 'bm_create' %}" class='btn btn-primary'>Create new benchmark <i class='fa fa-plus-circle'></i></a></p>
                     <script type="text/javascript">
                         $(function () {
                             $('#myRecentBenchmarks_{{ instance.id }} .recent-benchmark-controls').hide();
