@@ -3131,11 +3131,15 @@ a.hide-btn.right {left: auto; right: 0;}
         padding: 5px;
     }
 
-    .benchmark-stats.more .single-stat > span.value {
+    .benchmark-stats.sixish .single-stat > span.value {
         font-size: 24px;    
         overflow: hidden;
         text-overflow: ellipsis;
         padding: 15px 10px 5px;
+    }
+
+    .benchmark-stats.more .single-stat > span.value {
+        font-size: 18px;
     }
 
     ul.user-nav-inner > li > a.log-out {

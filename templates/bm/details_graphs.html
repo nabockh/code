@@ -223,13 +223,19 @@
             $("#sdVal").text(sd);
 
             $( ".single-stat .value" ).each(function() {
-                var len = $(this).text().length;
-                if (len >= 6) {
-                    $(this).parents('.benchmark-stats').addClass('more');
-                }
-                else {
-                    $(this).parents('.benchmark-stats').removeClass('more');
-                }
+                    var len = $(this).text().length;
+                    if (len >= 5) {
+                        $(this).parents('.benchmark-stats').addClass('sixish');
+                    }                    
+
+                    else if (len >= 7) {
+                        $(this).parents('.benchmark-stats').addClass('more');
+                    }
+
+
+                    else {
+                        $(this).parents('.benchmark-stats').removeClass('more sixish');
+                    }
             });
         });
 
