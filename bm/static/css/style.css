@@ -24,6 +24,10 @@ a {
     color: #3d4d77;
 }
 
+a.clickable {
+    cursor: pointer;
+}
+
 a[data-export='excel'] {
     background: #207245;
     color: #fff;
@@ -2441,6 +2445,7 @@ form[role='beta-email'] {
     max-height: 605px;
     overflow-x: hidden;
     overflow-y: scroll;
+    padding-right: 10px;
 }
 
 .benchmark-creation .styled-form label.link-like {
@@ -2932,7 +2937,8 @@ ul#answerSortable {
     max-height: 400px;
     padding-right: 20px;
 }
-#support .modal-body-inner {
+
+#valueProp .modal-body-inner, #takeTour .modal-body-inner, #support .modal-body-inner  {
     max-height: 470px;
 }
 
@@ -2944,6 +2950,30 @@ ul#answerSortable {
 #cms_toolbar .cms_structure .cms_structure-dimmer {
     background-color: rgba(255, 255, 255, 0.7);
 }
+
+path[fill='#0011cc'], text[fill='#0011cc'] {
+    fill: #5D828B;
+}
+
+/* BASIC SLIDER */
+
+/*#takeTourSlider {height: 411px;}*/
+ul.bjqs{position:relative; list-style:none;padding:0;margin:0;overflow:hidden; display:none;}
+li.bjqs-slide{position:absolute; display:none;width: auto !important;}
+ul.bjqs-controls{list-style:none;margin:0;padding:0;z-index:9998;}
+ul.bjqs-controls.v-centered li a{position:absolute;top: auto !important;bottom: 10px;}
+ul.bjqs-controls.v-centered li.bjqs-next a{right:0;}
+ul.bjqs-controls.v-centered li.bjqs-next a:after{content: '';font-family: fontAwesome;padding-left: 20px;}
+ul.bjqs-controls.v-centered li.bjqs-prev a{left:0;}
+ul.bjqs-controls.v-centered li.bjqs-prev a:before{content: '';font-family: fontAwesome;padding-right: 20px;}
+ol.bjqs-markers{list-style: none; padding: 0; margin: 0; width:100%;}
+ol.bjqs-markers.h-centered{text-align: center;}
+ol.bjqs-markers li{display:inline;}
+ol.bjqs-markers li a{display:inline-block;}
+p.bjqs-caption{display:block;width:96%;margin:0;padding:2%;position:absolute;bottom:0;}
+a.getdatanow {position: absolute;right: 0;bottom: 10px;z-index: 9999;}
+a.hide-btn {position: absolute;left: 0;bottom: 10px;z-index: 9999;background: #fff;width: 180px;height: 45px;}
+a.hide-btn.right {left: auto; right: 0;}
 
 /* PRELOADER */
 
@@ -3102,22 +3132,50 @@ ul#answerSortable {
         text-decoration: none;
         color: #fff;
         font-size: 12px;
-        font-weight: 300;
-    
+        font-weight: 300;    
         background: #33626e;
         border-radius: 3px;
         padding: 2px 9px 3px;
-}
+    }
 
         .fixed-navs ul.user-nav-inner > li > a.log-out {
             font-size: 12px;
         }
         
         ul.user-nav-inner > li > a.log-out:hover {
-            color: #fff;
-        
+            color: #fff;        
             background: #5D828B;
+        }
+
+.dataTables_paginate {
+    margin: 10px 0;
 }
+
+.paginate_button {
+    outline: none !important;
+    box-shadow: none;
+    display: inline-block;
+    text-decoration: none !important;
+    padding: 1px 10px;
+    cursor: pointer;
+    color: #fff !important;
+    background: #33626e;
+    margin: 0 1px;
+}
+    .paginate_button:hover {
+        background: #5D828B;
+    }
+
+    .paginate_button.disabled {
+        background: none;
+        color: #333 !important;
+    }
+
+    .paginate_button.current {
+        background: #fff;
+        color: #333 !important;
+        box-shadow: inset 0 0 0 1px #33626e;
+    }
 
 /* RESPONSIVENESS */
 
@@ -3136,6 +3194,10 @@ ul#answerSortable {
     .ob-header.fixed {
         padding: 10px 60px;
         max-width: 748px;
+    }
+
+    .modal-dialog.imageSlider {
+        width: 822px;
     }
 
     ul.main-nav.dashboard-nav {
@@ -3220,6 +3282,21 @@ ul#answerSortable {
     .container {
          min-width:0;
     }
+
+    .recent-benchmark-controls .carousel-control {
+        background: #608a94 !important; 
+        margin-left: 2px;
+        padding: 0;
+        width: 25px;
+        display: inline-block;
+        color: #fff;
+    }
+
+        .recent-benchmark-controls .carousel-control:hover {
+            color: #fff;
+            background: #425380 !important;
+        }
+
     .mobile {
         display: block;
     }
@@ -3303,7 +3380,10 @@ ul#answerSortable {
     ul.main-nav > li.active > a {
         box-shadow: none;
         color: #fff;
-    }
+    
+        padding: 10px 0;
+        border-bottom: none;
+}
 
     .fixed-navs #top.navbar-default ul.main-nav > li.active > a {
         box-shadow: none;
@@ -3312,6 +3392,7 @@ ul#answerSortable {
     ul.main-nav .dropdown-menu {
         width: 100%;
         position: static;
+        z-index: 9999;
     }
 
         ul.main-nav .dropdown-menu:before, ul.main-nav .dropdown-menu:after {
@@ -3473,7 +3554,7 @@ ul#answerSortable {
     }
 
     .user-nav .col-md-8, .user-nav .col-md-4 {
-        padding: 0 25px;
+        padding: 0 15px;
     }
 
     .tips {

@@ -19,9 +19,10 @@ class Migration(SchemaMigration):
         # Load initial data to bm_region table
         call_command("loaddata", "initial_data.json")
 
-        # Load initial data into db Templates
+        # Load initial data to Templates table
         if not Template.objects.all().exists():
             call_command("loaddata", "initial_templates.json")
+
         # Adding model 'Region'
         db.create_table(u'bm_region', (
             (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),

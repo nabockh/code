@@ -484,16 +484,24 @@
                                     {% for contact in selected_contacts %}
                                         <div class='single-contact' data-contact-id='{{ contact.id }}'>
                                             <div class='row'>
-                                                <div class='col-md-12'>
-                                                    <input name="{{ contact.invite_element }}" type='hidden' value='on' />
-                                                    <label>{{ contact }}</label>
-                                                    <p class='text-do-wrap' title='{{ contact.headline }}'>{{ contact.headline }}</p>
+                                                <div class='col-md-10 col-xs-10'>
+                                                    <div class='row'>
+                                                        <div class='col-md-12'>
+                                                            <input class='deChecker' name="{{ contact.invite_element }}" value='on' type='hidden' />
+                                                            <label>{{ contact }}</label>
+                                                            <p class='text-do-wrap' title='{{ contact.headline }}'>{{ contact.headline }}</p>
+                                                        </div>
+                                                        <div class='col-md-12'>
+                                                            <input name="{{ contact.secondary_element }}" id="{{ contact.secondary_element }}" class='pre-checked' type='checkbox' {% if contact.allow_secondary %} checked='checked' {% endif %}/>
+                                                            <label class='nobold' for="{{ contact.secondary_element }}">Allow Forwarding</label>
+                                                        </div>
+                                                    </div>
                                                 </div>
-                                                <div class='col-md-12'>
-                                                    <input name="{{ contact.secondary_element }}" id="{{ contact.secondary_element }}" class='pre-checked' type='checkbox' {% if contact.allow_secondary %} checked='checked' {% endif %} disabled/>
-                                                    <label class='nobold' for="{{ contact.secondary_element }}">Allow Forwarding</label>
+                                                <div class='col-md-2 col-xs-2 text-center'>
+                                                    <span class='deselect-btn'><i class='fa fa-times'></i></span>
                                                 </div>
                                             </div>
+                                            
                                         </div>
                                     {% endfor %}
                                     

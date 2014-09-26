@@ -125,8 +125,18 @@ class Contact(models.Model):
     @classmethod
     def create(cls, owner, provider, **kwargs):
         from bm.models import Region
+        if kwargs['id'] == 'private':
+            print "Contacts have explicitly set their information to private"
+            return
+
         #check if contact already exists
-        contact = cls.objects.filter(code=kwargs['id'], provider=provider).first() or cls()
+        contact = cls.objects.filter(code=kwargs['id'], provider=provider).first()
+        if not contact:
+            contact = cls.objects.filter(first_name=kwargs['firstName'], last_name=kwargs['lastName'], headline=kwargs.get('headline', None), provider=provider).first()
+            if contact:
+                contact.code = kwargs['id']
+                contact.save()
+        contact = contact or cls()
         with transaction.atomic():
             try:
                 if kwargs.get('positions').get('values'):
@@ -135,12 +145,15 @@ class Contact(models.Model):
                             company = None
                             company_id = position.get('company', {}).get('id')
                             if company_id:
-                                company = Company.objects.filter(code=position.get('company', {}).get('id')).first()
+                                company = Company.objects.filter(code=position.get('company', {}).get('id'), _industry__name=kwargs.get('industry', {})).first()
                             if not company:
-                                company = Company.objects.filter(name=position.get('company', {}).get('name')).first()
-                            if company:
-                                if company_id and company.code != company_id:
+                                company = Company.objects.filter(name=position.get('company', {}).get('name'), _industry__name=kwargs.get('industry', {})).first()
+                                if company and company_id and company.code != company_id:
                                     company.code = company_id
+                                    company.save()
+                            if company:
+                                if company.industry.name != kwargs.get('industry', {}):
+                                    company.industry = LinkedInIndustry.objects.filter(name=kwargs.get('industry', {})).first();
                                     company.save()
                                 contact.company = company
                             else:
