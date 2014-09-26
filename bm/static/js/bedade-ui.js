@@ -206,8 +206,6 @@ $(function () {
         toggle: false
     });
 
-    
-
     $('.carousel').carousel({interval: false});
     $(document).on('mouseleave', '.carousel', function() {
         $(this).carousel('pause');
@@ -435,6 +433,8 @@ function select_prepare() {
             width = 150;
             param_search = -1;
         }
+
+
         $select.prev('.select2-container').remove();
         $select2 = $select.removeAttr('style').css('width', width).select2({minimumResultsForSearch: param_search});
         $select2.on("select2-open", function(){$('.select2-offscreen > .select2-input').blur();}); // Workaround not to show cursor on iPad
@@ -631,7 +631,7 @@ $( document ).ready(function(){
         });
     });
 
-    
+    $('.select2-search input').attr('disabled', 'disabled');
 
     $(".char-fillter li").click(function() {
         var filter_char = $(this).text();
