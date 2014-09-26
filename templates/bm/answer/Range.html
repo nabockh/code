@@ -21,6 +21,7 @@
 						<label for="id_max">MAX <span class='units' title='In - {{ benchmark.question.first.options.first.units }}'>(In - "{{ benchmark.question.first.options.first.units }}")</span></label>
 						
 						{{ form.max }}
+                        <p>{{ form.max.errors.as_text }}</p>
 					</div>
 				</div>
 		   	</div>
