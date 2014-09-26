@@ -1859,7 +1859,17 @@ span.grey {
 form[role='beta-email'] {
     float: right;
     /* width: 40%; */;
+    position: relative;
 }
+
+    label#id_invite-email-error {
+        position: absolute;
+        left: 0;
+        right: 0;
+        font-weight: 300;
+        color: red;
+        text-align: left;
+    }
 
     form[role='beta-email'] .form-group {
         float: left;
