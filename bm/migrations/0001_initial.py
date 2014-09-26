@@ -4,6 +4,7 @@ from south.db import db
 from south.v2 import SchemaMigration
 from django.db import models
 from django.core.management import call_command
+from dbtemplates.models import Template
 
 class Migration(SchemaMigration):
 
@@ -18,6 +19,9 @@ class Migration(SchemaMigration):
         # Load initial data to bm_region table
         call_command("loaddata", "initial_data.json")
 
+        # Load initial data into db Templates
+        if not Template.objects.all().exists():
+            call_command("loaddata", "initial_templates.json")
         # Adding model 'Region'
         db.create_table(u'bm_region', (
             (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
