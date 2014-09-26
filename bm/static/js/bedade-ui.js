@@ -26,10 +26,18 @@ $(function () {
             if (selectedStep3 > 2) {
                 $('#units_maxDecimals_step3').show();
                 $('#answer_options_step3').hide();
+                $('#units_maxDecimals_step3').next('hr').show();
             }
             else {
                 $('#answer_options_step3').show();
                 $('#units_maxDecimals_step3').hide();
+                $('#units_maxDecimals_step3').next('hr').show();
+            }
+
+            if (selectedStep3 == 4) {
+                $('#units_maxDecimals_step3').hide();
+                $('#answer_options_step3').hide();
+                $('#units_maxDecimals_step3').next('hr').hide();
             }
     };
 
@@ -427,7 +435,7 @@ $(function() {
 function select_prepare() {
     $('select').each(function(){
         var $select = $(this);
-        var width = $select.parents('div:eq(0)').width();
+        var width = '100%'
         var param_search = 100;
         if($(this).parent('div').hasClass('title-header')){
             width = 150;
