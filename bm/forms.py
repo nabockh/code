@@ -226,12 +226,12 @@ class AnswerMultipleChoiceForm(forms.Form):
 
 
 class NumericAnswerForm(forms.Form):
-    numeric_box = forms.IntegerField(min_value=0, max_value=1000000)
+    numeric_box = forms.IntegerField(min_value=-1000000, max_value=1000000)
 
 
 class RangeAnswerForm(forms.Form):
-    min = forms.IntegerField(min_value=0, max_value=1000000, widget=forms.NumberInput(attrs={'placeholder': '1'}))
-    max = forms.IntegerField(min_value=0, max_value=1000000, widget=forms.NumberInput(attrs={'placeholder': '1000000'}))
+    min = forms.IntegerField(min_value=-1000000, max_value=1000000, widget=forms.NumberInput(attrs={'placeholder': '1'}))
+    max = forms.IntegerField(min_value=-1000000, max_value=1000000, widget=forms.NumberInput(attrs={'placeholder': '1000000'}))
 
     def __init__(self, *args, **kwargs):
         super(RangeAnswerForm, self).__init__(*args, **kwargs)
@@ -258,7 +258,7 @@ class YesNoAnswerForm(forms.Form):
     def __init__(self, *args, **kwargs):
         super(YesNoAnswerForm, self).__init__(*args, **kwargs)
         self.fields['Choose Yes or No:'] = forms.TypedChoiceField(coerce=lambda x: x == 'True',
-                                                                  choices=((True, 'Yes'), (False, 'No') ),
+                                                                  choices=((True, 'Yes'), (False, 'No')),
                                                                   widget=forms.RadioSelect)
 
 

@@ -69,7 +69,7 @@ def check_new_bm_created(sender, request, benchmark, **kwargs):
                          .exclude(email__exact='')\
                          .values_list('email', flat=True)
     template = loader.get_template('alerts/new_benchmark.html')
-    messages.add_message(request, MESSAGE_BM_CREATED, '%s' % benchmark.name )
+    messages.add_message(request, MESSAGE_BM_CREATED, 'New Benchmark was created - %s' % benchmark.name )
     raw_context = get_context_variables(benchmark)
     raw_context['type'] = type
     raw_context['remaining_before_closure'] = (benchmark.end_date.date() - datetime.now().date()).days
