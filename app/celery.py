@@ -5,6 +5,7 @@ import os
 from celery import Celery
 
 from django.conf import settings
+from django.db import connection
 
 # set the default Django settings module for the 'celery' program.
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'app.settings')

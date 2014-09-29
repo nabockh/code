@@ -69,7 +69,7 @@ class HomeView(TemplateView):
                     login_invite = Invite()
                     login_invite.email = invitation_form.cleaned_data['email']
                     login_invite.save()
-                    messages.add_message(request, MESSAGE_BETA_INVITE, 'Your request successfully have been accepted.')
+                    messages.add_message(request, MESSAGE_BETA_INVITE, 'Your request has been successfully accepted.')
                     return HttpResponseRedirect('/')
                 except IntegrityError:
                     messages.add_message(request, MESSAGE_BETA_INVITE, 'Please wait for approval.')

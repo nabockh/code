@@ -1,4 +1,5 @@
 from django import forms
+from models import SystemKey
 
 
 class ContactForm(forms.Form):
@@ -21,3 +22,11 @@ class ContactForm(forms.Form):
 class TermsAndConditions(forms.Form):
     accept = forms.BooleanField()
     next = forms.CharField(widget=forms.HiddenInput())
+
+class SystemKeysForm(forms.ModelForm):
+    class Meta:
+        model = SystemKey
+
+    key_name = forms.CharField(label='Key', max_length=100)
+    _payload = forms.CharField(label='Payload', max_length=300)
+    description = forms.CharField(label='Description')
