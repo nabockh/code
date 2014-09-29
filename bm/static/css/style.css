@@ -1173,6 +1173,7 @@ form[role='search'] .form-control {
     border-radius: 0;
     box-shadow: none;
     max-width: 150px;
+    padding: 0 10px;
 }
 
 form[role='search'] .btn-search {
