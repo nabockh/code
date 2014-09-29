@@ -143,8 +143,8 @@ WSGI_APPLICATION = 'app.wsgi.application'
 
 DATABASES = {
     'default': {
-    'ENGINE': 'django.db.backends.postgresql_psycopg2',
-    'NAME': 'bedade',
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'bedade',
     }
 }
 
@@ -268,7 +268,6 @@ CACHES = {
 }
 
 AUTHENTICATION_BACKENDS = (
-#    'social.backend.beta.BetaBackend',
     'social_auth.backends.contrib.linkedin.LinkedinBackend',
     'app.backend.case_insensitive.CaseInsensitiveModelBackend',
     'django.contrib.auth.backends.ModelBackend',
@@ -286,8 +285,6 @@ SOCIAL_AUTH_PIPELINE = (
     'social.pipeline.load_extra_data',
 )
 
-#LINKEDIN_CONSUMER_KEY = '77ib04b5abd803'
-#LINKEDIN_CONSUMER_SECRET = '2HuRj68wed7IPndy'
 LINKEDIN_CONSUMER_KEY = '77pi0tgejrq7si'
 LINKEDIN_CONSUMER_SECRET = 'ZneKr9tbVPSSrm5O'
 
@@ -300,22 +297,16 @@ LOGIN_ERROR_URL = "/beta"
 LOGIN_URL = '/'
 LOGIN_REAL_URL = '/login/linkedin'
 
-EMAIL_BACKEND = 'djcelery_email.backends.CeleryEmailBackend'
-EMAIL_HOST_USER = os.environ.get('SENDGRID_USERNAME', 'devova')
+EMAIL_BACKEND = 'core.tasks.BedadeCeleryEmailBackend'
 EMAIL_HOST = 'smtp.sendgrid.net'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-EMAIL_HOST_PASSWORD = os.environ.get('SENDGRID_PASSWORD', 'bedadesmtp')
 DEFAULT_FROM_EMAIL = 'Bedade <info@bedade.com>'
 
 SOCIAL_AUTH_COMPLETE_URL_NAME = 'social_complete'
 FIRST_TIME_USER_REDIRECT_URL = '/dashboard'
 REGISTERED_USER_REDIRECT_URL = '/dashboard'
 
-# KEEN metrics settings
-# KEEN_PROJECT_ID = '5422160f38314457d88816a5'
-# KEEN_WRITE_KEY = 'c373187719c6e69a69322f84b864e13e84a5d5ecce31f82d1fe7837e95943e6827c5e489e2b4884b9d19aba4479799fd8002e9a15f8d80043b8fcdae2b8c2ac808d8b182d34d08aa891e88ec0d36def7d1a173dee7c6ebed8c318cd7f84563e8846ee1a535e3b871ac8e33d0ac9eca0f'
-# KEEN_READ_KEY = 'b6a05045b5db1a75b8bcf32998b726ee5ef550b7d8cd60104dcf6c158ce57492220c56091eebdccdf427cc15f3ac0201575e652f1e8ac3748280da31a0445ca6e9748bd95db072692039d738bc6aae1b8269adfd5ee88fac2517c82847834e01d326553a190ed2730e014fff37ba6f07'
 
 CSRF_FAILURE_VIEW = 'core.views.csrf_failure'
 
