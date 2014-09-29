@@ -204,7 +204,7 @@ class BenchmarkCreateWizardView(CookieWizardView):
             benchmark.save()
 
             if isinstance(step3.cleaned_data['geo'], list):
-                bm_geo =  step3.cleaned_data['geo'][0]
+                bm_geo = step3.cleaned_data['geo'][0]
             else:
                 bm_geo = step3.cleaned_data['geo']
             if bm_geo:
@@ -676,6 +676,7 @@ class BenchmarkAddRecipientsView(FormView):
             wizard=wizard,
             prefix='1',
             except_ids=self.except_ids,
+            request=self.request
         )
         kwargs.update(params)
         return kwargs
