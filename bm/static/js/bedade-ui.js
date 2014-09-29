@@ -26,10 +26,18 @@ $(function () {
             if (selectedStep3 > 2) {
                 $('#units_maxDecimals_step3').show();
                 $('#answer_options_step3').hide();
+                $('#units_maxDecimals_step3').next('hr').show();
             }
             else {
                 $('#answer_options_step3').show();
                 $('#units_maxDecimals_step3').hide();
+                $('#units_maxDecimals_step3').next('hr').show();
+            }
+
+            if (selectedStep3 == 4) {
+                $('#units_maxDecimals_step3').hide();
+                $('#answer_options_step3').hide();
+                $('#units_maxDecimals_step3').next('hr').hide();
             }
     };
 
@@ -127,6 +135,36 @@ $(function () {
 
 
 $(function () {
+
+
+    $('#preview').on('shown.bs.modal', function (e) {
+        if ($('#default_text').text().length <= 1) {
+            var csrf = document.cookie.match(/csrftoken=([\w]+)/);
+            var data = $('.styled-form').serialize();
+            var request = $.ajax({
+                    url: window.location.pathname,
+                    type: 'post',
+                    'csrfmiddlewaretoken' : csrf? csrf[1] : null,
+                    'data': data
+            });
+            // callback handler that will be called on success
+            request.done(function (response, textStatus, jqXHR){
+                $('#preview #emailPre').html(response);
+                // log a message to the console
+            });
+
+            // callback handler that will be called on failure
+            request.fail(function (jqXHR, textStatus, errorThrown){
+                // log the error to the console
+                console.error(
+                    "The following error occured: "+
+                    textStatus, errorThrown
+                );
+            });
+        }
+    });
+
+
     $('#takeTour').on('shown.bs.modal', function (e) {        
         if ($('#takeTour').find('.bjqs-wrapper').length <= 0) {
             $('#takeTourSlider').bjqs({
@@ -205,8 +243,6 @@ $(function () {
     $('.collapse').collapse({
         toggle: false
     });
-
-    
 
     $('.carousel').carousel({interval: false});
     $(document).on('mouseleave', '.carousel', function() {
@@ -315,37 +351,9 @@ $(function () {
 // End Animate Scroll to # links
 
 // Script for Ajax Email Preview on 3-rd step of BM creation
-$(document).off("click","label.btn-primary[data-target='#preview']");
-$(document).on("click","label.btn-primary[data-target='#preview']",function(){
-    var csrf = document.cookie.match(/csrftoken=([\w]+)/);
-    var data = $('.styled-form').serialize();
-    var request = $.ajax({
-            url: window.location.pathname,
-            type: 'post',
-            'csrfmiddlewaretoken' : csrf? csrf[1] : null,
-            'data': data
-    });
-
-    // callback handler that will be called on success
-        request.done(function (response, textStatus, jqXHR){
-            $('#preview .modal-body').html(response);
-            // log a message to the console
-        });
-
-        // callback handler that will be called on failure
-        request.fail(function (jqXHR, textStatus, errorThrown){
-            // log the error to the console
-            console.error(
-                "The following error occured: "+
-                textStatus, errorThrown
-            );
-        });
-
-    });
 
 // Ajax post on Contact Form
 
-$(document).off("submit","form#contact_form");
 $(document).on("submit","form#contact_form", function(e){
     e.preventDefault();
     var csrf = document.cookie.match(/csrftoken=([\w]+)/);
@@ -386,9 +394,6 @@ $(function () {
             }
         }
     });
-});
-
-$(function () {
 
     $("#invite_colleague_form").validate({ // initialize the plugin
 
@@ -399,9 +404,6 @@ $(function () {
             }
         }
     });
-});
-
-$(function () {
 
     $("#beta_invitation_form").validate({ // initialize the plugin
 
@@ -411,11 +413,9 @@ $(function () {
             }
         }
     });
-});
 
-// DataTable for Search and History page
+    // DataTable for Search and History page
 
-$(function() {
     if ( (document.getElementsByClassName('benchmark')).length > 0 ) {
         $('.results').dataTable({
             Info: false,
@@ -429,12 +429,14 @@ $(function() {
 function select_prepare() {
     $('select').each(function(){
         var $select = $(this);
-        var width = $select.parents('div:eq(0)').width();
+        var width = '100%'
         var param_search = 100;
         if($(this).parent('div').hasClass('title-header')){
             width = 150;
             param_search = -1;
         }
+
+
         $select.prev('.select2-container').remove();
         $select2 = $select.removeAttr('style').css('width', width).select2({minimumResultsForSearch: param_search});
         $select2.on("select2-open", function(){$('.select2-offscreen > .select2-input').blur();}); // Workaround not to show cursor on iPad
@@ -623,12 +625,20 @@ $(document).ajaxStop(function() {
 
 $( document ).ready(function(){
     $( "#preview" ).on('shown.bs.modal', function() {
-        $( '.save-button' ).on('click', function() {
-            $('#email_body').text($('#default_text').text());
-            $( "#preview" ).modal('hide');
-            $('#default_text').css('background-color', '#F5F5F5');
-        });
+        $('#default_text').focus();
+
     });
+        $( '#saveButton' ).on('click', function() {
+             var editedText = $('#default_text').text();
+            $('#email_body').text(editedText);
+            $( "#preview" ).modal('hide');
+        });
+
+    
+
+
+
+    $('.select2-search input').attr('disabled', 'disabled');
 
     $(".char-fillter li").click(function() {
         var filter_char = $(this).text();

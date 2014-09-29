@@ -47,9 +47,11 @@ class CreateBenchmarkStep12Form(forms.Form):
             self.fields['units'].required = False
         elif question_type == Question.NUMERIC or question_type == Question.RANGE:
             self.fields['answer_options'].required = False
+            self.fields['answer_options'].validators = []
         elif question_type == Question.YES_NO:
             self.fields['answer_options'].required = False
             self.fields['units'].required = False
+            self.fields['answer_options'].validators = []
 
 
 class CreateBenchmarkStep3Form(forms.Form):
