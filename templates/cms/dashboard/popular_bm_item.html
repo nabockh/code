@@ -42,11 +42,11 @@
             var popular_mainChartData_{{ benchmark.id }} = {{ benchmark.charts|safe }};
 
             $(function () {
-                $("#minVal-{{ benchmark.id }}").text(popular_mainChartData_{{ benchmark.id }}.bell_curve.min.toFixed(0));
-                $("#maxVal-{{ benchmark.id }}").text(popular_mainChartData_{{ benchmark.id }}.bell_curve.max.toFixed(0));
-                $("#avgVal-{{ benchmark.id }}").text(popular_mainChartData_{{ benchmark.id }}.bell_curve.avg.toFixed(0));
+                $("#popular-minVal-{{ benchmark.id }}").text(popular_mainChartData_{{ benchmark.id }}.bell_curve.min.toFixed(0));
+                $("#popular-maxVal-{{ benchmark.id }}").text(popular_mainChartData_{{ benchmark.id }}.bell_curve.max.toFixed(0));
+                $("#popular-avgVal-{{ benchmark.id }}").text(popular_mainChartData_{{ benchmark.id }}.bell_curve.avg.toFixed(0));
                 var sd = popular_mainChartData_{{ benchmark.id }}.bell_curve.sd.toFixed(1);
-                $("#sdVal-{{ benchmark.id }}").text(sd);
+                $("#popular-sdVal-{{ benchmark.id }}").text(sd);
 
                 $( ".single-stat .value" ).each(function() {
                     var len = $(this).text().length;

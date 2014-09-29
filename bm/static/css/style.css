@@ -3139,10 +3139,15 @@ a.hide-btn.right {left: auto; right: 0;}
         padding: 15px 10px 5px;
     }
 
+
+    .benchmark-stats.sixish .single-stat > span.value {
+        font-size: 26px;
+    }
+
     .benchmark-stats.more .single-stat > span.value {
         font-size: 18px;
     }
-
+    
     ul.user-nav-inner > li > a.log-out {
         text-decoration: none;
         color: #fff;
