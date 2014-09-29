@@ -149,7 +149,7 @@ $(function () {
             });
             // callback handler that will be called on success
             request.done(function (response, textStatus, jqXHR){
-                $('#preview .modal-body').html(response);
+                $('#preview #emailPre').html(response);
                 // log a message to the console
             });
 
@@ -354,7 +354,6 @@ $(function () {
 
 // Ajax post on Contact Form
 
-$(document).off("submit","form#contact_form");
 $(document).on("submit","form#contact_form", function(e){
     e.preventDefault();
     var csrf = document.cookie.match(/csrftoken=([\w]+)/);
@@ -395,9 +394,6 @@ $(function () {
             }
         }
     });
-});
-
-$(function () {
 
     $("#invite_colleague_form").validate({ // initialize the plugin
 
@@ -408,9 +404,6 @@ $(function () {
             }
         }
     });
-});
-
-$(function () {
 
     $("#beta_invitation_form").validate({ // initialize the plugin
 
@@ -420,11 +413,9 @@ $(function () {
             }
         }
     });
-});
 
-// DataTable for Search and History page
+    // DataTable for Search and History page
 
-$(function() {
     if ( (document.getElementsByClassName('benchmark')).length > 0 ) {
         $('.results').dataTable({
             Info: false,
@@ -635,12 +626,17 @@ $(document).ajaxStop(function() {
 $( document ).ready(function(){
     $( "#preview" ).on('shown.bs.modal', function() {
         $('#default_text').focus();
-        $( '.save-button' ).on('click', function() {
-            var editedText = $('#default_text').text();
+
+    });
+        $( '#saveButton' ).on('click', function() {
+             var editedText = $('#default_text').text();
             $('#email_body').text(editedText);
             $( "#preview" ).modal('hide');
         });
-    });
+
+    
+
+
 
     $('.select2-search input').attr('disabled', 'disabled');
 
