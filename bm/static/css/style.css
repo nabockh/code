@@ -1760,16 +1760,16 @@ span.grey {
     background-color: #33626e;
 }
 
-    .btn-primary:hover, .btn-primary:focus, .btn-primary:active, .btn-primary.active, .open .dropdown-toggle.btn-primary { {
-        background-color: #5D828B;
-    }
+.btn-primary:hover, .btn-primary:focus, .btn-primary:active, .btn-primary.active, .open .dropdown-toggle.btn-primary { {
+    background-color: #5D828B;
+}
 
-    a.tour {
-        padding: 2px 10px;
-        font-size: 12px;
-        vertical-align: text-bottom;
-        border-radius: 3px;
-    }
+a.tour {
+    padding: 2px 10px;
+    font-size: 12px;
+    vertical-align: text-bottom;
+    border-radius: 3px;
+}
 
 .icon-close {
     position: absolute;
