@@ -1760,7 +1760,7 @@ span.grey {
     background-color: #33626e;
 }
 
-    .btn-primary:hover {
+    .btn-primary:hover, .btn-primary:focus, .btn-primary:active, .btn-primary.active, .open .dropdown-toggle.btn-primary { {
         background-color: #5D828B;
     }
 
