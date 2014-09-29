@@ -52,7 +52,13 @@
                         </ul>
                     </div>
                     <div class='col-md-4 col-xs-3'>
-                        <a href="{% url 'bm_create' %}" class='btn btn-primary pull-right icon-only'><span class='non-mobile'>Create new benchmark</span> <i class='fa fa-plus-circle'></i></a>
+                        {% if wizard.steps.step1 == 1 %}
+                            <label for='bm-submit' class='btn btn-primary auto-width pull-right'> Continue <i class='fa fa-arrow-circle-o-right'></i></label>
+                        {% elif wizard.steps.step1 == 2 %}
+                            <label for='bm-submit' class='btn btn-primary auto-width pull-right'> Continue <i class='fa fa-arrow-circle-o-right'></i></label>
+                        {% elif wizard.steps.step1 == 3 %}
+                            <label for='bm-submit' class='btn btn-primary auto-width pull-right'> Send Invitations <i class='fa fa-arrow-circle-o-right'></i></label>
+                        {% endif %}
                     </div>
                 </div>
                 </div>
