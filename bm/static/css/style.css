@@ -3002,9 +3002,9 @@ ol.bjqs-markers.h-centered{text-align: center;}
 ol.bjqs-markers li{display:inline;}
 ol.bjqs-markers li a{display:inline-block;}
 p.bjqs-caption{display:block;width:96%;margin:0;padding:2%;position:absolute;bottom:0;}
-a.getdatanow {position: absolute;right: 0;bottom: 10px;z-index: 9999;}
-a.hide-btn {position: absolute;left: 0;bottom: 10px;z-index: 9999;background: #fff;width: 180px;height: 45px;}
-a.hide-btn.right {left: auto; right: 0;}
+a.getdatanow {position: absolute;right: 0;bottom: 10px;z-index: 9999; height: 41px;}
+span.hide-btn {position: absolute;left: 0;bottom: 10px;z-index: 9999;background: #fff;width: 180px;height: 45px;}
+span.hide-btn.right {left: auto; right: 0;}
 
 /* PRELOADER */
 
