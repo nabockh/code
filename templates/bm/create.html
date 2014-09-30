@@ -53,11 +53,11 @@
                     </div>
                     <div class='col-md-4 col-xs-3'>
                         {% if wizard.steps.step1 == 1 %}
-                            <label for='bm-submit' class='btn btn-primary auto-width pull-right'> Continue <i class='fa fa-arrow-circle-o-right'></i></label>
+                            <label for='bm-submit' class='btn btn-primary auto-width pull-right'><span class='non-mobile'>Continue</span> <i class='fa fa-arrow-circle-o-right s'></i></label>
                         {% elif wizard.steps.step1 == 2 %}
-                            <label for='bm-submit' class='btn btn-primary auto-width pull-right'> Continue <i class='fa fa-arrow-circle-o-right'></i></label>
+                            <label for='bm-submit' class='btn btn-primary auto-width pull-right'><span class='non-mobile'>Continue</span> <i class='fa fa-arrow-circle-o-right s'></i></label>
                         {% elif wizard.steps.step1 == 3 %}
-                            <label for='bm-submit' class='btn btn-primary auto-width pull-right'> Send Invitations <i class='fa fa-arrow-circle-o-right'></i></label>
+                            <label for='bm-submit' class='btn btn-primary auto-width pull-right'><span class='non-mobile'>Send Invitations</span> <i class='fa fa-arrow-circle-o-right s'></i></label>
                         {% endif %}
                     </div>
                 </div>
@@ -453,7 +453,7 @@
                                 </div>
                                 <hr>
                                 <div class='col-md-12'>
-                                    <label for="id_2-customize_email">Customize the email being sent to your contacts </label>
+                                    <label for="id_2-customize_email"><span class='non-mobile'>Customize the </span>email being sent to your contacts </label>
                                     <span class="add_help">?
                                         <span class='add_help_inner'>
                                             <span>
@@ -465,6 +465,7 @@
                                     </span>
                                     <label class="btn btn-primary auto-width pull-right smaller" data-toggle="modal" data-target="#preview">Email Preview <i class='fa fa-eye'></i></label>
                                 </div>
+                                <hr class='mobile'>
                                 <div class='col-md-12'>
                                     <label for="id_2-view_form">View the answer form your contact will see </label>
 
