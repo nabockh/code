@@ -97,10 +97,10 @@ class ReadOnlyAdminMixin:
     def has_delete_permission(self, request, obj=None):
         return False
 
-
-def decline_benchmark(modeladmin, request, queryset):
-    queryset.update(approved=False)
-decline_benchmark.short_description = "Decline selected benchmarks"
+# Commented out while no need for multiple decline
+# def decline_benchmark(modeladmin, request, queryset):
+#     queryset.update(approved=False)
+# decline_benchmark.short_description = "Decline selected benchmarks"
 
 
 def approve_benchmark(modeladmin, request, queryset):
@@ -149,7 +149,7 @@ class BenchmarkPendingAdmin(ReadOnlyAdminMixin, admin.ModelAdmin):
     readonly_fields.append('question_label')
     fields = ('approved', 'name', 'question_label', 'question_description', 'owner',
               'geographic_coverage', 'start_date', 'end_date', 'min_numbers_of_responses', 'invites_list')
-    actions = [decline_benchmark, approve_benchmark]
+    actions = [approve_benchmark]
 
     def question_description(self, obj):
         return obj.question.first().description

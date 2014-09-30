@@ -29,7 +29,7 @@ $BODY$
                     INNER JOIN "bm_benchmark"
                       ON "bm_benchmark"."id" = "bm_question"."benchmark_id"
          WHERE "bm_benchmark"."id" = bid and
-           point between r.min and r.max)
+           point between r.min and r.max) AS cnt
   from (
     SELECT
       generate_series(min(r.min), max(r.max)) AS "point"
@@ -225,24 +225,24 @@ BEGIN
         point1 := a_point;
         point2 := point1;
       ELSE
-        IF a_point.count != point1.count 
+        IF a_point.cnt != point1.cnt
         THEN
-          IF point2.count = 0
+          IF point2.cnt = 0
           THEN
             INSERT INTO "bm_seriesstatistic" ("benchmark_id", "series", "sub_series", "value")
-            VALUES (bm_id, point2.point, point2.point, point2.count);  
+            VALUES (bm_id, point2.point, point2.point, point2.cnt);
             point1 := a_point;
           ELSE
-            IF a_point.count > point1.count
+            IF a_point.cnt > point1.cnt
             THEN
               point2 = a_point;
             END IF; 
             INSERT INTO "bm_seriesstatistic" ("benchmark_id", "series", "sub_series", "value")
-            VALUES (bm_id, point1.point, point2.point, point1.count);
-            IF a_point.count < point1.count 
+            VALUES (bm_id, point1.point, point2.point, point1.cnt);
+            IF a_point.cnt < point1.cnt
             THEN
               point1 := point2;
-              point1.count := a_point.count;
+              point1.cnt := a_point.cnt;
             ELSE
               point1 := a_point;
             END IF;
@@ -252,7 +252,7 @@ BEGIN
       END IF;
     END LOOP;
     INSERT INTO "bm_seriesstatistic" ("benchmark_id", "series", "sub_series", "value")
-    VALUES (bm_id, point1.point, point2.point, point2.count);
+    VALUES (bm_id, point1.point, point2.point, point2.cnt);
   END IF;
   RETURN bm_id;
 END;
