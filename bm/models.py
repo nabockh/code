@@ -14,7 +14,6 @@ from django.db.models.aggregates import Min
 from social.models import LinkedInIndustry
 from social_auth.db.django_models import USER_MODEL
 
-
 class RegionsManager(models.Manager):
     def get_queryset(self):
         return super(RegionsManager, self).get_queryset().filter(type__name='region')
@@ -191,10 +190,20 @@ class BenchmarkMultiple(Benchmark):
             value = round((float(vote[1])/value_sum)*100)
             del vote[1]
             vote.append(value)
+        series1 = list(series)
         series.insert(0, ['series', 'votes'])
+        title = ['Series']
+        for s, _ in series1:
+            title.append(s)
+        series_data = [title]
+        sampled_data = [None,] * len(series1)
+        for idx, (s, v) in enumerate(series1):
+            data = sampled_data[:]
+            data[idx] = v
+            series_data.append([s, ]+data)
         return {
             'pie': series,
-            'column': series,
+            'column': series_data,
         }
 
 
@@ -241,7 +250,7 @@ class BenchmarkRanking(Benchmark):
             series2.insert(10, series2.pop(2))
         return {
             'pie': series1,
-            'column': series2,
+            'column_ranking': series2,
         }
 
 
@@ -263,11 +272,21 @@ class BenchmarkNumeric(Benchmark):
             value = round((float(vote[1])/value_sum)*100)
             del vote[1]
             vote.append(value)
+        series1 = list(series)
         series.insert(0, ['series', 'votes'])
+        title = ['Series']
+        for s, _ in series1:
+            title.append(s)
+        series_data = [title]
+        sampled_data = [None,] * len(series1)
+        for idx, (s, v) in enumerate(series1):
+            data = sampled_data[:]
+            data[idx] = v
+            series_data.append([s, ]+data)
         bell_curve = self.numeric_statistic.values('min', 'max', 'avg', 'sd').first()
         return {
             'pie': series,
-            'column': series,
+            'column': series_data,
             'bell_curve': bell_curve,
             'units': self.question.first().options.first().units.encode('utf-8'),
         }
@@ -291,7 +310,17 @@ class BenchmarkRange(Benchmark):
             value = round((float(vote[1])/value_sum)*100)
             del vote[1]
             vote.append(value)
+        series3 = list(series1)
         series1.insert(0, ['series', 'Contributors'])
+        title = ['Series']
+        for s, _ in series3:
+            title.append(s)
+        series_data = [title]
+        sampled_data = [None,] * len(series3)
+        for idx, (s, v) in enumerate(series3):
+            data = sampled_data[:]
+            data[idx] = v
+            series_data.append([s, ]+data)
         series2 = [['votes', 'min', 'max', 'min', 'max']]
         for s in series:
             series2.append([s['value'], int(s['series']), int(s['series']), int(s['sub_series']), int(s['sub_series'])])
@@ -302,7 +331,7 @@ class BenchmarkRange(Benchmark):
             vote.insert(0, value)
         return {
             'pie': series1,
-            'column': series1,
+            'column': series_data,
             'line': series2,
             'units': self.question.first().options.first().units.encode('utf-8'),
         }
@@ -333,10 +362,20 @@ class BenchmarkYesNo(Benchmark):
                 value = round((float(vote[1])/value_sum)*100)
                 del vote[1]
                 vote.append(value)
+        series2 = list(series)
         series.insert(0, ['series', 'Votes'])
+        title = ['Series']
+        for s, _ in series2:
+            title.append(s)
+        series_data = [title]
+        sampled_data = [None,] * len(series2)
+        for idx, (s, v) in enumerate(series2):
+            data = sampled_data[:]
+            data[idx] = v
+            series_data.append([s, ]+data)
         return {
             'pie': series,
-            'column': series,
+            'column': series_data,
         }
 
 
