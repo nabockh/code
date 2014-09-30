@@ -3854,7 +3854,7 @@ span.hide-btn.right {left: auto; right: 0;}
     .title-header {
         font-size: 10px;
     }
-    
+
     .title-header a.add-all {
         text-decoration: none;
         padding: 8px 15px;
@@ -3872,6 +3872,10 @@ span.hide-btn.right {left: auto; right: 0;}
         font-size: 14px;
         width: 100%;
         margin-bottom: 20px;
+    }
+
+    .bigChart > div {
+        width: 100% !important;
     }
 
     .contactlistTitle {
