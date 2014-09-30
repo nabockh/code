@@ -1,4 +1,8 @@
+from app.settings import SECRET_KEY
+from Crypto.Cipher import ARC4
+import base64
 from django.db import models
+from django.http import HttpResponseForbidden
 from cms.models.pluginmodel import CMSPlugin
 
 
@@ -124,3 +128,43 @@ class HomeHowItWorks(CMSPlugin):
     @property
     def type_class(self):
         return dict(self.TYPES)[self.type]
+
+class SystemKey(models.Model):
+    class Meta:
+        db_table = 'system_keys'
+
+    key_name = models.CharField(max_length=50, unique=True)
+    _payload = models.CharField(max_length=500)
+    key_group = models.CharField(max_length=50)
+    description = models.TextField(max_length=1000)
+
+    @classmethod
+    def get_keys(self, group):
+        keys = {}
+        for key in SystemKey.objects.filter(key_group=group).all():
+            keys[key.key_name] = key.decrypted_payload
+        return keys
+
+    @property
+    def payload(self):
+        return self._payload
+
+    @property
+    def decrypted_payload(self):
+        encobj = ARC4.new('SECRET_KEY')
+        enc_string = base64.decodestring(self._payload)
+        return encobj.decrypt(enc_string)
+
+    def set_payload(self, value):
+        encobj = ARC4.new('SECRET_KEY')
+        self._payload = base64.encodestring(encobj.encrypt(value))
+
+
+    def delete(self, using=None):
+        raise HttpResponseForbidden()
+
+    def save(self, force_insert=False, force_update=False, using=None,
+             update_fields=None):
+        self.set_payload(self._payload)
+        super(SystemKey, self).save(force_insert=force_insert, force_update=force_update,
+                                    using=using, update_fields=update_fields)

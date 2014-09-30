@@ -168,6 +168,10 @@ class Benchmark(models.Model):
     def charts_allowed(self):
         return [name for name, title in self.available_charts]
 
+    @property
+    def calc_progress(self):
+        return min(int(round(float(self.contributors)/self.min_numbers_of_responses*100)), 100)
+
 
 class BenchmarkMultiple(Benchmark):
 

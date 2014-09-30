@@ -47,9 +47,11 @@ class CreateBenchmarkStep12Form(forms.Form):
             self.fields['units'].required = False
         elif question_type == Question.NUMERIC or question_type == Question.RANGE:
             self.fields['answer_options'].required = False
+            self.fields['answer_options'].validators = []
         elif question_type == Question.YES_NO:
             self.fields['answer_options'].required = False
             self.fields['units'].required = False
+            self.fields['answer_options'].validators = []
 
 
 class CreateBenchmarkStep3Form(forms.Form):
@@ -59,6 +61,8 @@ class CreateBenchmarkStep3Form(forms.Form):
     name = forms.CharField(max_length=100, required=False)
 
     def clean(self):
+        if self.user.is_superuser:
+            return self.cleaned_data
         if self.is_continue and hasattr(self, 'selected_contacts'):
             if len(self.selected_contacts) < self.min_number_of_answers:
                 self.errors['__all__'] = self.error_class(
@@ -74,6 +78,7 @@ class CreateBenchmarkStep3Form(forms.Form):
 
     def __init__(self, user, step0data, wizard, except_ids=set(), *args, **kwargs):
         super(CreateBenchmarkStep3Form, self).__init__(*args, **kwargs)
+        self.user = user
         self.min_number_of_answers = self.num(step0data.get('0-minimum_number_of_answers'))
         data = kwargs.get('data') or {}
         self.is_continue = data.get('is_continue', False) and not (

@@ -1,10 +1,10 @@
 from app.settings import METRICS
-from app.settings import KEEN_PROJECT_ID, KEEN_WRITE_KEY, KEEN_READ_KEY
 from django.contrib.auth.models import User
 from django.contrib.contenttypes.generic import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
 from django.db import models
 from django.core.cache import cache
+from core.models import SystemKey
 import keen
 import logging
 from app import settings
@@ -15,9 +15,6 @@ logging.config.dictConfig(settings.LOGGING)
 logger = logging.getLogger('bedade.background')
 
 TYPE_HTTP_REQUEST = 'HttpRequest'
-keen.project_id = KEEN_PROJECT_ID
-keen.write_key = KEEN_WRITE_KEY
-keen.read_key = KEEN_READ_KEY
 
 
 class EventType(models.Model):
@@ -61,6 +58,10 @@ class Event(models.Model):
             if object:
                 obj.object = object
             obj.save()
+            keen_keys = SystemKey().get_keys('Keen API')
+            keen.project_id = keen_keys['KEEN_PROJECT_ID']
+            keen.write_key = keen_keys['KEEN_WRITE_KEY']
+            keen.read_key = keen_keys['KEEN_READ_KEY']
             try:
                 if object:
                     keen.add_event(event_type, {
@@ -75,5 +76,5 @@ class Event(models.Model):
                         'user_id': user.id if user else '',
                     })
             except BaseKeenClientError:
-                logger.exception('')
+                logger.exception('Error occurred when logging an event to Keen')
             return obj

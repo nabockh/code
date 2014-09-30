@@ -2,11 +2,16 @@
 {% load i18n %}
 {% load bootstrap %}
 {% load helpers %}
+{% load cms_tags %}
 
 {% block answer_form %}
 	<label class="control-label  " for="id_choice">Your Answer:</label>
 	<span class="add_help">?
-        <span class='add_help_inner'><span>Lorem ipsum dolor sit amet, consectetur eta adipiscing elit. Pellentasque eu tempor tortor. Aliquam Trisque eros arcu, sed bibendum enim faucibus in. In vulputate blendit lorem ut.</span></span>
+        <span class='add_help_inner'>
+            {% static_placeholder "bm_ranking_your_answer_text" or %}
+                <span>Lorem ipsum dolor sit amet, consectetur eta adipiscing elit. Pellentasque eu tempor tortor. Aliquam Trisque eros arcu, sed bibendum enim faucibus in. In vulputate blendit lorem ut.</span>
+            {% endstatic_placeholder %}
+        </span>
     </span>
     <ul id='answerSortable'>
 	    {% for rank in form.ranks %}

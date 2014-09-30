@@ -556,7 +556,7 @@ input.btn.full-width, .btn.full-width {
         color: inherit;
     }
 
-.big-title + div:not(.cms_placeholder) {
+.big-title + div:not(.cms_placeholder):not(.clearfix) {
     margin-bottom: 40px;
 }
 
@@ -1173,6 +1173,7 @@ form[role='search'] .form-control {
     border-radius: 0;
     box-shadow: none;
     max-width: 150px;
+    padding: 0 10px;
 }
 
 form[role='search'] .btn-search {
@@ -1759,8 +1760,28 @@ span.grey {
     background-color: #33626e;
 }
 
-    .btn-primary:hover {
-        background-color: #5D828B;
+.btn-primary:hover, .btn-primary:focus, .btn-primary:active, .btn-primary.active, .open .dropdown-toggle.btn-primary {
+    background-color: #5D828B;
+}
+
+a.tour {
+    padding: 2px 10px;
+    font-size: 12px;
+    vertical-align: text-bottom;
+    border-radius: 3px;
+}
+
+.icon-close {
+    position: absolute;
+    top: -15px;
+    right: -15px;
+    color: #fff;
+}
+
+    .icon-close:hover {
+        cursor: pointer;
+        text-decoration: none;
+        color: #ccc;
     }
 
 .btn-default {
@@ -1859,7 +1880,17 @@ span.grey {
 form[role='beta-email'] {
     float: right;
     /* width: 40%; */;
+    position: relative;
 }
+
+    label#id_invite-email-error {
+        position: absolute;
+        left: 0;
+        right: 0;
+        font-weight: 300;
+        color: red;
+        text-align: left;
+    }
 
     form[role='beta-email'] .form-group {
         float: left;
@@ -2442,7 +2473,7 @@ form[role='beta-email'] {
 /*---*/
 
 #step3Selected {
-    max-height: 605px;
+    max-height: 495px;
     overflow-x: hidden;
     overflow-y: scroll;
     padding-right: 10px;
@@ -2900,7 +2931,7 @@ ul#answerSortable {
     overflow: hidden;
 }
 
-    .bigChart[id^="bellcurveChart"] {
+    .bigChart[id^="bellcurveChart"], .bigChart[id^="popular-bellcurveChart"] {
         height: 190px;
     }
 
@@ -2971,9 +3002,9 @@ ol.bjqs-markers.h-centered{text-align: center;}
 ol.bjqs-markers li{display:inline;}
 ol.bjqs-markers li a{display:inline-block;}
 p.bjqs-caption{display:block;width:96%;margin:0;padding:2%;position:absolute;bottom:0;}
-a.getdatanow {position: absolute;right: 0;bottom: 10px;z-index: 9999;}
-a.hide-btn {position: absolute;left: 0;bottom: 10px;z-index: 9999;background: #fff;width: 180px;height: 45px;}
-a.hide-btn.right {left: auto; right: 0;}
+a.getdatanow {position: absolute;right: 0;bottom: 10px;z-index: 9999; height: 41px;}
+span.hide-btn {position: absolute;left: 0;bottom: 10px;z-index: 9999;background: #fff;width: 180px;height: 45px;}
+span.hide-btn.right {left: auto; right: 0;}
 
 /* PRELOADER */
 
@@ -3121,13 +3152,22 @@ a.hide-btn.right {left: auto; right: 0;}
         padding: 5px;
     }
 
-    .benchmark-stats.more .single-stat > span.value {
+    .benchmark-stats.fourPlus .single-stat > span.value {
         font-size: 24px;    
         overflow: hidden;
         text-overflow: ellipsis;
         padding: 15px 10px 5px;
     }
 
+
+    .benchmark-stats.sixish .single-stat > span.value {
+        font-size: 26px;
+    }
+
+    .benchmark-stats.more .single-stat > span.value {
+        font-size: 18px;
+    }
+    
     ul.user-nav-inner > li > a.log-out {
         text-decoration: none;
         color: #fff;

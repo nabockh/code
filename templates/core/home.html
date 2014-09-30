@@ -81,7 +81,7 @@
         {% for message in messages %}
             {% if message.tags == 'logout' %}
               <!-- Logout Modal -->
-              <div class='smallModal' id='logoutModal'>
+              <div class='smallModal' id='logoutModal' data-modal-close='true'>
                 <div class="pop-up-bg"></div>
                 <div class="pop-up-content">
                     <p style='font-size: 13rem; color: #648E99;'><i class='fa fa-check-circle'></i></p>
@@ -97,7 +97,7 @@
             {% elif message.tags == 'beta' %}
               <!-- Beta Modal -->              
               <div class='smallModal' id='betaModal'>
-                <div class="pop-up-bg"></div>
+                <div class="pop-up-bg" data-modal-close='true'></div>
                 <div class="pop-up-content">
                     {% static_placeholder "beta_popup_text" or %}
                     <p>Bedade is in beta now.</p>
@@ -112,24 +112,17 @@
               </script>
             {% elif message.tags == 'beta_invite' %}
                 <!-- Beta Invite Modal -->
-                  <div class="modal visible fade" id="betaInvite" tabindex="-1" role="dialog" aria-labelledby="betaInviteLabel" aria-hidden="false">
-                    <div class="modal-dialog modal-lg">
-                      <div class="modal-content">
-                        <div class="modal-header">
-                          <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true"><i class='fa fa-times-circle'></i></span><span class="sr-only">Close</span></button>
-                          <h4 class="modal-title" id="betaInviteLabel">Invite</h4>
-                        </div>
-                        <div class="modal-body">
-                          <div class='modal-body-inner'>
-                              <p>{{ message }}</p>
-                          </div>
-                        </div>
-                      </div>
+                <div class='smallModal' id='betaModalSuccess'>
+                    <div class="pop-up-bg" data-modal-close='true'></div>
+                    <div class="pop-up-content">
+                        <a href="#" class='icon-close fa fa-times' data-modal-close='true'></a>
+                        <p style='font-size: 5rem; color: #648E99;'><i class='fa fa-envelope'></i></p>
+                        <p>{{ message }}</p>
                     </div>
-                  </div>
-                  <script type="text/javascript">
-                    $('#betaInvite').modal('show')
-                  </script>
+                </div>
+                <script type="text/javascript">
+                    $('#betaModalSuccess').show();
+                </script>
             {% endif %}
         {% endfor %}
     {% endif %}
@@ -161,7 +154,7 @@
                     {% endstatic_placeholder %}
                 </p>
                 
-                <p style='display: block; margin-bottom: 50px;'>Collaborate with your network to generate data that improves your collective knowledge. You better than anyone know the data you need and who has the right insights in your network. <span class='non-mobile'>See Bedade’s  <a data-toggle="modal" data-target="#valueProp" class='clickable'>Value proposition</a> and <a data-toggle="modal" data-target="#takeTour" class='clickable openTour'>Take a tour</a>.</span></p>
+                <p style='display: block; margin-bottom: 50px;'>Collaborate with your network to generate data that improves your collective knowledge. You better than anyone know the data you need and who has the right insights in your network. <span class='non-mobile'><b>Learn how to use Bedade – </b><a class='btn btn-primary tour' data-toggle="modal" data-target="#valueProp" class='clickable'>Take a Tour</a></span></p>
 
                 <div class='row'>
                     {% static_placeholder "home_how_it_works_blocks1" or %}
@@ -437,7 +430,7 @@
                 <div class='modal-body-inner.slided'>
                     <div id='takeTourSlider'>
                         <ul class="bjqs">
-                            <li><img src="{{ STATIC_URL }}img/tourStep1.png" /><a class='hide-btn'></a></li>
+                            <li><img src="{{ STATIC_URL }}img/tourStep1.png" /><span class='hide-btn'></span></li>
                             <li><img src="{{ STATIC_URL }}img/tourStep2.png" /></li>
                             <li><img src="{{ STATIC_URL }}img/tourStep3.png" /></li>
                             <li><img src="{{ STATIC_URL }}img/tourStep4.png" /></li>
@@ -446,7 +439,7 @@
                                 {% if user.is_authenticated %}
                                     <a href='{% url 'bm_create' %}' class='btn btn-primary getdatanow'>Get Data Now  <i style='padding-left: 10px' class='fa fa-chevron-circle-right'></i></a>
                                 {% else %}
-                                    <a class='hide-btn right'></a>
+                                    <span class='hide-btn right'></span>
                                 {% endif %}                                
                             </li>
                         </ul>

@@ -32,9 +32,9 @@
                 Days Left
             </p>
             <div class="progress">
-                <div class="progress-bar" role="progressbar" aria-valuenow="{{ benchmark.progress }}" aria-valuemin="0"
-                     aria-valuemax="100" style="width: {{ benchmark.progress }}%;">
-                    {{ benchmark.progress }}%
+                <div class="progress-bar" role="progressbar" aria-valuenow="{{ benchmark.calc_progress }}" aria-valuemin="0"
+                     aria-valuemax="100" style="width: {{ benchmark.calc_progress }}%;">
+                    {{ benchmark.calc_progress }}%
                 </div>
                 {% if benchmark.owner == user %}
                 <a href="{% url 'bm_add_recipients' benchmark.id %}" class="btn btn-primary add-recipients"><span
