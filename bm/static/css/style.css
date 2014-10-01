@@ -541,6 +541,10 @@ input.btn.full-width, .btn.full-width {
 
 /* Colorblocking */
 
+#about ol, #about ul {
+    text-align: left;
+}
+
 .colorblock {
     background-color: #fff;
     padding: 60px 0;
@@ -548,7 +552,7 @@ input.btn.full-width, .btn.full-width {
     background-size: auto 100%;
 }
 
-    .colorblock p, .colorblock .cms_plugin span, .big-title ~ span:not(.help-text), .big-title + div:not(.cms_plugin) ~ *:not(.ex-info-text):not(.clearfix), .how-it-works .title + span, .features h4 + span {
+    .colorblock:not(#about) p, .colorblock .cms_plugin span, .big-title ~ span:not(.help-text), .big-title + div:not(.cms_plugin) ~ *:not(.ex-info-text):not(.clearfix), .how-it-works .title + span, .features h4 + span {
         margin-bottom: 40px;
         display: inline-block;
         font-size: 14px !important;
