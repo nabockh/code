@@ -4035,6 +4035,34 @@ span.hide-btn.right {left: auto; right: 0;}
     .benchmark-help p.info {
         margin-top: 15px;
     }
+
+    .add_help_inner {
+        position: fixed;
+        bottom: 0;
+        z-index: 999;
+        left: 0;
+        padding-bottom: 30px;
+        right: 0;
+        margin: 0;
+        width: auto;
+        border-bottom-right-radius: 0;
+        border-bottom-left-radius: 0;
+    }
+        .add_help_inner:after {
+            content: 'Tap anywhere to close this tooltip';
+            position: absolute;
+            left: auto;
+            border: none;
+            bottom: 25px;
+            width: 100%;
+            text-align: center;
+            color: #1F3B42;
+        }
+            .add_help_inner.visible > span {
+                max-height: 100px;
+                overflow: auto;
+                display: block;
+            }
 }
 
 @media only screen and (max-width : 570px) {
