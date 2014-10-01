@@ -2,6 +2,11 @@ google.load("visualization", "1", {packages:["corechart"]});
 // google.setOnLoadCallback(drawChart);
         
 $(function () {
+
+    if ($(window).width() < 768) {
+      $('input.select2-focusser.select2-offscreen').attr('disabled', 'disabled');  
+    };
+
     var sectionStateChangeStep1 = function() {
         var selectedStep1 = $('#id_0-question_type').find('option:selected').val();
             if (selectedStep1 > 2) {

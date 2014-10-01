@@ -10,7 +10,7 @@ CONFIG = getattr(settings, 'CELERY_EMAIL_TASK_CONFIG', {})
 BACKEND = getattr(settings, 'CELERY_EMAIL_BACKEND',
                   'django.core.mail.backends.smtp.EmailBackend')
 TASK_CONFIG = {
-    'name': 'djcelery_email_send',
+    'name': 'bedade_email_send',
     'ignore_result': True,
 }
 TASK_CONFIG.update(CONFIG)
@@ -20,8 +20,8 @@ TASK_CONFIG.update(CONFIG)
 def send_email(message, **kwargs):
     logger = send_email.get_logger()
     smtp_keys = SystemKey.get_keys('SendGrid SMTP')
-    settings.EMAIL_HOST_USER = smtp_keys['EMAIL_HOST_USER']
-    settings.EMAIL_HOST_PASSWORD = smtp_keys['EMAIL_HOST_PASSWORD']
+    settings.EMAIL_HOST_USER = str(smtp_keys['EMAIL_HOST_USER'])
+    settings.EMAIL_HOST_PASSWORD = str(smtp_keys['EMAIL_HOST_PASSWORD'])
 
     conn = get_connection(backend=BACKEND,
                           **kwargs.pop('_backend_init_kwargs', {}))

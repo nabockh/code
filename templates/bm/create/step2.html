@@ -30,7 +30,7 @@
             {{ form.name }}
             {{ form.name.errors }}
         </div>
-        <div class="col-md-5ths">
+        <div class="col-md-5ths mob-center">
             <button id='save_and_wizard_goto_step' name="save_and_wizard_goto_step" type="submit"
                     class="btn btn-primary full-width hidden" value="1"><i class='fa fa-search'></i></button>
             <label id='src_btn' for='save_and_wizard_goto_step' class='btn btn-primary full-width'><i class='fa fa-search'></i></label>
@@ -77,7 +77,7 @@
         <div id='recommendedContactList'>
             <div class="title-header inner">
                 <div class='row'>
-                    <div class='col-md-6 col-xs-4'>Recommended Contacts
+                    <div class='col-md-6 col-xs-6 contactlistTitle'>Recommended <span class='non-mobile'>Contacts</span>
                         <span class="add_help">?
                             <span class='add_help_inner'>
                                 <span>
@@ -91,7 +91,7 @@
                             </span>
                         </span>
                     </div>
-                    <div class='col-md-4 col-xs-8 text-center'>Allow forwarding
+                    <div class='col-md-4 col-xs-6 text-center contactlistTitle'>Allow forwarding
                         <span class="add_help">?
                             <span class='add_help_inner'>
                                 <span>
@@ -105,25 +105,25 @@
                             </span>
                         </span>
                     </div>
-                    <div class='col-md-2 col-xs-12'><a class="add-all"><i class="fa fa-plus"></i> Add All</a></div>
+                    <div class='col-md-2 col-xs-12 mob-center addAll'><a class="add-all"><i class="fa fa-plus"></i> Add All</a></div>
                 </div>
             </div>
             <div class='contact-results'>
                 {% for contact in form.suggested_contacts %}
                     <div class='single-contact' data-contact-id='{{ contact.id }}'>
                         <div class='row'>
-                            <div class='col-md-6 col-xs-6'>
+                            <div class='col-md-6 col-xs-7'>
                                 <label for='id_1-suggested-{{ contact.id }}-invite'>{{ contact }}</label>
                                 <p title='{{ contact.headline }}'>{{ contact.headline }}</p>
                                 <p class='grey'
                                    title='{{ contact.location.name }} &middot; {{ contact.company.industry }}'>{{ contact.location.name }} &middot; {{ contact.company.industry }}</p>
                             </div>
-                            <div class='col-md-4 col-xs-4'>                                
+                            <div class='col-md-4 col-xs-3'>                                
                                 {% bound_field form contact.secondary_element %}
                             </div>
                             <div class='col-md-2 col-xs-2'>
                                 <span class='hidden'>{% bound_field form contact.invite_element %}</span>
-                                <label class='btn btn-primary pull-right add-contact-btn' for='id_1-suggested-{{ contact.id }}-invite'>Add <i class="fa fa-arrow-circle-o-right"></i></label>
+                                <label class='btn btn-primary pull-right add-contact-btn' for='id_1-suggested-{{ contact.id }}-invite'>Add <i class="fa fa-arrow-circle-o-right non-mobile"></i></label>
                             </div>
                         </div>
                     </div>
@@ -134,8 +134,8 @@
         <div id='searchContactList'>
             <div class="title-header inner">
                 <div class='row'>
-                    <div class='col-md-6 col-xs-4'>Contact</div>
-                    <div class='col-md-4 col-xs-8 text-center'>Allow forwarding
+                    <div class='col-md-6 col-xs-6 contactlistTitle'>Contact</div>
+                    <div class='col-md-4 col-xs-6 contactlistTitle text-center'>Allow forwarding
                         <span class="add_help">?
                             <span class='add_help_inner'>
                                 <span>
@@ -149,14 +149,14 @@
                             </span>
                         </span>
                     </div>
-                    <div class='col-md-2 col-xs-12'><a class="add-all"><i class="fa fa-plus"></i> Add All</a></div>                    
+                    <div class='col-md-2 col-xs-12 mob-center addAll'><a class="add-all"><i class="fa fa-plus"></i> Add All</a></div>                    
                 </div>
             </div>
             <div class='contact-results'>
                 {% for contact in form.contacts_filtered %}
                     <div class='single-contact' data-contact-id='{{ contact.id }}'>
                         <div class='row'>
-                            <div class='col-md-6 col-xs-6'>
+                            <div class='col-md-6 col-xs-7'>
                                 <label for='id_1-contact-{{ contact.id }}-invite'>{{ contact }}</label>
 
                                 <p title='{{ contact.headline }}'>{{ contact.headline }}</p>
@@ -164,12 +164,12 @@
                                 <p class='grey'
                                    title='{{ contact.location.name }} &middot; {{ contact.company.industry }}'>{{ contact.location.name }} &middot; {{ contact.company.industry }}</p>
                             </div>
-                            <div class='col-md-4 col-xs-4'>
+                            <div class='col-md-4 col-xs-3'>
                                 {% bound_field form contact.secondary_element %}
                             </div> 
                             <div class='col-md-2 col-xs-2'>
                                 <span class='hidden'>{% bound_field form contact.invite_element %}</span>
-                                <label class='btn btn-primary pull-right add-contact-btn' for='id_1-contact-{{ contact.id }}-invite'>Add <i class="fa fa-arrow-circle-o-right"></i></label>
+                                <label class='btn btn-primary pull-right add-contact-btn' for='id_1-contact-{{ contact.id }}-invite'>Add <i class="fa fa-arrow-circle-o-right non-mobile"></i></label>
                             </div>
                         </div>
                     </div>
@@ -181,7 +181,7 @@
         </span>
     </div>
 
-    <div class='col-md-4 margined'>
+    <div class='col-md-4 margined step2'>
         <div class='tips'>
             <p class='label-like'>Selected Contacts<a class="remove-all"><i class="fa fa-minus-circle"></i>Remove All</a></p>
             <hr>

@@ -1752,6 +1752,10 @@ span.grey {
         padding: 0 0 0 10px;
     }
 
+    .btn.pull-right .fa.s {
+        padding: 0;
+    }
+
     .btn.auto-width {
         width: auto;
     }
@@ -3815,10 +3819,31 @@ span.hide-btn.right {left: auto; right: 0;}
     .container {
          min-width:0;
     }
+    
+    body {
+        padding-top: 60px;
+    }
+    
+    header.navbar {
+        height: 60px;
+        padding: 5px 0;
+    }
+
+    .mob-center {
+        text-align: center;
+    }
+
     .example-block {
         width: 100%;
         margin: -4px 0;
         height: auto;
+    }
+
+    span.add_info {
+        display: block;
+        line-height: 18px;
+        margin-bottom: 5px;
+        float: none;
     }
 
     .pop-up-content {
@@ -3826,12 +3851,63 @@ span.hide-btn.right {left: auto; right: 0;}
         width: 80%;
     }
 
-    .user-nav ul.user-nav-inner > li {
+    .title-header {
+        font-size: 10px;
+    }
+
+    .title-header a.add-all {
+        text-decoration: none;
+        padding: 8px 15px;
+        font-size: 12px;
+        margin-top: 10px;
+        margin-bottom: 5px;
+    }
+
+    .margined.step2 {
+        margin: 45px 15px;
+    }
+
+    .benchmark-creation .styled-form .btn.smaller {
+        padding: 10px 18px;
         font-size: 14px;
+        width: 100%;
+        margin-bottom: 20px;
+    }
+
+    .bigChart > div {
+        width: 100% !important;
+    }
+
+    .contactlistTitle {
+        font-size: 10px;
+        line-height: 15px;
+    }
+
+    .addAll {
+        border-top: 1px solid;
+        margin-top: 5px;
+    }
+
+    .user-nav, .fixed-navs .user-nav {
+        position: static;    
+        padding: 10px 0 7px;
+    }
+
+        .user-nav ul.user-nav-inner > li, .fixed-navs .user-nav ul.user-nav-inner > li {
+            font-size: 14px;        
+            line-height: 18px;
     }
 
     .title-header .select2-container {
         max-width: 100px;
+    }
+
+    .benchmark-stats.sixish .single-stat > span.value {
+        font-size: 18px;
+    }
+
+    .benchmark-stats.more .single-stat > span.value {
+        font-size: 12px;
     }
 
     .search .tabulation .nav-tabs > li {
@@ -3917,8 +3993,13 @@ span.hide-btn.right {left: auto; right: 0;}
         padding-top: 145px;
     }
 
-    .container.top-navbar {
-        padding: 0 15px;
+    .container.top-navbar, .fixed-navs #top.navbar-default .top-navbar {
+        padding: 0 15px;    
+        margin: 0;
+    }
+    
+    .container > .navbar-header {
+        margin-bottom: 0;
     }
 
     .colorblock.map {

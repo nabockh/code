@@ -137,7 +137,8 @@ class BenchmarkCreateWizardView(CookieWizardView):
             'benchmark_name': benchmark.name,
             'query_details': form.cleaned_data['question_text'],
             'benchmark_creator': benchmark.owner,
-            'link_to_answer': "<LINK>",
+            'link_to_answer': "Link to answer form will be here",
+            'link_to_bm_results': "Link to benchmark results will be here"
         })
         response = HttpResponse("<pre  id='default_text' contenteditable='true'>"
                                 + template.render(context)
@@ -863,7 +864,7 @@ class ExcelDownloadView(BenchmarkDetailView):
             contributor_results = benchmark.charts['pie'][1:]
             chart = workbook.add_chart({'type': 'pie'})
         elif question_type == 2:
-            contributor_results = benchmark.charts['column']
+            contributor_results = benchmark.charts['column_ranking']
             chart = workbook.add_chart({'type': 'column'})
         elif question_type == 3:
             contributor_results = benchmark.charts['bell_curve']
@@ -872,7 +873,7 @@ class ExcelDownloadView(BenchmarkDetailView):
             contributor_results = benchmark.charts['pie']
             chart = workbook.add_chart({'type': 'pie'})
         elif question_type == 5:
-            contributor_results = benchmark.charts['line']
+            contributor_results = benchmark.charts['pie']
             chart = workbook.add_chart({'type': 'line'})
         contributor_worksheet.set_column(0, 1, 30)
         if question_type == 1:
@@ -986,24 +987,41 @@ class ExcelDownloadView(BenchmarkDetailView):
             contributor_worksheet.insert_chart('F3', chart)
         elif question_type == 5:
             internal_worksheet = workbook.add_worksheet('Internal')
-            data = [
-                [x[0] for x in contributor_results[1:]],
-                [x[1] for x in contributor_results[1:]]
-            ]
-            headings = ['Series', 'Count']
-            internal_worksheet.write_row('A1', headings, bold)
-            internal_worksheet.write_column('A2', data[0])
-            internal_worksheet.write_column('B2', data[1])
+            splitted = [[(i.split('-')), v] for [i , v] in contributor_results[1:]]
+            chart_data = [[int(i[0]), int(i[1]), v] for [i, v] in splitted]
+            y_axis = []
+            last_end = None
+            for start, end, val in chart_data:
+                if val > 0 and last_end and (start - last_end) > 1:
+                    y_axis.extend([('', 0), ]*(start-last_end))
+                if val > 0:
+                    length = (end-start-1)
+                    y_axis.append((start, val))
+                    if length == 1:
+                        continue
+                    if length > 2:
+                        y_axis.extend([('', val), ]*(end-start-1))
+                    y_axis.append((end, val))
+                    last_end = end
+
+            for idx, (point, val) in enumerate(y_axis, start=1):
+            # internal_worksheet.write_row( 'A1', data[0])
+                internal_worksheet.write_row('A%s' % idx, [point])
+                internal_worksheet.write_row('B%s' % idx, [val])
+
             chart.add_series({
                 'name':         benchmark.name,
-                'categories': "='Internal'!A2:A%s" % (len(contributor_results)),
-                'values':     "='Internal'!B2:B%s" % (len(contributor_results)),
+                'categories': "='Internal'!A1:A%s" % (len(y_axis)),
+                'values':     "='Internal'!B1:B%s" % (len(y_axis)),
                 'line': {'dash_type': 'solid'}
             })
+            chart.set_size({'width': 720, 'height': 576})
             chart.set_chartarea({
                 'border': {'color': 'black'},
                 'fill':   {'color': 'white'}
             })
+            chart.set_y_axis({'min': 0, 'max': 100, 'name': '% of Respondents'})
+            chart.set_x_axis({'name': 'Contributed Values'})
             contributor_headings = ['Contributor Stats']
             contributor_worksheet.write_row('A1', contributor_headings, bold)
             contributor_worksheet.insert_chart('A2', chart)
