@@ -151,12 +151,12 @@ class SystemKey(models.Model):
 
     @property
     def decrypted_payload(self):
-        encobj = ARC4.new('SECRET_KEY')
+        encobj = ARC4.new(SECRET_KEY)
         enc_string = base64.decodestring(self._payload)
         return encobj.decrypt(enc_string)
 
     def set_payload(self, value):
-        encobj = ARC4.new('SECRET_KEY')
+        encobj = ARC4.new(SECRET_KEY)
         self._payload = base64.encodestring(encobj.encrypt(value))
 
 

@@ -50,13 +50,14 @@ def complete_process(request, backend, *args, **kwargs):
             treshold = 10  # seconds
             if is_new:
                 first_time_user_login.send(sender=request.user, user=request.user)
-                redirect_value = FIRST_TIME_USER_REDIRECT_URL
-            else:
-                redirect_value = REGISTERED_USER_REDIRECT_URL
+                if not redirect_value:
+                    redirect_value = FIRST_TIME_USER_REDIRECT_URL
             social_user = user.social_user
             if redirect_value:
                 request.session[REDIRECT_FIELD_NAME] = redirect_value or \
                                                        DEFAULT_REDIRECT
+            else:
+                redirect_value = REGISTERED_USER_REDIRECT_URL
 
             if setting('SOCIAL_AUTH_SESSION_EXPIRATION', True):
                 # Set session expiration date if present and not disabled by

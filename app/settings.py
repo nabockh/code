@@ -69,7 +69,6 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'django.contrib.sites',
     'bootstrapform',
-    'djcelery_email',
     'social',
     'social_auth',
     'metrics',
@@ -181,8 +180,8 @@ TEMPLATE_DIRS = (
 
 ADMINS = (
     # ('Volodymyr', 'volodymyr.trotsyshyn@perfectial.com'),
-    ('Volodymyr', 'devova@gmail.com'),
-    #('Petro', 'petro.zdeb@perfectial.com'),
+    #('Volodymyr', 'devova@gmail.com'),
+    ('Petro', 'petro.zdeb@perfectial.com'),
 )
 
 LOGGING = {

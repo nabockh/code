@@ -137,7 +137,8 @@ class BenchmarkCreateWizardView(CookieWizardView):
             'benchmark_name': benchmark.name,
             'query_details': form.cleaned_data['question_text'],
             'benchmark_creator': benchmark.owner,
-            'link_to_answer': "<LINK>",
+            'link_to_answer': "Link to answer form will be here",
+            'link_to_bm_results': "Link to benchmark results will be here"
         })
         response = HttpResponse("<pre  id='default_text' contenteditable='true'>"
                                 + template.render(context)
