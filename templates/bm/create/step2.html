@@ -183,7 +183,27 @@
 
     <div class='col-md-4 margined step2'>
         <div class='tips'>
-            <p class='label-like'>Selected Contacts<a class="remove-all"><i class="fa fa-minus-circle"></i>Remove All</a></p>
+            <p class='label-like'>Selected Contacts  <span id="countOfSelected" class='selected-count'>(0)</span><a class="remove-all"><i class="fa fa-minus-circle"></i>Remove All</a></p>
+            <script type="text/javascript">
+                var numberOfSelectedContacts = function() {
+                    var selectedContactsLength = $('#selectedContactList .single-contact').length;
+                    if (selectedContactsLength >= 5) {
+                        $('#countOfSelected').text('(' + selectedContactsLength + ')').removeClass('selectedRed').addClass('selectedGreen');
+                    } else {
+                        $('#countOfSelected').text('(' + selectedContactsLength + ')').removeClass('selectedGreen').addClass('selectedRed');
+                    };
+                };
+                    
+              
+                var step3numberOfSelectedContacts = function() {
+                    var step3SelectedContactsLength = $('#step3Selected .single-contact').length;
+                    if (step3SelectedContactsLength >= 5) {
+                        $('#step3countOfSelected').text('(' + step3SelectedContactsLength + ')').removeClass('selectedRed').addClass('selectedGreen');
+                    } else {
+                        $('#step3countOfSelected').text('(' + step3SelectedContactsLength + ')').removeClass('selectedGreen').addClass('selectedRed');
+                    }
+                };
+            </script>
             <hr>
             <div id='selectedContactList'>
                 {% for contact in form.selected_contacts %}

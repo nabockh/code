@@ -3221,6 +3221,13 @@ span.hide-btn.right {left: auto; right: 0;}
         box-shadow: inset 0 0 0 1px #33626e;
     }
 
+    .selected-count.selectedGreen {
+        color: #6EC951;
+    }
+    .selected-count.selectedRed {
+        color: #B94D4D;
+    }
+
 /* RESPONSIVENESS */
 
 
