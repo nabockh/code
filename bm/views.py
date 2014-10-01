@@ -717,7 +717,10 @@ class BenchmarkAddRecipientsView(FormView):
 class BenchmarkAggregateView(BenchmarkDetailView):
 
     def get(self, *args, **kwargs):
-        self.get_benchmark().aggregate()
+        if self.get_benchmark():
+            self.get_benchmark().aggregate()
+        else:
+            return ForbiddenView.as_view()(self.request, *args, **kwargs)
         return HttpResponse('Done')
 
 
