@@ -4,6 +4,7 @@
         <div id='popular-donutChart-{{ benchmark.id }}-{{ instance.id }}' class='bigChart donut'>
         <script type="text/javascript">
             var popular_mainChartData_{{ benchmark.id }} = {{ benchmark.charts|safe }};
+            var None = null;
             drawPieChart(popular_mainChartData_{{ benchmark.id }}.pie, 'popular-donutChart-{{ benchmark.id }}-{{ instance.id }}');
         </script>
         </div>
@@ -12,7 +13,13 @@
         <div id='popular-columnChart-{{ benchmark.id }}-{{ instance.id }}' class='bigChart'></div>
         <script type="text/javascript">
             var popular_mainChartData_{{ benchmark.id }} = {{ benchmark.charts|safe }};
-            drawColumnChart(popular_mainChartData_{{ benchmark.id }}.column, 'popular-columnChart-{{ benchmark.id }}-{{ instance.id }}');
+            var None = null;
+            
+            {% if benchmark.question_type == 2 %}
+                drawRankingColumnChart(popular_mainChartData_{{ benchmark.id }}.column_ranking, 'popular-columnChart-{{ benchmark.id }}-{{ instance.id }}');
+            {% else %}
+                drawColumnChart(popular_mainChartData_{{ benchmark.id }}.column, 'popular-columnChart-{{ benchmark.id }}-{{ instance.id }}');
+            {% endif %}
         </script>
 
 
@@ -40,6 +47,7 @@
 
         <script type="text/javascript">
             var popular_mainChartData_{{ benchmark.id }} = {{ benchmark.charts|safe }};
+            var None = null;
 
             $(function () {
                 $("#popular-minVal-{{ benchmark.id }}").text(popular_mainChartData_{{ benchmark.id }}.bell_curve.min.toFixed(0));
@@ -71,6 +79,7 @@
         <div id='popular-donutChart-{{ benchmark.id }}-{{ instance.id }}' class='bigChart donut'>
         <script type="text/javascript">
             var popular_mainChartData_{{ benchmark.id }} = {{ benchmark.charts|safe }};
+            var None = null;
             drawPieChart(popular_mainChartData_{{ benchmark.id }}.pie, 'popular-donutChart-{{ benchmark.id }}-{{ instance.id }}');
         </script>
         </div>
@@ -81,6 +90,7 @@
         <div class='units'>Chart Data In: <span title='{{ benchmark.question.first.options.first.units }}'>"{{ benchmark.question.first.options.first.units }}"</span></div>
         <script type="text/javascript">
             var popular_mainChartData_{{ benchmark.id }} = {{ benchmark.charts|safe }};
+            var None = null;
             drawLineChart(popular_mainChartData_{{ benchmark.id }}.line, 'popular-lineChart-{{ benchmark.id }}-{{ instance.id }}');
         </script>
     {% endif %}
