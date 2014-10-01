@@ -337,12 +337,30 @@
                             <div class='row'>
                                 <div class='col-md-12'>
                                     <label for="id_2-name">Question Topic</label>
+                                    <span class="add_help">?
+                                        <span class='add_help_inner'>
+                                            <span>
+                                                {% static_placeholder "bm_create_query_topic" or %}
+                                                Lorem ipsum dolor sit amet, consectetur eta adipiscing elit. Pellentasque eu tempor tortor. Aliquam Trisque eros arcu, sed bibendum enim faucibus in. In vulputate blendit lorem ut.
+                                                {% endstatic_placeholder %}
+                                            </span>                                            
+                                        </span>
+                                    </span>
                                     <span class="add_info">(ie 'Technology spending growth')</span>
                                     {{ form.name }}
                                     {{ form.name.errors }}
                                 </div>
                                 <div class='col-md-12'>
-                                    <label for="id_2-question_label">Your QuestionQuestion</label>
+                                    <label for="id_2-question_label">Your Question</label>
+                                    <span class="add_help">?
+                                        <span class='add_help_inner'>
+                                            <span>
+                                                {% static_placeholder "bm_create_query_body" or %}
+                                                Lorem ipsum dolor sit amet, consectetur eta adipiscing elit. Pellentasque eu tempor tortor. Aliquam Trisque eros arcu, sed bibendum enim faucibus in. In vulputate blendit lorem ut.
+                                                {% endstatic_placeholder %}
+                                            </span>
+                                        </span>
+                                    </span>
                                     <span class="add_info">(ie 'What is the projected growth of your technology budget for next year?')</span>
                                     {{ form.question_label }}
                                     {{ form.question_label.errors }}
@@ -364,17 +382,44 @@
                                 <div class='col-md-12'>
                                     <div class='row'>
                                         <div class='col-md-4'>
-                                            <label for="industry">Industry</label>
-                                            {{ form.industry }}
-                                            {{ form.industry.errors }}
-                                        </div>
-                                        <div class='col-md-4'>
-                                            <label for="geo">Geography</label>
+                                            <label for="geo">Geography </label>
+                                            <span class="add_help">?
+                                                <span class='add_help_inner'>
+                                                    <span>
+                                                        {% static_placeholder "bm_create_query_geo" or %}
+                                                        Lorem ipsum dolor sit amet, consectetur eta adipiscing elit. Pellentasque eu tempor tortor. Aliquam Trisque eros arcu, sed bibendum enim faucibus in. In vulputate blendit lorem ut.
+                                                        {% endstatic_placeholder %}
+                                                    </span>
+                                                </span>
+                                            </span>
                                             {{ form.geo }}
                                             {{ form.geo.errors }}
                                         </div>
                                         <div class='col-md-4'>
-                                            <label for="question_type">Type of Answer</label>
+                                            <label for="industry">Industry</label>
+                                            <span class="add_help">?
+                                                <span class='add_help_inner'>
+                                                    <span>
+                                                        {% static_placeholder "bm_create_query_industry" or %}
+                                                        Lorem ipsum dolor sit amet, consectetur eta adipiscing elit. Pellentasque eu tempor tortor. Aliquam Trisque eros arcu, sed bibendum enim faucibus in. In vulputate blendit lorem ut.
+                                                        {% endstatic_placeholder %}
+                                                    </span>
+                                                </span>
+                                            </span>
+                                            {{ form.industry }}
+                                            {{ form.industry.errors }}
+                                        </div>
+                                        <div class='col-md-4'>
+                                            <label for="question_type">Type of Question</label>
+                                            <span class="add_help">?
+                                                <span class='add_help_inner'>
+                                                    <span>
+                                                        {% static_placeholder "bm_create_query_type" or %}
+                                                        Lorem ipsum dolor sit amet, consectetur eta adipiscing elit. Pellentasque eu tempor tortor. Aliquam Trisque eros arcu, sed bibendum enim faucibus in. In vulputate blendit lorem ut.
+                                                        {% endstatic_placeholder %}
+                                                    </span>
+                                                </span>
+                                            </span>
                                             {{ form.question_type }}
                                             {{ form.question_type.errors }}
                                         </div>
@@ -383,6 +428,15 @@
                                 <hr>
                                 <div class='col-md-12' id='answer_options_step3'>
                                     <label for="id_2-answer_options">Answer Options</label>
+                                    <span class="add_help">?
+                                        <span class='add_help_inner'>
+                                            <span>
+                                                {% static_placeholder "bm_create_query_options" or %}
+                                                Lorem ipsum dolor sit amet, consectetur eta adipiscing elit. Pellentasque eu tempor tortor. Aliquam Trisque eros arcu, sed bibendum enim faucibus in. In vulputate blendit lorem ut.
+                                                {% endstatic_placeholder %}
+                                            </span>
+                                        </span>
+                                    </span>
                                     <div class="answer_options_area">
                                         {{ form.answer_options }}
                                     </div>
