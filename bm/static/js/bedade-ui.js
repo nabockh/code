@@ -3,9 +3,7 @@ google.load("visualization", "1", {packages:["corechart"]});
         
 $(function () {
 
-    if ($(window).width() < 768) {
-      $('input.select2-focusser.select2-offscreen').attr('disabled', 'disabled');  
-    };
+    $('input.select2-focusser.select2-offscreen').attr('disabled', 'disabled');  
 
     var sectionStateChangeStep1 = function() {
         var selectedStep1 = $('#id_0-question_type').find('option:selected').val();
@@ -208,14 +206,26 @@ $(function () {
 
     // Tooltips
 
-    $('.add_help').on('click', function(e) {
-       $(this).children('.add_help_inner').addClass('visible');
-       e.stopPropagation();
-    });
+    
 
-    $("html").click(function() {
-        $(".add_help_inner").removeClass('visible');
-    });
+    if ($(window).width() > 640) {
+        $('.add_help').on('click', function(e) {
+           $(this).children('.add_help_inner').addClass('visible');
+           e.stopPropagation();
+        });
+        $("html").click(function() {
+            $(".add_help_inner").removeClass('visible');
+        });
+    } else {
+        $('.add_help').on('click', function(e) {
+           $(this).children('.add_help_inner').toggleClass('visible');
+           e.stopPropagation();
+        });
+        $( '.add_help_inner' ).on('click', function(e) {
+             $(".add_help_inner").removeClass('visible');
+             e.stopPropagation();
+        });
+    };
 
     // Rating Functionality
 
