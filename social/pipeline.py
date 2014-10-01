@@ -1,6 +1,6 @@
 from django.shortcuts import redirect
 from social.models import Profile, Company, LinkedInIndustry, Contact, Invite
-from bm.models import Region
+from bm.models import Region, BenchmarkInvitation
 from social_auth.exceptions import StopPipeline, AuthFailed
 from django.db.models import Count
 from social.backend.linkedin import get_contacts
@@ -12,6 +12,12 @@ def beta_login(backend, details, request, response, uid, user, social_user=None,
                                      last_name=details['last_name'])\
         .annotate(user_invites=Count('invites')).filter(user_invites__gt=0)
     if invited.exists():
+        return
+    forwarded_invite = BenchmarkInvitation.objects.filter(
+        is_allowed_to_forward_invite=True,
+        recipient__owners__contact__first_name=details['first_name'],
+        recipient__owners__contact__last_name=details['last_name'])
+    if forwarded_invite.exists():
         return
     if not allowed:
         raise StopPipeline
@@ -33,6 +39,7 @@ def load_extra_data(backend, details,request, response, uid, user, social_user=N
     social_contact = Contact.objects.filter(code=uid).first()
     if social_contact:
         social_contact.user = user
+        social_contact.email = user.email
         social_contact.save()
 
     if not social_profile:

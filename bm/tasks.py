@@ -3,7 +3,7 @@ import itertools
 from bm.models import Benchmark, BenchmarkInvitation, BmInviteEmail
 from datetime import datetime, timedelta
 from celery import shared_task
-from core.utils import celery_log
+from core.utils import celery_log, logger
 from django.contrib.sites.models import Site
 from django.core.mail import send_mail
 from django.core.urlresolvers import reverse
@@ -77,11 +77,6 @@ def send_reminders():
     current_time = datetime.now()
     days_count = timedelta(days=2)
     approved_benchmarks = Benchmark.objects.filter(approved=True, end_date__gt=current_time, end_date__lte=current_time+days_count)
-    # contacts = Contact.objects.filter(invites__benchmark__end_date__gt=current_time,
-    #                                   invites__benchmark__end_date__lte=current_time+days_count,
-    #                                   invites__benchmark__approved=True,
-    #                                   invites__status=1,
-    #                                   user__responses__question__benchmark__id=F('invites__benchmark__id'),
     query = '''
             SELECT
       "social_contact"."id",
@@ -106,7 +101,7 @@ def send_reminders():
       AND bm_questionresponse.id IS NULL
         '''
     for benchmark in approved_benchmarks:
-        subject = "Reminder for {0}".format(benchmark.name)
+        subject = "Reminder for %s" % benchmark.name
         contacts = Contact.objects.raw(query, [benchmark.id])
         for contact in contacts:
             raw_context = get_context_variables(benchmark)
@@ -132,12 +127,11 @@ def benchmark_aggregate(self):
 @periodic_task(run_every=crontab(minute=0, hour=0))
 @celery_log
 def check_response_count():
-    # template = loader.get_template('alerts/benchmark_answered.html')
     today = datetime.now()
     benchmarks = Benchmark.objects.annotate(responses_count=Count('question__responses'))\
         .filter(end_date__lte=today, responses_count__lt=F('min_numbers_of_responses'), approved=True)
     benchmark_names = ', '.join([benchmark.name for benchmark in benchmarks])
-    recipient_list = User.objects.filter(is_superuser=True).values_list('email', flat=True)
+    recipient_list = [email for email in User.objects.filter(is_superuser=True).values_list('email', flat=True) if email]
     if recipient_list:
         send_mail('Welcome', 'Hi! Current benchmarks has not reached min_number_of_responses: %s' %
                   benchmark_names, None, recipient_list)
@@ -155,11 +149,17 @@ def check_benchmark_results():
                 .filter(responses_count__gte=1)
             contacts_ids = [contact.id for contact in contacts]
             recipients = [contact.email for contact in contacts]
-            recipients.append(benchmark.owner.email)
+            if benchmark.owner:
+                recipients.append(benchmark.owner.email)
             raw_context = get_context_variables(benchmark)
             if contacts_ids:
                 for recipient in recipients:
-                    raw_context['contact_first_name'] = Contact.objects.get(email=recipient).first_name
+                    contact = Contact.objects.filter(_email=recipient).first()
+                    if not contact:
+                        logger.warning("Cannot send notification. Contact with email '%s' does not exist" %
+                                       recipient)
+                        continue
+                    raw_context['contact_first_name'] = contact.first_name
                     context = Context(raw_context)
                     body = get_template('alerts/benchmark_results.html').render(context)
                     send_mail(subject, body, None, [recipient])
