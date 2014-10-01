@@ -3,7 +3,7 @@ function drawLineChart(chartData, divId) {
         throw new Exception();
     }
 
-    function createCustomHTMLContent(chartData) {
+    function lineTooltips(chartData) {
         var votes = chartData[0];
         var min = chartData[1];
         var max = chartData[3];
@@ -15,7 +15,7 @@ function drawLineChart(chartData, divId) {
             chartData[i].push({'type': 'string', 'role': 'tooltip', 'p': {'html': true}});
         }
         else{
-            chartData[i].push(createCustomHTMLContent(chartData[i]));
+            chartData[i].push(lineTooltips(chartData[i]));
         }
     };
 
@@ -26,6 +26,7 @@ function drawLineChart(chartData, divId) {
     var lineChartData = google.visualization.arrayToDataTable(chartData);
 
     var lineOptions = {
+        width: '100%',
         legend: 'none',
         colors: ['#8592B2'],
         lineWidth: 3,

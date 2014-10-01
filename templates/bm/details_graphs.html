@@ -199,7 +199,9 @@
     var statisticRoleData = {{ role|safe }};
     var statisticIndustriesData = {{ industries|safe }};
     var statisticCountriesData = {{ countries|safe }};
+    var None = null;
     var mainChartData = {{ benchmark.charts|safe }};
+    
 
 
     {% if 'Pie' in benchmark.charts_allowed %}
@@ -207,7 +209,11 @@
     {% endif %}
 
     {% if 'Column' in benchmark.charts_allowed %}
-        drawColumnChart(mainChartData.column, 'columnChart');
+        {% if benchmark.question_type == 2 %}
+            drawRankingColumnChart(mainChartData.column_ranking, 'columnChart');
+        {% else %}
+            drawColumnChart(mainChartData.column, 'columnChart');
+        {% endif %}
     {% endif %}
 
     {% if 'Line' in benchmark.charts_allowed %}

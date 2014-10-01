@@ -39,8 +39,8 @@ def send_invites(benchmark_id):
         if BmInviteEmail.objects.exists():
             email_invite = BmInviteEmail.objects.filter(benchmark_id=benchmark.id).first()
             raw_body = email_invite.body
-            if '<LINK>' in raw_body:
-                raw_body = raw_body.replace('<LINK>', '{{ benchmark.link }}')
+            if 'Link to answer form will be here' in raw_body:
+                raw_body = raw_body.replace('Link to answer form will be here', '{{ benchmark.link }}')
             else:
                 raw_body += ('\n'+'{{ benchmark.link }}')
             body = Template(raw_body).render(context)

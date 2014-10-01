@@ -22,6 +22,54 @@ function drawColumnChart(chartData, divId) {
     if (typeof google == 'undefined') {
         throw new Exception();
     }
+
+    function columnTooltips(chartData) {
+        var value = chartData.filter(function(element, index){
+            return element !== null;
+        })[0];
+        var contributors = chartData.filter(function(element, index){
+            return index > 0 && element !== null;
+        })[0];
+        return '<div class="tooltiped" style="padding:5px 5px 5px 5px;">' + '<b>' + '</b>' + '<br/>'+ '<span style="display: block; border-bottom: 1px solid #ccc; padding-top: 5px; margin-bottom: 5px;"></span>' + 'Contributors: ' + '<b>' + contributors + '%' +'</b>' + '</div>';
+    };
+
+    for(var i = 0; i < chartData.length; ++i){
+        if(i==0){
+            chartData[i].push({'type': 'string', 'role': 'tooltip', 'p': {'html': true}});
+        }
+        else{
+            chartData[i].push(columnTooltips(chartData[i]));
+        }
+    };
+
+    var columnChartData = google.visualization.arrayToDataTable(chartData);
+ 
+    var columnOptions = {
+        legend: { position: "top" },
+        chartArea: {  
+            width: "70%", 
+            height: "65%" 
+        },
+        colors: columnGradient(chartData.length),
+        focusTarget: 'category',
+        tooltip: { isHtml : true },
+        isStacked: true,
+        vAxis: { title : '% of Respondents', titleTextStyle: {color: '#33626e'}, viewWindow: { min: 0, max: 100}, ticks: [{v:0, f: '0'}, {v:25, f: '25%'}, {v:50, f: '50%'}, {v:75, f: '75%'}, {v:100, f: '100%'}]},
+    };
+
+    var columnChart = new google.visualization.ColumnChart(document.getElementById(divId));
+
+    // main charts
+    columnChart.draw(columnChartData, columnOptions);
+
+
+}
+
+function drawRankingColumnChart(chartData, divId) {
+    if (typeof google == 'undefined') {
+        throw new Exception();
+    }
+
     if(chartData.length > 1){
         for(var i = 1; i < chartData.length; ++i){
             for(var j = 1; j < chartData[i].length; ++j){
@@ -31,7 +79,7 @@ function drawColumnChart(chartData, divId) {
     }
 
     var columnChartData = google.visualization.arrayToDataTable(chartData);
- 
+
     var columnOptions = {
         legend: { position: "top" },
         chartArea: {  
@@ -46,10 +94,10 @@ function drawColumnChart(chartData, divId) {
     };
  
 
-var columnChart = new google.visualization.ColumnChart(document.getElementById(divId));
+    var columnChart = new google.visualization.ColumnChart(document.getElementById(divId));
 
-// main charts
-columnChart.draw(columnChartData, columnOptions);
+    // main charts
+    columnChart.draw(columnChartData, columnOptions);
 
 
 }
