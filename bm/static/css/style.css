@@ -871,6 +871,7 @@ input.btn.full-width, .btn.full-width {
     font-size: 12px !important;
     line-height: 22px !important;
     color: #fff !important;
+    margin-bottom: 0;
 }
 
 .example-block p {
@@ -885,7 +886,7 @@ input.btn.full-width, .btn.full-width {
 }
 
     .example-block.closed *:not(.big-icon):not(.title) {
-        display: none;
+        display: none !important;
     }
 
     .example-block.closed .big-icon {
@@ -958,7 +959,7 @@ input.btn.full-width, .btn.full-width {
 }
 
 .example-block.active .will-hide {
-    display: none;
+    display: none !important;
 }
 
 .example-block.active ul {
