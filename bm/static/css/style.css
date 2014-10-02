@@ -976,6 +976,7 @@ input.btn.full-width, .btn.full-width {
         color: #fff !important;
         text-align: left;
         margin-bottom: 0;
+        display: block;
     }
 
 .about-container {
@@ -1446,6 +1447,11 @@ label.btn.btn-primary.auto-width.pull-right.fix {
     padding-left: 15px;
 }
 
+.tips.firstStep {
+    background: #eee;
+    padding: 20px 20px 40px;
+}
+
     .tips .label-like {
         display: block;
         font-weight: 500;
@@ -1454,6 +1460,13 @@ label.btn.btn-primary.auto-width.pull-right.fix {
         color: #333;
         font-size: 12px;
     }
+
+    .tips.firstStep .label-like {
+        font-size: 18px !important;
+        font-weight: 500;
+        color: #53777f;
+    }
+
     .tips .label-like .remove-all {text-transform:none;position: absolute;top:-9px;right:20px;cursor:pointer;}
     .tips .label-like .remove-all i {margin-right:2px;}
 
@@ -1539,6 +1552,12 @@ span.add_info {
     border-radius: 3px;
     text-transform: none;
 }
+
+    .add_help_inner > span {
+        max-height: 90px;
+        display: block;
+        overflow: auto;
+    }
 
     .add_help_inner * {
         color: #b9d4db !important;
