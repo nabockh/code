@@ -67,11 +67,12 @@ class CreateBenchmarkStep3Form(forms.Form):
             if len(self.selected_contacts) < self.min_number_of_answers:
                 self.errors['__all__'] = self.error_class(
                     ['You need to select at least  %d contacts to proceed' % self.min_number_of_answers])
-        selected_ids = set([(contact.id,) for contact in self.selected_contacts])
-        invites = set(self.benchmark.invites.values_list('recipient_id'))
-        if selected_ids == invites:
-            self.errors['__all__'] = self.error_class(
-                ['You need to select at least  1 contact to proceed'])
+        if self.benchmark:
+            selected_ids = set([(contact.id,) for contact in self.selected_contacts])
+            invites = set(self.benchmark.invites.values_list('recipient_id'))
+            if selected_ids == invites:
+                self.errors['__all__'] = self.error_class(
+                    ['You need to select at least  1 contact to proceed'])
         return self.cleaned_data
 
     @staticmethod
@@ -81,7 +82,7 @@ class CreateBenchmarkStep3Form(forms.Form):
         except (ValueError, TypeError):
             return 0
 
-    def __init__(self, benchmark, user, step0data, wizard, except_ids=set(), *args, **kwargs):
+    def __init__(self, user, step0data, wizard, except_ids=set(), benchmark=None, *args, **kwargs):
         super(CreateBenchmarkStep3Form, self).__init__(*args, **kwargs)
         self.user = user
         self.benchmark = benchmark
