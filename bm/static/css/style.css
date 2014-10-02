@@ -1562,6 +1562,7 @@ span.add_info {
 
     .add_help_inner.visible {
         display: block;
+        z-index: 9999;
     }
 
 #units_maxDecimals {
