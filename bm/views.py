@@ -677,7 +677,7 @@ class BenchmarkAddRecipientsView(FormView):
             wizard=wizard,
             prefix='1',
             except_ids=self.except_ids,
-            request=self.request
+            benchmark=self.benchmark
         )
         kwargs.update(params)
         return kwargs
