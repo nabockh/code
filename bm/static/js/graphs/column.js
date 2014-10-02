@@ -42,16 +42,6 @@ function drawColumnChart(chartData, divId) {
         }
     };
 
-    // if(chartData.length > 1){
-
-    //     for(var i = 1; i < chartData.length; ++i){
-    //         chartData[i][0] += "wdcs";
-
-    //         for(var j = 1; j < chartData[i].length; ++j){
-    //             chartData[i][j] = {"v": chartData[i][j], "f": chartData[i][j]+"%"};
-    //         }
-    //     }
-    // }
 
     var columnChartData = google.visualization.arrayToDataTable(chartData);
  
@@ -88,6 +78,10 @@ function drawRankingColumnChart(chartData, divId) {
             }
         }
     }
+
+    chartData = chartData.filter(function(element, index){
+        return index == 0 || element[0] > 0;
+    });
 
     var columnChartData = google.visualization.arrayToDataTable(chartData);
 
