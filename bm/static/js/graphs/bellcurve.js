@@ -48,7 +48,7 @@ function drawBellcurveChart(chartData, divId) {
             },
             tooltip: {'trigger' : 'none'},
             hAxis: { baselineColor : 'transparent', textStyle: {fontSize : '9'}, ticks: [{v:median[16][0], f:' ( ' + Math.round((chartData.avg - chartData.sd), 1).toFixed(0) + ' )' + '\n' + '- σ'}, {v:median[25][0], f:' ( ' + chartData.avg.toFixed(0) + ' )' + '\n' + 'μ'}, {v:median[34][0], f:' ( ' + Math.round((chartData.avg + chartData.sd), 1).toFixed(0) + ' )' + '\n' + '+ σ'}] },
-            vAxis: { title : 'Contributed Values', textStyle: {fontSize : '1', color: '#FFFFFF'}}
+            vAxis: { title : '', textStyle: {fontSize : '1', color: '#FFFFFF'}}
 
         };
 

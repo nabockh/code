@@ -79,10 +79,6 @@ function drawRankingColumnChart(chartData, divId) {
         }
     }
 
-    chartData = chartData.filter(function(element, index){
-        return index == 0 || element[0] > 0;
-    });
-
     var columnChartData = google.visualization.arrayToDataTable(chartData);
 
     var columnOptions = {
