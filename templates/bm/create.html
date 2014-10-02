@@ -559,6 +559,11 @@
                                             $('#step3countOfSelected').text('(' + step3SelectedContactsLength + ')').removeClass('selectedGreen').addClass('selectedRed');
                                         }
                                     };
+
+                                    $( document ).ready(function() {
+                                        numberOfSelectedContacts();
+                                        step3numberOfSelectedContacts();
+                                    });
                                 </script>
                                 <hr>
                                 <div id='step3Selected'>

@@ -461,9 +461,6 @@ function select_prepare() {
 // Main Nav behavior on scroll
 
 $( document ).ready(function() {
-    numberOfSelectedContacts();
-    step3numberOfSelectedContacts();
-
     var $document = $(document);
     var navOffset = $('.user-nav').offset().top;
 
