@@ -1954,6 +1954,10 @@ form[role='beta-email'] {
         padding: 0 12px;
     }
 
+    form[role='beta-email'] .form-control:focus {
+        box-shadow: 0 0 3px 3px #7AA4AC;
+    }
+
     form[role='beta-email'] .btn-search:hover {
         background: #37535A;
     }
