@@ -679,7 +679,7 @@ $( document ).ready(function(){
         else{
             $("#searchContactList .single-contact, #recommendedContactList .single-contact").each(function() {
                 $(this).removeClass('char-fillter-apply char-filltered').addClass('char-fillter-apply');
-                var str = $('.col-md-6.col-xs-6 label:first-child', this).text().split(' ').pop()[0].substring(0, 1);
+                var str = $('.col-md-6.col-xs-7 label:first-child', this).text().split(' ').pop()[0].substring(0, 1);
                 if(str === filter_char){
                     $(this).addClass('char-filltered');
                 }

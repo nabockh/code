@@ -61,7 +61,9 @@ class CreateBenchmarkStep3Form(forms.Form):
     name = forms.CharField(max_length=100, required=False)
 
     def clean(self):
-        if self.user.is_superuser:
+        if not self.contacts_filtered:
+            return self.cleaned_data
+        if self.user.is_superuser and self.is_continue:
             return self.cleaned_data
         if self.is_continue and hasattr(self, 'selected_contacts'):
             if len(self.selected_contacts) < self.min_number_of_answers:
