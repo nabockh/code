@@ -315,7 +315,7 @@
                             </div>                                
                         </div>
                         <div class='col-md-4'>
-                            <div class='tips'>
+                            <div class='tips firstStep'>
                                 <p class='label-like'>BENCHMARK TIPS...</p>
                                 <hr>
                                 {% static_placeholder "bm_create_tips_text" or %}
@@ -539,7 +539,32 @@
                         </div>
                         <div class='col-md-4'>
                             <div class='tips'>
-                                <p class='label-like'>Selected Contacts</p>
+                                <p class='label-like'>Selected Contacts <span id="step3countOfSelected" class='selected-count'>(0)</span></p>
+                                <script type="text/javascript">
+                                    var numberOfSelectedContacts = function() {
+                                        var selectedContactsLength = $('#selectedContactList .single-contact').length;
+                                        if (selectedContactsLength >= 5) {
+                                            $('#countOfSelected').text('(' + selectedContactsLength + ')').removeClass('selectedRed').addClass('selectedGreen');
+                                        } else {
+                                            $('#countOfSelected').text('(' + selectedContactsLength + ')').removeClass('selectedGreen').addClass('selectedRed');
+                                        };
+                                    };
+                                        
+                                  
+                                    var step3numberOfSelectedContacts = function() {
+                                        var step3SelectedContactsLength = $('#step3Selected .single-contact').length;
+                                        if (step3SelectedContactsLength >= 5) {
+                                            $('#step3countOfSelected').text('(' + step3SelectedContactsLength + ')').removeClass('selectedRed').addClass('selectedGreen');
+                                        } else {
+                                            $('#step3countOfSelected').text('(' + step3SelectedContactsLength + ')').removeClass('selectedGreen').addClass('selectedRed');
+                                        }
+                                    };
+
+                                    $( document ).ready(function() {
+                                        numberOfSelectedContacts();
+                                        step3numberOfSelectedContacts();
+                                    });
+                                </script>
                                 <hr>
                                 <div id='step3Selected'>
                                     {% for contact in selected_contacts %}

@@ -67,6 +67,12 @@ class CreateBenchmarkStep3Form(forms.Form):
             if len(self.selected_contacts) < self.min_number_of_answers:
                 self.errors['__all__'] = self.error_class(
                     ['You need to select at least  %d contacts to proceed' % self.min_number_of_answers])
+        if self.benchmark:
+            selected_ids = set([(contact.id,) for contact in self.selected_contacts])
+            invites = set(self.benchmark.invites.values_list('recipient_id'))
+            if selected_ids == invites:
+                self.errors['__all__'] = self.error_class(
+                    ['You need to select at least  1 contact to proceed'])
         return self.cleaned_data
 
     @staticmethod
@@ -76,9 +82,10 @@ class CreateBenchmarkStep3Form(forms.Form):
         except (ValueError, TypeError):
             return 0
 
-    def __init__(self, user, step0data, wizard, except_ids=set(), *args, **kwargs):
+    def __init__(self, user, step0data, wizard, except_ids=set(), benchmark=None, *args, **kwargs):
         super(CreateBenchmarkStep3Form, self).__init__(*args, **kwargs)
         self.user = user
+        self.benchmark = benchmark
         self.min_number_of_answers = self.num(step0data.get('0-minimum_number_of_answers'))
         data = kwargs.get('data') or {}
         self.is_continue = data.get('is_continue', False) and not (
@@ -119,7 +126,8 @@ class CreateBenchmarkStep3Form(forms.Form):
             contact.secondary_element = 'contact-{0}-secondary'.format(contact.id)
 
         self.add_suggested_contacts(cleaned_data.get('geo'), cleaned_data.get('industry'), user, except_ids)
-        wizard.selected_contacts = self.add_selected_contacts(data, except_ids)
+        self.selected_contacts = self.add_selected_contacts(data, except_ids)
+        wizard.selected_contacts = self.selected_contacts
         wizard.end_date = self.end_date
 
     def add_suggested_contacts(self, geo, industry, user=None, exclude_ids=[]):
@@ -136,28 +144,36 @@ class CreateBenchmarkStep3Form(forms.Form):
         selected_ids = []
         selected_secondary_ids = []
 
-        for key in data.keys():
-            r = re.match(r'1-selected-(?P<contact_id>\d+)-invite', key)
-            if r:
-                cid = int(r.group('contact_id'))
-                selected_ids.append(cid)
-                if data.get('{0}-selected-{1}-secondary'.format(self.prefix, cid)):
-                    selected_secondary_ids.append(cid)
+        if except_ids:
+            for invite in self.benchmark.invites.all():
+                selected_ids.append(invite.recipient_id)
+                if invite.is_allowed_to_forward_invite:
+                    selected_secondary_ids.append(invite.recipient_id)
+            selected_ids = set(selected_ids)
+            selected_secondary_ids = set(selected_secondary_ids)
+        else:
+            for key in data.keys():
+                r = re.match(r'1-selected-(?P<contact_id>\d+)-invite', key)
+                if r:
+                    cid = int(r.group('contact_id'))
+                    selected_ids.append(cid)
+                    if data.get('{0}-selected-{1}-secondary'.format(self.prefix, cid)):
+                        selected_secondary_ids.append(cid)
 
-        for contact in self.contacts_filtered:
-            if data.get('{0}-contact-{1}-invite'.format(self.prefix, contact.id)):
-                selected_ids.append(contact.id)
-                if data.get('{0}-contact-{1}-secondary'.format(self.prefix, contact.id)):
-                    selected_secondary_ids.append(contact.id)
-        for contact in self.suggested_contacts:
-            if data.get('{0}-suggested-{1}-invite'.format(self.prefix, contact.id)):
-                selected_ids.append(contact.id)
-                if data.get('{0}-suggested-{1}-secondary'.format(self.prefix, contact.id)):
-                    selected_secondary_ids.append(contact.id)
+            for contact in self.contacts_filtered:
+                if data.get('{0}-contact-{1}-invite'.format(self.prefix, contact.id)):
+                    selected_ids.append(contact.id)
+                    if data.get('{0}-contact-{1}-secondary'.format(self.prefix, contact.id)):
+                        selected_secondary_ids.append(contact.id)
+            for contact in self.suggested_contacts:
+                if data.get('{0}-suggested-{1}-invite'.format(self.prefix, contact.id)):
+                    selected_ids.append(contact.id)
+                    if data.get('{0}-suggested-{1}-secondary'.format(self.prefix, contact.id)):
+                        selected_secondary_ids.append(contact.id)
 
-        selected_ids = set(selected_ids)
-        selected_secondary_ids = set(selected_secondary_ids)
-        selected_ids = selected_ids - except_ids
+            selected_ids = set(selected_ids)
+            selected_secondary_ids = set(selected_secondary_ids)
+            selected_ids = selected_ids - except_ids
 
         count_without_email = 0
         self.selected_contacts = Contact.objects.filter(id__in=selected_ids).select_related('user')

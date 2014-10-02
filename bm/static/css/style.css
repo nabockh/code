@@ -541,6 +541,10 @@ input.btn.full-width, .btn.full-width {
 
 /* Colorblocking */
 
+#about ol, #about ul {
+    text-align: left;
+}
+
 .colorblock {
     background-color: #fff;
     padding: 60px 0;
@@ -548,7 +552,7 @@ input.btn.full-width, .btn.full-width {
     background-size: auto 100%;
 }
 
-    .colorblock p, .colorblock .cms_plugin span, .big-title ~ span:not(.help-text), .big-title + div:not(.cms_plugin) ~ *:not(.ex-info-text):not(.clearfix), .how-it-works .title + span, .features h4 + span {
+    .colorblock:not(#about) p, .colorblock .cms_plugin span, .big-title ~ span:not(.help-text), .big-title + div:not(.cms_plugin) ~ *:not(.ex-info-text):not(.clearfix), .how-it-works .title + span, .features h4 + span {
         margin-bottom: 40px;
         display: inline-block;
         font-size: 14px !important;
@@ -972,6 +976,7 @@ input.btn.full-width, .btn.full-width {
         color: #fff !important;
         text-align: left;
         margin-bottom: 0;
+        display: block;
     }
 
 .about-container {
@@ -1442,6 +1447,11 @@ label.btn.btn-primary.auto-width.pull-right.fix {
     padding-left: 15px;
 }
 
+.tips.firstStep {
+    background: #eee;
+    padding: 20px 20px 40px;
+}
+
     .tips .label-like {
         display: block;
         font-weight: 500;
@@ -1450,6 +1460,13 @@ label.btn.btn-primary.auto-width.pull-right.fix {
         color: #333;
         font-size: 12px;
     }
+
+    .tips.firstStep .label-like {
+        font-size: 18px !important;
+        font-weight: 500;
+        color: #53777f;
+    }
+
     .tips .label-like .remove-all {text-transform:none;position: absolute;top:-9px;right:20px;cursor:pointer;}
     .tips .label-like .remove-all i {margin-right:2px;}
 
@@ -1536,6 +1553,12 @@ span.add_info {
     text-transform: none;
 }
 
+    .add_help_inner > span {
+        max-height: 90px;
+        display: block;
+        overflow: auto;
+    }
+
     .add_help_inner * {
         color: #b9d4db !important;
         font-size: 11px  !important;
@@ -1558,6 +1581,7 @@ span.add_info {
 
     .add_help_inner.visible {
         display: block;
+        z-index: 9999;
     }
 
 #units_maxDecimals {
@@ -1928,6 +1952,10 @@ form[role='beta-email'] {
         border-color: #55798a;
         color: #fff;
         padding: 0 12px;
+    }
+
+    form[role='beta-email'] .form-control:focus {
+        box-shadow: 0 0 3px 3px #7AA4AC;
     }
 
     form[role='beta-email'] .btn-search:hover {
@@ -3221,6 +3249,13 @@ span.hide-btn.right {left: auto; right: 0;}
         box-shadow: inset 0 0 0 1px #33626e;
     }
 
+    .selected-count.selectedGreen {
+        color: #6EC951;
+    }
+    .selected-count.selectedRed {
+        color: #B94D4D;
+    }
+
 /* RESPONSIVENESS */
 
 
@@ -4041,7 +4076,7 @@ span.hide-btn.right {left: auto; right: 0;}
         bottom: 0;
         z-index: 999;
         left: 0;
-        padding-bottom: 30px;
+        padding-top: 20px;
         right: 0;
         margin: 0;
         width: auto;
@@ -4049,12 +4084,15 @@ span.hide-btn.right {left: auto; right: 0;}
         border-bottom-left-radius: 0;
     }
         .add_help_inner:after {
-            content: 'Tap anywhere to close this tooltip';
+            content: '';
+            font-family: fontAwesome;
             position: absolute;
             left: auto;
             border: none;
-            bottom: 25px;
-            width: 100%;
+            bottom: auto;
+            right: 6px;
+            top: 5px;
+            width: auto;
             text-align: center;
             color: #1F3B42;
         }

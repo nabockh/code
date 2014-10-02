@@ -3,9 +3,7 @@ google.load("visualization", "1", {packages:["corechart"]});
         
 $(function () {
 
-    if ($(window).width() < 768) {
-      $('input.select2-focusser.select2-offscreen').attr('disabled', 'disabled');  
-    };
+    $('input.select2-focusser.select2-offscreen').attr('disabled', 'disabled');  
 
     var sectionStateChangeStep1 = function() {
         var selectedStep1 = $('#id_0-question_type').find('option:selected').val();
@@ -208,14 +206,26 @@ $(function () {
 
     // Tooltips
 
-    $('.add_help').on('click', function(e) {
-       $(this).children('.add_help_inner').addClass('visible');
-       e.stopPropagation();
-    });
+    
 
-    $("html").click(function() {
-        $(".add_help_inner").removeClass('visible');
-    });
+    if ($(window).width() > 640) {
+        $('.add_help').on('click', function(e) {
+           $(this).children('.add_help_inner').addClass('visible');
+           e.stopPropagation();
+        });
+        $("html").click(function() {
+            $(".add_help_inner").removeClass('visible');
+        });
+    } else {
+        $('.add_help').on('click', function(e) {
+           $(this).children('.add_help_inner').toggleClass('visible');
+           e.stopPropagation();
+        });
+        $( '.add_help_inner' ).on('click', function(e) {
+             $(".add_help_inner").removeClass('visible');
+             e.stopPropagation();
+        });
+    };
 
     // Rating Functionality
 
@@ -306,15 +316,6 @@ $(function () {
         }
     });
 
-    $('span.deselect-btn').click(function () {
-        var id = $(this).parents('.single-contact').attr('data-contact-id');
-        $('#searchContactList .single-contact[data-contact-id='+id+']').find('.choose-checkbox, .share-checkbox').removeAttr('checked');
-        $('#selectedContactList .single-contact[data-contact-id='+id+']').find('.choose-checkbox, .share-checkbox').removeAttr('checked').end().fadeOut(500, function(){ $(this).remove();});
-        $('#recommendedContactList .single-contact[data-contact-id='+id+']').find('.choose-checkbox, .share-checkbox').removeAttr('checked');
-        $('#step3Selected .single-contact[data-contact-id='+id+']').find('.deChecker').attr('value', '').end().fadeOut(500, function(){ $(this).remove();});
-    });
-
-
     $('.col-md-8.lined-left.margined .share-checkbox').on('click', function() {
         var id = $(this).parents('.single-contact').attr('data-contact-id');
         if ($(this).is(':checked') === false) {
@@ -371,7 +372,7 @@ $(document).on("submit","form#contact_form", function(e){
             $('#support').modal('toggle');
             $("form#contact_form")[0].reset();
             $('#contact_submitted').modal('toggle');
-                setTimeout(function() {
+            setTimeout(function() {
                 $('#contact_submitted').modal('hide');
             }, 1000);
         }
@@ -530,6 +531,7 @@ $( document ).ready(function() {
         $('#searchContactList').show();
     }
 
+
     $('#recommendedContactList .add-contact-btn, #searchContactList .add-contact-btn').on('click',function(){
         if(!$(this).attr('disabled')){
             var $this_parent = $(this).closest('.single-contact');
@@ -572,6 +574,8 @@ $( document ).ready(function() {
                 $target_block.find('.add-contact-btn').removeAttr('disabled');
                 $this_parent.remove();
                 $target_block.find('.choose-checkbox, .share-checkbox').removeAttr('checked');
+                numberOfSelectedContacts();
+                step3numberOfSelectedContacts();
                
             });
         }
@@ -612,12 +616,34 @@ $( document ).ready(function() {
         $target_block = $('#recommendedContactList, #searchContactList').find('.single-contact[data-contact-id="' + this_id + '"]');
         $target_block.find('.add-contact-btn').removeAttr('disabled');
         $this_parent.remove();
+        numberOfSelectedContacts();
+        step3numberOfSelectedContacts();
     });
     $('.add-all').click( function(){
         $(this).closest('.title-header').next('.contact-results').find('.add-contact-btn:visible').click();
     });
     $('.tips .remove-all').click( function(){
         $(this).closest('.tips').find('.deselect-btn').click();
+    });
+
+
+    $('span.deselect-btn').click(function () {
+        var id = $(this).parents('.single-contact').attr('data-contact-id');
+        $('#searchContactList .single-contact[data-contact-id='+id+']').find('.choose-checkbox, .share-checkbox').removeAttr('checked');
+        $('#selectedContactList .single-contact[data-contact-id='+id+']').find('.choose-checkbox, .share-checkbox').removeAttr('checked').end().fadeOut(500, function(){ $(this).remove();});
+        $('#recommendedContactList .single-contact[data-contact-id='+id+']').find('.choose-checkbox, .share-checkbox').removeAttr('checked');
+        $('#step3Selected .single-contact[data-contact-id='+id+']').find('.deChecker').attr('value', '').end().fadeOut(500, function(){ $(this).remove();});
+        
+        setTimeout(function() {
+            numberOfSelectedContacts();
+            step3numberOfSelectedContacts();
+        }, 1000);
+    });
+
+
+    $('.add-contact-btn, .add-all, .remove-all').on('click', function() {
+       numberOfSelectedContacts();
+       step3numberOfSelectedContacts();  
     });
 
 });

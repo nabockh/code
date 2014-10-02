@@ -38,7 +38,7 @@ function drawLineChart(chartData, divId) {
         tooltip: { isHtml : true },
         bar: {groupWidth: '2'},
         vAxis: { title : '% of Respondents', titleTextStyle: {color: '#33626e'}, viewWindow: { min: 0, max: 100}, ticks: [{v:0, f: '0'}, {v:25, f: '25%'}, {v:50, f: '50%'}, {v:75, f: '75%'}, {v:100, f: '100%'}]},
-        hAxis: { title : 'Contributed Values', titleTextStyle: {color: '#33626e'}}
+        hAxis: { title : 'Value', titleTextStyle: {color: '#33626e'}}
     };
 
     var lineChart = new google.visualization.CandlestickChart(document.getElementById(divId));

@@ -437,9 +437,16 @@
                             <li>
                                 <img src="{{ STATIC_URL }}img/tourStep5.png" />
                                 {% if user.is_authenticated %}
-                                    <a href='{% url 'bm_create' %}' class='btn btn-primary getdatanow'>Get Data Now  <i style='padding-left: 10px' class='fa fa-chevron-circle-right'></i></a>
+                                    <a href='{% url 'bm_create' %}' class='btn btn-primary getdatanow'>Gather Data Now  <i style='padding-left: 10px' class='fa fa-chevron-circle-right'></i></a>
                                 {% else %}
-                                    <span class='hide-btn right'></span>
+                                    <a href='#' data-dismiss="modal" class='btn btn-primary getdatanow requestBetaBtn'>Request Beta Invitation <i style='padding-left: 10px' class='fa fa-chevron-circle-right'></i></a>
+                                    <script type="text/javascript">
+                                        $('.requestBetaBtn').click(function () {
+                                            setTimeout(function() { 
+                                                $('#id_invite-email').focus();
+                                            }, 1000);
+                                        });                                        
+                                    </script>
                                 {% endif %}                                
                             </li>
                         </ul>
