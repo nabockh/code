@@ -121,7 +121,7 @@ class DashboardView(TemplateView):
                                                 models.Q(owner=self.request.user)) \
                 .order_by('-end_date', '-id'),
             'recent': Benchmark.objects \
-                .annotate(responses_count=models.Count('question__responses')) \
+                .annotate(responses_count=models.Count('question__responses', distinct=True)) \
                 .filter(models.Q(approved=True,
                                  responses_count__gte=models.F('min_numbers_of_responses'),
                                  end_date__lte=datetime.now()) &
