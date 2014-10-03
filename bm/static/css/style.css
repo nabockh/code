@@ -1400,6 +1400,11 @@ form[role='search'] .btn-search {
         color: #fff;
     }
 
+    .benchmark-creation .styled-form .btn[disabled="disabled"] {
+        background: #bbb;
+        color: #FFF;
+    }
+
 label.btn.btn-primary.auto-width.pull-right.fix {
     margin-right: 10px;
 }

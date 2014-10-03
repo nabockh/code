@@ -186,27 +186,17 @@
             <p class='label-like'>Selected Contacts  <span id="countOfSelected" class='selected-count'>(0)</span><a class="remove-all"><i class="fa fa-minus-circle"></i>Remove All</a></p>
             <script type="text/javascript">
                 var numberOfSelectedContacts = function() {
+                    var minimumCount = {{ wizard.form.min_number_of_answers }};
                     var selectedContactsLength = $('#selectedContactList .single-contact').length;
-                    if (selectedContactsLength >= 5) {
+                    if (selectedContactsLength >= minimumCount) {
                         $('#countOfSelected').text('(' + selectedContactsLength + ')').removeClass('selectedRed').addClass('selectedGreen');
                     } else {
                         $('#countOfSelected').text('(' + selectedContactsLength + ')').removeClass('selectedGreen').addClass('selectedRed');
                     };
                 };
-                    
-              
-                var step3numberOfSelectedContacts = function() {
-                    var step3SelectedContactsLength = $('#step3Selected .single-contact').length;
-                    if (step3SelectedContactsLength >= 5) {
-                        $('#step3countOfSelected').text('(' + step3SelectedContactsLength + ')').removeClass('selectedRed').addClass('selectedGreen');
-                    } else {
-                        $('#step3countOfSelected').text('(' + step3SelectedContactsLength + ')').removeClass('selectedGreen').addClass('selectedRed');
-                    }
-                };
 
                 $( document ).ready(function() {
                     numberOfSelectedContacts();
-                    step3numberOfSelectedContacts();
                 });
             </script>
             <hr>
