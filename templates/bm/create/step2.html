@@ -186,7 +186,12 @@
             <p class='label-like'>Selected Contacts  <span id="countOfSelected" class='selected-count'>(0)</span><a class="remove-all"><i class="fa fa-minus-circle"></i>Remove All</a></p>
             <script type="text/javascript">
                 var numberOfSelectedContacts = function() {
-                    var minimumCount = {{ wizard.form.min_number_of_answers }};
+
+                    if(window.location.href.indexOf("/add-recipients") > -1) {
+                        var minimumCount = {{ wizard.form.initial.minimum_number_of_answers }};
+                    } else {
+                         var minimumCount = {{ wizard.form.min_number_of_answers }};
+                    };
                     var selectedContactsLength = $('#selectedContactList .single-contact').length;
                     if (selectedContactsLength >= minimumCount) {
                         $('#countOfSelected').text('(' + selectedContactsLength + ')').removeClass('selectedRed').addClass('selectedGreen');
