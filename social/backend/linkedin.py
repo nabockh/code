@@ -57,6 +57,8 @@ def get_contacts(user=None, tokens=None):
         else:
             return None
     auth = user.social_auth.first()
+    if not auth:
+        return []
     user_access = extract_access_tokens(auth.tokens)
     authentication = linkedin.LinkedInDeveloperAuthentication(
         settings.LINKEDIN_CONSUMER_KEY,
@@ -70,4 +72,4 @@ def get_contacts(user=None, tokens=None):
     if not connections['_total'] == 0:
         return connections['values']
     else:
-        return None
+        return []
