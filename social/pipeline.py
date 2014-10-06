@@ -30,8 +30,9 @@ def get_username(details, user=None,
 
     old_user = User.objects.filter(email=details.get('email')).first()
     if old_user:
-        final_username = old_user.get_full_name()
-        return {'username': final_username}
+        final_username = old_user.username
+        return {'username': final_username,
+                'user': old_user}
     if email_as_username and details.get('email'):
         username = details['email']
     elif details.get('username'):
