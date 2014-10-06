@@ -671,7 +671,7 @@ class BenchmarkAddRecipientsView(FormView):
         params = dict(
             user=self.request.user,
             step0data=MultiValueDict({
-                '0-geo': geo.id if geo else '',
+                '0-geo': [geo.id] if geo else '',
                 '0-industry': [self.benchmark.industry.code],
             }),
             wizard=wizard,

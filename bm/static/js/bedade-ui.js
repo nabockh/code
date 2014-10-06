@@ -574,9 +574,7 @@ $( document ).ready(function() {
                 $target_block.find('.add-contact-btn').removeAttr('disabled');
                 $this_parent.remove();
                 $target_block.find('.choose-checkbox, .share-checkbox').removeAttr('checked');
-                numberOfSelectedContacts();
-                step3numberOfSelectedContacts();
-               
+                numberOfSelectedContacts();               
             });
         }
         $('#selectedContactList .share-checkbox').on('click',function() {
@@ -617,7 +615,6 @@ $( document ).ready(function() {
         $target_block.find('.add-contact-btn').removeAttr('disabled');
         $this_parent.remove();
         numberOfSelectedContacts();
-        step3numberOfSelectedContacts();
     });
     $('.add-all').click( function(){
         $(this).closest('.title-header').next('.contact-results').find('.add-contact-btn:visible').click();
@@ -635,7 +632,6 @@ $( document ).ready(function() {
         $('#step3Selected .single-contact[data-contact-id='+id+']').find('.deChecker').attr('value', '').end().fadeOut(500, function(){ $(this).remove();});
         
         setTimeout(function() {
-            numberOfSelectedContacts();
             step3numberOfSelectedContacts();
         }, 1000);
     });
@@ -643,13 +639,13 @@ $( document ).ready(function() {
 
     $('.add-contact-btn, .add-all, .remove-all').on('click', function() {
        numberOfSelectedContacts();
-       step3numberOfSelectedContacts();  
-    });
+    }); 
 
 });
 $(window).on('resize', function(){
     select_prepare();
 });
+
 $(document).ajaxStop(function() {
 });
 

@@ -1,6 +1,7 @@
 from __future__ import absolute_import
 import json
 from linkedin import linkedin
+from linkedin.exceptions import LinkedInError
 import collections
 from app import settings
 from linkedin.utils import raise_for_error
@@ -23,7 +24,11 @@ class LinkedInApplication(linkedin.LinkedInApplication):
         url = '%s/~/mailbox' % linkedin.ENDPOINTS.PEOPLE
         response = self.make_request('POST', url,
                                      data=json.dumps(data))
-        raise_for_error(response)
+        try:
+            raise_for_error(response)
+        except LinkedInError as error:
+            print "Could not send message to at least one of the contacts: %s" % \
+                response.message
         return True
 
 
@@ -52,6 +57,8 @@ def get_contacts(user=None, tokens=None):
         else:
             return None
     auth = user.social_auth.first()
+    if not auth:
+        return []
     user_access = extract_access_tokens(auth.tokens)
     authentication = linkedin.LinkedInDeveloperAuthentication(
         settings.LINKEDIN_CONSUMER_KEY,
@@ -65,4 +72,4 @@ def get_contacts(user=None, tokens=None):
     if not connections['_total'] == 0:
         return connections['values']
     else:
-        return None
+        return []
