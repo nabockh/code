@@ -2,14 +2,12 @@ function drawBellcurveChart(chartData, divId) {
     if (typeof google == 'undefined') {
         throw new Exception();
     }
-    console.log(chartData);
     var nd = function (x, avg, sd) {
         var C = (sd * Math.sqrt(2 * Math.PI));
         var dr = Math.pow(x - avg, 2) / (2 * Math.pow(sd, 2));
         return Math.exp(-dr) / C;
 
     };
-    console.log('ND: '+ nd);
     var prepareData = function (avg, sd, min, max) {
         var y = function (x) {
             return nd(x, avg, sd);
@@ -35,13 +33,11 @@ function drawBellcurveChart(chartData, divId) {
 
         return res;
     };
-    console.log(prepareData(chartData.avg, chartData.sd,chartData.min, chartData.max));
     var y_max = nd(chartData.avg, chartData.avg, chartData.sd);
     y_max *= 1.1;
     y_max = Math.ceil(y_max * 100);
     var bellcurveChartData = new google.visualization.arrayToDataTable(
         prepareData(chartData.avg, chartData.sd,chartData.min, chartData.max));
-        console.log(bellcurveChartData);
 
     var median = prepareData(chartData.avg,chartData.sd);
 

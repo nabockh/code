@@ -874,7 +874,7 @@ input.btn.full-width, .btn.full-width {
     margin-bottom: 0;
 }
 
-.example-block p {
+.colorblock#examples .example-block p {
     padding: 0 10px;
     font-size: 12px !important;
     line-height: 22px !important;

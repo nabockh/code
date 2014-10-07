@@ -186,8 +186,11 @@ $(function () {
             $('.bjqs-controls li a').addClass('btn btn-primary');
         };
     });
+
+    // Preloader
+
     setTimeout(function () {
-            $('.preloader').fadeOut( "slow" );
+        $('.preloader').fadeOut( "slow" );
     }, 1000);
 
     // Example Blocks
@@ -204,9 +207,7 @@ $(function () {
         $(".terms-container").toggleClass('terms-show');
     });
 
-    // Tooltips
-
-    
+    // Tooltips    
 
     if ($(window).width() > 640) {
         $('.add_help').on('click', function(e) {
@@ -263,30 +264,6 @@ $(function () {
     $(document).on('mouseleave', '.carousel', function() {
         $(this).carousel('pause');
     });
-
-    // Benchmark Creation Tabs
-
-    $('#searchTabs a, .tab-switcher').click(function (e) {
-      e.preventDefault();
-      e.stopPropagation();
-      $(this).tab('show');
-    });
-
-    $('.tab-switcher').click(function (e) {
-        $('.search .tabulation .nav-tabs li.tab-recommended').tab('show').addClass('active');
-        e.stopPropagation();
-    });
-
-    // Becnhmark Creation Checkboxes
-
-    // $('.single-contact input[type="checkbox"]').change(function() {
-    //     if ($('.single-contact input[type="checkbox"]:checked').length > 0) {
-    //         $(this).parents('.single-contact').addClass('active');
-    //     }
-    //     else {
-    //         $(this).parents('.single-contact').removeClass('active');
-    //     }
-    // });
     
     
     $('*[data-modal-close="true"]').click(function () {
@@ -316,7 +293,7 @@ $(function () {
         }
     });
 
-    $('.col-md-8.lined-left.margined .share-checkbox').on('click', function() {
+    $('.share-checkbox').on('change', function() {
         var id = $(this).parents('.single-contact').attr('data-contact-id');
         if ($(this).is(':checked') === false) {
             $('#searchContactList .single-contact[data-contact-id='+id+']').find('.share-checkbox').prop('checked', false);
@@ -332,6 +309,12 @@ $(function () {
         }
     });
 
+    $('.share-checkbox').on('click', function() {
+        var id = $(this).parents('.single-contact').attr('data-contact-id');
+        if ($(this).is(':checked') === true) {
+            $(this).parents('.single-contact[data-contact-id='+id+']').find('.add-contact-btn').click();
+        };            
+    });       
 });
 
 
@@ -594,7 +577,7 @@ $( document ).ready(function() {
         var $this_parent = $(this).closest('.single-contact');
         var this_id = $this_parent.attr('data-contact-id');
         $target_checkbox = $('.col-md-8.lined-left.margined').find('.single-contact[data-contact-id="' + this_id + '"]').find('.share-checkbox');
-        if ($(this)[0].checked  === true) {
+        if ($(this)[0].checked === true) {
             $target_checkbox.removeAttr('checked').prop('checked', true);
         }
         else {
