@@ -876,7 +876,7 @@ class ExcelDownloadView(BenchmarkDetailView):
             contributor_results = benchmark.charts['pie']
             chart = workbook.add_chart({'type': 'pie'})
         elif question_type == 5:
-            contributor_results = benchmark.charts['pie']
+            contributor_results = benchmark.charts['ecxel']
             chart = workbook.add_chart({'type': 'line'})
         contributor_worksheet.set_column(0, 1, 30)
         if question_type == 1:
@@ -990,8 +990,8 @@ class ExcelDownloadView(BenchmarkDetailView):
             contributor_worksheet.insert_chart('F3', chart)
         elif question_type == 5:
             internal_worksheet = workbook.add_worksheet('Internal')
-            splitted = [[(i.split('-')), v] for [i , v] in contributor_results[1:]]
-            chart_data = [[int(i[0]), int(i[1]), v] for [i, v] in splitted]
+            splited = [[(i.split(',')), v] for [i, v] in contributor_results[1:]]
+            chart_data = [[int(i[0]), int(i[1]), v] for [i, v] in splited]
             y_axis = []
             last_end = None
             for start, end, val in chart_data:
