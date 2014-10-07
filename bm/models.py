@@ -305,7 +305,13 @@ class BenchmarkRange(Benchmark):
     def charts(self):
         series = self.series_statistic.values('series', 'sub_series', 'value').order_by('id')
         series1 = [[str(s['series'] + '-' + s['sub_series']), s['value']] for s in series]
+        excel_data = [[str(s['series'] + ',' + s['sub_series']), s['value']] for s in series]
         value_sum = sum([vote[1] for vote in series1])
+        for vote in excel_data:
+            value = round((float(vote[1])/value_sum)*100)
+            del vote[1]
+            vote.append(value)
+        excel_data.insert(0, ['series', 'Contributors'])
         for vote in series1:
             value = round((float(vote[1])/value_sum)*100)
             del vote[1]
@@ -333,6 +339,7 @@ class BenchmarkRange(Benchmark):
             'pie': series1,
             'column': series_data,
             'line': series2,
+            'ecxel': excel_data,
             'units': self.question.first().options.first().units.encode('utf-8'),
         }
 
