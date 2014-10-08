@@ -148,21 +148,7 @@
                     {% if wizard.steps.step1 == 1 %}
                         <div class='col-md-8 lined-left'>
                             <div class='row'>
-                                <div class='col-md-12'>
-                                    <label for="id_0-name">Question Topic</label>
-                                    <span class="add_help">?
-                                        <span class='add_help_inner'>
-                                            <span>
-                                                {% static_placeholder "bm_create_query_topic" or %}
-                                                Lorem ipsum dolor sit amet, consectetur eta adipiscing elit. Pellentasque eu tempor tortor. Aliquam Trisque eros arcu, sed bibendum enim faucibus in. In vulputate blendit lorem ut.
-                                                {% endstatic_placeholder %}
-                                            </span>                                            
-                                        </span>
-                                    </span>
-                                    <span class="add_info">(ie Technology spending growth)</span>
-                                    {{ form.name }}
-                                    {{ form.name.errors }}
-                                </div>
+                                
                                 <div class='col-md-12'>
                                     <label for="id_0-question_label">Your Question</label>
                                     <span class="add_help">?
@@ -177,6 +163,21 @@
                                     <span class="add_info">(ie 'What is the projected growth of your technology budget for next year?')</span>
                                     {{ form.question_label }}
                                     {{ form.question_label.errors }}
+                                </div>
+                                <div class='col-md-12'>
+                                    <label for="id_0-name">Question Topic</label>
+                                    <span class="add_help">?
+                                        <span class='add_help_inner'>
+                                            <span>
+                                                {% static_placeholder "bm_create_query_topic" or %}
+                                                Lorem ipsum dolor sit amet, consectetur eta adipiscing elit. Pellentasque eu tempor tortor. Aliquam Trisque eros arcu, sed bibendum enim faucibus in. In vulputate blendit lorem ut.
+                                                {% endstatic_placeholder %}
+                                            </span>                                            
+                                        </span>
+                                    </span>
+                                    <span class="add_info">(ie Technology spending growth)</span>
+                                    {{ form.name }}
+                                    {{ form.name.errors }}
                                 </div>
                                 <div class='col-md-12'>
                                     <label for="id_0-question_text">Additional details</label>
@@ -336,21 +337,6 @@
                             <input id="id_benchmark_create_wizard_view-current_step" name="benchmark_create_wizard_view-current_step" type="hidden" value="2">
                             <div class='row'>
                                 <div class='col-md-12'>
-                                    <label for="id_2-name">Question Topic</label>
-                                    <span class="add_help">?
-                                        <span class='add_help_inner'>
-                                            <span>
-                                                {% static_placeholder "bm_create_query_topic" or %}
-                                                Lorem ipsum dolor sit amet, consectetur eta adipiscing elit. Pellentasque eu tempor tortor. Aliquam Trisque eros arcu, sed bibendum enim faucibus in. In vulputate blendit lorem ut.
-                                                {% endstatic_placeholder %}
-                                            </span>                                            
-                                        </span>
-                                    </span>
-                                    <span class="add_info">(ie 'Technology spending growth')</span>
-                                    {{ form.name }}
-                                    {{ form.name.errors }}
-                                </div>
-                                <div class='col-md-12'>
                                     <label for="id_2-question_label">Your Question</label>
                                     <span class="add_help">?
                                         <span class='add_help_inner'>
@@ -364,6 +350,21 @@
                                     <span class="add_info">(ie 'What is the projected growth of your technology budget for next year?')</span>
                                     {{ form.question_label }}
                                     {{ form.question_label.errors }}
+                                </div>
+                                <div class='col-md-12'>
+                                    <label for="id_2-name">Question Topic</label>
+                                    <span class="add_help">?
+                                        <span class='add_help_inner'>
+                                            <span>
+                                                {% static_placeholder "bm_create_query_topic" or %}
+                                                Lorem ipsum dolor sit amet, consectetur eta adipiscing elit. Pellentasque eu tempor tortor. Aliquam Trisque eros arcu, sed bibendum enim faucibus in. In vulputate blendit lorem ut.
+                                                {% endstatic_placeholder %}
+                                            </span>                                            
+                                        </span>
+                                    </span>
+                                    <span class="add_info">(ie 'Technology spending growth')</span>
+                                    {{ form.name }}
+                                    {{ form.name.errors }}
                                 </div>
                                 <div class='col-md-12'>
                                     <label for="id_2-question_text">Additional details</label>

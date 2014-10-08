@@ -552,13 +552,17 @@ input.btn.full-width, .btn.full-width {
     background-size: auto 100%;
 }
 
-    .colorblock:not(#about) p, .colorblock .cms_plugin span, .big-title ~ span:not(.help-text), .big-title + div:not(.cms_plugin) ~ *:not(.ex-info-text):not(.clearfix), .how-it-works .title + span, .features h4 + span {
+    .colorblock:not(#about):not(#contact) p, .colorblock .cms_plugin span, .big-title ~ span:not(.help-text), .big-title + div:not(.cms_plugin) ~ *:not(.ex-info-text):not(.clearfix), .how-it-works .title + span, .features h4 + span {
         margin-bottom: 40px;
         display: inline-block;
         font-size: 14px !important;
         line-height: 24px !important;
         color: inherit;
     }
+
+#contact .container > p {
+    margin-bottom: 40px;
+}
 
 .big-title + div:not(.cms_placeholder):not(.clearfix) {
     margin-bottom: 40px;
@@ -583,6 +587,13 @@ input.btn.full-width, .btn.full-width {
     margin-bottom: 30px;
     text-transform: uppercase;
 }
+
+    .big-title.linked span:hover {
+        cursor: pointer;
+        color: #425380;
+        border-bottom: 1px solid #425380;
+    }
+
 
 .colorblock.banner {
     background-image: url('../img/bdde_banner.jpg');
@@ -1798,10 +1809,14 @@ span.grey {
     background-color: #5D828B;
 }
 
+b.how-to-use {
+    font-size: 16px;
+}
+
 a.tour {
-    padding: 2px 10px;
-    font-size: 12px;
-    vertical-align: text-bottom;
+    padding: 4px 16px;
+    font-size: 15px;
+    vertical-align: bottom;
     border-radius: 3px;
 }
 
@@ -2981,17 +2996,20 @@ ul#answerSortable {
     }
     
         .bigChart + .units > span {
-            line-height: 23px;
             font-weight: 900;
-            float: right;
-            text-align: right;
+            line-height: 14px;
+            text-align: left;
             color: #94a6c3;        
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
             max-width: 350px;
     
+            height: 18px;
             font-size: 18px;
+            display: inline-block;
+            vertical-align: middle;
+            padding-left: 5px;
 }
 
     .bigChart > div {

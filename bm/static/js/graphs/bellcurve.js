@@ -47,7 +47,7 @@ function drawBellcurveChart(chartData, divId) {
         },
         tooltip: {'trigger': 'none'},
         curveType: 'function',
-        vAxis: { title: '% of Respondents', titleTextStyle: {color: '#33626e'}, allowContainerBoundaryTextCufoff: true},
+        vAxis: { titleTextStyle: {color: '#33626e'}, allowContainerBoundaryTextCufoff: true},
         hAxis: { baselineColor : 'transparent', textStyle: {fontSize : '9'}, ticks: [{v:median[3][0], f:' ( ' + Math.round((chartData.avg - chartData.sd), 1).toFixed(0) + ' )' + '\n' + '- σ'}, {v:median[4][0], f:' ( ' + chartData.avg.toFixed(0) + ' )' + '\n' + 'μ'}, {v:median[5][0], f:' ( ' + Math.round((chartData.avg + chartData.sd), 1).toFixed(0) + ' )' + '\n' + '+ σ'}], titlePosition: 'in' },
         intervals: { 'style': 'area' },
     };
