@@ -98,7 +98,6 @@ class CreateBenchmarkStep3Form(forms.Form):
         self.fields['geo'].initial = step0data.get('0-geo')
         industries = list(LinkedInIndustry.get_proposal(user.contacts))
         self.fields['industry'].choices = industries
-        self.fields['industry'].initial = step0data.getlist('0-industry')
         cleaned_data = {
             'geo': data.get('%s-%s' % (self.prefix, 'geo')) if data else self.fields['geo'].initial,
             'industry': data.getlist('%s-%s' % (self.prefix, 'industry')) if data else self.fields['industry'].initial,

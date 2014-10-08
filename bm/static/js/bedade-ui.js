@@ -506,13 +506,15 @@ $( document ).ready(function() {
         $('.ui-new-option').focus().removeAttr('class');
     });
 
-    if ($('#from1_flag').length > 0) {
-        $('#recommendedContactList').show();
-        $('#searchContactList').hide();
-    } else {
-        $('#recommendedContactList').hide();
-        $('#searchContactList').show();
-    }
+//For display recommended after step1->step2
+//    if ($('#from1_flag').length > 0) {
+//        $('#searchContactList').show();
+//        $('#recommendedContactList').hide();
+//
+//    } else {
+//        $('#searchContactList').hide();
+//        $('#recommendedContactList').show();
+//    }
 
 
     $('#recommendedContactList .add-contact-btn, #searchContactList .add-contact-btn').on('click',function(){
