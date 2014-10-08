@@ -115,7 +115,8 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'django.core.context_processors.static',
     'cms.context_processors.cms_settings',
     'sekizai.context_processors.sekizai',
-    'core.context_prepocessos.contact_form',
+    'core.context_preprocessors.contact_form',
+    'core.context_preprocessors.google_analytics'
 )
 
 MESSAGE_STORAGE = 'django.contrib.messages.storage.cookie.CookieStorage'
@@ -284,12 +285,16 @@ SOCIAL_AUTH_PIPELINE = (
     'social.pipeline.load_extra_data',
 )
 
-LINKEDIN_CONSUMER_KEY = '77pi0tgejrq7si'
-LINKEDIN_CONSUMER_SECRET = 'ZneKr9tbVPSSrm5O'
+LINKEDIN_CONSUMER_KEY = ''
+LINKEDIN_CONSUMER_SECRET = ''
+
 
 LINKEDIN_SCOPE = ['r_basicprofile', 'r_emailaddress', 'r_network', 'w_messages']
 LINKEDIN_EXTRA_FIELD_SELECTORS = ['email-address', 'headline', 'industry', 'location:(country)', 'positions']
 LINKEDIN_OAUTH2_EXTRA_DATA = [('id', 'id'), ]
+
+GOOGLE_ANALYTICS_PROPERTY_ID = ''
+GOOGLE_ANALYTICS_DOMAIN = 'bedade.com'
 
 LOGIN_REDIRECT_URL = "/"
 LOGIN_ERROR_URL = "/beta"
