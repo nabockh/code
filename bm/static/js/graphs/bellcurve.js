@@ -14,23 +14,13 @@ function drawBellcurveChart(chartData, divId) {
         };
         var res = [];
         res.push(['Range', '%']);
-        res.push([ avg-3*sd, 100 * y(avg-3*sd)])
-
-        var x = avg-2*sd;
-        while (x < (avg)) {
-            res.push([x, 100 * y(x)]);
-            x += sd;
-        }
+        res.push([ avg-3*sd, 100 * y(avg-3*sd)]);
+        res.push([ avg-2*sd, 100 * y(avg-2*sd)]);
+        res.push([ avg-sd, 100 * y(avg-sd)]);
         res.push([ avg, 100 * y(avg)]);
-        x = avg+sd;
-
-        while (x < avg + 2*sd) {
-            res.push([ x, 100 * y(x)]);
-            x += sd;
-        }
-        res.push([ avg+2*sd, 100 * y(avg+2*sd)])
-        res.push([ avg+3*sd, 100 * y(avg+3*sd)])
-
+        res.push([ avg+sd, 100 * y(avg+sd)]);
+        res.push([ avg+2*sd, 100 * y(avg+2*sd)]);
+        res.push([ avg+3*sd, 100 * y(avg+3*sd)]);
         return res;
     };
     var y_max = nd(chartData.avg, chartData.avg, chartData.sd);
