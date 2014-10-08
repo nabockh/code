@@ -136,7 +136,7 @@ class BenchmarkCreateWizardView(CookieWizardView):
             'question_label': form.cleaned_data['question_label'],
             'benchmark_name': benchmark.name,
             'query_details': form.cleaned_data['question_text'],
-            'benchmark_creator': benchmark.owner,
+            'benchmark_creator': benchmark.owner.get_full_name(),
             'link_to_answer': "Link to answer form will be here",
             'link_to_bm_results': "Link to benchmark results will be here"
         })

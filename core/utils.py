@@ -29,7 +29,7 @@ def get_context_variables(benchmark, request=None):
     context_vars['benchmark_name'] = benchmark.name
     context_vars['query_details'] = benchmark.question.first().description
     context_vars['link_to_answer'] = benchmark.link
-    context_vars['benchmark_creator'] = benchmark.owner
+    context_vars['benchmark_creator'] = benchmark.owner.get_full_name()
     context_vars['link_to_bm_results'] = str(Site.objects.get_current()) + reverse('bm_details', args=[benchmark.id])
     return context_vars
 
