@@ -16,12 +16,8 @@ class Migration(SchemaMigration):
         ))
         db.send_create_signal(u'bm', ['RegionType'])
 
-        # Load initial data to bm_region table
-        call_command("loaddata", "initial_data.json")
-
         # Load initial data to Templates table
-        if not Template.objects.all().exists():
-            call_command("loaddata", "initial_templates.json")
+        call_command("loaddata", "initial_templates.json")
 
         # Adding model 'Region'
         db.create_table(u'bm_region', (
@@ -32,6 +28,9 @@ class Migration(SchemaMigration):
             ('parent', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['bm.Region'], null=True, blank=True)),
         ))
         db.send_create_signal(u'bm', ['Region'])
+
+        # Load initial data to bm_region table
+        call_command("loaddata", "initial_data.json")
 
         # Adding model 'Benchmark'
         db.create_table(u'bm_benchmark', (
