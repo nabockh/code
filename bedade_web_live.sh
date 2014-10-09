@@ -8,7 +8,7 @@ GROUP=webapps                                     # the group to run as
 NUM_WORKERS=3                                     # how many worker processes should Gunicorn spawn
 DJANGO_SETTINGS_MODULE=app.settings             # which settings file should Django use
 DJANGO_WSGI_MODULE=app.wsgi                     # WSGI module name
-NEW_RELIC_CONFIG_FILE=newrelic.ini
+NEW_RELIC_CONFIG_FILE=/webapps/bedade/bedade/newrelic.ini
  
 echo "Starting $NAME as `whoami`"
  
