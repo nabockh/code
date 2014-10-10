@@ -45,14 +45,14 @@ class BenchmarkManager(models.Manager):
 class BenchmarkValidManager(BenchmarkManager):
     def get_queryset(self):
         return super(BenchmarkValidManager, self).get_queryset()\
-            .annotate(responses_count=Count('question__responses'))\
+            .annotate(responses_count=Count('question__responses', distinct=True))\
             .filter(approved=True, responses_count__gte=F('min_numbers_of_responses'))
 
 
 class BenchmarkPendingManager(models.Manager):
     def get_queryset(self):
         return super(BenchmarkPendingManager, self).get_queryset() \
-            .annotate(responses_count=Count('question__responses'))\
+            .annotate(responses_count=Count('question__responses', distinct=True))\
             .exclude(approved=False) \
             .filter(end_date__gt=datetime.now())\
             .distinct()
