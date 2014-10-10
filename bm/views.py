@@ -196,6 +196,8 @@ class BenchmarkCreateWizardView(CookieWizardView):
             # TODO: Industry and Geo(?) must be fixed later to support multiple choice inputs
             if isinstance(step3.cleaned_data['industry'], list):
                 benchmark.industry = step3.cleaned_data['industry'][0]
+            elif step3.cleaned_data['industry'] == u'':
+                benchmark.industry = None
             else:
                 benchmark.industry = step3.cleaned_data['industry']
             benchmark.min_numbers_of_responses = step3.cleaned_data['minimum_number_of_answers']
@@ -672,7 +674,7 @@ class BenchmarkAddRecipientsView(FormView):
             user=self.request.user,
             step0data=MultiValueDict({
                 '0-geo': [geo.id] if geo else '',
-                '0-industry': [self.benchmark.industry.code],
+                '0-industry': [self.benchmark.industry.code] if self.benchmark.industry else '',
             }),
             wizard=wizard,
             prefix='1',
@@ -971,8 +973,10 @@ class ExcelDownloadView(BenchmarkDetailView):
             contributor_worksheet.insert_chart('F3', chart)
             internal_worksheet.hide()
         elif question_type == 4:
-            no = contributor_results[1]
-            yes = contributor_results[2]
+            no_values = [[value[0], value[1]] for value in  contributor_results if value[0] == 'No']
+            yes_values = [[value[0], value[1]] for value in contributor_results if value[0] == 'Yes']
+            no = no_values[0] if no_values else []
+            yes = yes_values[0] if yes_values else []
             headings = ['Answer', 'Count']
             contributor_worksheet.write_row('A1', headings, bold)
             contributor_worksheet.write_row('A2', no)

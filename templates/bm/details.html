@@ -121,7 +121,11 @@
                     {% if user.is_authenticated %}
                         <span><strong>Created by: </strong><span class='color-teal'>{{ benchmark.owner.first_name }} {{ benchmark.owner.last_name }}</span></span>
                     {% endif %}
-                    <span><strong>Industry: </strong>{{ benchmark.industry }}</span>
+                    {% if benchmark.industry %}
+                        <span><strong>Industry: </strong>{{ benchmark.industry }}</span>
+                    {% else %}
+                        <span><strong>Industry: </strong>All</span>
+                    {% endif %}
                     <span><strong>Geography: </strong>{{ benchmark.geography }}</span>
                     <span><strong>Published: </strong>{{ benchmark.start_date }}</span>
                 </p>

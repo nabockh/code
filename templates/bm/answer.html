@@ -107,7 +107,11 @@
                                     <p><strong>Industry:</strong></p>
                                 </div>
                                 <div class='col-md-9 col-xs-8'>
-                                    <p>{{ benchmark.industry.name }}</p>
+                                    {% if benchmark.industry %}
+                                        <p>{{ benchmark.industry.name }}</p>
+                                    {% else %}
+                                        <p>All</p>
+                                    {% endif %}
                                 </div>
                             </div>
                             <div class='row'>

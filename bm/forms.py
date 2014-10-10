@@ -15,7 +15,7 @@ from math import pow
 
 class CreateBenchmarkStep12Form(forms.Form):
     name = forms.CharField(max_length=45)
-    industry = forms.ChoiceField()
+    industry = forms.ChoiceField(required=False)
     geo = forms.ChoiceField(required=False)
     question_label = forms.CharField(max_length=255)
     question_text = forms.CharField(widget=forms.Textarea(attrs={'maxlength': 10000}),
@@ -32,10 +32,12 @@ class CreateBenchmarkStep12Form(forms.Form):
         regions.extend(list(Region.regions.values_list('id', 'name').order_by('name')))
         self.fields['geo'].choices = regions
         proposed_industry = LinkedInIndustry.get_proposal(user.contacts)
+        industry = [('', 'All')]
         if proposed_industry:
-            self.fields['industry'].choices = list(proposed_industry)
+            industry.extend(list(proposed_industry))
         else:
-            self.fields['industry'].choices = list(LinkedInIndustry.objects.values_list('code', 'name'))
+            industry.extend(list(LinkedInIndustry.objects.values_list('code', 'name')))
+        self.fields['industry'].choices = industry
         units = data and data.get('0-units') or kwargs.get('initial', {}).get('units')
         if units and not units in [v for v, _ in QuestionOptions.UNITS]:
             choices = list(QuestionOptions.UNITS)

@@ -133,9 +133,10 @@ class DashboardView(TemplateView):
         # Check if user is associated with Social Profile
         if self.request.user.social_profile.exists():
             context['benchmarks']['popular'] = Benchmark.valid.filter(
-                popular=True,
-                end_date__lte=datetime.now(),
-                _industry=self.request.user.social_profile.first().company.industry) \
+                (models.Q(popular=True,
+                          end_date__lte=datetime.now())) &
+                (models.Q(_industry=self.request.user.social_profile.first().company.industry) |
+                 models.Q(_industry=None))) \
                 .order_by('-end_date', '-id')
         else:
             context['benchmarks']['popular'] = None
