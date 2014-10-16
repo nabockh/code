@@ -104,6 +104,10 @@ class ReadOnlyAdminMixin:
 
 
 def approve_benchmark(modeladmin, request, queryset):
+    """
+    Action in Benchmark Admin that mark selected Benchmarks
+    as Approved
+    """
     for benchmark in queryset:
          LogEntry.objects.log_action(
               user_id=request.user.pk,
@@ -120,8 +124,23 @@ approve_benchmark.short_description = "Approve selected benchmarks"
 
 
 def make_popular(modeladmin, request, queryset):
+    """
+    Action in Benchmark Admin that mark selected Benchmarks
+    as Popular
+    """
     queryset.update(popular=True)
 make_popular.short_description = "Mark selected benchmarks as popular"
+
+
+def deaprove_benchmark(modeladmin, request, queryset):
+    """
+    Action in Benchmark Admin that mark selected Benchmarks
+    as Not Approved. They will disappear from Approved and
+    Pending benchmarks
+    """
+    queryset.update(approved=False)
+deaprove_benchmark.short_description = "Mark selected benchmarks as NOT approved"
+
 
 
 class InvitedContactsForm(forms.ModelForm):
@@ -238,12 +257,30 @@ class DeclineView(FormView):
 
 class BenchmarkApprovedAdmin(ReadOnlyAdminMixin, admin.ModelAdmin):
     form = InvitedContactsForm
-    readonly_fields = [field for field in Benchmark._meta.get_all_field_names() if field not in ('popular', 'end_date')]
+    readonly_fields = [field for field in Benchmark._meta.get_all_field_names() if field not in ('popular', 'end_date', 'approved')]
     readonly_fields.append('question_description')
     readonly_fields.append('question_label')
     fields = ('approved', 'popular', 'name', 'question_label', 'question_description', 'owner',
               'geographic_coverage', 'start_date', 'end_date', 'min_numbers_of_responses', 'invites_list')
-    actions = [make_popular]
+    actions = [make_popular, deaprove_benchmark]
+
+    def get_actions(self, request):
+        actions = super(BenchmarkApprovedAdmin, self).get_actions(request)
+        del actions['delete_selected']
+        return actions
+
+    def delete_selected_approved(self, request, queryset):
+        for obj in queryset:
+            obj.delete()
+
+        if queryset.count() == 1:
+            message_bit = "1 benchmark approved entry was"
+        else:
+            message_bit = "%s benchmark approved entries were" % queryset.count()
+        self.message_user(request, "%s successfully deleted." % message_bit)
+    delete_selected_approved.short_description = "Delete selected Benchmark Approved entries"
+
+    actions.append(delete_selected_approved)
 
     def question_description(self, obj):
         return obj.question.first().description
