@@ -138,7 +138,7 @@ def deaprove_benchmark(modeladmin, request, queryset):
     as Not Approved. They will disappear from Approved and
     Pending benchmarks
     """
-    queryset.update(approved=False)
+    queryset.update(approved=None)
 deaprove_benchmark.short_description = "Mark selected benchmarks as NOT approved"
 
 
@@ -169,6 +169,24 @@ class BenchmarkPendingAdmin(ReadOnlyAdminMixin, admin.ModelAdmin):
     fields = ('approved', 'name', 'question_label', 'question_description', 'owner',
               'geographic_coverage', 'start_date', 'end_date', 'min_numbers_of_responses', 'invites_list')
     actions = [approve_benchmark]
+
+    def get_actions(self, request):
+        actions = super(BenchmarkPendingAdmin, self).get_actions(request)
+        del actions['delete_selected']
+        return actions
+
+    def delete_selected_approved(self, request, queryset):
+        for obj in queryset:
+            obj.delete()
+
+        if queryset.count() == 1:
+            message_bit = "1 benchmark pending entry was"
+        else:
+            message_bit = "%s benchmark pending entries were" % queryset.count()
+        self.message_user(request, "%s successfully deleted." % message_bit)
+    delete_selected_approved.short_description = "Delete selected Benchmark Pending entries"
+
+    actions.append(delete_selected_approved)
 
     def question_description(self, obj):
         return obj.question.first().description
