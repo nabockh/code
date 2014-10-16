@@ -275,7 +275,7 @@ class DeclineView(FormView):
 
 class BenchmarkApprovedAdmin(ReadOnlyAdminMixin, admin.ModelAdmin):
     form = InvitedContactsForm
-    readonly_fields = [field for field in Benchmark._meta.get_all_field_names() if field not in ('popular', 'end_date', 'approved')]
+    readonly_fields = [field for field in Benchmark._meta.get_all_field_names() if field not in ('popular', 'end_date')]
     readonly_fields.append('question_description')
     readonly_fields.append('question_label')
     fields = ('approved', 'popular', 'name', 'question_label', 'question_description', 'owner',
