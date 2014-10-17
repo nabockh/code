@@ -203,4 +203,4 @@ def new_responses():
                 'benchmark_creator': benchmark.owner.get_full_name()
             })
             if benchmark.owner.email:
-                send_mail('Welcome', template.render(context), None, [benchmark.owner.email])
+                send_mail('New Contributors', template.render(context), None, [benchmark.owner.email])
