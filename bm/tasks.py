@@ -109,7 +109,15 @@ def send_reminders():
             raw_context['reminder_contact'] = contact.first_name
             context = Context(raw_context)
             body = get_template('alerts/reminder_not_responded.html').render(context)
-            Contact.send_mail(benchmark.owner, subject, body, [contact])
+            if benchmark.owner:
+                Contact.send_mail(subject, body, Benchmark.owner, [contact])
+                BenchmarkInvitation.objects.filter(benchmark_id=benchmark.id, recipient__id=contact.id).update(status=2)
+            elif contact.email:
+                send_mail(subject, body, None, [contact.email])
+                BenchmarkInvitation.objects.filter(benchmark_id=benchmark.id, recipient__id=contact.id).update(status=2)
+            else:
+                logger.warning("Cannot send reminder. Benchmark owner or Contact email does not exist")
+
 
 
 @periodic_task(bind=True, run_every=crontab(minute=1, hour=0), default_retry_delay=30*60)
