@@ -702,15 +702,16 @@ class BenchmarkAddRecipientsView(FormView):
     @event_log(event_type=metric_events.BM_ADD_PARTICIPANTS, object='benchmark')
     def form_valid(self, form):
         for contact in form.selected_contacts:
-            if form.cleaned_data.get(contact.invite_element) or form.cleaned_data.get('contact-{0}-invite'.format(contact.id)):
-                invite = BenchmarkInvitation()
-                invite.sender = self.benchmark.owner
-                invite.recipient = contact
-                invite.status = 0 # not send
-                invite.is_allowed_to_forward_invite = \
-                    bool(form.data.get(form.prefix + '-' + contact.secondary_element) or
-                         form.cleaned_data.get('contact-{0}-secondary'.format(contact.id)))
-                self.benchmark.invites.add(invite)
+            if contact.id not in self.except_ids:
+                if form.cleaned_data.get(contact.invite_element) or form.cleaned_data.get('contact-{0}-invite'.format(contact.id)):
+                    invite = BenchmarkInvitation()
+                    invite.sender = self.benchmark.owner
+                    invite.recipient = contact
+                    invite.status = 0 # not send
+                    invite.is_allowed_to_forward_invite = \
+                        bool(form.data.get(form.prefix + '-' + contact.secondary_element) or
+                             form.cleaned_data.get('contact-{0}-secondary'.format(contact.id)))
+                    self.benchmark.invites.add(invite)
         if self.benchmark.approved:
             send_invites.delay(self.benchmark.id)
         return super(BenchmarkAddRecipientsView, self).form_valid(form)

@@ -102,7 +102,7 @@ def send_reminders():
       AND bm_questionresponse.id IS NULL
         '''
     for benchmark in approved_benchmarks:
-        subject = "Reminder for %s" % benchmark.name
+        subject = "Bedade benchmark response reminder"
         contacts = Contact.objects.raw(query, [benchmark.id])
         for contact in contacts:
             raw_context = get_context_variables(benchmark)
@@ -152,7 +152,7 @@ def check_benchmark_results():
     finished_benchmarks = Benchmark.valid.filter(end_date__lte=datetime.now(), invites__status__range=[1, 2])
     if finished_benchmarks:
         for benchmark in finished_benchmarks:
-            subject = "Benchmark results"
+            subject = "Bedade results published"
             contacts = Contact.objects.filter(invites__benchmark__id=benchmark.id)\
                 .annotate(responses_count=Count('invites__benchmark__question__responses'))\
                 .filter(responses_count__gte=1)
