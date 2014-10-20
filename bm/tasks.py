@@ -35,6 +35,7 @@ def send_invites(benchmark_id):
         invites = benchmark.invites.filter(status='0').select_related('recipient', 'recipient__user', 'sender')
         subject = INVITE_SUBJECT
         raw_context = get_context_variables(benchmark)
+        raw_context['remaining_before_closure'] = benchmark.days_left
         context = Context(raw_context)
         bm_email_query = BmInviteEmail.objects.filter(benchmark_id=benchmark_id)
         if bm_email_query.exists():
@@ -107,11 +108,11 @@ def send_reminders():
         for contact in contacts:
             raw_context = get_context_variables(benchmark)
             raw_context['reminder_contact'] = contact.first_name
-            raw_context['remaining_before_closure'] = (benchmark.end_date.date() - datetime.now().date()).days
+            raw_context['remaining_before_closure'] = benchmark.days_left
             context = Context(raw_context)
             body = get_template('alerts/reminder_not_responded.html').render(context)
             if benchmark.owner:
-                Contact.send_mail(subject, body, Benchmark.owner, [contact])
+                Contact.send_mail(benchmark.owner, subject, body, [contact])
                 BenchmarkInvitation.objects.filter(benchmark_id=benchmark.id, recipient__id=contact.id).update(status=2)
             elif contact.email:
                 send_mail(subject, body, None, [contact.email])
@@ -193,15 +194,13 @@ def new_responses():
             values_list('user__first_name', 'user__last_name')
         if contributors.exists():
             contributors_names = str(', '.join([(first_name + ' ' + last_name) for first_name, last_name in contributors]))
-            # raw_context = get_context_variables(benchmark)
-            # raw_context['remaining_before_closure'] = benchmark.days_left
-            # raw_context[] = contributors_names
             context = Context({
                 'benchmark_name': benchmark.name,
                 'query_details': benchmark.question.first().description,
                 'link_to_answer': benchmark.link,
                 'new_contributors': contributors_names,
-                'benchmark_creator': benchmark.owner.get_full_name()
+                'benchmark_creator': benchmark.owner.get_full_name(),
+                'remaining_before_closure': benchmark.days_left
             })
             if benchmark.owner.email:
                 send_mail('New Contributors', template.render(context), None, [benchmark.owner.email])
