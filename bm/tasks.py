@@ -107,6 +107,7 @@ def send_reminders():
         for contact in contacts:
             raw_context = get_context_variables(benchmark)
             raw_context['reminder_contact'] = contact.first_name
+            raw_context['remaining_before_closure'] = (benchmark.end_date.date() - datetime.now().date()).days
             context = Context(raw_context)
             body = get_template('alerts/reminder_not_responded.html').render(context)
             if benchmark.owner:
