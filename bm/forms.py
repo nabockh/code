@@ -263,7 +263,7 @@ class RangeAnswerForm(forms.Form):
         self.fields['max'].min_value = data.get('min', 0)
 
     def clean_max(self):
-        if self.cleaned_data['min'] > self.cleaned_data['max']:
+        if self.cleaned_data.get('min', 0) > self.cleaned_data.get('max', 0):
             self.errors['max'] = self.error_class(['Value should be more or equal %d' % self.cleaned_data['min']])
         return self.cleaned_data['max']
 

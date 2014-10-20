@@ -15,12 +15,13 @@
 						<label for="id_min">MIN <span class='units' title='In - {{ benchmark.question.first.options.first.units }}'>(In - "{{ benchmark.question.first.options.first.units }}")</span></label>
 						
 						{{ form.min }}
+                        <p>{{ form.min.errors }}</p>
 						
 					</div>
 					<div class='col-md-6'>
 						<label for="id_max">MAX <span class='units' title='In - {{ benchmark.question.first.options.first.units }}'>(In - "{{ benchmark.question.first.options.first.units }}")</span></label>
 						{{ form.max }}
-                        <p>{{ form.max.errors.as_text }}</p>
+                        <p>{{ form.max.errors }}</p>
 					</div>
 				</div>
 		   	</div>
