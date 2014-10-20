@@ -310,7 +310,7 @@ class SendMailForm(forms.Form):
 
 class BenchmarkDetailsForm(forms.Form):
     choices = [
-        ('Role', 'Role'), ('Geo', 'Geographic'),  ('Country', 'Country'), ('Industry', 'Industry')]
+        ('Role', 'Role'), ('Geo', 'Geography'),  ('Country', 'Country'), ('Industry', 'Industry')]
 
     def __init__(self, benchmark, *args, **kwargs):
         super(BenchmarkDetailsForm, self).__init__(*args, **kwargs)
