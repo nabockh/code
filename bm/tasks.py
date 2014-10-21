@@ -35,6 +35,7 @@ def send_invites(benchmark_id):
         invites = benchmark.invites.filter(status='0').select_related('recipient', 'recipient__user', 'sender')
         subject = INVITE_SUBJECT
         raw_context = get_context_variables(benchmark)
+        raw_context['remaining_before_closure'] = benchmark.days_left
         context = Context(raw_context)
         bm_email_query = BmInviteEmail.objects.filter(benchmark_id=benchmark_id)
         if bm_email_query.exists():
@@ -102,14 +103,23 @@ def send_reminders():
       AND bm_questionresponse.id IS NULL
         '''
     for benchmark in approved_benchmarks:
-        subject = "Reminder for %s" % benchmark.name
+        subject = "Bedade benchmark response reminder"
         contacts = Contact.objects.raw(query, [benchmark.id])
         for contact in contacts:
             raw_context = get_context_variables(benchmark)
             raw_context['reminder_contact'] = contact.first_name
+            raw_context['remaining_before_closure'] = benchmark.days_left
             context = Context(raw_context)
             body = get_template('alerts/reminder_not_responded.html').render(context)
-            Contact.send_mail(benchmark.owner, subject, body, [contact])
+            if benchmark.owner:
+                Contact.send_mail(benchmark.owner, subject, body, [contact])
+                BenchmarkInvitation.objects.filter(benchmark_id=benchmark.id, recipient__id=contact.id).update(status=2)
+            elif contact.email:
+                send_mail(subject, body, None, [contact.email])
+                BenchmarkInvitation.objects.filter(benchmark_id=benchmark.id, recipient__id=contact.id).update(status=2)
+            else:
+                logger.warning("Cannot send reminder. Benchmark owner or Contact email does not exist")
+
 
 
 @periodic_task(bind=True, run_every=crontab(minute=1, hour=0), default_retry_delay=30*60)
@@ -144,7 +154,7 @@ def check_benchmark_results():
     finished_benchmarks = Benchmark.valid.filter(end_date__lte=datetime.now(), invites__status__range=[1, 2])
     if finished_benchmarks:
         for benchmark in finished_benchmarks:
-            subject = "Benchmark results"
+            subject = "Bedade results published"
             contacts = Contact.objects.filter(invites__benchmark__id=benchmark.id)\
                 .annotate(responses_count=Count('invites__benchmark__question__responses'))\
                 .filter(responses_count__gte=1)
@@ -184,15 +194,13 @@ def new_responses():
             values_list('user__first_name', 'user__last_name')
         if contributors.exists():
             contributors_names = str(', '.join([(first_name + ' ' + last_name) for first_name, last_name in contributors]))
-            # raw_context = get_context_variables(benchmark)
-            # raw_context['remaining_before_closure'] = benchmark.days_left
-            # raw_context[] = contributors_names
             context = Context({
                 'benchmark_name': benchmark.name,
                 'query_details': benchmark.question.first().description,
                 'link_to_answer': benchmark.link,
                 'new_contributors': contributors_names,
-                'benchmark_creator': benchmark.owner.get_full_name()
+                'benchmark_creator': benchmark.owner.get_full_name(),
+                'remaining_before_closure': benchmark.days_left
             })
             if benchmark.owner.email:
-                send_mail('Welcome', template.render(context), None, [benchmark.owner.email])
+                send_mail('New Contributors', template.render(context), None, [benchmark.owner.email])
