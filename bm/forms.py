@@ -74,7 +74,9 @@ class CreateBenchmarkStep3Form(forms.Form):
         if self.benchmark:
             selected_ids = set([(contact.id,) for contact in self.selected_contacts])
             invites = set(self.benchmark.invites.values_list('recipient_id'))
-            if selected_ids == invites:
+            if self.data.get('save_and_wizard_goto_step', None):
+                return self.cleaned_data
+            elif selected_ids == invites:
                 self.errors['__all__'] = self.error_class(
                     ['You need to select at least  1 contact to proceed'])
         return self.cleaned_data
