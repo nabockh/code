@@ -701,6 +701,7 @@ input.btn.full-width, .btn.full-width {
     line-height: inherit;
     overflow: visible;
     white-space: normal;
+    word-break: normal;
 }
 
 .how-it-works .title {
