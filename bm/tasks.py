@@ -139,13 +139,17 @@ def benchmark_aggregate(self):
 @celery_log
 def check_response_count():
     today = datetime.now()
-    benchmarks = Benchmark.objects.annotate(responses_count=Count('question__responses'))\
-        .filter(end_date__lte=today, responses_count__lt=F('min_numbers_of_responses'), approved=True)
-    benchmark_names = ', '.join([benchmark.name for benchmark in benchmarks])
-    recipient_list = [email for email in User.objects.filter(is_superuser=True).values_list('email', flat=True) if email]
-    if recipient_list:
-        send_mail('Welcome', 'Hi! Current benchmarks has not reached min_number_of_responses: %s' %
-                  benchmark_names, None, recipient_list)
+    benchmarks = Benchmark.objects.annotate(responses_count=Count('question__responses', distinct=True))\
+        .filter(end_date__lte=today, responses_count__lt=F('min_numbers_of_responses'), approved=True).exclude(invites__status=4)
+    if benchmarks.exists():
+        benchmark_names = ', '.join([benchmark.name for benchmark in benchmarks])
+        recipient_list = [email for email in User.objects.filter(is_superuser=True).values_list('email', flat=True) if email]
+        benchmark_ids = [benchmark.id for benchmark in benchmarks]
+        if recipient_list:
+            send_mail('Uncomplete Benchmark', 'Hi! Current benchmarks has not reached min_number_of_responses: %s' %
+                      benchmark_names, None, recipient_list)
+        BenchmarkInvitation.objects.filter(benchmark__id__in=benchmark_ids).update(status=4)
+
 
 @periodic_task(run_every=crontab(minute=0, hour=0))
 @celery_log
