@@ -31,6 +31,8 @@ from social.models import Invite
 import django.db.models as models
 from django.template import Context
 from django.template.loader import get_template
+from django.contrib.sites.models import get_current_site
+
 
 class HomeView(TemplateView):
     template_name = 'core/home.html'
@@ -154,7 +156,7 @@ class DashboardView(TemplateView):
                 context = Context(
                     {
                         'user': user,
-                        'site_link': request.build_absolute_uri(),
+                        'site_link': get_current_site(request),
                     }, )
                 body = get_template('alerts/invite_colleague_email.html').render(context)
                 subject = 'Bedade exclusive beta test invitation'
