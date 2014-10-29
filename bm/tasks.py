@@ -36,6 +36,8 @@ def send_invites(benchmark_id):
         subject = INVITE_SUBJECT
         raw_context = get_context_variables(benchmark)
         raw_context['remaining_before_closure'] = benchmark.days_left
+        if Site.objects.all().exists():
+            raw_context['site_link'] = Site.objects.all().first()
         context = Context(raw_context)
         bm_email_query = BmInviteEmail.objects.filter(benchmark_id=benchmark_id)
         if bm_email_query.exists():
