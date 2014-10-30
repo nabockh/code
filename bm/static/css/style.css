@@ -4261,6 +4261,7 @@ html[dir="rtl"] .select2-search input,
 
 #default_text {
     background-color: #FFFFFF;
+    max-height: 600px;
 }
 
 .answer_options_inputs {clear:both;}
