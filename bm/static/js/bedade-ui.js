@@ -153,6 +153,9 @@ $(function () {
             // callback handler that will be called on success
             request.done(function (response, textStatus, jqXHR){
                 $('#preview #emailPre').html(response);
+                $("#default_text").height($("#default_text")[0].scrollHeight);
+                $("#default_text").focus();
+
                 // log a message to the console
             });
 
@@ -638,10 +641,9 @@ $(document).ajaxStop(function() {
 $( document ).ready(function(){
     $( "#preview" ).on('shown.bs.modal', function() {
         $('#default_text').focus();
-
     });
         $( '#saveButton' ).on('click', function() {
-             var editedText = $('#default_text').text();
+             var editedText = $('#default_text').val();
             $('#email_body').text(editedText);
             $( "#preview" ).modal('hide');
         });
