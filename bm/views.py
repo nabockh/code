@@ -140,9 +140,9 @@ class BenchmarkCreateWizardView(CookieWizardView):
             'link_to_answer': "Link to answer form will be here",
             'link_to_bm_results': "Link to benchmark results will be here"
         })
-        response = HttpResponse("<pre  id='default_text' contenteditable='true'>"
+        response = HttpResponse("<textarea type='text'  id='default_text'>"
                                 + template.render(context)
-                                + '</pre>')
+                                + '</textarea>')
         return response
 
     def render_goto_step(self, goto_step, **kwargs):
