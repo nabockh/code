@@ -604,11 +604,23 @@ $( document ).ready(function() {
         $this_parent.remove();
         numberOfSelectedContacts();
     });
+
     $('.add-all').click( function(){
-        $(this).closest('.title-header').next('.contact-results').find('.add-contact-btn:visible').click();
-    });
+        $('#selectedPreloader').fadeIn(500);
+        setTimeout(function() {
+            $('.add-all').closest('.title-header').next('.contact-results').find('.add-contact-btn:visible').click();
+            $('#selectedPreloader').fadeOut(500);
+        }, 1000);
+     });
+
     $('.tips .remove-all').click( function(){
-        $(this).closest('.tips').find('.deselect-btn').click();
+        $('#selectedPreloader').fadeIn(500);
+        $('#mCSB_3_container').fadeOut(500);
+        setTimeout(function() {
+            $('.tips .remove-all').closest('.tips').find('.deselect-btn').click();
+            $('#selectedPreloader').fadeOut(500);
+            $('#mCSB_3_container').fadeIn(500);
+        }, 1000);
     });
 
 

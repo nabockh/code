@@ -3083,7 +3083,7 @@ span.hide-btn.right {left: auto; right: 0;}
         top: 120px;
     }
 
-    .preloader .full-centered {
+    .full-centered {
         position: absolute;
         top: 50%;
         left: 50%;
@@ -3094,6 +3094,26 @@ span.hide-btn.right {left: auto; right: 0;}
         -ms-transform: translate(-50%, -50%);
         -o-transform: translate(-50%, -50%);
         transform: translate(-50%, -50%);
+    }
+
+    .preloader-container {
+        position: absolute;
+        display: none;
+        top: 0;
+        left: 30px;
+        right: 0;
+        bottom: 0;    
+        background: rgba(255, 255, 255, 0.7);
+    }
+    
+    .full-centered.selected-preloader {
+        width: auto;
+        height: auto;
+    }
+
+    .full-centered.selected-preloader .fa {
+        font-size: 30px;
+        color: #7F989E;
     }
 
 .unauth .centered-middle {
@@ -3348,6 +3368,11 @@ span.hide-btn.right {left: auto; right: 0;}
     .col-md-5ths {
         width: 20%;
         float: left;
+    }
+
+    .col-md-4.margined.step2 {
+        height: 475px;
+        position: relative;
     }
 
     ul.main-nav.dashboard-nav {
