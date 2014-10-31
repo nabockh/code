@@ -615,11 +615,13 @@ $( document ).ready(function() {
 
     $('.tips .remove-all').click( function(){
         $('#selectedPreloader').fadeIn(500);
-        $('#mCSB_3_container').fadeOut(500);
         setTimeout(function() {
-            $('.tips .remove-all').closest('.tips').find('.deselect-btn').click();
+            $target_block = $('#recommendedContactList, #searchContactList').find('.single-contact');
+            $target_block.find('.add-contact-btn').removeAttr('disabled');
+            $('#selectedContactList .single-contact').remove();
+            $target_block.find('.choose-checkbox, .share-checkbox').removeAttr('checked');
             $('#selectedPreloader').fadeOut(500);
-            $('#mCSB_3_container').fadeIn(500);
+            numberOfSelectedContacts();
         }, 1000);
     });
 
@@ -637,7 +639,7 @@ $( document ).ready(function() {
     });
 
 
-    $('.add-contact-btn, .add-all, .remove-all').on('click', function() {
+    $('.add-contact-btn, .add-all').on('click', function() {
        numberOfSelectedContacts();
     }); 
 
