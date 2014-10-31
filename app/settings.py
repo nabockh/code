@@ -119,7 +119,6 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'core.context_preprocessors.google_analytics'
 )
 
-MESSAGE_STORAGE = 'django.contrib.messages.storage.cookie.CookieStorage'
 MESSAGE_FIRST_ANSWER = 50
 MESSAGE_LOGOUT = 51
 MESSAGE_BETA = 52

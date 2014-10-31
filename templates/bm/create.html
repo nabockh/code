@@ -67,6 +67,7 @@
 
 {% block content %}
 <div class='container bordered bgwhite benchmark-creation margined'>
+    <div id="selectedPreloader" class='preloader-container'><div class="full-centered selected-preloader"><i class="fa fa-cog fa-spin"></i></div></div>
     <div class='title-header'>Create a new benchmark</div>
 {% if wizard.steps.step1 == 1 %}
     <div class='creation_steps'>
@@ -599,7 +600,7 @@
                               <div class="modal-body">
                                 <div id='emailPre'>
                                     <!-- Insert Email Preview Here -->
-                                </div>                                
+                                </div>
                                 <button type="button" class='btn btn-primary' id="saveButton">Save</button>
                               </div>
                             </div>
