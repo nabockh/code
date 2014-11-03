@@ -608,7 +608,7 @@ $( document ).ready(function() {
     $('.add-all').click( function(){
         $('#selectedPreloader').fadeIn(500);
         setTimeout(function() {
-            $('.add-all').closest('.title-header').next('.contact-results').find('.add-contact-btn:visible').click();
+            $('.add-all').closest('.title-header').next('.contact-results').find('.add-contact-btn').click();
             $('#selectedPreloader').fadeOut(500);
         }, 1000);
      });
