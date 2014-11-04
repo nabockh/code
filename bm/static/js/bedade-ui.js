@@ -153,6 +153,9 @@ $(function () {
             // callback handler that will be called on success
             request.done(function (response, textStatus, jqXHR){
                 $('#preview #emailPre').html(response);
+                $("#default_text").height($("#default_text")[0].scrollHeight);
+                $("#default_text").focus();
+
                 // log a message to the console
             });
 
@@ -601,11 +604,25 @@ $( document ).ready(function() {
         $this_parent.remove();
         numberOfSelectedContacts();
     });
+
     $('.add-all').click( function(){
-        $(this).closest('.title-header').next('.contact-results').find('.add-contact-btn:visible').click();
-    });
+        $('#selectedPreloader').fadeIn(500);
+        setTimeout(function() {
+            $('.add-all').closest('.title-header').next('.contact-results').find('.add-contact-btn').click();
+            $('#selectedPreloader').fadeOut(500);
+        }, 1000);
+     });
+
     $('.tips .remove-all').click( function(){
-        $(this).closest('.tips').find('.deselect-btn').click();
+        $('#selectedPreloader').fadeIn(500);
+        setTimeout(function() {
+            $target_block = $('#recommendedContactList, #searchContactList').find('.single-contact');
+            $target_block.find('.add-contact-btn').removeAttr('disabled');
+            $('#selectedContactList .single-contact').remove();
+            $target_block.find('.choose-checkbox, .share-checkbox').removeAttr('checked');
+            $('#selectedPreloader').fadeOut(500);
+            numberOfSelectedContacts();
+        }, 1000);
     });
 
 
@@ -622,7 +639,7 @@ $( document ).ready(function() {
     });
 
 
-    $('.add-contact-btn, .add-all, .remove-all').on('click', function() {
+    $('.add-contact-btn, .add-all').on('click', function() {
        numberOfSelectedContacts();
     }); 
 
@@ -638,10 +655,9 @@ $(document).ajaxStop(function() {
 $( document ).ready(function(){
     $( "#preview" ).on('shown.bs.modal', function() {
         $('#default_text').focus();
-
     });
         $( '#saveButton' ).on('click', function() {
-             var editedText = $('#default_text').text();
+             var editedText = $('#default_text').val();
             $('#email_body').text(editedText);
             $( "#preview" ).modal('hide');
         });

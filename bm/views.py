@@ -13,7 +13,7 @@ from bm.tasks import send_invites
 from core.utils import login_required_ajax
 from django.contrib.auth.decorators import login_required
 from django.contrib.formtools.wizard.forms import ManagementForm
-from django.contrib.formtools.wizard.views import CookieWizardView
+from django.contrib.formtools.wizard.views import SessionWizardView
 from django.contrib.sites.models import Site
 from django.core.exceptions import ValidationError
 from django.core.urlresolvers import reverse, reverse_lazy
@@ -35,7 +35,7 @@ import StringIO
 import xlsxwriter
 
 
-class BenchmarkCreateWizardView(CookieWizardView):
+class BenchmarkCreateWizardView(SessionWizardView):
     template_name = 'bm/create.html'
     form_list = [CreateBenchmarkStep12Form, CreateBenchmarkStep3Form, CreateBenchmarkStep4Form]
 
@@ -140,9 +140,9 @@ class BenchmarkCreateWizardView(CookieWizardView):
             'link_to_answer': "Link to answer form will be here",
             'link_to_bm_results': "Link to benchmark results will be here"
         })
-        response = HttpResponse("<pre  id='default_text' contenteditable='true'>"
+        response = HttpResponse("<textarea type='text'  id='default_text'>"
                                 + template.render(context)
-                                + '</pre>')
+                                + '</textarea>')
         return response
 
     def render_goto_step(self, goto_step, **kwargs):

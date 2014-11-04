@@ -103,30 +103,38 @@ def load_extra_data(backend, details,request, response, uid, user, social_user=N
         location = Region()
         location.code = response.get('location', {}).get('country', {}).get('code')
         location.save()
-    for position in response.get('positions', {}).get('position', []):
-        if position == 'is-current' or (isinstance(position, dict) and
-                                        position.get('is-current', '')):
-            if isinstance(position, str):
-                company = Company.objects.filter(name=position).first()
-                position_company = {'name': position}
-            else:
-                position_company = position.get('company', {})
-                if position_company.has_key('id'):
-                    company = Company.objects.filter(code=position_company['id']).first()
-                elif position_company.has_key('name'):
-                    company = Company.objects.filter(name=position_company.get('name', None)).first()
+    if response.get('positions'):
+        for position in response.get('positions', {}).get('position', []):
+            if position == 'is-current' or (isinstance(position, dict) and
+                                            position.get('is-current', '')):
+                if isinstance(position, str):
+                    company = Company.objects.filter(name=position).first()
+                    position_company = {'name': position}
                 else:
-                    continue
-
-            if not company:
-                company = Company()
-                company.code = position_company.get('id', None)
-                company.name = position_company.get('name', None)
-                company.industry = LinkedInIndustry.objects.filter(name=response.get('industry', {})).first()
-                company.save()
-            social_profile.company = company
-            break
-
+                    position_company = position.get('company', {})
+                    if position_company.has_key('id'):
+                        company = Company.objects.filter(code=position_company['id']).first()
+                    elif position_company.has_key('name'):
+                        company = Company.objects.filter(name=position_company.get('name', None)).first()
+                    else:
+                        continue
+                if not company:
+                    company = Company()
+                    company.code = position_company.get('id', None)
+                    company.name = position_company.get('name', None)
+                    company.industry = LinkedInIndustry.objects.filter(name=response.get('industry', {})).first()
+                    company.save()
+                social_profile.company = company
+                break
+    elif response.get('industry'):
+        company = Company.objects.filter(code=None, name=response.get('industry')).first()
+        if not company:
+            company = Company()
+            company.code = None
+            company.name = response.get('industry')
+            company.industry = LinkedInIndustry.objects.filter(name=response.get('industry', {})).first()
+            company.save()
+        social_profile.company = company
     social_profile.location = location
     social_profile.save()
     return {'social_profile': social_profile}
