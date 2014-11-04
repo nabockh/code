@@ -63,15 +63,13 @@ def beta_login(backend, details, request, response, uid, user, social_user=None,
     invited = Contact.objects.filter(first_name=details['first_name'],
                                      last_name=details['last_name'])\
         .annotate(user_invites=Count('invites')).filter(user_invites__gt=0)
+
     if invited.exists():
         return
-    forwarded_invite = BenchmarkInvitation.objects.filter(
-        is_allowed_to_forward_invite=True,
-        recipient__owners__contact__first_name=details['first_name'],
-        recipient__owners__contact__last_name=details['last_name'])
-    if forwarded_invite.exists():
-        return
-    if not allowed:
+
+    forwarded_invites = BenchmarkInvitation.user_friendly_invites(details['first_name'],
+                                                                  details['last_name'])
+    if not allowed and len([x for x in forwarded_invites]) == 0:
         raise StopPipeline
 
 

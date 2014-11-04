@@ -326,11 +326,14 @@ class BaseBenchmarkAnswerView(FormView):
         if user_responses_count and not DEBUG:
             return ForbiddenView.as_view()(self.request, *args, **kwargs)
 
-        friendly_contact = benchmark.invites.filter(
-                                 Q(recipient__user=request.user) |
-                                 Q(is_allowed_to_forward_invite=True,
-                                   recipient__owners__contact__user=request.user)).first()
-        if not friendly_contact:
+        friendly_contacts = BenchmarkInvitation.user_friendly_invites(
+                                    request.user.first_name,
+                                    request.user.last_name,
+                                    benchmark.id)
+
+        recipient = benchmark.invites. filter(
+                                 Q(recipient__user=request.user)).first()
+        if not recipient and len([x for x in friendly_contacts]) == 0:
             return ForbiddenView.as_view()(self.request, *args, **kwargs)
 
         question_type = benchmark.question.first().type
