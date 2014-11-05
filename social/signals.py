@@ -29,4 +29,4 @@ def notify_invitee(instance, **kwargs):
             'email': instance.email,
             'site_link': Site.objects.get_current()
         })
-        send_mail('Your invite was submitted', template.render(context), None, [instance.email])
+        send_mail("You're on the list", template.render(context), None, [instance.email])
