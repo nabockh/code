@@ -318,6 +318,8 @@ class BaseBenchmarkAnswerView(FormView):
         benchmark = benchmark_link.benchmark
         if benchmark.end_date <= datetime.date(datetime.now()):
             return ForbiddenView.as_view()(self.request, *args, **kwargs)
+        if request.user == benchmark.owner:
+            return ForbiddenView.as_view()(self.request, *args, **kwargs)
         user_responses_count = benchmark.question\
             .filter(responses__user=request.user)\
             .annotate(responses_count=Count('responses'))\
@@ -325,7 +327,6 @@ class BaseBenchmarkAnswerView(FormView):
             .first()
         if user_responses_count and not DEBUG:
             return ForbiddenView.as_view()(self.request, *args, **kwargs)
-
         friendly_contacts = BenchmarkInvitation.user_friendly_invites(
                                     request.user.first_name,
                                     request.user.last_name,
