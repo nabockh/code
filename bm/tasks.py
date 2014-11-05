@@ -18,7 +18,7 @@ from django.template import Template
 from core.utils import get_context_variables
 from django.contrib.auth.models import User
 
-INVITE_SUBJECT = 'You have been invited to benchmark'
+INVITE_SUBJECT = 'You have been invited to a benchmark'
 
 
 def grouper(n, iterable, fillvalue=None):

@@ -398,6 +398,24 @@ class BenchmarkInvitation(models.Model):
     def __unicode__(self):
         return str(self.recipient)
 
+    @classmethod
+    def user_friendly_invites(cls, first_name, last_name, bm_id=None):
+        query = """
+            SELECT * FROM bm_benchmarkinvitation i
+              INNER JOIN social_contact sc ON sc.id = i.recipient_id
+              INNER JOIN social_contact_owners o ON o.user_id = sc.user_id
+              INNER JOIN social_contact c ON o.contact_id=c.id
+            WHERE i."is_allowed_to_forward_invite" = TRUE AND
+                  c."first_name" = %s AND
+                  c."last_name" = %s
+          """
+        args = [first_name, last_name]
+        if bm_id:
+            query += ' AND i.benchmark_id=%s'
+            args.append(bm_id)
+
+        return cls.objects.raw(query, args)
+
 
 class BenchmarkLink(models.Model):
     benchmark = models.ForeignKey(Benchmark, related_name='links')
