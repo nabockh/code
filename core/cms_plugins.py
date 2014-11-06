@@ -27,6 +27,7 @@ class DashboardHistoryPlugin(CMSPluginBase):
     name = "History"
     model = DashboardHistory
     render_template = "cms/dashboard/history.html"
+    cache = False
 
     def render(self, context, instance, placeholder):
         context['instance'] = instance
@@ -42,6 +43,7 @@ class DashboardPendingPlugin(CMSPluginBase):
     name = "Pending"
     model = DashboardPending
     render_template = "cms/dashboard/pending.html"
+    cache = False
 
     def render(self, context, instance, placeholder):
         context['instance'] = instance
@@ -58,6 +60,7 @@ class DashboardRecentPlugin(CMSPluginBase):
     name = "Recent"
     model = DashboardRecent
     render_template = "cms/dashboard/recent.html"
+    cache = False
 
     def render(self, context, instance, placeholder):
         context['instance'] = instance
@@ -80,6 +83,7 @@ class DashboardPopularPlugin(CMSPluginBase):
     name = "Popular"
     model = DashboardPopular
     render_template = "cms/dashboard/popular.html"
+    cache = False
 
     def render(self, context, instance, placeholder):
         context['instance'] = instance
