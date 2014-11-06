@@ -259,6 +259,9 @@ CMS_TOOLBARS = [
     'core.cms_toolbar.PopupsToolbar',
 ]
 
+CMS_PLUGIN_CACHE = False
+CMS_PLACEHOLDER_CACHE = False
+
 CACHES = {
     'default': {
         'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
