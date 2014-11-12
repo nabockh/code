@@ -23,3 +23,10 @@ def notify_invitee(instance, **kwargs):
             'site_link': Site.objects.get_current()
         })
         send_mail('Your invite was approved', template.render(context), None, [instance.email])
+    elif kwargs.get('created', None):
+        template = loader.get_template('alerts/beta_email_submitted.html')
+        context = Context({
+            'email': instance.email,
+            'site_link': Site.objects.get_current()
+        })
+        send_mail("You're on the list", template.render(context), None, [instance.email])

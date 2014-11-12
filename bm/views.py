@@ -1,5 +1,5 @@
 from datetime import datetime
-from app.settings import DEBUG
+from app.settings import DEBUG, REGISTERED_USER_REDIRECT_URL
 from metrics.utils import event_log
 from bm import metric_events
 from bm.forms import CreateBenchmarkStep12Form, AnswerMultipleChoiceForm, \
@@ -18,7 +18,7 @@ from django.contrib.sites.models import Site
 from django.core.exceptions import ValidationError
 from django.core.urlresolvers import reverse, reverse_lazy
 from django.db import transaction
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.http.response import Http404
 from django.shortcuts import redirect
 from django.template import loader, Context
@@ -318,14 +318,15 @@ class BaseBenchmarkAnswerView(FormView):
         benchmark = benchmark_link.benchmark
         if benchmark.end_date <= datetime.date(datetime.now()):
             return ForbiddenView.as_view()(self.request, *args, **kwargs)
+        if request.user == benchmark.owner:
+            return ForbiddenView.as_view()(self.request, *args, **kwargs)
         user_responses_count = benchmark.question\
             .filter(responses__user=request.user)\
             .annotate(responses_count=Count('responses'))\
             .values_list('responses_count', flat=True)\
             .first()
         if user_responses_count and not DEBUG:
-            return ForbiddenView.as_view()(self.request, *args, **kwargs)
-
+            return HttpResponseRedirect(REGISTERED_USER_REDIRECT_URL)
         friendly_contacts = BenchmarkInvitation.user_friendly_invites(
                                     request.user.first_name,
                                     request.user.last_name,
