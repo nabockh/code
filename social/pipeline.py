@@ -107,7 +107,15 @@ def load_extra_data(backend, details,request, response, uid, user, social_user=N
         for position in response.get('positions', {}).get('position', []):
             if position == 'is-current' or (isinstance(position, dict) and
                                             position.get('is-current', '')):
-                if isinstance(position, str):
+                if response.get('positions', {}).get('position', {}).has_key('company'):
+                    position_company = response.get('positions', {}).get('position', {}).get('company', {})
+                    if position_company.has_key('id'):
+                        company = Company.objects.filter(code=position_company['id']).first()
+                    elif position_company.has_key('name'):
+                        company = Company.objects.filter(name=position_company.get('name', None)).first()
+                    else:
+                        continue
+                elif isinstance(position, str):
                     company = Company.objects.filter(name=position).first()
                     position_company = {'name': position}
                 else:
