@@ -662,9 +662,14 @@ $( document ).ready(function(){
             $( "#preview" ).modal('hide');
         });
 
-    
-
-
+        $('.carousel-inner .title a').each(function() {
+            var divh = $(this).parent('.carousel-inner .title').height();
+            while ($(this).outerHeight()>divh) {
+                $(this).text(function (index, text) {
+                    return text.replace(/\W*\s(\S)*$/, '...');
+                });
+            }
+        });
 
     $('.select2-search input').attr('disabled', 'disabled');
 

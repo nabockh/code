@@ -2253,9 +2253,8 @@ form[role='beta-email'] {
     padding: 5px 40px 5px 15px;
     background: #eff0f2;
     border-bottom: 1px solid #dedede;
-    white-space: nowrap;
+    height: 59px;
     overflow: hidden;
-    text-overflow: ellipsis;
 }
 
     .carousel-inner > .item > .title > a {
