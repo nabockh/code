@@ -17,6 +17,11 @@ $BODY$
   point2              RECORD;
   i                   INTEGER;
   a_point             RECORD;
+  statistic           RECORD;
+  r_avg               INTEGER;
+  r_stddev            INTEGER;
+  mean                INTEGER;
+  r_stats             RECORD;
   curs CURSOR (bid INTEGER) FOR
   select 
     point, 
@@ -149,6 +154,20 @@ BEGIN
       INNER JOIN "bm_question" ON "bm_question"."id" = "bm_questionresponse"."question_id"
       INNER JOIN "bm_benchmark" ON "bm_benchmark"."id" = "bm_question"."benchmark_id"
     WHERE "bm_benchmark"."id" = bm_id;
+    SELECT
+      bm_id as "benchmark_id",
+      min("rn".value),
+      max("rn".value),
+      avg("rn".value),
+      stddev("rn".value),
+      count("rn".value)
+    INTO a_point
+    FROM "bm_responsenumeric" AS "rn"
+      INNER JOIN "bm_questionresponse" ON "bm_questionresponse"."id" = "rn"."response_id"
+      INNER JOIN "bm_question" ON "bm_question"."id" = "bm_questionresponse"."question_id"
+      INNER JOIN "bm_benchmark" ON "bm_benchmark"."id" = "bm_question"."benchmark_id"
+    WHERE "bm_benchmark"."id" = bm_id AND "rn".value
+      BETWEEN (a_point.avg - 3*a_point.stddev) AND (a_point.avg + 3*a_point.stddev);
     INSERT INTO "bm_numericstatistic" ("benchmark_id", "min", "max", "avg", "sd")
       VALUES (
         a_point.benchmark_id, a_point.min, a_point.max, a_point.avg, a_point.stddev
@@ -217,38 +236,56 @@ BEGIN
   END IF;
   IF type_ = 5
   THEN
+
+    SELECT
+      bm_id as "benchmark_id",
+      (r.min + r.max)/2 as "mean"
+    INTO statistic
+    FROM bm_responserange  r
+      INNER JOIN "bm_questionresponse" ON "bm_questionresponse"."id" = "r"."response_id"
+      INNER JOIN "bm_question" ON "bm_question"."id" = "bm_questionresponse"."question_id"
+      INNER JOIN "bm_benchmark" ON "bm_benchmark"."id" = "bm_question"."benchmark_id"
+    WHERE "bm_benchmark"."id" = bm_id;
+    SELECT
+      avg("s".mean) AS r_avg,
+      stddev("s".mean) AS r_stddev
+    INTO r_stats
+    FROM statistic s;
     i := 0;
     FOR a_point IN curs(bm_id) LOOP
-      IF i = 0
-      THEN
-        i := 1;
-        point1 := a_point;
-        point2 := point1;
-      ELSE
-        IF a_point.cnt != point1.cnt
+      IF a_point.point > (r_stats.r_avg - 3*r_stats.r_stddev) AND a_point.point < (r_stats.r_avg + 3*r_stats.r_stddev)
         THEN
-          IF point2.cnt = 0
+        IF i = 0
+        THEN
+          i := 1;
+          point1 := a_point;
+          point2 := point1;
+        ELSE
+          IF a_point.cnt != point1.cnt
           THEN
-            INSERT INTO "bm_seriesstatistic" ("benchmark_id", "series", "sub_series", "value")
-            VALUES (bm_id, point2.point, point2.point, point2.cnt);
-            point1 := a_point;
-          ELSE
-            IF a_point.cnt > point1.cnt
+            IF point2.cnt = 0
             THEN
-              point2 = a_point;
-            END IF; 
-            INSERT INTO "bm_seriesstatistic" ("benchmark_id", "series", "sub_series", "value")
-            VALUES (bm_id, point1.point, point2.point, point1.cnt);
-            IF a_point.cnt < point1.cnt
-            THEN
-              point1 := point2;
-              point1.cnt := a_point.cnt;
-            ELSE
+              INSERT INTO "bm_seriesstatistic" ("benchmark_id", "series", "sub_series", "value")
+              VALUES (bm_id, point2.point, point2.point, point2.cnt);
               point1 := a_point;
+            ELSE
+              IF a_point.cnt > point1.cnt
+              THEN
+                point2 = a_point;
+              END IF;
+              INSERT INTO "bm_seriesstatistic" ("benchmark_id", "series", "sub_series", "value")
+              VALUES (bm_id, point1.point, point2.point, point1.cnt);
+              IF a_point.cnt < point1.cnt
+              THEN
+                point1 := point2;
+                point1.cnt := a_point.cnt;
+              ELSE
+                point1 := a_point;
+              END IF;
             END IF;
           END IF;
+          point2 := a_point;
         END IF;
-        point2 := a_point;
       END IF;
     END LOOP;
     INSERT INTO "bm_seriesstatistic" ("benchmark_id", "series", "sub_series", "value")
@@ -258,3 +295,4 @@ BEGIN
 END;
 $BODY$
 LANGUAGE plpgsql VOLATILE;
+
