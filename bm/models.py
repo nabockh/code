@@ -13,6 +13,8 @@ from django.db.models import Count, F
 from django.db.models.aggregates import Min
 from social.models import LinkedInIndustry
 from social_auth.db.django_models import USER_MODEL
+import numpy
+import collections
 
 class RegionsManager(models.Manager):
     def get_queryset(self):
@@ -265,6 +267,31 @@ class BenchmarkNumeric(Benchmark):
 
     @property
     def charts(self):
+        responses = [i.data_numeric.all() for i in self.question.first().responses.all()]
+        # remove extreme values from numeric responses values
+        numeric_data = [response[0].value for response in responses]
+        stddev = numpy.std(numeric_data)
+        avg = numpy.mean(numeric_data)
+        val_range = range(int(avg - 3*stddev), int(avg + 3*stddev))
+        for i in xrange(len(numeric_data) - 1, -1, -1):
+            element = numeric_data[i]
+            if element not in val_range:
+                del numeric_data[i]
+        sorted_dict = collections.Counter(numeric_data)
+        values = []
+        percen = []
+        for k, v in sorted_dict.iteritems():
+            values.append(k)
+            percen.append(v)
+        values_percent = []
+        for i in values:
+            index = values.index(i)
+            val_sum = sum(percen)
+            if index == 0:
+                values_percent.append(round(percen[index]/float(val_sum), 2)*100)
+            else:
+                values_percent.append(round((percen[index]/float(val_sum))*100 + values_percent[index-1], 2))
+        area_data = zip(values_percent, values)
         series = self.series_statistic.values('series', 'sub_series', 'value').order_by('id')
         series = [[str(s['series']), s['value']] for s in series]
         value_sum = sum([vote[1] for vote in series])
