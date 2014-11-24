@@ -15,6 +15,8 @@ from social.models import LinkedInIndustry
 from social_auth.db.django_models import USER_MODEL
 import numpy
 import collections, operator
+from decimal import Decimal
+
 
 class RegionsManager(models.Manager):
     def get_queryset(self):
@@ -236,7 +238,7 @@ class BenchmarkRanking(Benchmark):
         for s in series:
             sub_ranks = [str(s)]
             for rid, val in sorted(rank_data[s]):
-                titles.append('Rank '+ rid)
+                titles.append('Rank '+rid)
                 sub_ranks.append(val)
             ranks.append(sub_ranks)
         titles = [str(title) for title in titles]
@@ -246,13 +248,23 @@ class BenchmarkRanking(Benchmark):
             values = rank[1:]
             del rank[1:]
             for value in values:
-                value = round((float(value)/sum(values))*100)
+                value = round((float(value)/sum(values))*100, 2)
                 rank.append(value)
         if len(series2) == 11:
             series2.insert(10, series2.pop(2))
+        bar_data = []
+        for rank in ranks:
+            summa = sum(rank[1:])
+            percent = []
+            for r in rank[1:]:
+                percent.append(round(Decimal(r/float(summa)), 2))
+            percent.insert(0, rank[0])
+            percent.append('')
+            bar_data.append(percent)
         return {
             'pie': series1,
             'column_ranking': series2,
+            'bar': bar_data
         }
 
 
@@ -294,7 +306,6 @@ class BenchmarkNumeric(Benchmark):
                 values_percent.append(round((percen[index]/float(val_sum))*100 + values_percent[index-1], 2))
         area_raw_data = zip(values_percent, values)
         area_data = [[str(perc) + '%', val]for perc, val in area_raw_data]
-
         series = self.series_statistic.values('series', 'sub_series', 'value').order_by('id')
         series = [[str(s['series']), s['value']] for s in series]
         value_sum = sum([vote[1] for vote in series])
@@ -312,7 +323,7 @@ class BenchmarkNumeric(Benchmark):
         for idx, (s, v) in enumerate(series1):
             data = sampled_data[:]
             data[idx] = v
-            series_data.append([s, ]+data)
+            series_data.append([s,]+data)
         bell_curve = self.numeric_statistic.values('min', 'max', 'avg', 'sd').first()
         return {
             'area': area_data,
