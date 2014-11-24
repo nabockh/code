@@ -197,6 +197,13 @@
 <script type="text/javascript">
     var statisticGeoData = {{ geo|safe }};
     var statisticRoleData = {{ role|safe }};
+    var roleSelect = $("#id_Contributor_Data option[value='Role']");
+    if (statisticRoleData.length > 9) {
+        $('#roleStats').remove();
+        $('#geoStats').show();
+        $(roleSelect).remove();
+        $("#id_Contributor_Data").select2();
+    };
     var statisticIndustriesData = {{ industries|safe }};
     var statisticCountriesData = {{ countries|safe }};
     var None = null;
