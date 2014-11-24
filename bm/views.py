@@ -989,8 +989,8 @@ class ExcelDownloadView(BenchmarkDetailView):
                 contributor_worksheet.write_row('B%s' % idx, [val, ])
             chart_area.add_series({
                 'name':         benchmark.name,
-                'categories': "='Contributor Stats'!A7:A21",
-                'values': "='Contributor Stats'!B7:B21",
+                'categories': "='Contributor Stats'!A7:A{0}".format(len(area_data) + 7),
+                'values': "='Contributor Stats'!B7:B{0}".format(len(area_data) + 7),
             })
             contributor_worksheet.insert_chart('F6', chart_bell_curve)
             contributor_worksheet.insert_chart('F23', chart_area)
