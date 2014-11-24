@@ -166,6 +166,11 @@ class BenchmarkCreateWizardView(SessionWizardView):
             params['end_date'] = getattr(self, 'end_date', datetime.now())
         return params
 
+    # def get_form_initial(self, step, *args, **kwargs):
+    #     if step == 2:
+    #         return self.storage.data[u'step_data'][u'0']
+    #     return self.initial_dict.get(step, {})
+
     def get_context_data(self, form, **kwargs):
         context = super(BenchmarkCreateWizardView, self).get_context_data(form, **kwargs)
         if self.steps.current == '2':
@@ -878,7 +883,9 @@ class ExcelDownloadView(BenchmarkDetailView):
             chart = workbook.add_chart({'type': 'column'})
         elif question_type == 3:
             contributor_results = benchmark.charts['bell_curve']
-            chart = workbook.add_chart({'type': 'scatter'})
+            area_data = benchmark.charts['area']
+            chart_bell_curve = workbook.add_chart({'type': 'scatter'})
+            chart_area = workbook.add_chart({'type': 'area'})
         elif question_type == 4:
             contributor_results = benchmark.charts['pie']
             chart = workbook.add_chart({'type': 'pie'})
@@ -962,7 +969,7 @@ class ExcelDownloadView(BenchmarkDetailView):
             internal_worksheet.write_array_formula('D1:D50',
                                                    "{=NORMDIST(C1:C50,'Contributor Stats'!$B$3,"
                                                    "'Contributor Stats'!$B$4,0)}")
-            chart.add_series({
+            chart_bell_curve.add_series({
                 'name':         benchmark.name,
                 'categories': "='Internal'!C1:C50",
                 'values': "='Internal'!D1:D50",
@@ -970,15 +977,26 @@ class ExcelDownloadView(BenchmarkDetailView):
 
             })
 
-            chart.set_chartarea({
+            chart_bell_curve.set_chartarea({
                 'border': {'color': 'black'},
                 'fill':   {'color': 'white'}
             })
-
-            contributor_worksheet.insert_chart('F3', chart)
+            # for item in area_data:
+            area_headings = ['% of contributor below value', 'Contributor Value']
+            contributor_worksheet.write_row('A6' , area_headings)
+            for idx, (point, val) in enumerate(area_data, start=7):
+                contributor_worksheet.write_row('A%s' % idx, [point, ])
+                contributor_worksheet.write_row('B%s' % idx, [val, ])
+            chart_area.add_series({
+                'name':         benchmark.name,
+                'categories': "='Contributor Stats'!A7:A21",
+                'values': "='Contributor Stats'!B7:B21",
+            })
+            contributor_worksheet.insert_chart('F6', chart_bell_curve)
+            contributor_worksheet.insert_chart('F23', chart_area)
             internal_worksheet.hide()
         elif question_type == 4:
-            no_values = [[value[0], value[1]] for value in  contributor_results if value[0] == 'No']
+            no_values = [[value[0], value[1]] for value in contributor_results if value[0] == 'No']
             yes_values = [[value[0], value[1]] for value in contributor_results if value[0] == 'Yes']
             no = no_values[0] if no_values else []
             yes = yes_values[0] if yes_values else []

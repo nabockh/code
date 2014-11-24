@@ -14,7 +14,7 @@ from django.db.models.aggregates import Min
 from social.models import LinkedInIndustry
 from social_auth.db.django_models import USER_MODEL
 import numpy
-import collections
+import collections, operator
 
 class RegionsManager(models.Manager):
     def get_queryset(self):
@@ -277,10 +277,11 @@ class BenchmarkNumeric(Benchmark):
             element = numeric_data[i]
             if element not in val_range:
                 del numeric_data[i]
-        sorted_dict = collections.Counter(numeric_data)
+        counted_dict = collections.Counter(numeric_data)
+        sorted_list = sorted(counted_dict.items(), key=operator.itemgetter(0))
         values = []
         percen = []
-        for k, v in sorted_dict.iteritems():
+        for k, v in sorted_list:
             values.append(k)
             percen.append(v)
         values_percent = []
@@ -291,7 +292,9 @@ class BenchmarkNumeric(Benchmark):
                 values_percent.append(round(percen[index]/float(val_sum), 2)*100)
             else:
                 values_percent.append(round((percen[index]/float(val_sum))*100 + values_percent[index-1], 2))
-        area_data = zip(values_percent, values)
+        area_raw_data = zip(values_percent, values)
+        area_data = [[str(perc) + '%', val]for perc, val in area_raw_data]
+
         series = self.series_statistic.values('series', 'sub_series', 'value').order_by('id')
         series = [[str(s['series']), s['value']] for s in series]
         value_sum = sum([vote[1] for vote in series])
@@ -312,6 +315,7 @@ class BenchmarkNumeric(Benchmark):
             series_data.append([s, ]+data)
         bell_curve = self.numeric_statistic.values('min', 'max', 'avg', 'sd').first()
         return {
+            'area': area_data,
             'pie': series,
             'column': series_data,
             'bell_curve': bell_curve,
