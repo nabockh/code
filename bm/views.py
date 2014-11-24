@@ -925,24 +925,24 @@ class ExcelDownloadView(BenchmarkDetailView):
                 ranks_count.append('Rank'+str(idx-1))
             contributor_worksheet.write_column('A2', ranks_count)
             chart.add_series({
-                'categories': "=Contributor Stats!$A$2:$A$7",
-                # 'fill':   {'color': 'light blue'},
+                'values': "=Contributor Stats!$F$2:$F$7",
+                'categories': "=Contributor Stats!$B$1:$F$1",
             })
             chart.add_series({
                 'values': "=Contributor Stats!$B$2:$B$7",
-                # 'fill':   {'color': 'dark blue'},
+                'categories': "=Contributor Stats!$B$1:$B$1",
             })
             chart.add_series({
                 'values': "=Contributor Stats!$C$2:$C$7",
-                'fill':   {'color': 'purple'},
+                'categories': "=Contributor Stats!$C$1:$C$1",
             })
             chart.add_series({
                 'values': "=Contributor Stats!$D$2:$D$7",
-                'fill':   {'color': 'blue'},
+                'categories': "=Contributor Stats!$D$1:$D$1",
             })
             chart.add_series({
                 'values': "=Contributor Stats!$E$2:$E$7",
-                'fill':   {'color': 'green'},
+                'categories': "=Contributor Stats!$E$1:$E$1",
             })
 
             # chart.add_series({'categories': '=Contributor Stats!$A$1:$A$4'.format(len(contributor_results))})
