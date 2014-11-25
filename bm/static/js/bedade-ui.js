@@ -51,6 +51,15 @@ $(function () {
                 $('#columnChartHolder').hide();
                 $('#bellcurveChartHolder').hide();
                 $('#lineChartHolder').hide();
+                $('#areaChartHolder').hide();
+            }
+
+            if (chartTypeChange == "Area") {
+                $('#donutChartHolder').hide();
+                $('#columnChartHolder').hide();
+                $('#bellcurveChartHolder').hide();
+                $('#lineChartHolder').hide();
+                $('#areaChartHolder').show();
             }
 
             if (chartTypeChange == "Column") {
@@ -58,6 +67,7 @@ $(function () {
                 $('#columnChartHolder').show();
                 $('#bellcurveChartHolder').hide();
                 $('#lineChartHolder').hide();
+                $('#areaChartHolder').hide();
             }
 
             if (chartTypeChange == "Bell_Curve") {
@@ -65,6 +75,7 @@ $(function () {
                 $('#columnChartHolder').hide();
                 $('#bellcurveChartHolder').show();
                 $('#lineChartHolder').hide();
+                $('#areaChartHolder').hide();
             }
 
             if (chartTypeChange == "Line") {
@@ -72,6 +83,7 @@ $(function () {
                 $('#columnChartHolder').hide();
                 $('#bellcurveChartHolder').hide();
                 $('#lineChartHolder').show();
+                $('#areaChartHolder').hide();
             }
     };
 

@@ -274,8 +274,8 @@ class BenchmarkNumeric(Benchmark):
         proxy = True
         verbose_name = 'Benchmark Open Number'
 
-    available_charts = [('Pie', 'Pie Chart'), ('Column', 'Column Chart'), ('Bell_Curve', 'Bell Curve Chart')]
-    default_chart = 'Bell_Curve'
+    available_charts = [('Area', 'Area Chart'), ('Pie', 'Pie Chart'), ('Column', 'Column Chart'), ('Bell_Curve', 'Bell Curve Chart')]
+    default_chart = 'Area'
 
     @property
     def charts(self):
@@ -306,6 +306,7 @@ class BenchmarkNumeric(Benchmark):
                 values_percent.append(round((percen[index]/float(val_sum))*100 + values_percent[index-1], 2))
         area_raw_data = zip(values_percent, values)
         area_data = [[str(perc) + '%', val]for perc, val in area_raw_data]
+        area_data.insert(0, ['Contributors', 'Contributor Value'])
         series = self.series_statistic.values('series', 'sub_series', 'value').order_by('id')
         series = [[str(s['series']), s['value']] for s in series]
         value_sum = sum([vote[1] for vote in series])

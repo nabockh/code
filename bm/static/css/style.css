@@ -2889,6 +2889,51 @@ ul#answerSortable {
         background-repeat: no-repeat;
     }
 
+    /* Fixed */
+
+    .ob-header.fixed {
+        padding: 7px 60px;
+    }
+
+        .ob-header.fixed .ob_image {
+            width: 40px;
+            height: 40px;
+            background-size: 100%;
+        }
+
+        .ob-header.fixed .ob_title {
+            margin-top: 5px;
+            margin-bottom: 5px;
+            font-size: 14px;
+            line-height: 14px;
+        }
+
+        .ob-header.fixed .ob_descr {
+            font-size: 12px;
+            line-height: 12px;
+        }
+
+        .ob-header.fixed .ob_title, .ob-header.fixed .ob_descr {
+            margin-left: 60px;
+        }
+
+        .ob-header.fixed .custom_images {    
+            line-height: 12px;
+        }
+
+            .ob-header.fixed .custom_images a {    
+                font-size: 12px;
+            }
+
+                .ob-header.fixed .custom_images a img {
+                    width: 14px;    
+                    vertical-align: text-bottom;
+                }
+
+            .ob-header.fixed a[data-export='excel'] {
+                margin-top: 5px;
+            }
+
 .benchmark.open .benchmark-footer {
     padding: 10px;
 }
