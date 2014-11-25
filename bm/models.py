@@ -261,6 +261,10 @@ class BenchmarkRanking(Benchmark):
             percent.insert(0, rank[0])
             percent.append('')
             bar_data.append(percent)
+        ranks_titles = ['Rank']
+        for idx, i in enumerate(series, start=1):
+            ranks_titles.append('Rank_' + str(idx))
+        bar_data.insert(0, ranks_titles)
         return {
             'pie': series1,
             'column_ranking': series2,
