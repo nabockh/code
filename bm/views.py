@@ -924,43 +924,16 @@ class ExcelDownloadView(BenchmarkDetailView):
                 contributor_worksheet.write_column('%s%s' % (ranks[idx], 1), result)
                 ranks_count.append('Rank'+str(idx-1))
             contributor_worksheet.write_column('A2', ranks_count)
-            chart.add_series({
-                'values': "=Contributor Stats!$F$2:$F$7",
-                'categories': "=Contributor Stats!$B$1:$F$1",
-            })
-            chart.add_series({
-                'values': "=Contributor Stats!$B$2:$B$7",
-                'categories': "=Contributor Stats!$B$1:$B$1",
-            })
-            chart.add_series({
-                'values': "=Contributor Stats!$C$2:$C$7",
-                'categories': "=Contributor Stats!$C$1:$C$1",
-            })
-            chart.add_series({
-                'values': "=Contributor Stats!$D$2:$D$7",
-                'categories': "=Contributor Stats!$D$1:$D$1",
-            })
-            chart.add_series({
-                'values': "=Contributor Stats!$E$2:$E$7",
-                'categories': "=Contributor Stats!$E$1:$E$1",
-            })
-
-            # chart.add_series({'categories': '=Contributor Stats!$A$1:$A$4'.format(len(contributor_results))})
-            # chart.add_series({'values': '=Contributor Stats!$B$2:$B${0}'.format(len(contributor_results))})
-            # chart.add_series({'values': '=Contributor Stats!$C$2:$C${0}'.format(len(contributor_results))})
-            # chart.add_series({'values': '=Contributor Stats!$D$2:$D${0}'.format(len(contributor_results))})
-            # chart.add_series({'values': '=Contributor Stats!$E$2:$E${0}'.format(len(contributor_results))})
-            # chart.add_series({'values': '=Contributor Stats!$F$2:$F${0}'.format(len(contributor_results))})
-            # chart.add_series({'values': '=Contributor Stats!$G$2:$G${0}'.format(len(contributor_results))})
-            # chart.add_series({'values': '=Contributor Stats!$H$2:$H${0}'.format(len(contributor_results))})
-            # chart.add_series({'values': '=Contributor Stats!$I$2:$I${0}'.format(len(contributor_results))})
-            # chart.add_series({'values': '=Contributor Stats!$J$2:$J${0}'.format(len(contributor_results))})
-            # chart.add_series({'values': '=Contributor Stats!$K$2:$K${0}'.format(len(contributor_results))})
-            chart.set_title ({'name': benchmark.name})
-            # chart.set_chartarea({
-            #     'border': {'color': 'black'},
-            #     'fill':   {'color': 'white'}
-            # })
+            last_col = ranks[len(ranks_count) + 1]
+            for idx, i in enumerate(ranks_count, start=2):
+                chart.add_series({
+                    'values': "=Contributor Stats!$B$%s:$%s$%s" % (idx, last_col, idx),
+                    'categories': "=Contributor Stats!$B$1:$%s$1" % (last_col,),
+                    'data_labels': {'value': True},
+                })
+            chart.set_title({'name': benchmark.name})
+            chart.set_size({'x_scale': 2.5, 'y_scale': 2})
+            chart.set_style(3)
             contributor_worksheet.insert_chart('A13', chart)
         elif question_type == 3:
             internal_worksheet = workbook.add_worksheet('Internal')

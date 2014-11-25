@@ -257,7 +257,7 @@ class BenchmarkRanking(Benchmark):
             summa = sum(rank[1:])
             percent = []
             for r in rank[1:]:
-                percent.append(round(Decimal(r/float(summa)), 2))
+                percent.append(round(Decimal(r/float(summa))*100, 2))
             percent.insert(0, rank[0])
             percent.append('')
             bar_data.append(percent)
