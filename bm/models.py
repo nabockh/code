@@ -382,9 +382,30 @@ class BenchmarkRange(Benchmark):
             value = round((float(vote[0])/value_sum)*100)
             del vote[0]
             vote.insert(0, value)
+        quartile_raw = []
+        for s in series:
+            quartile_raw.append([int(s['series']), int(s['sub_series'])])
+        quartile_raw = sorted(quartile_raw)
+        quartile_raw.insert(0, ['min', 'max'])
+        min_values = []
+        max_values = []
+        for min, max in quartile_raw[1:]:
+            min_values.append(min)
+            max_values.append(max)
+        percentiles = [25, 50, 75, 100]
+        quartiles = []
+        for idx, i in enumerate(percentiles):
+            quartiles.append([numpy.percentile(min_values, percentiles[idx]), numpy.percentile(max_values, percentiles[idx])])
+        stock_data = []
+        for idx, (q_min, q_max) in enumerate(quartiles, start=1):
+            average = numpy.average([q_min, q_max])
+            stock_data.append([str(idx) + ' Quartile', q_min, average, average, q_max])
+
+
         return {
             'pie': series1,
             'column': series_data,
+            'stock': stock_data,
             'line': series2,
             'ecxel': excel_data,
             'units': self.question.first().options.first().units.encode('utf-8'),
