@@ -3797,7 +3797,7 @@ span.hide-btn.right {left: auto; right: 0;}
         margin-bottom: 50px;
     }
 
-    .progress {
+    .progress.owned {
         padding-right: 50px;
     }
     
