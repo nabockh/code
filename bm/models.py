@@ -413,9 +413,11 @@ class BenchmarkRange(Benchmark):
         for idx, i in enumerate(percentiles):
             quartiles.append([numpy.percentile(min_values, percentiles[idx]), numpy.percentile(max_values, percentiles[idx])])
         stock_data = []
+        excel_stock = []
         for idx, (q_min, q_max) in enumerate(quartiles, start=1):
             average = numpy.average([q_min, q_max])
             stock_data.append([str(idx) + ' Quartile', q_min, average, average, q_max])
+            excel_stock.append(([str(idx) + ' Quartile', q_min, q_max, average]))
 
 
         return {
@@ -424,7 +426,7 @@ class BenchmarkRange(Benchmark):
             'stock': stock_data,
             'area': area_data,
             'line': series2,
-            'ecxel': excel_data,
+            'ecxel_stock': excel_stock,
             'units': self.question.first().options.first().units.encode('utf-8'),
         }
 

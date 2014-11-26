@@ -890,8 +890,10 @@ class ExcelDownloadView(BenchmarkDetailView):
             contributor_results = benchmark.charts['pie']
             chart = workbook.add_chart({'type': 'pie'})
         elif question_type == 5:
-            contributor_results = benchmark.charts['ecxel']
-            chart = workbook.add_chart({'type': 'line'})
+            stock_data = benchmark.charts['ecxel_stock']
+            area_data = benchmark.charts['area']
+            chart_stock = workbook.add_chart({'type': 'stock'})
+            chart_area = workbook.add_chart({'type': 'area'})
         contributor_worksheet.set_column(0, 1, 30)
         if question_type == 1:
             data = [
@@ -1012,46 +1014,38 @@ class ExcelDownloadView(BenchmarkDetailView):
             })
             contributor_worksheet.insert_chart('F3', chart)
         elif question_type == 5:
-            internal_worksheet = workbook.add_worksheet('Internal')
-            splited = [[(i.split(',')), v] for [i, v] in contributor_results[1:]]
-            chart_data = [[int(i[0]), int(i[1]), v] for [i, v] in splited]
-            y_axis = []
-            last_end = None
-            for start, end, val in chart_data:
-                if val > 0 and last_end and (start - last_end) > 1:
-                    y_axis.extend([('', 0), ]*(start-last_end))
-                if val > 0:
-                    length = (end-start-1)
-                    y_axis.append((start, val))
-                    if length == 1:
-                        continue
-                    if length > 2:
-                        y_axis.extend([('', val), ]*(end-start-1))
-                    y_axis.append((end, val))
-                    last_end = end
-
-            for idx, (point, val) in enumerate(y_axis, start=1):
-            # internal_worksheet.write_row( 'A1', data[0])
-                internal_worksheet.write_row('A%s' % idx, [point])
-                internal_worksheet.write_row('B%s' % idx, [val])
-
-            chart.add_series({
+            # Stock chart
+            headings = ['Quartile', 'Min', 'Max', 'Avg']
+            for idx, quartile in enumerate(stock_data, start=2):
+                contributor_worksheet.write_row('A%s' % idx, quartile)
+            chart_stock.add_series({
+                'categories': '=Contributor Stats!$A$1:$A$5',
+                'name': "=Contributor Stats!$B$1:$B$1",
+                'values':     "=Contributor Stats!$B$2:$B$5",
+            })
+            chart_stock.add_series({
+                'name': "=Contributor Stats!$C$1:$C$1",
+                'values':     "=Contributor Stats!$C$2:$C$5",
+            })
+            chart_stock.add_series({
+                'name': "=Contributor Stats!$D$1:$D$1",
+                'values':     "=Contributor Stats!$D$2:$D$5",
+            })
+            contributor_worksheet.write_row('A1', headings)
+            contributor_worksheet.insert_chart('E1', chart_stock)
+            # Area Chart
+            headings_area = ['Frequency', 'Average']
+            for idx, data in enumerate(area_data[1:], start=17):
+                contributor_worksheet.write_row('A%s' % idx, data)
+            index_row = 16
+            contributor_worksheet.write_row('A%s' % index_row, headings_area)
+            row_index = len(area_data[1:]) + 16
+            chart_area.add_series({
                 'name':         benchmark.name,
-                'categories': "='Internal'!A1:A%s" % (len(y_axis)),
-                'values':     "='Internal'!B1:B%s" % (len(y_axis)),
-                'line': {'dash_type': 'solid'}
+                'categories': "='Contributor Stats'!A17:A%s" % row_index,
+                'values': "='Contributor Stats'!B17:B%s" % row_index,
             })
-            chart.set_size({'width': 720, 'height': 576})
-            chart.set_chartarea({
-                'border': {'color': 'black'},
-                'fill':   {'color': 'white'}
-            })
-            chart.set_y_axis({'min': 0, 'max': 100, 'name': '% of Respondents'})
-            chart.set_x_axis({'name': 'Contributed Values'})
-            contributor_headings = ['Contributor Stats']
-            contributor_worksheet.write_row('A1', contributor_headings, bold)
-            contributor_worksheet.insert_chart('A2', chart)
-            internal_worksheet.hide()
+            contributor_worksheet.insert_chart('E17', chart_area)
         workbook.close()
         output.seek(0)
 
