@@ -217,8 +217,8 @@ class BenchmarkRanking(Benchmark):
         proxy = True
         verbose_name = 'Benchmark Ranking'
 
-    available_charts = [('Pie', 'Pie Chart'), ('Column', 'Column Chart')]
-    default_chart = 'Column'
+    available_charts = [('Bar', 'Bar Chart')]
+    default_chart = 'Bar'
 
     @property
     def charts(self):
@@ -259,11 +259,11 @@ class BenchmarkRanking(Benchmark):
             for r in rank[1:]:
                 percent.append(round(Decimal(r/float(summa))*100, 2))
             percent.insert(0, rank[0])
-            percent.append('')
+            # percent.append('')
             bar_data.append(percent)
         ranks_titles = ['Rank']
         for idx, i in enumerate(series, start=1):
-            ranks_titles.append('Rank_' + str(idx))
+            ranks_titles.append('Rank ' + str(idx))
         bar_data.insert(0, ranks_titles)
         return {
             'pie': series1,
@@ -278,7 +278,7 @@ class BenchmarkNumeric(Benchmark):
         proxy = True
         verbose_name = 'Benchmark Open Number'
 
-    available_charts = [('Area', 'Area Chart'), ('Pie', 'Pie Chart'), ('Column', 'Column Chart'), ('Bell_Curve', 'Bell Curve Chart')]
+    available_charts = [('Area', 'Area Chart'), ('Bell_Curve', 'Bell Curve Chart')]
     default_chart = 'Area'
 
     @property
@@ -345,8 +345,8 @@ class BenchmarkRange(Benchmark):
         proxy = True
         verbose_name = 'Benchmark Range'
 
-    available_charts = [('Pie', 'Pie Chart'), ('Column', 'Column Chart'), ('Line', 'Line Chart')]
-    default_chart = 'Line'
+    available_charts = [('Area', 'Area Chart'), ('Quartile', 'Quartile Chart')]
+    default_chart = 'Area'
 
     @property
     def charts(self):
@@ -382,51 +382,11 @@ class BenchmarkRange(Benchmark):
             value = round((float(vote[0])/value_sum)*100)
             del vote[0]
             vote.insert(0, value)
-        quartile_raw = []
-        for s in series:
-            quartile_raw.append([int(s['series']), int(s['sub_series'])])
-        quartile_raw = sorted(quartile_raw)
-        quartile_raw.insert(0, ['min', 'max'])
-        min_values = []
-        max_values = []
-        average = []
-        for min, max in quartile_raw[1:]:
-            average.append(numpy.average([min, max]))
-            min_values.append(min)
-            max_values.append(max)
-        percen = []
-        for i in average:
-            index = average.index(i)
-            val_sum = len(average)
-            if index == 0:
-                percen.append(round(1/float(val_sum), 2)*100)
-            else:
-                percen.append(round((1/float(val_sum))*100 + percen[index-1], 2))
-        if percen[-1] != 100:
-            percen.remove(percen[-1])
-            percen.append(100)
-        area_raw_data = zip(percen, average)
-        area_data = [[str(perc) + '%', val]for perc, val in area_raw_data]
-        area_data.insert(0, ['Contributors', 'Contributor Value'])
-        percentiles = [25, 50, 75, 100]
-        quartiles = []
-        for idx, i in enumerate(percentiles):
-            quartiles.append([numpy.percentile(min_values, percentiles[idx]), numpy.percentile(max_values, percentiles[idx])])
-        stock_data = []
-        excel_stock = []
-        for idx, (q_min, q_max) in enumerate(quartiles, start=1):
-            average = numpy.average([q_min, q_max])
-            stock_data.append([str(idx) + ' Quartile', q_min, average, average, q_max])
-            excel_stock.append(([str(idx) + ' Quartile', q_min, q_max, average]))
-
-
         return {
             'pie': series1,
             'column': series_data,
-            'stock': stock_data,
-            'area': area_data,
             'line': series2,
-            'ecxel_stock': excel_stock,
+            'ecxel': excel_data,
             'units': self.question.first().options.first().units.encode('utf-8'),
         }
 
