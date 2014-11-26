@@ -389,9 +389,25 @@ class BenchmarkRange(Benchmark):
         quartile_raw.insert(0, ['min', 'max'])
         min_values = []
         max_values = []
+        average = []
         for min, max in quartile_raw[1:]:
+            average.append(numpy.average([min, max]))
             min_values.append(min)
             max_values.append(max)
+        percen = []
+        for i in average:
+            index = average.index(i)
+            val_sum = len(average)
+            if index == 0:
+                percen.append(round(1/float(val_sum), 2)*100)
+            else:
+                percen.append(round((1/float(val_sum))*100 + percen[index-1], 2))
+        if percen[-1] != 100:
+            percen.remove(percen[-1])
+            percen.append(100)
+        area_raw_data = zip(percen, average)
+        area_data = [[str(perc) + '%', val]for perc, val in area_raw_data]
+        area_data.insert(0, ['Contributors', 'Contributor Value'])
         percentiles = [25, 50, 75, 100]
         quartiles = []
         for idx, i in enumerate(percentiles):
@@ -406,6 +422,7 @@ class BenchmarkRange(Benchmark):
             'pie': series1,
             'column': series_data,
             'stock': stock_data,
+            'area': area_data,
             'line': series2,
             'ecxel': excel_data,
             'units': self.question.first().options.first().units.encode('utf-8'),
