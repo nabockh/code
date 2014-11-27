@@ -417,7 +417,8 @@ class BenchmarkRange(Benchmark):
         excel_stock = []
         for idx, (q_min, q_max) in enumerate(quartiles, start=1):
             average = numpy.average([q_min, q_max])
-            stock_data.append([str(idx) + ' Quartile', q_min, average, average, q_max])
+            tooltip = { 'v':idx, 'f':'Quartile ' + (str(idx))}
+            stock_data.append([tooltip, q_min, average, average, q_max])
             excel_stock.append(([str(idx) + ' Quartile', q_min, q_max, average]))
 
         return {

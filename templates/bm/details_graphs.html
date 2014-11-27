@@ -199,8 +199,6 @@
     var statisticCountriesData = {{ countries|safe }};
     var None = null;
     var mainChartData = {{ benchmark.charts|safe }};
-    
-
 
     {% if 'Pie' in benchmark.charts_allowed %}
         drawPieChart(mainChartData.pie, 'donutChart');
