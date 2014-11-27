@@ -222,6 +222,10 @@
         drawBarChart(mainChartData.bar, 'barChart');
     {% endif %}
 
+    {% if 'Quartile' in benchmark.charts_allowed %}
+        drawQuartileChart(mainChartData.stock, 'quartileChart');
+    {% endif %}
+
     {% if 'Bell_Curve' in benchmark.charts_allowed %}
         $(function () {
             $("#minVal").text(mainChartData.bell_curve.min);
@@ -249,9 +253,6 @@
         drawBellcurveChart(mainChartData.bell_curve, 'bellcurveChart');
     {% endif %}
 
-    {% if 'Quartile' in benchmark.charts_allowed %}
-        drawQuartileChart(mainChartData.quartile, 'quartileChart');
-    {% endif %}
 
 
     drawStatsChart(statisticRoleData, 'roleChart');

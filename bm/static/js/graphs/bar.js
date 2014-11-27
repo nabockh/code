@@ -28,8 +28,9 @@ function drawBarChart(chartData, divId) {
             
     var barOptions = {
         chartArea: {  
-            width: "80%", 
-            height: "65%" 
+            width: "65%", 
+            height: "65%",
+            left: 150
         },
         legend: { position: 'top', maxLines: 1 },
         bar: { groupWidth: '75%' },

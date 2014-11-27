@@ -15,7 +15,7 @@ function drawQuartileChart(chartData, divId) {
         bar: {groupWidth: 6}
     };
 
-    var quartileChart = new google.visualization.QuartileChart(document.getElementById(divId));
+    var quartileChart = new google.visualization.CandlestickChart(document.getElementById(divId));
 
     // main charts
     quartileChart.draw(quartileChartData, quartileOptions);
