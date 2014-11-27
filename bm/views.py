@@ -922,7 +922,7 @@ class ExcelDownloadView(BenchmarkDetailView):
         elif question_type == 2:
             ranks = ['', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K']
             ranks_count = []
-            for idx, result in enumerate(contributor_results, start=2):
+            for idx, result in enumerate(contributor_results[1:], start=2):
                 contributor_worksheet.write_column('%s%s' % (ranks[idx], 1), result)
                 ranks_count.append('Rank'+str(idx-1))
             contributor_worksheet.write_column('A2', ranks_count)
@@ -982,7 +982,7 @@ class ExcelDownloadView(BenchmarkDetailView):
             # for item in area_data:
             area_headings = ['% of contributor below value', 'Contributor Value']
             contributor_worksheet.write_row('A6' , area_headings)
-            for idx, (point, val) in enumerate(area_data, start=7):
+            for idx, (point, val) in enumerate(area_data[1:], start=7):
                 contributor_worksheet.write_row('A%s' % idx, [point, ])
                 contributor_worksheet.write_row('B%s' % idx, [val, ])
             chart_area.add_series({
