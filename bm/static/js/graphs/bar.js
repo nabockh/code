@@ -25,12 +25,23 @@ function drawBarChart(chartData, divId) {
     }
 
     var barChartData = google.visualization.arrayToDataTable(chartData);
-            
+
+    var view = new google.visualization.DataView(barChartData);
+    var arr = [0];
+
+    for(var i=1;i<=barChartData.getNumberOfRows();i++) {
+        arr.push(i);
+        arr.push({ calc: "stringify", sourceColumn: i, type: "string", role: "annotation" });
+    }
+
+
+    view.setColumns(arr);
+
     var barOptions = {
         chartArea: {  
-            width: "65%", 
+            width: "75%", 
             height: "65%",
-            left: 150
+            left: 100
         },
         legend: { position: 'top', maxLines: 1 },
         bar: { groupWidth: '75%' },
@@ -41,5 +52,5 @@ function drawBarChart(chartData, divId) {
     var barChart = new google.visualization.BarChart(document.getElementById(divId));
 
     // main charts
-    barChart.draw(barChartData, barOptions);
+    barChart.draw(view, barOptions);
 }
