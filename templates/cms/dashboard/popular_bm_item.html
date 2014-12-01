@@ -9,12 +9,17 @@
         </script>
         </div>
 
-    {% elif benchmark.question_type == 2 %}
-        <div id='popular-barChart-{{ benchmark.id }}-{{ instance.id }}' class='bigChart'></div>
+    {% elif benchmark.question_type == 2 %}        
+        <div class='relative'>
+            <div id='popular-barChart-{{ benchmark.id }}-{{ instance.id }}' class='bigChart'></div>
+            <div class='avg-title'>Avg. Rank</div>
+            <div class='avgBar' id='popular-avgBar-{{ benchmark.id }}-{{ instance.id }}'></div>
+        </div>
         <script type="text/javascript">
             var popular_mainChartData_{{ benchmark.id }} = {{ benchmark.charts|safe }};
-            var None = null;
+
             drawBarChart(popular_mainChartData_{{ benchmark.id }}.bar, 'popular-barChart-{{ benchmark.id }}-{{ instance.id }}');
+            drawCircles(popular_mainChartData_{{ benchmark.id }}.avg, 'popular-avgBar-{{ benchmark.id }}-{{ instance.id }}'); 
         </script>
 
 

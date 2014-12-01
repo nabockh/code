@@ -22,8 +22,12 @@
                             </div>
                         {% endif %}
                         {% if benchmark.question_type == 2 %}
-                            <div id='barChartHolder'>
-                                <div id='barChart' class='bigChart'></div>
+                            <div class='relative'>
+                                <div id='barChartHolder'>
+                                    <div id='barChart' class='bigChart'></div>
+                                    <div class='avg-title'>Avg. Rank</div>
+                                    <div class='avgBar' id='avgRank'></div>
+                                </div>
                             </div>
                         {% endif %}
                         {% if benchmark.question_type == 3 %}
@@ -218,6 +222,7 @@
 
     {% if 'Bar' in benchmark.charts_allowed %}
         drawBarChart(mainChartData.bar, 'barChart');
+        drawCircles(mainChartData.avg, 'avgRank');
     {% endif %}
 
     {% if 'Quartile' in benchmark.charts_allowed %}

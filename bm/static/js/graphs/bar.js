@@ -37,11 +37,14 @@ function drawBarChart(chartData, divId) {
 
     view.setColumns(arr);
 
+
+
     var barOptions = {
         chartArea: {  
-            width: "75%", 
+            width: "65%", 
             height: "65%",
-            left: 100
+            left: 100,
+            right: 100,
         },
         legend: { position: 'top', maxLines: 1 },
         bar: { groupWidth: '75%' },
@@ -53,4 +56,26 @@ function drawBarChart(chartData, divId) {
 
     // main charts
     barChart.draw(view, barOptions);
-}
+};
+
+function drawCircles(avgCircles, containerId) {
+    avgCircles.sort(function(a, b){return a-b}); // Sort
+
+    $.each(avgCircles, function(index, value) {
+      $("#" + containerId + ".avgBar").append("<div class='barCircle'><span class='avgValue'>" + value + "</span><span class='tt'>" + "Avarage Rank: <b>" + value + "</b></span></div>");
+    });
+
+    var len = avgCircles.length,
+        size = 195 / len,
+        margins = size * 0.354;
+
+    $("#" + containerId + ".avgBar .barCircle").each(function(){
+        $(this).height(size - margins).width(size - margins).css('line-height', size - margins + 'px').css('margin-top', margins / 2 + 1).css('margin-bottom', margins);
+        if ( len > 5 ) {
+            $(this).css('line-height', '16px').children('span.avgValue').text('avg').css('font-size', '8px');
+        };
+         if ( len > 7 ) {
+            $(this).css('line-height', '8px').children('span.avgValue').text('A').css('font-size', '8px');
+        };
+    });
+};
