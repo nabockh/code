@@ -223,6 +223,24 @@ class BenchmarkRanking(Benchmark):
     @property
     def charts(self):
         series1 = self.series_statistic.values('series', 'sub_series', 'value').order_by('series')
+        ranks = []
+        for item in series1:
+            if item.get('series') not in ranks:
+                ranks.append(item.get('series'))
+        value = []
+        for rank in ranks:
+            rank_val = []
+            for item in series1:
+                if item.get('series') == rank:
+                    rank_val.append((item.get('sub_series'), item.get('value')))
+            rank_val.insert(0, rank)
+            value.append(rank_val)
+        avg_total = {}
+        for item in value:
+            avg = []
+            for vote, count in item[1:]:
+                avg.extend(vote * count)
+            avg_total[item[0]] = round(numpy.average(map(int, avg)), 2)
         series1 = [[str(s['series'] + ' as Rank ' + s['sub_series']), s['value']] for s in series1]
         series1.insert(0, ['series', 'count'])
         # series2 = self.series_statistic.values('series', 'sub_series', 'value').order_by('series')
@@ -238,7 +256,7 @@ class BenchmarkRanking(Benchmark):
         for s in series:
             sub_ranks = [str(s)]
             for rid, val in sorted(rank_data[s]):
-                titles.append('Rank '+rid)
+                titles.append('Rank ' + rid)
                 sub_ranks.append(val)
             ranks.append(sub_ranks)
         titles = [str(title) for title in titles]
@@ -248,7 +266,7 @@ class BenchmarkRanking(Benchmark):
             values = rank[1:]
             del rank[1:]
             for value in values:
-                value = round((float(value)/sum(values))*100, 2)
+                value = round((float(value) / sum(values)) * 100, 2)
                 rank.append(value)
         if len(series2) == 11:
             series2.insert(10, series2.pop(2))
@@ -266,10 +284,12 @@ class BenchmarkRanking(Benchmark):
         for idx, i in enumerate(series, start=1):
             ranks_titles.append('Rank ' + str(idx))
         bar_data.insert(0, ranks_titles)
+        graph_average = [v for k, v in avg_total.iteritems()]
         return {
             'pie': series1,
             'column_ranking': series2,
-            'bar': bar_data
+            'bar': bar_data, 
+            'avg': graph_average
         }
 
 
@@ -289,7 +309,7 @@ class BenchmarkNumeric(Benchmark):
         numeric_data = [response[0].value for response in responses]
         stddev = numpy.std(numeric_data)
         avg = numpy.mean(numeric_data)
-        val_range = range(int(avg - 3*stddev), int(avg + 3*stddev))
+        val_range = range(int(avg - 3 * stddev), int(avg + 3 * stddev))
         for i in xrange(len(numeric_data) - 1, -1, -1):
             element = numeric_data[i]
             if element not in val_range:
@@ -306,7 +326,7 @@ class BenchmarkNumeric(Benchmark):
             index = values.index(i)
             val_sum = sum(percen)
             if index == 0:
-                values_percent.append(round(percen[index]/float(val_sum), 2)*100)
+                values_percent.append(round(percen[index] / float(val_sum), 2) * 100)
             else:
                 values_percent.append(round((percen[index]/float(val_sum))*100 + values_percent[index-1], 2))
         area_raw_data = zip(values_percent, values)
