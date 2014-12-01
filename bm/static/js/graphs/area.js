@@ -13,6 +13,7 @@ function drawAreaChart(chartData, divId) {
             height: "65%" 
         },
         colors:['#608A94'],
+        pointSize: 3
     };
 
     var areaChart = new google.visualization.AreaChart(document.getElementById(divId));
