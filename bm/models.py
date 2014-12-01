@@ -283,6 +283,10 @@ class BenchmarkRanking(Benchmark):
         ranks_titles = ['Rank']
         for idx, i in enumerate(series, start=1):
             ranks_titles.append('Rank ' + str(idx))
+        for rank in bar_data:
+            rank.append(avg_total.get(rank[0]))
+        bar_data = sorted(bar_data, key=lambda k: k[-1])
+        [rank.remove(rank[-1]) for rank in bar_data]
         bar_data.insert(0, ranks_titles)
         graph_average = [v for k, v in avg_total.iteritems()]
         return {
