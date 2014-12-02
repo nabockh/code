@@ -333,6 +333,9 @@ class BenchmarkNumeric(Benchmark):
                 values_percent.append(round(percen[index] / float(val_sum), 2) * 100)
             else:
                 values_percent.append(round((percen[index]/float(val_sum))*100 + values_percent[index-1], 2))
+        if values_percent[-1] != 100:
+            values_percent.remove(values_percent[-1])
+            values_percent.append(100)
         area_raw_data = zip(values_percent, values)
         area_data = [[str(perc) + '%', val]for perc, val in area_raw_data]
         area_data.insert(0, ['Contributors', 'Contributor Value'])
