@@ -1,7 +1,7 @@
 
 function barGradient(slices){
     var startColor = { r : 51, g : 98, b : 110};
-    var endColor = { r : 152, g : 176, b : 179};
+    var endColor = { r : 207, g : 207, b : 207};
     var results = [];
 
     var deltaR = ((endColor.r - startColor.r) / slices);
@@ -44,13 +44,14 @@ function drawBarChart(chartData, divId) {
             width: "65%", 
             height: "65%",
             left: 100,
-            right: 100,
+            right: 100
         },
         legend: { position: 'top', maxLines: 1 },
         bar: { groupWidth: '75%' },
         isStacked: true,
         colors: barGradient(chartData.length),
-        hAxis: {title : '% of Respondents'},
+        hAxis: {title : '% of Respondents', viewWindow: { min: 0, max: 100.9}}
+
     };
 
     var barChart = new google.visualization.BarChart(document.getElementById(divId));

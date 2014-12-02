@@ -271,14 +271,19 @@ class BenchmarkRanking(Benchmark):
         if len(series2) == 11:
             series2.insert(10, series2.pop(2))
         bar_data = []
+        bar_excel = []
         for rank in ranks:
             summa = sum(rank[1:])
             percent = []
+            excel_percent = []
             for r in rank[1:]:
-                obj = {'v':(round(Decimal(r/float(summa))*100, 2)), 'f':str((round(Decimal(r/float(summa))*100, 2)))+'%'}
+                obj = {'v': (round(Decimal(r/float(summa))*100, 1)),
+                       'f': str((round(Decimal(r/float(summa))*100, 1)))+'%'}
+                excel_percent.append(round(Decimal(r/float(summa))*100, 2))
                 percent.append(obj)
+            excel_percent.insert(0, rank[0])
             percent.insert(0, rank[0])
-            # percent.append('')
+            bar_excel.append(excel_percent)
             bar_data.append(percent)
         ranks_titles = ['Rank']
         for idx, i in enumerate(series, start=1):
@@ -292,7 +297,8 @@ class BenchmarkRanking(Benchmark):
         return {
             'pie': series1,
             'column_ranking': series2,
-            'bar': bar_data, 
+            'bar': bar_data,
+            'bar_excel': bar_excel,
             'avg': graph_average
         }
 
