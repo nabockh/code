@@ -407,9 +407,9 @@ class BenchmarkRange(Benchmark):
             value = round((float(vote[0])/value_sum)*100)
             del vote[0]
             vote.insert(0, value)
-
+        unique_series = [s for s in series if s['series'] != s['sub_series']]
         quartile_raw = []
-        for s in series:
+        for s in unique_series:
             quartile_raw.append([int(s['series']), int(s['sub_series'])])
         quartile_raw = sorted(quartile_raw)
         quartile_raw.insert(0, ['min', 'max'])
