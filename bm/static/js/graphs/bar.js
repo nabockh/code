@@ -50,6 +50,7 @@ function drawBarChart(chartData, divId) {
         bar: { groupWidth: '75%' },
         isStacked: true,
         colors: barGradient(chartData.length),
+        hAxis: {title : '% of Respondents'},
     };
 
     var barChart = new google.visualization.BarChart(document.getElementById(divId));
