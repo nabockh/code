@@ -72,7 +72,7 @@ function drawCircles(avgCircles, containerId) {
     $("#" + containerId + ".avgBar .barCircle").each(function(){
         $(this).height(size - margins).width(size - margins).css('line-height', size - margins + 'px').css('margin-top', margins / 2 + 1).css('margin-bottom', margins);
         if ( len > 5 ) {
-            $(this).css('line-height', '16px').children('span.avgValue').text('avg').css('font-size', '8px');
+            $(this).css('line-height', '16px').children('span.avgValue').css('font-size', '8px');
         };
          if ( len > 7 ) {
             $(this).css('line-height', '8px').children('span.avgValue').text('A').css('font-size', '8px');

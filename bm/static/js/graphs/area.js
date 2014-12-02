@@ -6,7 +6,8 @@ function drawAreaChart(chartData, divId) {
     var areaChartData = google.visualization.arrayToDataTable(chartData);
             
     var areaOptions = {
-        hAxis: {minValue: 0, maxValue: 100},
+        hAxis: {title : '% of Respondents', minValue: 0, maxValue: 100},
+        vAxis: {title : 'Values' },
         legend: {position: 'none'},
         chartArea: {  
             width: "80%", 

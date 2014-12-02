@@ -31,8 +31,8 @@ function drawQuartileChart(chartData, divId) {
         colors: ['#8592B2'],
         bar: {groupWidth: 6},
         tooltip: { isHtml : true },
-        hAxis: { baselineColor: '#fff', gridlines: {color: '#fff'}, title : '', titleTextStyle: {color: '#33626e'}, textStyle: { fontSize: 10, bold: true}, viewWindow: { min: 0, max: 5}, ticks: [{v:0, f: '0'}, {v:1, f: '1st Quartile'}, {v:2, f: '2nd Quartile'}, {v:3, f: '3rd Quartile'}, {v:4, f: '4th Quartile'}]},
-        vAxis: { textStyle: { fontSize: 10}},
+        hAxis: { title : 'of Respondents', baselineColor: '#fff', gridlines: {color: '#fff'}, textStyle: { fontSize: 10, bold: true}, viewWindow: { min: 0, max: 5}, ticks: [{v:0, f: ''}, {v:1, f: '1st Quartile'}, {v:2, f: '2nd Quartile'}, {v:3, f: '3rd Quartile'}, {v:4, f: '4th Quartile'}]},
+        vAxis: { title : 'Values', textStyle: { fontSize: 10}},
     };
 
     var quartileChart = new google.visualization.CandlestickChart(document.getElementById(divId));
