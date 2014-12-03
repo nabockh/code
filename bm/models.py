@@ -16,6 +16,7 @@ from social_auth.db.django_models import USER_MODEL
 import numpy
 import collections, operator
 from decimal import Decimal
+import json
 
 
 class RegionsManager(models.Manager):
@@ -241,7 +242,7 @@ class BenchmarkRanking(Benchmark):
             for vote, count in item[1:]:
                 avg.extend(vote * count)
             avg_total[item[0]] = round(numpy.average(map(int, avg)), 2)
-        series1 = [[str(s['series'] + ' as Rank ' + s['sub_series']), s['value']] for s in series1]
+        series1 = [[(s['series'] + ' as Rank ' + s['sub_series']), s['value']] for s in series1]
         series1.insert(0, ['series', 'count'])
         # series2 = self.series_statistic.values('series', 'sub_series', 'value').order_by('series')
         # series2 = [[int(s['sub_series']), s['series'], s['value']] for s in series2]
@@ -254,7 +255,7 @@ class BenchmarkRanking(Benchmark):
         titles = ['Ranks']
         ranks = []
         for s in series:
-            sub_ranks = [str(s)]
+            sub_ranks = [s]
             for rid, val in sorted(rank_data[s]):
                 titles.append('Rank ' + rid)
                 sub_ranks.append(val)
@@ -294,13 +295,13 @@ class BenchmarkRanking(Benchmark):
         [rank.remove(rank[-1]) for rank in bar_data]
         bar_data.insert(0, ranks_titles)
         graph_average = [v for k, v in avg_total.iteritems()]
-        return {
+        return json.dumps({
             'pie': series1,
             'column_ranking': series2,
             'bar': bar_data,
             'bar_excel': bar_excel,
             'avg': graph_average
-        }
+        })
 
 
 class BenchmarkNumeric(Benchmark):
