@@ -879,7 +879,7 @@ class ExcelDownloadView(BenchmarkDetailView):
             contributor_results = benchmark.charts['pie'][1:]
             chart = workbook.add_chart({'type': 'pie'})
         elif question_type == 2:
-            contributor_results = benchmark.charts['bar_excel']
+            contributor_results = json.loads(benchmark.charts)['bar_excel']
             chart = workbook.add_chart({'type': 'bar', 'subtype': 'percent_stacked'})
         elif question_type == 3:
             contributor_results = benchmark.charts['bell_curve']
