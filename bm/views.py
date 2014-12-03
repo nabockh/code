@@ -879,7 +879,7 @@ class ExcelDownloadView(BenchmarkDetailView):
             contributor_results = benchmark.charts['pie'][1:]
             chart = workbook.add_chart({'type': 'pie'})
         elif question_type == 2:
-            contributor_results = benchmark.charts['bar']
+            contributor_results = benchmark.charts['bar_excel']
             chart = workbook.add_chart({'type': 'bar', 'subtype': 'percent_stacked'})
         elif question_type == 3:
             contributor_results = benchmark.charts['bell_curve']
@@ -922,7 +922,7 @@ class ExcelDownloadView(BenchmarkDetailView):
         elif question_type == 2:
             ranks = ['', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K']
             ranks_count = []
-            for idx, result in enumerate(contributor_results[1:], start=2):
+            for idx, result in enumerate(contributor_results, start=2):
                 contributor_worksheet.write_column('%s%s' % (ranks[idx], 1), result)
                 ranks_count.append('Rank'+str(idx-1))
             contributor_worksheet.write_column('A2', ranks_count)
