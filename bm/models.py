@@ -289,10 +289,13 @@ class BenchmarkRanking(Benchmark):
         ranks_titles = ['Rank']
         for idx, i in enumerate(series, start=1):
             ranks_titles.append('Rank ' + str(idx))
-        for rank in bar_data:
-            rank.append(avg_total.get(rank[0]))
+        [rank.append(avg_total.get(rank[0])) for rank in bar_data]
+        for rank_excel in bar_excel:
+            rank_excel.append(avg_total.get(rank_excel[0]))
         bar_data = sorted(bar_data, key=lambda k: k[-1])
+        bar_excel = sorted(bar_excel, key=lambda k: k[-1])
         [rank.remove(rank[-1]) for rank in bar_data]
+        [excel_rank.remove(excel_rank[-1]) for excel_rank in bar_excel]
         bar_data.insert(0, ranks_titles)
         graph_average = [v for k, v in avg_total.iteritems()]
         return json.dumps({

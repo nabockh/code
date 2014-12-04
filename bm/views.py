@@ -922,7 +922,7 @@ class ExcelDownloadView(BenchmarkDetailView):
         elif question_type == 2:
             ranks = ['', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K']
             ranks_count = []
-            for idx, result in enumerate(contributor_results, start=2):
+            for idx, result in enumerate(contributor_results[::-1], start=2):
                 contributor_worksheet.write_column('%s%s' % (ranks[idx], 1), result)
                 ranks_count.append('Rank'+str(idx-1))
             contributor_worksheet.write_column('A2', ranks_count)
