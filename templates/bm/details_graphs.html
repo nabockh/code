@@ -117,22 +117,22 @@
                             </table>
                         </div>
                     </div>
-                    <div id='roleStats'>
-                        <div id='roleChart' class='statGraph'></div>
-                        <div class='table-header'>Contributor Role:</div>
-                        <div class='statsTable'>
-                            <table>
-                                <tbody>
-                                    {% for role in role_percentage %}
-                                        <tr>
-                                            <td title='{{ role.0 }}'>{{ role.0 }}</td>
-                                            <td>{{ role.1 }}</td>
-                                        </tr>
-                                    {% endfor %}                                    
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
+{#                    <div id='Stats'>#}
+{#                        <div id='roleChart' class='statGraph'></div>#}
+{#                        <div class='table-header'>Contributor Role:</div>#}
+{#                        <div class='statsTable'>#}
+{#                            <table>#}
+{#                                <tbody>#}
+{#                                    {% for role in role_percentage %}#}
+{#                                        <tr>#}
+{#                                            <td title='{{ role.0 }}'>{{ role.0 }}</td>#}
+{#                                            <td>{{ role.1 }}</td>#}
+{#                                        </tr>#}
+{#                                    {% endfor %}#}
+{#                                </tbody>#}
+{#                            </table>#}
+{#                        </div>#}
+{#                    </div>#}
                     <div id='industryStats'>
                         <div id='industryChart' class='statGraph'></div>
                         <div class='table-header'>Contributor Industry:</div>
@@ -191,14 +191,14 @@
 
 <script type="text/javascript">
     var statisticGeoData = {{ geo|safe }};
-    var statisticRoleData = {{ role|safe }};
-    var roleSelect = $("#id_Contributor_Data option[value='Role']");
-    if (statisticRoleData.length > 9) {
-        $('#roleStats').remove();
-        $('#geoStats').show();
-        $(roleSelect).remove();
-        $("#id_Contributor_Data").select2();
-    };
+{#    var statisticRoleData = {{ role|safe }};#}
+{#    var roleSelect = $("#id_Contributor_Data option[value='Role']");#}
+{#    if (statisticRoleData.length > 9) {#}
+{#        $('#roleStats').remove();#}
+{#        $('#geoStats').show();#}
+{#        $(roleSelect).remove();#}
+{#        $("#id_Contributor_Data").select2();#}
+{#    };#}
     var statisticIndustriesData = {{ industries|safe }};
     var statisticCountriesData = {{ countries|safe }};
     var None = null;
@@ -258,7 +258,7 @@
 
 
 
-    drawStatsChart(statisticRoleData, 'roleChart');
+{#    drawStatsChart(statisticRoleData, 'roleChart');#}
     drawStatsChart(statisticGeoData, 'geoChart');
     drawStatsChart(statisticIndustriesData, 'industryChart');
     drawStatsChart(statisticCountriesData, 'countryChart');

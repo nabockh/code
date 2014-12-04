@@ -555,6 +555,8 @@ class BenchmarkDetailView(FormView):
         return kwargs
 
     def get_context_data(self, **kwargs):
+        # Note: Role data was removed by request of Customer, but possible will be
+        # needed in future
         context = super(BenchmarkDetailView, self).get_context_data(**kwargs)
         benchmark = self.get_benchmark(**kwargs)
         if not self.request.user.is_anonymous() and Benchmark.objects.filter(id=benchmark.id, question__responses__user=self.request.user):
@@ -562,17 +564,17 @@ class BenchmarkDetailView(FormView):
         context['benchmark'] = benchmark
         context['question'] = benchmark.question.first()
         context['url'] = self.request.META['HTTP_HOST'] + self.request.path
-        group_by_headline = QuestionResponse.objects.filter(question=benchmark.question.first()).\
-            values('user__social_profile__headline').annotate(count=Count('id'))
+        # group_by_headline = QuestionResponse.objects.filter(question=benchmark.question.first()).\
+        #     values('user__social_profile__headline').annotate(count=Count('id'))
         group_by_country = QuestionResponse.objects.filter(question=benchmark.question.first()).\
             values('user__social_profile__location__name').annotate(count=Count('id'))
         group_by_geo = QuestionResponse.objects.filter(question=benchmark.question.first()).\
             values('user__social_profile__location__parent__name').annotate(count=Count('id'))
         group_by_industry = QuestionResponse.objects.filter(question=benchmark.question.first()).\
             values('user__social_profile__company___industry__name').annotate(count=Count('id'))
-        for dictionary in group_by_headline:
-            dictionary['role'] = dictionary['user__social_profile__headline'] or "Not Available"
-            del dictionary['user__social_profile__headline']
+        # for dictionary in group_by_headline:
+        #     dictionary['role'] = dictionary['user__social_profile__headline'] or "Not Available"
+        #     del dictionary['user__social_profile__headline']
         for dictionary in group_by_geo:
             dictionary['geo'] = dictionary['user__social_profile__location__parent__name'] or "Not Available"
             del dictionary['user__social_profile__location__parent__name']
@@ -582,11 +584,11 @@ class BenchmarkDetailView(FormView):
         for dictionary in group_by_industry:
             dictionary['industry'] = dictionary['user__social_profile__company___industry__name'] or "Not Available"
             del dictionary['user__social_profile__company___industry__name']
-        headlines = []
-        for item in group_by_headline:
-            first = item['count']
-            second = item['role']
-            headlines.append([second, first])
+        # headlines = []
+        # for item in group_by_headline:
+        #     first = item['count']
+        #     second = item['role']
+        #     headlines.append([second, first])
         geo = []
         for item in group_by_geo:
             first = item['count']
@@ -602,8 +604,8 @@ class BenchmarkDetailView(FormView):
             first = item['count']
             second = item['industry']
             industries.append([second, first])
-        context['role'] = list(headlines)
-        context['role'].insert(0, ['role', 'count'])
+        # context['role'] = list(headlines)
+        # context['role'].insert(0, ['role', 'count'])
         context['geo'] = list(geo)
         context['geo'].insert(0, ['geo', 'count'])
         context['countries'] = list(countries)
@@ -611,7 +613,7 @@ class BenchmarkDetailView(FormView):
         context['industries'] = list(industries)
         context['industries'].insert(0, ['industries', 'count'])
 
-        for field in ['role', 'geo', 'countries', 'industries']:
+        for field in ['geo', 'countries', 'industries']:
             context[field] = json.dumps(context[field])
 
         # Count percentage in aggregated lists
@@ -623,15 +625,15 @@ class BenchmarkDetailView(FormView):
         sum_geo = sum([each[1] for each in geo_percentage])
         for item in geo_percentage:
             item[1] = round(float(item[1])/sum_geo*100)
-        role_percentage = list(headlines)
-        sum_role = sum([each[1] for each in role_percentage])
-        for item in role_percentage:
-            item[1] = round(float(item[1])/sum_role*100)
+        # role_percentage = list(headlines)
+        # sum_role = sum([each[1] for each in role_percentage])
+        # for item in role_percentage:
+        #     item[1] = round(float(item[1])/sum_role*100)
         industry_percentage = list(industries)
         sum_industry = sum([each[1] for each in industry_percentage])
         for item in industry_percentage:
             item[1] = round(float(item[1])/sum_industry*100)
-        context['role_percentage'] = role_percentage
+        # context['role_percentage'] = role_percentage
         context['industry_percentage'] = industry_percentage
         context['geo_percentage'] = geo_percentage
         context['countries_percentage'] = countries_percentage
@@ -769,7 +771,7 @@ class ExcelDownloadView(BenchmarkDetailView):
         contributor_worksheet = workbook.add_worksheet('Contributor Stats')
         countries_worksheet = workbook.add_worksheet('Countries')
         industry_worksheet = workbook.add_worksheet('Industry')
-        role_worksheet = workbook.add_worksheet('Role')
+        # role_worksheet = workbook.add_worksheet('Role')
         geo_worksheet = workbook.add_worksheet('Geo')
         col = 1
         row = 0
@@ -829,27 +831,30 @@ class ExcelDownloadView(BenchmarkDetailView):
         })
         industry_worksheet.insert_chart('C3', chart)
 
+        #NOTE: Role Stats were removed by request of customer, but it is possible that
+        # we will need this in future.
+
         # role stat data worksheet
-        chart = workbook.add_chart({'type': 'pie'})
-        role_worksheet.set_column(0, 1, 30)
-        role_stat = context['role_percentage']
-        role_data = [
-            [role[0] for role in role_stat],
-            [role[1] for role in role_stat],
-        ]
-        headings = ['Role', 'Percentage %']
-        role_worksheet.write_row('A1', headings, bold)
-        role_worksheet.write_column('A2', role_data[0])
-        role_worksheet.write_column('B2', role_data[1])
-        chart.add_series({
-            'categories': '=Role!$A$2:$A${0}'.format(len(role_stat)+1),
-            'values':     '=Role!$B$2:$B${0}'.format(len(role_stat)+1),
-        })
-        chart.set_chartarea({
-            'border': {'color': 'black'},
-            'fill':   {'color': 'white'}
-        })
-        role_worksheet.insert_chart('C3', chart)
+        # chart = workbook.add_chart({'type': 'pie'})
+        # role_worksheet.set_column(0, 1, 30)
+        # role_stat = context['role_percentage']
+        # role_data = [
+        #     [role[0] for role in role_stat],
+        #     [role[1] for role in role_stat],
+        # ]
+        # headings = ['Role', 'Percentage %']
+        # role_worksheet.write_row('A1', headings, bold)
+        # role_worksheet.write_column('A2', role_data[0])
+        # role_worksheet.write_column('B2', role_data[1])
+        # chart.add_series({
+        #     'categories': '=Role!$A$2:$A${0}'.format(len(role_stat)+1),
+        #     'values':     '=Role!$B$2:$B${0}'.format(len(role_stat)+1),
+        # })
+        # chart.set_chartarea({
+        #     'border': {'color': 'black'},
+        #     'fill':   {'color': 'white'}
+        # })
+        # role_worksheet.insert_chart('C3', chart)
 
         # Geo stat data worksheet
         chart = workbook.add_chart({'type': 'pie'})

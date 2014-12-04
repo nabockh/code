@@ -119,12 +119,12 @@ $(function () {
 
     var statisticViewChange = function() {
         var statisticViewChange = $('#id_Contributor_Data').find('option:selected').val();
-        if (statisticViewChange == "Role") {
-            $('#roleStats').show();
-            $('#industryStats').hide();
-            $('#countryStats').hide();
-            $('#geoStats').hide();
-        }
+//        if (statisticViewChange == "Role") {
+//            $('#roleStats').show();
+//            $('#industryStats').hide();
+//            $('#countryStats').hide();
+//            $('#geoStats').hide();
+//        }
 
         if (statisticViewChange == "Geo") {
             $('#roleStats').hide();
