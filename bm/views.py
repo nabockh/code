@@ -1003,7 +1003,7 @@ class ExcelDownloadView(BenchmarkDetailView):
             yes_values = [[value[0], value[1]] for value in contributor_results if value[0] == 'Yes']
             no = no_values[0] if no_values else []
             yes = yes_values[0] if yes_values else []
-            headings = ['Answer', 'Count']
+            headings = ['Answer', '% of respondents']
             contributor_worksheet.write_row('A1', headings, bold)
             contributor_worksheet.write_row('A2', no)
             contributor_worksheet.write_row('A3', yes)
