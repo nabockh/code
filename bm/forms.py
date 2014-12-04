@@ -88,8 +88,27 @@ class CreateBenchmarkStep3Form(forms.Form):
         except (ValueError, TypeError):
             return 0
 
+    def get_form_kwargs(self, step=None):
+        kwargs = {}
+        if step == '1':
+            your_data = self.get_cleaned_data_for_step('0')['your_data']
+            kwargs.update({'your_data': your_data,})
+        return kwargs
+
     def __init__(self, user, step0data, wizard, except_ids=set(), benchmark=None, *args, **kwargs):
         super(CreateBenchmarkStep3Form, self).__init__(*args, **kwargs)
+        initial = {
+            'name': step0data.get('0-name'),
+            'geo': step0data.get('0-geo'),
+            'industry': step0data.get('0-industry'),
+            'question_label': step0data.get('0-question_label'),
+            'question_text': step0data.get('0-question_text'),
+            'question_type': step0data.get('0-question_type'),
+            'answer_options': step0data.get('0-answer_options'),
+            'units': step0data.get('0-units'),
+            'minimum_number_of_answers': step0data.get('0-minimum_number_of_answers'),
+        }
+        kwargs['initial'] = initial
         self.user = user
         self.benchmark = benchmark
         self.min_number_of_answers = self.num(step0data.get('0-minimum_number_of_answers'))
