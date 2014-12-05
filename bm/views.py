@@ -98,6 +98,26 @@ class BenchmarkCreateWizardView(SessionWizardView):
                 return self.render_next_step(form)
         return self.render(form)
 
+    def render_next_step(self, form, **kwargs):
+        """
+        This method gets called when the next step/form should be rendered.
+        `form` contains the last/current form.
+        """
+        next_step = self.steps.next
+        if next_step == '2':
+            new_form = self.get_form(next_step,
+                data=None,
+                files=self.storage.get_step_files(next_step))
+        else:
+            new_form = self.get_form(next_step,
+                data=self.storage.get_step_data(next_step),
+                files=self.storage.get_step_files(next_step))
+
+        # change the stored current step
+        self.storage.current_step = next_step
+        return self.render(new_form, **kwargs)
+
+
     def render_done(self, form, **kwargs):
         """
         This method gets called when all forms passed. The method should also
@@ -165,11 +185,6 @@ class BenchmarkCreateWizardView(SessionWizardView):
         if step == '2':
             params['end_date'] = getattr(self, 'end_date', datetime.now())
         return params
-
-    # def get_form_initial(self, step, *args, **kwargs):
-    #     if step == 2:
-    #         return self.storage.data[u'step_data'][u'0']
-    #     return self.initial_dict.get(step, {})
 
     def get_context_data(self, form, **kwargs):
         context = super(BenchmarkCreateWizardView, self).get_context_data(form, **kwargs)

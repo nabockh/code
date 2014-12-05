@@ -183,7 +183,7 @@ $(function () {
 
 
     $('#preview').on('shown.bs.modal', function (e) {
-        if ($('#default_text').text().length <= 1) {
+//        if ($('#default_text').text().length <= 1) {
             var csrf = document.cookie.match(/csrftoken=([\w]+)/);
             var data = $('.styled-form').serialize();
             var request = $.ajax({
@@ -209,7 +209,7 @@ $(function () {
                     textStatus, errorThrown
                 );
             });
-        }
+//        }
     });
 
 
