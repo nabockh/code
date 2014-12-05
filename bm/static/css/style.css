@@ -28,6 +28,10 @@ a.clickable {
     cursor: pointer;
 }
 
+.relative {
+    position: relative;
+}
+
 a[data-export='excel'] {
     background: #207245;
     color: #fff;
@@ -1409,6 +1413,20 @@ form[role='search'] .btn-search {
         font-weight: 600;
     }
 
+        .benchmark-creation .styled-form label sup {
+            color: red;
+            font-size: 0.9rem;
+        }
+
+        span.required {
+            font-size: 1rem;
+            font-style: italic;
+            letter-spacing: 1px;
+        }
+            span.required .text-red {
+                color:  red;
+            }
+
     .benchmark-creation .styled-form .btn {
         font-size: 14px;
         color: #fff;
@@ -2253,9 +2271,8 @@ form[role='beta-email'] {
     padding: 5px 40px 5px 15px;
     background: #eff0f2;
     border-bottom: 1px solid #dedede;
-    white-space: nowrap;
+    height: 59px;
     overflow: hidden;
-    text-overflow: ellipsis;
 }
 
     .carousel-inner > .item > .title > a {
@@ -2890,6 +2907,51 @@ ul#answerSortable {
         background-repeat: no-repeat;
     }
 
+    /* Fixed */
+
+    .ob-header.fixed {
+        padding: 7px 60px;
+    }
+
+        .ob-header.fixed .ob_image {
+            width: 40px;
+            height: 40px;
+            background-size: 100%;
+        }
+
+        .ob-header.fixed .ob_title {
+            margin-top: 5px;
+            margin-bottom: 5px;
+            font-size: 14px;
+            line-height: 14px;
+        }
+
+        .ob-header.fixed .ob_descr {
+            font-size: 12px;
+            line-height: 12px;
+        }
+
+        .ob-header.fixed .ob_title, .ob-header.fixed .ob_descr {
+            margin-left: 60px;
+        }
+
+        .ob-header.fixed .custom_images {    
+            line-height: 12px;
+        }
+
+            .ob-header.fixed .custom_images a {    
+                font-size: 12px;
+            }
+
+                .ob-header.fixed .custom_images a img {
+                    width: 14px;    
+                    vertical-align: text-bottom;
+                }
+
+            .ob-header.fixed a[data-export='excel'] {
+                margin-top: 5px;
+            }
+
 .benchmark.open .benchmark-footer {
     padding: 10px;
 }
@@ -2989,6 +3051,10 @@ ul#answerSortable {
 
     .bigChart[id^="bellcurveChart"], .bigChart[id^="popular-bellcurveChart"] {
         height: 190px;
+    }
+
+    .bigChart[id^="areaChart"], .bigChart[id^="popular-areaChart"] {
+        height: 262px;
     }
 
     .bigChart + .units {
@@ -3753,7 +3819,7 @@ span.hide-btn.right {left: auto; right: 0;}
         margin-bottom: 50px;
     }
 
-    .progress {
+    .progress.owned {
         padding-right: 50px;
     }
     
@@ -4297,4 +4363,86 @@ html[dir="rtl"] .select2-search input,
 .answer_options_inputs a {cursor:pointer;padding: 10px 0; display: inline-block;font-size: 1rem;line-height: 1rem;}
 .container.bordered.bgwhite.benchmark-creation.margined {
     position: relative;
+}
+
+#quartileChartHolder rect[fill='#8592b2'] {
+    stroke: #26B6B0;
+}
+
+.avgBar {
+    position: absolute;
+    top: 50px;
+    right: 15px;
+    width: 45px;
+}
+
+.avgBar .barCircle {
+    background: #41495d;
+    border-radius: 50%;
+    text-align: center;
+    font-size: 12px;
+    font-weight: bold;
+    color: #fff;
+    margin-left: auto;
+    margin-right: auto;
+    position: relative;
+    cursor: pointer;
+}
+
+    .avgBar .barCircle:hover {
+        background-color: #8089A0;
+    }
+
+.avgBar .barCircle .tt{
+    display: none;
+    position: absolute;
+    top: 0;
+    right: 40px;
+}
+
+.avgBar .barCircle:hover .tt {
+    display: block;
+    background: #fff;
+    color: #333;
+    font-weight: normal;
+    padding: 5px;
+    border: 1px solid #eaebec;
+    width: 130px;
+    min-height: 25px;
+    box-shadow: 1px 2px 3px #B1A6A6;
+}
+
+    .avgBar .barCircle .tt:after {
+        content: '';
+        position: absolute;
+        right: -12px;
+        top: 50%;
+        margin-top: -13px;
+        width: 0;   
+        height: 0;   
+        border-top: 13px solid transparent;  
+        border-bottom: 12px solid transparent;    
+        border-left: 12px solid #fff;
+    }
+
+    .avgBar .barCircle .tt:before {
+        content: '';
+        position: absolute;
+        right: -14px;
+        top: 50%;
+        margin-top: -14px;
+        width: 0;
+        height: 0;   
+        border-top: 14px solid transparent;  
+        border-bottom: 14px solid transparent;    
+        border-left: 14px solid #ccc;
+    }
+
+.avg-title {
+    font-size: 10px;
+    line-height: 10px;
+    color: #000;
+    position: absolute;
+    top: 25px;
+    right: 15px;
 }

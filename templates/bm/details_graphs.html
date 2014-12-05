@@ -11,80 +11,72 @@
                 </div>
                 <div class='row'>
                     <div class='benchmark open'>
-                        {% if 'Pie' in benchmark.charts_allowed %}
-                            {% if benchmark.question_type == 3 or benchmark.question_type == 5 %}
-                                <div id='donutChartHolder'>
-                                    <div id='donutChart' class='bigChart'></div>
-                                    <div class='units'>Chart Data In: <span title='{{ benchmark.question.first.options.first.units }}'>"{{ benchmark.question.first.options.first.units }}"</span></div>
-                                </div>
-                                <div id='columnChartHolder'>
-                                    <div id='columnChart' class='bigChart'></div>
-                                    <div class='units'>Chart Data In: <span title='{{ benchmark.question.first.options.first.units }}'>"{{ benchmark.question.first.options.first.units }}"</span></div>
-                                </div>
-                                <div id='bellcurveChartHolder'>
-                                    <div id='bellcurveChart' class='bigChart'></div>
-                                    <div class='units'>Chart Data In: <span title='{{ benchmark.question.first.options.first.units }}'>"{{ benchmark.question.first.options.first.units }}"</span></div>
-                                    <div class='benchmark-stats perc-based'>
-                                        <div class='single-stat'>
-                                            <span class='title'>Min</span>
-                                            <span class='value' id='minVal'></span>
-                                        </div>
-                                        <div class='single-stat'>
-                                            <span class='title'>Max</span>
-                                            <span class='value' id='maxVal'></span>
-                                        </div>
-                                        <div class='single-stat'>
-                                            <span class='title'>Avg</span>
-                                            <span class='value' id='avgVal'></span>
-                                        </div>
-                                        <div class='single-stat'>
-                                            <span class='title'>SD</span>
-                                            <span class='value' id='sdVal'></span>
-                                        </div>
-                                    </div>
-                                </div>
-                            {%else%}
-                                <div id='donutChartHolder'>
-                                    <div id='donutChart' class='bigChart'></div>
-                                </div>
-                                <div id='columnChartHolder'>
-                                    <div id='columnChart' class='bigChart'></div>
-                                </div>
-                                <div id='bellcurveChartHolder'>
-                                    <div id='bellcurveChart' class='bigChart'></div>
-                                    <div class='benchmark-stats perc-based'>
-                                        <div class='single-stat'>
-                                            <span class='title'>Min</span>
-                                            <span class='value' id='minVal'></span>
-                                        </div>
-                                        <div class='single-stat'>
-                                            <span class='title'>Max</span>
-                                            <span class='value' id='maxVal'></span>
-                                        </div>
-                                        <div class='single-stat'>
-                                            <span class='title'>Avg</span>
-                                            <span class='value' id='avgVal'></span>
-                                        </div>
-                                        <div class='single-stat'>
-                                            <span class='title'>SD</span>
-                                            <span class='value' id='sdVal'></span>
-                                        </div>
-                                    </div>
-                                </div>
-                            {% endif %}
-                        {% endif %}
-                        {% if benchmark.question_type == 3 or benchmark.question_type == 5 %}
-
-                            <div id='lineChartHolder'>
-                                <div id='lineChart' class='bigChart'></div>
+                        {% if benchmark.question_type == 1 %}
+                            <div id='donutChartHolder'>
+                                <div id='donutChart' class='bigChart'></div>
                                 <div class='units'>Chart Data In: <span title='{{ benchmark.question.first.options.first.units }}'>"{{ benchmark.question.first.options.first.units }}"</span></div>
-                            </div>                           
-
-                        {% else %}
-                            <div id='lineChartHolder'>
-                                <div id='lineChart' class='bigChart'></div>
+                            </div>
+                            <div id='columnChartHolder'>
+                                <div id='columnChart' class='bigChart'></div>
+                                <div class='units'>Chart Data In: <span title='{{ benchmark.question.first.options.first.units }}'>"{{ benchmark.question.first.options.first.units }}"</span></div>
                             </div>
                         {% endif %}
+                        {% if benchmark.question_type == 2 %}
+                            <div class='relative'>
+                                <div id='barChartHolder'>
+                                    <div id='barChart' class='bigChart'></div>
+                                    <div class='avg-title'>Avg. Rank</div>
+                                    <div class='avgBar' id='avgRank'></div>
+                                </div>
+                            </div>
+                        {% endif %}
+                        {% if benchmark.question_type == 3 %}
+                            <div id='areaChartHolder'>
+                                <div id='areaChart' class='bigChart'></div>
+                                <div class='units'>Chart Data In: <span title='{{ benchmark.question.first.options.first.units }}'>"{{ benchmark.question.first.options.first.units }}"</span></div>
+                            </div>
+                            <div id='bellcurveChartHolder'>
+                                <div id='bellcurveChart' class='bigChart'></div>
+                                <div class='units'>Chart Data In: <span title='{{ benchmark.question.first.options.first.units }}'>"{{ benchmark.question.first.options.first.units }}"</span></div>
+                                <div class='benchmark-stats perc-based'>
+                                    <div class='single-stat'>
+                                        <span class='title'>Min</span>
+                                        <span class='value' id='minVal'></span>
+                                    </div>
+                                    <div class='single-stat'>
+                                        <span class='title'>Max</span>
+                                        <span class='value' id='maxVal'></span>
+                                    </div>
+                                    <div class='single-stat'>
+                                        <span class='title'>Avg</span>
+                                        <span class='value' id='avgVal'></span>
+                                    </div>
+                                    <div class='single-stat'>
+                                        <span class='title'>SD</span>
+                                        <span class='value' id='sdVal'></span>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endif %}
+                        {% if benchmark.question_type == 4 %}
+                            <div id='donutChartHolder'>
+                                <div id='donutChart' class='bigChart'></div>
+                            </div>
+                            <div id='columnChartHolder'>
+                                <div id='columnChart' class='bigChart'></div>
+                            </div>
+                        {% endif %}
+                        {% if benchmark.question_type == 5 %}
+                            <div id='areaChartHolder'>
+                                <div id='areaChart' class='bigChart'></div>
+                                <div class='units'>Chart Data In: <span title='{{ benchmark.question.first.options.first.units }}'>"{{ benchmark.question.first.options.first.units }}"</span></div>
+                            </div>
+                            <div id='quartileChartHolder'>
+                                <div id='quartileChart' class='bigChart'></div>
+                                <div class='units'>Chart Data In: <span title='{{ benchmark.question.first.options.first.units }}'>"{{ benchmark.question.first.options.first.units }}"</span></div>
+                            </div>
+                        {% endif %}                            
+                            
                         <div class='benchmark-footer text-center'>
                             <span class='color-blue'><i class='fa fa-user'></i> {{ benchmark.contributors }} Contributors</span>
                             <span class='separator'></span>
@@ -125,22 +117,22 @@
                             </table>
                         </div>
                     </div>
-                    <div id='roleStats'>
-                        <div id='roleChart' class='statGraph'></div>
-                        <div class='table-header'>Contributor Role:</div>
-                        <div class='statsTable'>
-                            <table>
-                                <tbody>
-                                    {% for role in role_percentage %}
-                                        <tr>
-                                            <td title='{{ role.0 }}'>{{ role.0 }}</td>
-                                            <td>{{ role.1 }}</td>
-                                        </tr>
-                                    {% endfor %}                                    
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
+{#                    <div id='Stats'>#}
+{#                        <div id='roleChart' class='statGraph'></div>#}
+{#                        <div class='table-header'>Contributor Role:</div>#}
+{#                        <div class='statsTable'>#}
+{#                            <table>#}
+{#                                <tbody>#}
+{#                                    {% for role in role_percentage %}#}
+{#                                        <tr>#}
+{#                                            <td title='{{ role.0 }}'>{{ role.0 }}</td>#}
+{#                                            <td>{{ role.1 }}</td>#}
+{#                                        </tr>#}
+{#                                    {% endfor %}#}
+{#                                </tbody>#}
+{#                            </table>#}
+{#                        </div>#}
+{#                    </div>#}
                     <div id='industryStats'>
                         <div id='industryChart' class='statGraph'></div>
                         <div class='table-header'>Contributor Industry:</div>
@@ -191,33 +183,50 @@
 <script src="{{ STATIC_URL }}js/graphs/pie.js"></script>
 <script src="{{ STATIC_URL }}js/graphs/column.js"></script>
 <script src="{{ STATIC_URL }}js/graphs/line.js"></script>
+<script src="{{ STATIC_URL }}js/graphs/area.js"></script>
 <script src="{{ STATIC_URL }}js/graphs/bellcurve.js"></script>
+<script src="{{ STATIC_URL }}js/graphs/bar.js"></script>
+<script src="{{ STATIC_URL }}js/graphs/quartile.js"></script>
 <script src="{{ STATIC_URL }}js/graphs/stats.js"></script>
 
 <script type="text/javascript">
     var statisticGeoData = {{ geo|safe }};
-    var statisticRoleData = {{ role|safe }};
+{#    var statisticRoleData = {{ role|safe }};#}
+{#    var roleSelect = $("#id_Contributor_Data option[value='Role']");#}
+{#    if (statisticRoleData.length > 9) {#}
+{#        $('#roleStats').remove();#}
+{#        $('#geoStats').show();#}
+{#        $(roleSelect).remove();#}
+{#        $("#id_Contributor_Data").select2();#}
+{#    };#}
     var statisticIndustriesData = {{ industries|safe }};
     var statisticCountriesData = {{ countries|safe }};
     var None = null;
     var mainChartData = {{ benchmark.charts|safe }};
-    
-
 
     {% if 'Pie' in benchmark.charts_allowed %}
         drawPieChart(mainChartData.pie, 'donutChart');
     {% endif %}
 
     {% if 'Column' in benchmark.charts_allowed %}
-        {% if benchmark.question_type == 2 %}
-            drawRankingColumnChart(mainChartData.column_ranking, 'columnChart');
-        {% else %}
-            drawColumnChart(mainChartData.column, 'columnChart');
-        {% endif %}
+        drawColumnChart(mainChartData.column, 'columnChart');
     {% endif %}
 
     {% if 'Line' in benchmark.charts_allowed %}
         drawLineChart(mainChartData.line, 'lineChart');
+    {% endif %}
+
+    {% if 'Area' in benchmark.charts_allowed %}
+        drawAreaChart(mainChartData.area, 'areaChart');
+    {% endif %}
+
+    {% if 'Bar' in benchmark.charts_allowed %}
+        drawBarChart(mainChartData.bar, 'barChart');
+        drawCircles(mainChartData.avg, 'avgRank');
+    {% endif %}
+
+    {% if 'Quartile' in benchmark.charts_allowed %}
+        drawQuartileChart(mainChartData.stock, 'quartileChart');
     {% endif %}
 
     {% if 'Bell_Curve' in benchmark.charts_allowed %}
@@ -229,33 +238,30 @@
             $("#sdVal").text(sd);
 
             $( ".single-stat .value" ).each(function() {
-                    var len = $(this).text().length;
-                    if (len >= 4) {
-                        $(this).parents('.benchmark-stats').addClass('fourPlus');
-                    }                    
+                var len = $(this).text().length;
+                if (len >= 4) {
+                    $(this).parents('.benchmark-stats').addClass('fourPlus');
+                }                    
 
-                    else if (len >= 6) {
-                        $(this).parents('.benchmark-stats').addClass('more');
-                    }
+                else if (len >= 6) {
+                    $(this).parents('.benchmark-stats').addClass('more');
+                }
 
 
-                    else {
-                        $(this).parents('.benchmark-stats').removeClass('more fourPlus');
-                    }
+                else {
+                    $(this).parents('.benchmark-stats').removeClass('more fourPlus');
+                }
             });
         });
-
-
         drawBellcurveChart(mainChartData.bell_curve, 'bellcurveChart');
-
-
     {% endif %}
 
-    drawStatsChart(statisticRoleData, 'roleChart');
+
+
+{#    drawStatsChart(statisticRoleData, 'roleChart');#}
     drawStatsChart(statisticGeoData, 'geoChart');
     drawStatsChart(statisticIndustriesData, 'industryChart');
     drawStatsChart(statisticCountriesData, 'countryChart');
-
 </script>
 
 

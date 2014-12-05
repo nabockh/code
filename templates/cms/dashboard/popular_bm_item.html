@@ -1,5 +1,5 @@
-    <div class='title' title='{{ benchmark.name }}'><a
-            href='/benchmark/{{ benchmark.id }}'>{{ benchmark.name }}</a></div>
+    <div class='title' title='{{ benchmark.question.first.label }}'><a
+            href='/benchmark/{{ benchmark.id }}'>{{ benchmark.question.first.label }}</a></div>
     {% if benchmark.question_type == 1 %}
         <div id='popular-donutChart-{{ benchmark.id }}-{{ instance.id }}' class='bigChart donut'>
         <script type="text/javascript">
@@ -9,71 +9,30 @@
         </script>
         </div>
 
-    {% elif benchmark.question_type == 2 %}
-        <div id='popular-columnChart-{{ benchmark.id }}-{{ instance.id }}' class='bigChart'></div>
+    {% elif benchmark.question_type == 2 %}        
+        <div class='relative'>
+            <div id='popular-barChart-{{ benchmark.id }}-{{ instance.id }}' class='bigChart'></div>
+            <div class='avg-title'>Avg. Rank</div>
+            <div class='avgBar' id='popular-avgBar-{{ benchmark.id }}-{{ instance.id }}'></div>
+        </div>
         <script type="text/javascript">
             var popular_mainChartData_{{ benchmark.id }} = {{ benchmark.charts|safe }};
-            var None = null;
-            
-            {% if benchmark.question_type == 2 %}
-                drawRankingColumnChart(popular_mainChartData_{{ benchmark.id }}.column_ranking, 'popular-columnChart-{{ benchmark.id }}-{{ instance.id }}');
-            {% else %}
-                drawColumnChart(popular_mainChartData_{{ benchmark.id }}.column, 'popular-columnChart-{{ benchmark.id }}-{{ instance.id }}');
-            {% endif %}
+
+            drawBarChart(popular_mainChartData_{{ benchmark.id }}.bar, 'popular-barChart-{{ benchmark.id }}-{{ instance.id }}');
+            drawCircles(popular_mainChartData_{{ benchmark.id }}.avg, 'popular-avgBar-{{ benchmark.id }}-{{ instance.id }}'); 
         </script>
 
 
     {% elif benchmark.question_type == 3 %}
-        <div id='popular-bellcurveChart-{{ benchmark.id }}-{{ instance.id }}' class='bigChart'></div>
+        <div id='popular-areaChart-{{ benchmark.id }}-{{ instance.id }}' class='bigChart'></div>
         <div class='units'>Chart Data In: <span title='{{ benchmark.question.first.options.first.units }}'>"{{ benchmark.question.first.options.first.units }}"</span></div>
-        <div class='benchmark-stats perc-based'>
-            <div class='single-stat'>
-                <span class='title'>Min</span>
-                <span class='value' id='popular-minVal-{{ benchmark.id }}'></span>
-            </div>
-            <div class='single-stat'>
-                <span class='title'>Max</span>
-                <span class='value' id='popular-maxVal-{{ benchmark.id }}'></span>
-            </div>
-            <div class='single-stat'>
-                <span class='title'>Avg</span>
-                <span class='value' id='popular-avgVal-{{ benchmark.id }}'></span>
-            </div>
-            <div class='single-stat'>
-                <span class='title'>SD</span>
-                <span class='value' id='popular-sdVal-{{ benchmark.id }}'></span>
-            </div>
-        </div>
 
         <script type="text/javascript">
             var popular_mainChartData_{{ benchmark.id }} = {{ benchmark.charts|safe }};
             var None = null;
-
-            $(function () {
-                $("#popular-minVal-{{ benchmark.id }}").text(popular_mainChartData_{{ benchmark.id }}.bell_curve.min.toFixed(0));
-                $("#popular-maxVal-{{ benchmark.id }}").text(popular_mainChartData_{{ benchmark.id }}.bell_curve.max.toFixed(0));
-                $("#popular-avgVal-{{ benchmark.id }}").text(popular_mainChartData_{{ benchmark.id }}.bell_curve.avg.toFixed(0));
-                var sd = popular_mainChartData_{{ benchmark.id }}.bell_curve.sd.toFixed(1);
-                $("#popular-sdVal-{{ benchmark.id }}").text(sd);
-
-                $( ".single-stat .value" ).each(function() {
-                    var len = $(this).text().length;
-                    if (len >= 4) {
-                        $(this).parents('.benchmark-stats').addClass('sixish');
-                    }                    
-
-                    else if (len >= 6) {
-                        $(this).parents('.benchmark-stats').addClass('more');
-                    }
-
-
-                    else {
-                        $(this).parents('.benchmark-stats').removeClass('more sixish');
-                    }
-                });
-            });
-            drawBellcurveChart(popular_mainChartData_{{ benchmark.id }}.bell_curve, 'popular-bellcurveChart-{{ benchmark.id }}-{{ instance.id }}');
+            drawAreaChart(popular_mainChartData_{{ benchmark.id }}.area, 'popular-areaChart-{{ benchmark.id }}-{{ instance.id }}');
         </script>
+
 
     {% elif benchmark.question_type == 4 %}
         <div id='popular-donutChart-{{ benchmark.id }}-{{ instance.id }}' class='bigChart donut'>
@@ -86,12 +45,13 @@
 
 
     {% elif benchmark.question_type == 5 %}
-        <div id='popular-lineChart-{{ benchmark.id }}-{{ instance.id }}' class='bigChart'></div>
+        <div id='popular-areaChart-{{ benchmark.id }}-{{ instance.id }}' class='bigChart'></div>
         <div class='units'>Chart Data In: <span title='{{ benchmark.question.first.options.first.units }}'>"{{ benchmark.question.first.options.first.units }}"</span></div>
+
         <script type="text/javascript">
             var popular_mainChartData_{{ benchmark.id }} = {{ benchmark.charts|safe }};
             var None = null;
-            drawLineChart(popular_mainChartData_{{ benchmark.id }}.line, 'popular-lineChart-{{ benchmark.id }}-{{ instance.id }}');
+            drawAreaChart(popular_mainChartData_{{ benchmark.id }}.area, 'popular-areaChart-{{ benchmark.id }}-{{ instance.id }}');
         </script>
     {% endif %}
 

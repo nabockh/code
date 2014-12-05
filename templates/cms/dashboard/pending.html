@@ -31,16 +31,25 @@
                 <span>{{ benchmark.days_left }} </span>
                 Days Left
             </p>
-            <div class="progress">
-                <div class="progress-bar" role="progressbar" aria-valuenow="{{ benchmark.calc_progress }}" aria-valuemin="0"
-                     aria-valuemax="100" style="width: {{ benchmark.calc_progress }}%;">
-                    {{ benchmark.calc_progress }}%
+            
+            {% if benchmark.owner == user %}
+                <div class="progress owned">
+                    <div class="progress-bar" role="progressbar" aria-valuenow="{{ benchmark.calc_progress }}" aria-valuemin="0"
+                         aria-valuemax="100" style="width: {{ benchmark.calc_progress }}%;">
+                        {{ benchmark.calc_progress }}%
+                    </div>
+                    <a href="{% url 'bm_add_recipients' benchmark.id %}" class="btn btn-primary add-recipients"><span
+                            class='non-mobile'>Add contacts</span><span class='mobile'><i class='fa fa-plus-circle'></i></span></a>
                 </div>
-                {% if benchmark.owner == user %}
-                <a href="{% url 'bm_add_recipients' benchmark.id %}" class="btn btn-primary add-recipients"><span
-                        class='non-mobile'>Add contacts</span><span class='mobile'><i class='fa fa-plus-circle'></i></span></a>
-                {% endif %}
-            </div>
+            {% else %}
+                <div class="progress">
+                    <div class="progress-bar" role="progressbar" aria-valuenow="{{ benchmark.calc_progress }}" aria-valuemin="0"
+                         aria-valuemax="100" style="width: {{ benchmark.calc_progress }}%;">
+                        {{ benchmark.calc_progress }}%
+                    </div>
+                </div>
+            {% endif %}
+            
         </div>
 
     {% endif %}

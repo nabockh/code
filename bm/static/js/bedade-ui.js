@@ -7,103 +7,145 @@ $(function () {
 
     var sectionStateChangeStep1 = function() {
         var selectedStep1 = $('#id_0-question_type').find('option:selected').val();
-            if (selectedStep1 > 2) {
-                $('#units_maxDecimals').show();
-                $('#answer_options').hide();
-                $('#units_maxDecimals').next('hr').show();
-            }
-            else {
-                $('#answer_options').show();
-                $('#units_maxDecimals').hide();
-                $('#units_maxDecimals').next('hr').show();
-            }
-            if (selectedStep1 == 4) {
-                $('#units_maxDecimals').hide();
-                $('#answer_options').hide();
-                $('#units_maxDecimals').next('hr').hide();
-            }
+        if (selectedStep1 > 2) {
+            $('#units_maxDecimals').show();
+            $('#answer_options').hide();
+            $('#units_maxDecimals').next('hr').show();
+        }
+        else {
+            $('#answer_options').show();
+            $('#units_maxDecimals').hide();
+            $('#units_maxDecimals').next('hr').show();
+        }
+        if (selectedStep1 == 4) {
+            $('#units_maxDecimals').hide();
+            $('#answer_options').hide();
+            $('#units_maxDecimals').next('hr').hide();
+        }
     };
 
     var sectionStateChangeStep3 = function() {
         var selectedStep3 = $('#id_2-question_type').find('option:selected').val();
-            if (selectedStep3 > 2) {
-                $('#units_maxDecimals_step3').show();
-                $('#answer_options_step3').hide();
-                $('#units_maxDecimals_step3').next('hr').show();
-            }
-            else {
-                $('#answer_options_step3').show();
-                $('#units_maxDecimals_step3').hide();
-                $('#units_maxDecimals_step3').next('hr').show();
-            }
+        if (selectedStep3 > 2) {
+            $('#units_maxDecimals_step3').show();
+            $('#answer_options_step3').hide();
+            $('#units_maxDecimals_step3').next('hr').show();
+        }
+        else {
+            $('#answer_options_step3').show();
+            $('#units_maxDecimals_step3').hide();
+            $('#units_maxDecimals_step3').next('hr').show();
+        }
 
-            if (selectedStep3 == 4) {
-                $('#units_maxDecimals_step3').hide();
-                $('#answer_options_step3').hide();
-                $('#units_maxDecimals_step3').next('hr').hide();
-            }
+        if (selectedStep3 == 4) {
+            $('#units_maxDecimals_step3').hide();
+            $('#answer_options_step3').hide();
+            $('#units_maxDecimals_step3').next('hr').hide();
+        }
     };
 
     var chartTypeChange = function() {
         var chartTypeChange = $('#id_Benchmark_Results').find('option:selected').val();
-            if (chartTypeChange == "Pie") {
-                $('#donutChartHolder').show();
-                $('#columnChartHolder').hide();
-                $('#bellcurveChartHolder').hide();
-                $('#lineChartHolder').hide();
-            }
+        if (chartTypeChange == "Pie") {
+            $('#donutChartHolder').show();
+            $('#columnChartHolder').hide();
+            $('#bellcurveChartHolder').hide();
+            $('#lineChartHolder').hide();
+            $('#areaChartHolder').hide();
+            $('#quartileChartHolder').hide();
+            $('#barChartHolder').hide();
+        }
 
-            if (chartTypeChange == "Column") {
-                $('#donutChartHolder').hide();
-                $('#columnChartHolder').show();
-                $('#bellcurveChartHolder').hide();
-                $('#lineChartHolder').hide();
-            }
+        if (chartTypeChange == "Area") {
+            $('#donutChartHolder').hide();
+            $('#columnChartHolder').hide();
+            $('#bellcurveChartHolder').hide();
+            $('#lineChartHolder').hide();
+            $('#areaChartHolder').show();
+            $('#quartileChartHolder').hide();
+            $('#barChartHolder').hide();
+        }
 
-            if (chartTypeChange == "Bell_Curve") {
-                $('#donutChartHolder').hide();
-                $('#columnChartHolder').hide();
-                $('#bellcurveChartHolder').show();
-                $('#lineChartHolder').hide();
-            }
+        if (chartTypeChange == "Column") {
+            $('#donutChartHolder').hide();
+            $('#columnChartHolder').show();
+            $('#bellcurveChartHolder').hide();
+            $('#lineChartHolder').hide();
+            $('#areaChartHolder').hide();
+            $('#quartileChartHolder').hide();
+            $('#barChartHolder').hide();
+        }
 
-            if (chartTypeChange == "Line") {
-                $('#donutChartHolder').hide();
-                $('#columnChartHolder').hide();
-                $('#bellcurveChartHolder').hide();
-                $('#lineChartHolder').show();
-            }
+        if (chartTypeChange == "Bell_Curve") {
+            $('#donutChartHolder').hide();
+            $('#columnChartHolder').hide();
+            $('#bellcurveChartHolder').show();
+            $('#lineChartHolder').hide();
+            $('#areaChartHolder').hide();
+            $('#quartileChartHolder').hide();
+            $('#barChartHolder').hide();
+        }
+
+        if (chartTypeChange == "Line") {
+            $('#donutChartHolder').hide();
+            $('#columnChartHolder').hide();
+            $('#bellcurveChartHolder').hide();
+            $('#lineChartHolder').show();
+            $('#areaChartHolder').hide();
+            $('#quartileChartHolder').hide();
+            $('#barChartHolder').hide();
+        }
+
+        if (chartTypeChange == "Bar") {
+            $('#donutChartHolder').hide();
+            $('#columnChartHolder').hide();
+            $('#bellcurveChartHolder').hide();
+            $('#lineChartHolder').hide();
+            $('#areaChartHolder').hide();
+            $('#quartileChartHolder').hide();
+            $('#barChartHolder').show();
+        }
+
+        if (chartTypeChange == "Quartile") {
+            $('#donutChartHolder').hide();
+            $('#columnChartHolder').hide();
+            $('#bellcurveChartHolder').hide();
+            $('#lineChartHolder').hide();
+            $('#areaChartHolder').hide();
+            $('#quartileChartHolder').show();
+            $('#barChartHolder').hide();
+        }
     };
 
     var statisticViewChange = function() {
         var statisticViewChange = $('#id_Contributor_Data').find('option:selected').val();
-            if (statisticViewChange == "Role") {
-                $('#roleStats').show();
-                $('#industryStats').hide();
-                $('#countryStats').hide();
-                $('#geoStats').hide();
-            }
+//        if (statisticViewChange == "Role") {
+//            $('#roleStats').show();
+//            $('#industryStats').hide();
+//            $('#countryStats').hide();
+//            $('#geoStats').hide();
+//        }
 
-            if (statisticViewChange == "Geo") {
-                $('#roleStats').hide();
-                $('#industryStats').hide();
-                $('#countryStats').hide();
-                $('#geoStats').show();
-            }
+        if (statisticViewChange == "Geo") {
+            $('#roleStats').hide();
+            $('#industryStats').hide();
+            $('#countryStats').hide();
+            $('#geoStats').show();
+        }
 
-            if (statisticViewChange == "Country") {
-                $('#roleStats').hide();
-                $('#industryStats').hide();
-                $('#countryStats').show();
-                $('#geoStats').hide();
-            }
+        if (statisticViewChange == "Country") {
+            $('#roleStats').hide();
+            $('#industryStats').hide();
+            $('#countryStats').show();
+            $('#geoStats').hide();
+        }
 
-            if (statisticViewChange == "Industry") {
-                $('#roleStats').hide();
-                $('#industryStats').show();
-                $('#countryStats').hide();
-                $('#geoStats').hide();
-            }
+        if (statisticViewChange == "Industry") {
+            $('#roleStats').hide();
+            $('#industryStats').show();
+            $('#countryStats').hide();
+            $('#geoStats').hide();
+        }
     };
 
     sectionStateChangeStep1();
@@ -141,7 +183,7 @@ $(function () {
 
 
     $('#preview').on('shown.bs.modal', function (e) {
-        if ($('#default_text').text().length <= 1) {
+//        if ($('#default_text').text().length <= 1) {
             var csrf = document.cookie.match(/csrftoken=([\w]+)/);
             var data = $('.styled-form').serialize();
             var request = $.ajax({
@@ -167,7 +209,7 @@ $(function () {
                     textStatus, errorThrown
                 );
             });
-        }
+//        }
     });
 
 
@@ -541,7 +583,7 @@ $( document ).ready(function() {
                                     '<p title="' + this_title + '">' + this_title + '</p>',
                                 '</div>',
                                 '<div class="col-md-12 col-xs-12 selected-check">',
-                                    '<input type="checkbox" name="1-selected-' + this_id + '-secondary" id="id_1-selected-' + this_id + '-secondary" class="share-checkbox" ' + allowed_target + '>',
+                                    '<input type="checkbox" name="1-selected-' + this_id + '-secondary" id="id_1-selected-' + this_id + '-secondary" class="share-checkbox" checked="checked">',
                                     '<label for="id_1-selected-' + this_id + '-secondary" class="nobold">Allow Forwarding</label>',
                                 '</div>',
                             '</div>',
@@ -554,6 +596,7 @@ $( document ).ready(function() {
                 '</div>',
             ].join("\n");
             $('#selectedContactList .mCSB_container').append(clone_block);
+            $(this).parent('.col-md-2.col-xs-2').siblings('.col-md-4.col-xs-3').find('.share-checkbox').prop('checked', true);
             $(this).attr('disabled', 'disabled');
             $('#selectedContactList .deselect-btn').click( function(){
                 var $this_parent = $(this).closest('.single-contact');
@@ -662,9 +705,14 @@ $( document ).ready(function(){
             $( "#preview" ).modal('hide');
         });
 
-    
-
-
+        $('.carousel-inner .title a').each(function() {
+            var divh = $(this).parent('.carousel-inner .title').height();
+            while ($(this).outerHeight()>divh) {
+                $(this).text(function (index, text) {
+                    return text.replace(/\W*\s(\S)*$/, '...');
+                });
+            }
+        });
 
     $('.select2-search input').attr('disabled', 'disabled');
 
