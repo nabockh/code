@@ -583,7 +583,7 @@ $( document ).ready(function() {
                                     '<p title="' + this_title + '">' + this_title + '</p>',
                                 '</div>',
                                 '<div class="col-md-12 col-xs-12 selected-check">',
-                                    '<input type="checkbox" name="1-selected-' + this_id + '-secondary" id="id_1-selected-' + this_id + '-secondary" class="share-checkbox" ' + allowed_target + '>',
+                                    '<input type="checkbox" name="1-selected-' + this_id + '-secondary" id="id_1-selected-' + this_id + '-secondary" class="share-checkbox" checked="checked">',
                                     '<label for="id_1-selected-' + this_id + '-secondary" class="nobold">Allow Forwarding</label>',
                                 '</div>',
                             '</div>',
@@ -596,6 +596,7 @@ $( document ).ready(function() {
                 '</div>',
             ].join("\n");
             $('#selectedContactList .mCSB_container').append(clone_block);
+            $(this).parent('.col-md-2.col-xs-2').siblings('.col-md-4.col-xs-3').find('.share-checkbox').prop('checked', true);
             $(this).attr('disabled', 'disabled');
             $('#selectedContactList .deselect-btn').click( function(){
                 var $this_parent = $(this).closest('.single-contact');

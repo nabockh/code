@@ -1413,6 +1413,20 @@ form[role='search'] .btn-search {
         font-weight: 600;
     }
 
+        .benchmark-creation .styled-form label sup {
+            color: red;
+            font-size: 0.9rem;
+        }
+
+        span.required {
+            font-size: 1rem;
+            font-style: italic;
+            letter-spacing: 1px;
+        }
+            span.required .text-red {
+                color:  red;
+            }
+
     .benchmark-creation .styled-form .btn {
         font-size: 14px;
         color: #fff;

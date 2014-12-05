@@ -151,7 +151,7 @@
                             <div class='row'>
                                 
                                 <div class='col-md-12'>
-                                    <label for="id_0-question_label">Your Question</label>
+                                    <label for="id_0-question_label">Your Question <sup>*</sup></label>
                                     <span class="add_help">?
                                         <span class='add_help_inner'>
                                             <span>
@@ -166,7 +166,7 @@
                                     {{ form.question_label.errors }}
                                 </div>
                                 <div class='col-md-12'>
-                                    <label for="id_0-name">Question Topic</label>
+                                    <label for="id_0-name">Subject <sup>*</sup></label>
                                     <span class="add_help">?
                                         <span class='add_help_inner'>
                                             <span>
@@ -225,7 +225,7 @@
                                             {{ form.industry.errors }}
                                         </div>
                                         <div class='col-md-4'>
-                                            <label for="question_type">Type of Question</label>
+                                            <label for="question_type">Type of Question <sup>*</sup></label>
                                             <span class="add_help">?
                                                 <span class='add_help_inner'>
                                                     <span>
@@ -295,7 +295,8 @@
                                 </div>
                                 <hr>
                                 <div class='col-md-12'>
-                                    <div class='row'>
+                                    <span class='required'><span class='text-red'>*</span> - Required fields</span>
+                                    <!-- <div class='row'>
                                         <div class='col-md-8 normal-padding'>
                                             <label for="id_1-minimum_number_of_answers">Minimum number of responses to validate benchmark</label>
                                             <span class="add_help">?
@@ -307,12 +308,12 @@
                                                     </span>
                                                 </span>
                                             </span>
-                                        </div>
-                                        <div class='col-md-4'>
+                                        </div> -->
+                                        <div class='col-md-4 hidden'>
                                             {{ form.minimum_number_of_answers }}
                                             {{ form.minimum_number_of_answers.errors }}
                                         </div>
-                                    </div>
+                                    <!-- </div> -->
                                 </div>
                             </div>                                
                         </div>
@@ -338,7 +339,7 @@
                             <input id="id_benchmark_create_wizard_view-current_step" name="benchmark_create_wizard_view-current_step" type="hidden" value="2">
                             <div class='row'>
                                 <div class='col-md-12'>
-                                    <label for="id_2-question_label">Your Question</label>
+                                    <label for="id_2-question_label">Your Question <sup>*</sup></label>
                                     <span class="add_help">?
                                         <span class='add_help_inner'>
                                             <span>
@@ -353,7 +354,7 @@
                                     {{ form.question_label.errors }}
                                 </div>
                                 <div class='col-md-12'>
-                                    <label for="id_2-name">Question Topic</label>
+                                    <label for="id_2-name">Subject <sup>*</sup></label>
                                     <span class="add_help">?
                                         <span class='add_help_inner'>
                                             <span>
@@ -412,7 +413,7 @@
                                             {{ form.industry.errors }}
                                         </div>
                                         <div class='col-md-4'>
-                                            <label for="question_type">Type of Question</label>
+                                            <label for="question_type">Type of Question <sup>*</sup></label>
                                             <span class="add_help">?
                                                 <span class='add_help_inner'>
                                                     <span>
@@ -483,7 +484,8 @@
                                 </div>
                                 <hr>
                                 <div class='col-md-12'>
-                                    <div class='row'>
+                                    <span class='required'><span class='text-red'>*</span> - Required fields</span>
+                                    <!-- <div class='row'>
                                         <div class='col-md-8 normal-padding'>
                                             <label for="id_2-minimum_number_of_answers">Minimum responses required to validate benchmark</label>
                                             <span class="add_help">?
@@ -495,12 +497,12 @@
                                                     </span>
                                                 </span>
                                             </span>
-                                        </div>
-                                        <div class='col-md-4'>
+                                        </div>-->
+                                        <div class='col-md-4 hidden'>
                                             {{ form.minimum_number_of_answers }}
                                             {{ form.minimum_number_of_answers.errors }}
                                         </div>
-                                    </div>
+                                    <!-- </div> -->
                                 </div>
                                 <hr>
                                 <div class="col-md-12">
