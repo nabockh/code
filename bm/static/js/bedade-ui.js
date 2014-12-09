@@ -55,7 +55,6 @@ $(function () {
             $('#areaChartHolder').hide();
             $('#areaStats').hide();
             $('#quartileChartHolder').hide();
-            $('#quartileStats').hide();
             $('#barChartHolder').hide();
         }
 
@@ -68,7 +67,6 @@ $(function () {
             $('#areaChartHolder').show();
             $('#areaStats').show();
             $('#quartileChartHolder').hide();
-            $('#quartileStats').hide();
             $('#barChartHolder').hide();
         }
 
@@ -82,7 +80,6 @@ $(function () {
             $('#barChartHolder').hide();
             $('#bellcurveStats').hide();
             $('#areaStats').hide();
-            $('#quartileStats').hide();
         }
 
         if (chartTypeChange == "Bell_Curve") {
@@ -95,7 +92,6 @@ $(function () {
             $('#barChartHolder').hide();
             $('#bellcurveStats').show();
             $('#areaStats').hide();
-            $('#quartileStats').hide();
         }
 
         if (chartTypeChange == "Line") {
@@ -108,7 +104,6 @@ $(function () {
             $('#barChartHolder').hide();
             $('#bellcurveStats').hide();
             $('#areaStats').hide();
-            $('#quartileStats').hide();
         }
 
         if (chartTypeChange == "Bar") {
@@ -121,7 +116,6 @@ $(function () {
             $('#barChartHolder').show();
             $('#bellcurveStats').hide();
             $('#areaStats').hide();
-            $('#quartileStats').hide();
         }
 
         if (chartTypeChange == "Quartile") {
@@ -130,11 +124,10 @@ $(function () {
             $('#bellcurveChartHolder').hide();
             $('#lineChartHolder').hide();
             $('#areaChartHolder').hide();
+            $('#areaStats').show();
             $('#quartileChartHolder').show();
             $('#barChartHolder').hide();
             $('#bellcurveStats').hide();
-            $('#areaStats').hide();
-            $('#quartileStats').show();
         }
     };
 

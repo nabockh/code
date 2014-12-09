@@ -3057,29 +3057,28 @@ ul#answerSortable {
         height: 262px;
     }
 
-    #areaStats .units, #bellcurveStats .units {
-        background: #333;
-        color: #fff;
-        font-weight: bold;    
-        padding: 7px 20px;
-    }
-    
-        #areaStats .units > span, #bellcurveStats .units > span {
-            font-weight: 900;
-            line-height: 14px;
-            text-align: left;
-            color: #94a6c3;        
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            max-width: 350px;
-    
-            height: 18px;
-            font-size: 18px;
-            display: inline-block;
-            vertical-align: middle;
-            padding-left: 5px;
+#areaStats .units, #bellcurveStats .units {
+    background: #333;
+    color: #fff;
+    font-weight: bold;    
+    padding: 7px 20px;
 }
+    
+    #areaStats .units > span, #bellcurveStats .units > span, #quartileStats .units > span {
+        font-weight: 900;
+        line-height: 14px;
+        text-align: left;
+        color: #94a6c3;        
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 350px;
+        height: 18px;
+        font-size: 18px;
+        display: inline-block;
+        vertical-align: middle;
+        padding-left: 5px;
+    }
 
     .bigChart > div {
         margin: 0 auto;
