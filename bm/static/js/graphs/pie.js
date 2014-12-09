@@ -26,17 +26,31 @@ function drawPieChart(chartData, divId) {
 
     var donutChartData = google.visualization.arrayToDataTable(chartData);
             
-    var donutOptions = {
-        pieHole: 0.35,
-        legend: { position: "bottom" },
-        pieSliceText: 'label',
-        tooltip: { text: 'percentage' },
-        slices: pieGradient(chartData.length),
-        chartArea: {
-            top: '5%',
-            width: "90%", 
-            height: "80%" 
-        }
+    if( screen.width < 641 ) {
+        var donutOptions = {
+            pieHole: 0,
+            legend: { position: "bottom" },
+            pieSliceText: 'percentage',
+            tooltip: { text: 'percentage' },
+            slices: pieGradient(chartData.length),
+            chartArea: {
+                top: 25,
+                width: '80%'
+            },
+        };
+    } else {
+        var donutOptions = {
+            pieHole: 0.35,
+            legend: { position: "bottom" },
+            pieSliceText: 'percentage',
+            tooltip: { text: 'percentage' },
+            slices: pieGradient(chartData.length),
+            chartArea: {
+                top: '5%',
+                width: "90%", 
+                height: "80%" 
+            }
+        };
     };
 
    

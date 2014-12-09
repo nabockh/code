@@ -25,18 +25,22 @@
                             <div class='relative'>
                                 <div id='barChartHolder'>
                                     <div id='barChart' class='bigChart'></div>
-                                    <div class='avg-title'>Avg. Rank</div>
-                                    <div class='avgBar' id='avgRank'></div>
                                 </div>
+                                <div class='avg-title'>Avg. Rank</div>
+                                <div class='avgBar' id='avgRank'></div>
                             </div>
                         {% endif %}
                         {% if benchmark.question_type == 3 %}
                             <div id='areaChartHolder'>
                                 <div id='areaChart' class='bigChart'></div>
+                            </div>
+                            <div id='areaStats'>
                                 <div class='units'>Chart Data In: <span title='{{ benchmark.question.first.options.first.units }}'>"{{ benchmark.question.first.options.first.units }}"</span></div>
                             </div>
                             <div id='bellcurveChartHolder'>
                                 <div id='bellcurveChart' class='bigChart'></div>
+                            </div>
+                            <div id='bellcurveStats'>
                                 <div class='units'>Chart Data In: <span title='{{ benchmark.question.first.options.first.units }}'>"{{ benchmark.question.first.options.first.units }}"</span></div>
                                 <div class='benchmark-stats perc-based'>
                                     <div class='single-stat'>
@@ -69,10 +73,14 @@
                         {% if benchmark.question_type == 5 %}
                             <div id='areaChartHolder'>
                                 <div id='areaChart' class='bigChart'></div>
+                            </div>
+                            <div id='#areaStats'>
                                 <div class='units'>Chart Data In: <span title='{{ benchmark.question.first.options.first.units }}'>"{{ benchmark.question.first.options.first.units }}"</span></div>
                             </div>
                             <div id='quartileChartHolder'>
                                 <div id='quartileChart' class='bigChart'></div>
+                            </div>
+                            <div id='#quartileStats'>
                                 <div class='units'>Chart Data In: <span title='{{ benchmark.question.first.options.first.units }}'>"{{ benchmark.question.first.options.first.units }}"</span></div>
                             </div>
                         {% endif %}                            
@@ -180,6 +188,8 @@
     </form>
 
 
+
+
 <script src="{{ STATIC_URL }}js/graphs/pie.js"></script>
 <script src="{{ STATIC_URL }}js/graphs/column.js"></script>
 <script src="{{ STATIC_URL }}js/graphs/line.js"></script>
@@ -203,30 +213,35 @@
     var statisticCountriesData = {{ countries|safe }};
     var None = null;
     var mainChartData = {{ benchmark.charts|safe }};
+</script>
+
+<script type="text/javascript">
 
     {% if 'Pie' in benchmark.charts_allowed %}
-        drawPieChart(mainChartData.pie, 'donutChart');
+        drawPieChart(mainChartData.pie, 'donutChartHolder');
     {% endif %}
 
     {% if 'Column' in benchmark.charts_allowed %}
-        drawColumnChart(mainChartData.column, 'columnChart');
+        drawColumnChart(mainChartData.column, 'columnChartHolder');
     {% endif %}
 
     {% if 'Line' in benchmark.charts_allowed %}
-        drawLineChart(mainChartData.line, 'lineChart');
+        drawLineChart(mainChartData.line, 'lineChartHolder');
     {% endif %}
 
     {% if 'Area' in benchmark.charts_allowed %}
-        drawAreaChart(mainChartData.area, 'areaChart');
+        drawAreaChart(mainChartData.area, 'areaChartHolder');
     {% endif %}
 
     {% if 'Bar' in benchmark.charts_allowed %}
-        drawBarChart(mainChartData.bar, 'barChart');
-        drawCircles(mainChartData.avg, 'avgRank');
+        drawBarChart(mainChartData.bar, 'barChartHolder');
+        if( screen.width > 641 ) {
+            drawCircles(mainChartData.avg, 'avgRank');
+        };
     {% endif %}
 
     {% if 'Quartile' in benchmark.charts_allowed %}
-        drawQuartileChart(mainChartData.stock, 'quartileChart');
+        drawQuartileChart(mainChartData.stock, 'quartileChartHolder');
     {% endif %}
 
     {% if 'Bell_Curve' in benchmark.charts_allowed %}
@@ -253,7 +268,7 @@
                 }
             });
         });
-        drawBellcurveChart(mainChartData.bell_curve, 'bellcurveChart');
+        drawBellcurveChart(mainChartData.bell_curve, 'bellcurveChartHolder');
     {% endif %}
 
 
@@ -263,9 +278,5 @@
     drawStatsChart(statisticIndustriesData, 'industryChart');
     drawStatsChart(statisticCountriesData, 'countryChart');
 </script>
-
-
-
-
 
 {% endblock %}

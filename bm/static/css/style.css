@@ -3057,14 +3057,14 @@ ul#answerSortable {
         height: 262px;
     }
 
-    .bigChart + .units {
+    #areaStats .units, #bellcurveStats .units {
         background: #333;
         color: #fff;
         font-weight: bold;    
         padding: 7px 20px;
     }
     
-        .bigChart + .units > span {
+        #areaStats .units > span, #bellcurveStats .units > span {
             font-weight: 900;
             line-height: 14px;
             text-align: left;
@@ -4000,6 +4000,15 @@ span.hide-btn.right {left: auto; right: 0;}
         float: none;
     }
 
+    .open-benchmark-container {
+        margin-left: 10px;
+        margin-right: 10px;
+    }
+
+    .preloader {
+        top: 60px;
+    }
+
     .pop-up-content {
         max-width: 80%;
         width: 80%;
@@ -4177,7 +4186,30 @@ span.hide-btn.right {left: auto; right: 0;}
     }
     
     .mobile-wide {
-        margin: -30px -25px 0 !important;
+        margin: -10px -25px 0 !important;
+    }
+
+    .avg-title {
+        display: none;
+    }
+
+    .benchmark-stats .single-stat {
+        width: 100%;
+        padding: 7px 10px;
+        height: auto;
+    }
+        .benchmark-stats .single-stat > span {
+            display: inline-block;
+            max-width: 85%;
+            vertical-align: -webkit-baseline-middle;
+        }
+            .benchmark-stats.fourPlus .single-stat > span.value {
+                padding: 0 10px;
+                float: right;
+            }
+
+    #quartileChartHolder rect[height='2']{
+        stroke-width: 10px;
     }
 
     .title-header select {
