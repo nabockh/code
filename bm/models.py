@@ -438,9 +438,9 @@ class BenchmarkRange(Benchmark):
             index = average.index(i)
             val_sum = len(average)
             if index == 0:
-                percen.append(round(1/float(val_sum), 2)*100)
+                percen.append(round(1/float(val_sum), 1)*100)
             else:
-                percen.append(round((1/float(val_sum))*100 + percen[index-1], 2))
+                percen.append(round((1/float(val_sum))*100 + percen[index-1], 1))
         if percen[-1] != 100:
             percen.remove(percen[-1])
             percen.append(100)
@@ -455,7 +455,7 @@ class BenchmarkRange(Benchmark):
         excel_stock = []
         for idx, (q_min, q_max) in enumerate(quartiles, start=1):
             average = numpy.average([q_min, q_max])
-            tooltip = { 'v':idx, 'f':'Quartile ' + (str(idx))}
+            tooltip = {'v': idx, 'f': 'Quartile ' + (str(idx))}
             stock_data.append([tooltip, q_min, average, average, q_max])
             excel_stock.append(([str(idx) + ' Quartile', q_min, q_max, average]))
 
