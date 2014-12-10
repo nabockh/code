@@ -81,7 +81,7 @@ function drawBarChart(chartData, divId) {
 function drawCircles(avgCircles, containerId) {
     avgCircles.sort(function(a, b){return a-b}); // Sort
     $.each(avgCircles, function(index, value) {
-      $("#" + containerId + ".avgBar").append("<div class='barCircle'><span class='avgValue'>" + value + "</span><span class='tt'>" + "Avarage Rank: <b>" + value + "</b></span></div>");
+      $("#" + containerId + ".avgBar").append("<div class='barCircle'><span class='avgValue'>" + value + "</span><span class='tt'>" + "Average Rank: <b>" + value + "</b></span></div>");
     });
 
     var len = avgCircles.length,

@@ -8,7 +8,7 @@ function drawQuartileChart(chartData, divId) {
             min = chartData[1],
             avg = chartData[3],
             max = chartData[4];
-        return '<div style="padding:5px 5px 5px 5px;">' + '<b>' + votes + '</b>' + '<br/>'+ '<span style="display: block; border-bottom: 1px solid #ccc; padding-top: 5px; margin-bottom: 5px;"></span>' + 'Range: ' + '<b>' + min + ' - ' + max + '</b>' + '<br/>'+ 'Avarage: ' + '<b>' + avg + '</b>' + '</div>';
+        return '<div style="padding:5px 5px 5px 5px;">' + '<b>' + votes + '</b>' + '<br/>'+ '<span style="display: block; border-bottom: 1px solid #ccc; padding-top: 5px; margin-bottom: 5px;"></span>' + 'Range: ' + '<b>' + min + ' - ' + max + '</b>' + '<br/>'+ 'Average: ' + '<b>' + avg + '</b>' + '</div>';
     };
 
     for(var i = 0; i < chartData.length; ++i){
