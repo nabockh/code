@@ -4200,11 +4200,12 @@ span.hide-btn.right {left: auto; right: 0;}
         .benchmark-stats .single-stat > span {
             display: inline-block;
             max-width: 85%;
-            vertical-align: -webkit-baseline-middle;
+            vertical-align: middle;
         }
-            .benchmark-stats.fourPlus .single-stat > span.value {
+            .benchmark-stats .single-stat > span.value {
                 padding: 0 10px;
                 float: right;
+                font-size: 24px;
             }
 
     #quartileChartHolder rect[height='2']{
