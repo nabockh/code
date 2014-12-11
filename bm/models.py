@@ -426,6 +426,7 @@ class BenchmarkRange(Benchmark):
             quartile_raw.append([int(s['series']), int(s['sub_series'])])
         quartile_raw = sorted(quartile_raw)
         quartile_raw.insert(0, ['min', 'max'])
+        quartile_raw = [item for item in quartile_raw if item[0]!= item[1]]
         min_values = []
         max_values = []
         average = []
