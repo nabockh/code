@@ -280,7 +280,7 @@ class BenchmarkRanking(Benchmark):
             for r in rank[1:]:
                 obj = {'v': (round(Decimal(r/float(summa))*100, 1)),
                        'f': str((round(Decimal(r/float(summa))*100, 1)))+'%'}
-                excel_percent.append(round(Decimal(r/float(summa))*100, 2))
+                excel_percent.append(round(Decimal(r/float(summa))*100, 1))
                 percent.append(obj)
             excel_percent.insert(0, rank[0])
             percent.insert(0, rank[0])
