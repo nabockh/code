@@ -268,7 +268,7 @@ ul.main-nav .dropdown-menu {
 .user-nav {
     background: #333;
     color: #fff;
-    padding: 25px 0 17px;
+    padding: 25px 0 18px;
     position: fixed;
     top: 90px;
     left: 0;
@@ -300,6 +300,7 @@ ul.user-nav-inner {
             margin-left: 0;        
             font-size: 20px;
             line-height: 26px;
+            white-space: nowrap;
         }
 
             ul.user-nav-inner > li.username a {
@@ -3310,6 +3311,8 @@ span.hide-btn.right {left: auto; right: 0;}
         background: #33626e;
         border-radius: 3px;
         padding: 2px 9px 3px;
+        margin-left: 10px;
+        white-space: nowrap;
     }
 
         .fixed-navs ul.user-nav-inner > li > a.log-out {
