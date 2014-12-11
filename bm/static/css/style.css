@@ -11,10 +11,6 @@ body {
         font-family: Roboto !important;
     }
 
-    body.unauth {
-        padding-top: 140px;
-    }
-
 html, body {
     height: 100%;
 }
@@ -4149,10 +4145,6 @@ span.hide-btn.right {left: auto; right: 0;}
         font-size: 1.2rem;
         height: 34px;
         line-height: 20px;
-    }
-
-    body.unauth {
-        padding-top: 145px;
     }
 
     .container.top-navbar, .fixed-navs #top.navbar-default .top-navbar {
