@@ -49,9 +49,9 @@ function drawBarChart(chartData, divId) {
             isStacked: true,
             colors: barGradient(chartData.length),
             hAxis: {title : '% of Respondents', viewWindow: { min: 1, max: 100.9}, ticks: [{v:1, f: '0'}, {v:25, f: '25'}, {v:50, f: '50'}, {v:75, f: '75'}, {v:100, f: '100'}]},
-            annotations: {
-              textStyle: {fontSize: 2, color: '#000' },
-            }
+            // annotations: {
+            //   textStyle: {fontSize: 2, color: '#000' },
+            // }
             // orientation: 'horizontal'
         };
     } else {
