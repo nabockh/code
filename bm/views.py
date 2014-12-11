@@ -937,6 +937,7 @@ class ExcelDownloadView(BenchmarkDetailView):
                 'border': {'color': 'black'},
                 'fill':   {'color': 'white'}
             })
+            chart.set_title({'name': benchmark.name})
             contributor_worksheet.insert_chart('F3', chart)
 
         elif question_type == 2:
@@ -949,6 +950,7 @@ class ExcelDownloadView(BenchmarkDetailView):
             last_col = ranks[len(ranks_count) + 1]
             for idx, i in enumerate(ranks_count, start=2):
                 chart.add_series({
+                    'name': i,
                     'values': "=Contributor Stats!$B$%s:$%s$%s" % (idx, last_col, idx),
                     'categories': "=Contributor Stats!$B$1:$%s$1" % (last_col,),
                     'data_labels': {'value': True},
@@ -1029,6 +1031,7 @@ class ExcelDownloadView(BenchmarkDetailView):
                 'values':     '=Contributor Stats!$B$2:$B$3',
                 'data_labels': {'percentage': True}
             })
+            chart.set_title({'name': benchmark.name})
             chart.set_chartarea({
                 'border': {'color': 'black'},
                 'fill':   {'color': 'white'}
@@ -1040,18 +1043,38 @@ class ExcelDownloadView(BenchmarkDetailView):
             for idx, quartile in enumerate(stock_data, start=2):
                 contributor_worksheet.write_row('A%s' % idx, quartile)
             chart_stock.add_series({
-                'categories': '=Contributor Stats!$A$1:$A$5',
+                'categories': '=Contributor Stats!$A$2:$A$5',
                 'name': "=Contributor Stats!$B$1:$B$1",
                 'values':     "=Contributor Stats!$B$2:$B$5",
+                'marker': {
+                    'type': 'circle',
+                    'size': 4,
+                    'border': {'color': 'black'},
+                    'fill':   {'color': 'blue'},
+                },
             })
             chart_stock.add_series({
                 'name': "=Contributor Stats!$C$1:$C$1",
                 'values':     "=Contributor Stats!$C$2:$C$5",
+                'marker': {
+                    'type': 'circle',
+                    'size': 4,
+                    'border': {'color': 'black'},
+                    'fill':   {'color': 'green'},
+                },
             })
             chart_stock.add_series({
                 'name': "=Contributor Stats!$D$1:$D$1",
                 'values':     "=Contributor Stats!$D$2:$D$5",
+                'marker': {
+                    'type': 'triangle',
+                    'size': 6,
+                    'border': {'color': 'black'},
+                    'fill':   {'color': 'red'},
+                },
             })
+            chart_stock.set_title ({'name': benchmark.name})
+            chart_stock.set_style(2)
             contributor_worksheet.write_row('A1', headings)
             contributor_worksheet.insert_chart('E1', chart_stock)
             # Area Chart

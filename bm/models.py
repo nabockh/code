@@ -280,7 +280,7 @@ class BenchmarkRanking(Benchmark):
             for r in rank[1:]:
                 obj = {'v': (round(Decimal(r/float(summa))*100, 1)),
                        'f': str((round(Decimal(r/float(summa))*100, 1)))+'%'}
-                excel_percent.append(round(Decimal(r/float(summa))*100, 2))
+                excel_percent.append(round(Decimal(r/float(summa))*100, 1))
                 percent.append(obj)
             excel_percent.insert(0, rank[0])
             percent.insert(0, rank[0])
@@ -323,10 +323,11 @@ class BenchmarkNumeric(Benchmark):
         numeric_data = [response[0].value for response in responses]
         stddev = numpy.std(numeric_data)
         avg = numpy.mean(numeric_data)
-        val_range = range(int(avg - 3 * stddev), int(avg + 3 * stddev))
+        min_point = int(avg - (3 * stddev))
+        max_point = int(avg + (3 * stddev))
         for i in xrange(len(numeric_data) - 1, -1, -1):
             element = numeric_data[i]
-            if element not in val_range:
+            if element < min_point or element > max_point:
                 del numeric_data[i]
         counted_dict = collections.Counter(numeric_data)
         sorted_list = sorted(counted_dict.items(), key=operator.itemgetter(0))
@@ -426,10 +427,11 @@ class BenchmarkRange(Benchmark):
         numeric_data = sorted([numpy.mean([response[0].min, response[0].max]) for response in range_responses])
         avg = numpy.mean(numeric_data)
         stddev = numpy.std(numeric_data)
-        val_range = range(int(avg - (3 * stddev)), int(avg + (3 * stddev)))
+        min_point = int(avg - (3 * stddev))
+        max_point = int(avg + (3 * stddev))
         for i in xrange(len(numeric_data) - 1, -1, -1):
             element = numeric_data[i]
-            if element not in val_range:
+            if element < min_point or element > max_point:
                 del numeric_data[i]
         percen = []
         for i in numeric_data:
@@ -450,7 +452,7 @@ class BenchmarkRange(Benchmark):
         quartile_data = sorted([([response[0].min, response[0].max, numpy.mean([response[0].min, response[0].max])]) for response in range_responses])
         for i in xrange(len(quartile_data) - 1, -1, -1):
             element = quartile_data[i]
-            if element[2] not in val_range:
+            if element[2] < min_point or element[2] > max_point:
                 del quartile_data[i]
             else:
                 del element[2]
