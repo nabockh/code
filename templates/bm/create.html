@@ -44,14 +44,14 @@
             <div class='user-nav'>
                 <div class='container'>
                     <div class='row'>
-                    <div class='col-md-8 col-xs-9'>
+                    <div class='col-md-8 col-xs-7'>
                         <div class='hello'>Hello,</div>
                         <ul class='user-nav-inner'>
                             <li class='username'><a href="/dashboard">{{ user.first_name }} {{ user.last_name }}</a></li>                            
                             <li><a class='log-out' href='/logout' title='Log Out'>Log Out</a></li>
                         </ul>
                     </div>
-                    <div class='col-md-4 col-xs-3'>
+                    <div class='col-md-4 col-xs-4 col-xs-offset-1 col-md-offset-0'>
                         {% if wizard.steps.step1 == 1 %}
                             <label for='bm-submit' class='btn btn-primary auto-width pull-right'><span class='non-mobile'>Continue</span> <i class='fa fa-arrow-circle-o-right s'></i></label>
                         {% elif wizard.steps.step1 == 2 %}
