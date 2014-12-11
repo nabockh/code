@@ -37,22 +37,40 @@ function drawBarChart(chartData, divId) {
 
     view.setColumns(arr);
 
+    if( screen.width < 641 ) {
+        var barOptions = {
+            chartArea: {
+                top: 25,
+                left: 60,
+                width: '75%'
+            },
+            legend: { position: 'bottom', maxLines: 1 },
+            bar: { groupWidth: '75%' },
+            isStacked: true,
+            colors: barGradient(chartData.length),
+            hAxis: {title : '% of Respondents', viewWindow: { min: 1, max: 100.9}, ticks: [{v:1, f: '0'}, {v:25, f: '25'}, {v:50, f: '50'}, {v:75, f: '75'}, {v:100, f: '100'}]},
+            annotations: {
+              textStyle: {fontSize: 2, color: '#000' },
+            }
+            // orientation: 'horizontal'
+        };
+    } else {
 
+        var barOptions = {
+            chartArea: {  
+                width: "65%", 
+                height: "65%",
+                left: 100,
+            },
+            legend: { position: 'top', maxLines: 1 },
+            bar: { groupWidth: '75%' },
+            isStacked: true,
+            colors: barGradient(chartData.length),
+            hAxis: {title : '% of Respondents', viewWindow: { min: 1, max: 100.9}, ticks: [{v:1, f: '0'}, {v:25, f: '25'}, {v:50, f: '50'}, {v:75, f: '75'}, {v:100, f: '100'}]}
 
-    var barOptions = {
-        chartArea: {  
-            width: "65%", 
-            height: "65%",
-            left: 100,
-            right: 100
-        },
-        legend: { position: 'top', maxLines: 1 },
-        bar: { groupWidth: '75%' },
-        isStacked: true,
-        colors: barGradient(chartData.length),
-        hAxis: {title : '% of Respondents', viewWindow: { min: 0, max: 100.9}}
-
+        };
     };
+
 
     var barChart = new google.visualization.BarChart(document.getElementById(divId));
 
@@ -62,9 +80,8 @@ function drawBarChart(chartData, divId) {
 
 function drawCircles(avgCircles, containerId) {
     avgCircles.sort(function(a, b){return a-b}); // Sort
-
     $.each(avgCircles, function(index, value) {
-      $("#" + containerId + ".avgBar").append("<div class='barCircle'><span class='avgValue'>" + value + "</span><span class='tt'>" + "Avarage Rank: <b>" + value + "</b></span></div>");
+      $("#" + containerId + ".avgBar").append("<div class='barCircle'><span class='avgValue'>" + value + "</span><span class='tt'>" + "Average Rank: <b>" + value + "</b></span></div>");
     });
 
     var len = avgCircles.length,

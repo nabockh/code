@@ -1,56 +1,71 @@
     <div class='title' title='{{ benchmark.question.first.label }}'><a
             href='/benchmark/{{ benchmark.id }}'>{{ benchmark.question.first.label }}</a></div>
     {% if benchmark.question_type == 1 %}
-        <div id='donutChart-{{ benchmark.id }}-{{ instance.id }}' class='bigChart donut'>
+        <div id='donutChartHolder-{{ benchmark.id }}'>
+            <div id='donutChart' class='bigChart donut'></div>
+        </div>
         <script type="text/javascript">
             var mainChartData_{{ benchmark.id }} = {{ benchmark.charts|safe }};
             var None = null;
-            drawPieChart(mainChartData_{{ benchmark.id }}.pie, 'donutChart-{{ benchmark.id }}-{{ instance.id }}');
+            drawPieChart(mainChartData_{{ benchmark.id }}.pie, 'donutChartHolder-{{ benchmark.id }}');
         </script>
-        </div>
 
     {% elif benchmark.question_type == 2 %}
         <div class='relative'>
-            <div id='barChart-{{ benchmark.id }}-{{ instance.id }}' class='bigChart'></div>
+            <div id='barChartHolder-{{ benchmark.id }}-{{ instance.id }}'>
+                <div id='barChart-{{ benchmark.id }}-{{ instance.id }}' class='bigChart'></div>
+            </div>
             <div class='avg-title'>Avg. Rank</div>
             <div class='avgBar' id='avgBar-{{ benchmark.id }}-{{ instance.id }}'></div>
-        </div>
+        </div>       
+
         <script type="text/javascript">
             var mainChartData_{{ benchmark.id }} = {{ benchmark.charts|safe }};
 
-            drawBarChart(mainChartData_{{ benchmark.id }}.bar, 'barChart-{{ benchmark.id }}-{{ instance.id }}');
-            drawCircles(mainChartData_{{ benchmark.id }}.avg, 'avgBar-{{ benchmark.id }}-{{ instance.id }}'); 
+            drawBarChart(mainChartData_{{ benchmark.id }}.bar, 'barChartHolder-{{ benchmark.id }}-{{ instance.id }}');
+
+            if( screen.width > 641 ) {
+                drawCircles(mainChartData_{{ benchmark.id }}.avg, 'avgBar-{{ benchmark.id }}-{{ instance.id }}'); 
+            };
         </script>
 
 
     {% elif benchmark.question_type == 3 %}
-        <div id='areaChart-{{ benchmark.id }}-{{ instance.id }}' class='bigChart'></div>
-        <div class='units'>Chart Data In: <span title='{{ benchmark.question.first.options.first.units }}'>"{{ benchmark.question.first.options.first.units }}"</span></div>
-       
-
+        <div id='areaChartHolder-{{ benchmark.id }}-{{ instance.id }}'>
+            <div id='areaChart' class='bigChart'></div>
+        </div>      
+        <div id='areaStats'>
+            <div class='units'>Chart Data In: <span title='{{ benchmark.question.first.options.first.units }}'>"{{ benchmark.question.first.options.first.units }}"</span></div>
+        </div>
         <script type="text/javascript">
             var mainChartData_{{ benchmark.id }} = {{ benchmark.charts|safe }};
             var None = null;
-            drawAreaChart(mainChartData_{{ benchmark.id }}.area, 'areaChart-{{ benchmark.id }}-{{ instance.id }}');
+            drawAreaChart(mainChartData_{{ benchmark.id }}.area, 'areaChartHolder-{{ benchmark.id }}-{{ instance.id }}');
         </script>
 
     {% elif benchmark.question_type == 4 %}
-        <div id='donutChart-{{ benchmark.id }}-{{ instance.id }}' class='bigChart donut'>
+        <div id='donutChartHolder-{{ benchmark.id }}'>
+            <div id='donutChart' class='bigChart donut'></div>
+        </div>
         <script type="text/javascript">
             var mainChartData_{{ benchmark.id }} = {{ benchmark.charts|safe }};
             var None = null;
-            drawPieChart(mainChartData_{{ benchmark.id }}.pie, 'donutChart-{{ benchmark.id }}-{{ instance.id }}');
+            drawPieChart(mainChartData_{{ benchmark.id }}.pie, 'donutChartHolder-{{ benchmark.id }}');
         </script>
-        </div>
+        
 
 
     {% elif benchmark.question_type == 5 %}
-        <div id='areaChart-{{ benchmark.id }}-{{ instance.id }}' class='bigChart'></div>
-        <div class='units'>Chart Data In: <span title='{{ benchmark.question.first.options.first.units }}'>"{{ benchmark.question.first.options.first.units }}"</span></div>
+        <div id='areaChartHolder-{{ benchmark.id }}-{{ instance.id }}'>
+            <div id='areaChart' class='bigChart'></div>
+        </div>      
+        <div id='areaStats'>
+            <div class='units'>Chart Data In: <span title='{{ benchmark.question.first.options.first.units }}'>"{{ benchmark.question.first.options.first.units }}"</span></div>
+        </div>
         <script type="text/javascript">
             var mainChartData_{{ benchmark.id }} = {{ benchmark.charts|safe }};
             var None = null;
-            drawAreaChart(mainChartData_{{ benchmark.id }}.area, 'areaChart-{{ benchmark.id }}-{{ instance.id }}');
+            drawAreaChart(mainChartData_{{ benchmark.id }}.area, 'areaChartHolder-{{ benchmark.id }}-{{ instance.id }}');
         </script>
     {% endif %}
 
