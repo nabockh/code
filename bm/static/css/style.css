@@ -276,13 +276,6 @@ ul.main-nav .dropdown-menu {
     z-index: 9998;
 }
 
-    .user-nav.homepage {
-        padding: 0;
-        position: fixed;
-        left: 0;
-        right: 0;
-    }
-
     .user-nav .hello {
         color: #9dbef0;
         font-size: 14px;
@@ -4146,6 +4139,10 @@ span.hide-btn.right {left: auto; right: 0;}
         height: 34px;
         line-height: 20px;
     }
+    
+        .btn.sign-in-btn.pull-right {
+            margin-right: 15px !important;
+        }
 
     .container.top-navbar, .fixed-navs #top.navbar-default .top-navbar {
         padding: 0 15px;    
