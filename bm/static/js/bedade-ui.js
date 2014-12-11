@@ -278,6 +278,7 @@ $(function () {
         });
     } else {
         $('.add_help').on('click', function(e) {
+           $('.add_help_inner').removeClass('visible');
            $(this).children('.add_help_inner').toggleClass('visible');
            e.stopPropagation();
         });
