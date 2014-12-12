@@ -1043,8 +1043,8 @@ class ExcelDownloadView(BenchmarkDetailView):
             headings = ['Quartile', 'Min', 'Max', 'Avg']
             for idx, quartile in enumerate(stock_data, start=2):
                 contributor_worksheet.write_row('A%s' % idx, quartile)
+            contributor_worksheet.write_row('A1', headings)
             chart_stock.add_series({
-                'categories': '=Contributor Stats!$A$2:$A$5',
                 # 'name': "=Contributor Stats!$B$1:$B$1",
                 'values':     "=Contributor Stats!$B$2:$B$5",
                 'marker': {
@@ -1055,7 +1055,7 @@ class ExcelDownloadView(BenchmarkDetailView):
                 },
             })
             chart_stock.add_series({
-                'categories': '=Contributor Stats!$A$2:$A$5',
+                # 'categories': "'=Contributor Stats'!$A$2:$A$5",
                 'values':     "=Contributor Stats!$C$2:$C$5",
                 'marker': {
                     'type': 'circle',
@@ -1065,7 +1065,7 @@ class ExcelDownloadView(BenchmarkDetailView):
                 },
             })
             chart_stock.add_series({
-                'categories': '=Contributor Stats!$A$2:$A$5',
+                'categories': "='Contributor Stats'!A2:A5",
                 'values':     "=Contributor Stats!$D$2:$D$5",
                 'marker': {
                     'type': 'triangle',
@@ -1078,9 +1078,8 @@ class ExcelDownloadView(BenchmarkDetailView):
             chart_stock.set_y_axis({'name': 'Values'})
             chart_stock.set_legend({'none': True})
             chart_stock.set_title ({'name': benchmark.name})
-            chart_stock.set_y_axis({'label_position': 'low'})
             chart_stock.set_style(2)
-            contributor_worksheet.write_row('A1', headings)
+            chart_stock.set_legend({'none':True})
             contributor_worksheet.insert_chart('E1', chart_stock)
             # Area Chart
             headings_area = ['Frequency', 'Average']
