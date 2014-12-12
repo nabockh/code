@@ -15,7 +15,7 @@ from social.models import LinkedInIndustry
 from social_auth.db.django_models import USER_MODEL
 import numpy
 import collections, operator
-from decimal import Decimal
+from decimal import Decimal, getcontext
 import json
 
 
@@ -438,9 +438,9 @@ class BenchmarkRange(Benchmark):
             index = numeric_data.index(i)
             val_sum = len(numeric_data)
             if index == 0:
-                percen.append(round(1/float(val_sum), 1)*100)
+                percen.append(round(Decimal(1/float(val_sum)*100), 1))
             else:
-                percen.append(round((1/float(val_sum))*100 + percen[index-1], 1))
+                percen.append(round(Decimal(1/float(val_sum)*100 + percen[index-1]), 1))
         if percen[-1] != 100:
             percen.remove(percen[-1])
             percen.append(100)

@@ -131,7 +131,7 @@ MESSAGE_TAGS = {
     MESSAGE_BETA: 'beta',
     MESSAGE_BETA_INVITE: 'beta_invite',
     MESSAGE_BM_CREATED: 'bm_created',
-    MESSAGE_COLLEAGUE_INVITED: 'collleague_invited'
+    MESSAGE_COLLEAGUE_INVITED: 'colleague_invited'
 }
 
 ROOT_URLCONF = 'app.urls'
