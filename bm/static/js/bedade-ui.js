@@ -634,7 +634,7 @@ $( document ).ready(function() {
                 $target_block.find('.choose-checkbox, .share-checkbox').removeAttr('checked');
                 numberOfSelectedContacts();               
             });
-            return clone_block;
+            
         }
         $('#selectedContactList .share-checkbox').on('click',function() {
             var $this_parent = curr_obj.closest('.single-contact');
@@ -647,6 +647,9 @@ $( document ).ready(function() {
                 $target_checkbox.removeAttr('checked').prop('checked', false);
             }
         });
+        if (typeof(clone_block) !== 'undefined'){
+            return clone_block;   
+        }
     }
 
     $('#selectedContactList .share-checkbox').on('click',function() {
@@ -676,11 +679,29 @@ $( document ).ready(function() {
         numberOfSelectedContacts();
     });
 
-    $('.add-all').click( function(){
+    $('.add-all#srcAddAll').click( function(){
         $('#selectedPreloader').fadeIn(500);
         setTimeout(function() {
             var str = '';
-            $.each($('.add-all').closest('.title-header').next('.contact-results').find('.add-contact-btn'),function(index, value) {
+            $.each($('.add-all#srcAddAll').closest('.title-header').next('.contact-results').find('.add-contact-btn'),function(index, value) {
+                str += addContact($(this), false);
+                if (str == 'undefined') {
+                    str = '';
+                }
+            });
+            if (str.length) {
+                $('#selectedContactList .mCSB_container').append(str);
+            }
+            numberOfSelectedContacts();
+            $('#selectedPreloader').fadeOut(500);
+        }, 1000);
+     });
+
+    $('.add-all#recAddAll').click( function(){
+        $('#selectedPreloader').fadeIn(500);
+        setTimeout(function() {
+            var str = '';
+            $.each($('.add-all#recAddAll').closest('.title-header').next('.contact-results').find('.add-contact-btn'),function(index, value) {
                 str += addContact($(this), false);
             });
             $('#selectedContactList .mCSB_container').append(str);
