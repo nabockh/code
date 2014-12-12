@@ -122,6 +122,21 @@
                     $('#bmCreated').fadeOut(500);
                 }, 2500);
               </script>
+            {% elif message.tags == 'colleague_invited' %}
+              <!-- Colleague Invited Success Modal -->
+              <div class='smallModal' id='colleagueInvited'>
+                <div class="pop-up-bg"></div>
+                <div class="pop-up-content">
+                    <p style='font-size: 13rem; color: #648E99;'><i class='fa fa-envelope'></i></p>
+                    <p>Your invitation has been successfully sent!</p>
+                </div>
+              </div>
+              <script type="text/javascript">
+                $('#bmCreated').show();
+                setTimeout(function() {
+                    $('#colleagueInvited').fadeOut(500);
+                }, 2500);
+              </script>
             {% endif %}
 
         {% endfor %}
