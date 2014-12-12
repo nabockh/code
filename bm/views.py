@@ -1015,7 +1015,7 @@ class ExcelDownloadView(BenchmarkDetailView):
             # chart_bell_curve.set_y_axis({'num_format': ''})
             contributor_worksheet.insert_chart('F6', chart_bell_curve)
             contributor_worksheet.insert_chart('F23', chart_area)
-            # internal_worksheet.hide()
+            internal_worksheet.hide()
         elif question_type == 4:
             no_values = [[value[0], value[1]] for value in contributor_results if value[0] == 'No']
             yes_values = [[value[0], value[1]] for value in contributor_results if value[0] == 'Yes']
@@ -1044,7 +1044,7 @@ class ExcelDownloadView(BenchmarkDetailView):
                 contributor_worksheet.write_row('A%s' % idx, quartile)
             chart_stock.add_series({
                 'categories': '=Contributor Stats!$A$2:$A$5',
-                'name': "=Contributor Stats!$B$1:$B$1",
+                # 'name': "=Contributor Stats!$B$1:$B$1",
                 'values':     "=Contributor Stats!$B$2:$B$5",
                 'marker': {
                     'type': 'circle',
@@ -1054,7 +1054,7 @@ class ExcelDownloadView(BenchmarkDetailView):
                 },
             })
             chart_stock.add_series({
-                'name': "=Contributor Stats!$C$1:$C$1",
+                # 'name': "=Contributor Stats!$C$1:$C$1",
                 'values':     "=Contributor Stats!$C$2:$C$5",
                 'marker': {
                     'type': 'circle',
@@ -1064,7 +1064,7 @@ class ExcelDownloadView(BenchmarkDetailView):
                 },
             })
             chart_stock.add_series({
-                'name': "=Contributor Stats!$D$1:$D$1",
+                # 'name': "=Contributor Stats!$D$1:$D$1",
                 'values':     "=Contributor Stats!$D$2:$D$5",
                 'marker': {
                     'type': 'triangle',
@@ -1073,6 +1073,9 @@ class ExcelDownloadView(BenchmarkDetailView):
                     'fill':   {'color': 'red'},
                 },
             })
+            chart_stock.set_x_axis({'name': '% of Respondents'})
+            chart_stock.set_y_axis({'name': 'Values'})
+            chart_stock.set_legend({'none': True})
             chart_stock.set_title ({'name': benchmark.name})
             chart_stock.set_style(2)
             contributor_worksheet.write_row('A1', headings)
@@ -1089,6 +1092,7 @@ class ExcelDownloadView(BenchmarkDetailView):
                 'categories': "='Contributor Stats'!A17:A%s" % row_index,
                 'values': "='Contributor Stats'!B17:B%s" % row_index,
             })
+            chart_area.set_legend({'none': True})
             contributor_worksheet.insert_chart('E17', chart_area)
         workbook.close()
         output.seek(0)
