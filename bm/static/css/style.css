@@ -3988,6 +3988,12 @@ span.hide-btn.right {left: auto; right: 0;}
         float: none;
     }
 
+    .dataTables_length, .dataTables_filter {
+        float: left;
+        width: 100%;
+        margin: 0 15px;
+    }
+
     .open-benchmark-container {
         margin-left: 10px;
         margin-right: 10px;
