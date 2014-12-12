@@ -1012,7 +1012,7 @@ class ExcelDownloadView(BenchmarkDetailView):
                 'categories': "='Contributor Stats'!A7:A{0}".format(len(area_data) + 7),
                 'values': "='Contributor Stats'!B7:B{0}".format(len(area_data) + 7),
             })
-            chart_bell_curve.set_y_axis({'num_format': ''})
+            # chart_bell_curve.set_y_axis({'num_format': ''})
             contributor_worksheet.insert_chart('F6', chart_bell_curve)
             contributor_worksheet.insert_chart('F23', chart_area)
             internal_worksheet.hide()
