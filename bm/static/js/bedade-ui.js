@@ -468,7 +468,8 @@ $(function () {
     if ( (document.getElementsByClassName('benchmark')).length > 0 ) {
         $('.results').dataTable({
             Info: false,
-            bPaginate: true
+            bPaginate: true,
+            "aaSorting": []
         });
 
     }
