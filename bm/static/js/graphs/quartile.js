@@ -32,7 +32,7 @@ function drawQuartileChart(chartData, divId) {
                 width: '75%'
             },
             colors: ['#8592B2'],
-            bar: {groupWidth: 7},
+            bar: {groupWidth: 6},
             tooltip: { isHtml : true },
             hAxis: { title : 'of Respondents', baselineColor: '#fff', gridlines: {color: '#fff'}, textStyle: { fontSize: 10, bold: true}, viewWindow: { min: 0, max: 5}, ticks: [{v:0, f: ''}, {v:1, f: '1st Quartile'}, {v:2, f: '2nd Quartile'}, {v:3, f: '3rd Quartile'}, {v:4, f: '4th Quartile'}]},
             vAxis: { title : 'Values', textStyle: { fontSize: 10}},
