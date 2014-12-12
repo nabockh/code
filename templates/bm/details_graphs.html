@@ -245,25 +245,28 @@
         $(function () {
             $("#minVal").text(mainChartData.bell_curve.min);
             $("#maxVal").text(mainChartData.bell_curve.max);
-            $("#avgVal").text(mainChartData.bell_curve.avg);
+            var avgB = mainChartData.bell_curve.avg.toFixed(1); 
+            $("#avgVal").text(avgB);
             var sd = mainChartData.bell_curve.sd.toFixed(1); 
             $("#sdVal").text(sd);
 
-            $( ".single-stat .value" ).each(function() {
-                var len = $(this).text().length;
-                if (len >= 4) {
-                    $(this).parents('.benchmark-stats').addClass('fourPlus');
-                }                    
+            if( screen.width > 641 ) {
+                $( ".single-stat .value" ).each(function() {
+                    var len = $(this).text().length;
+                    if (len >= 4) {
+                        $(this).parents('.benchmark-stats').addClass('fourPlus');
+                    }                    
 
-                else if (len >= 6) {
-                    $(this).parents('.benchmark-stats').addClass('more');
-                }
+                    else if (len >= 6) {
+                        $(this).parents('.benchmark-stats').addClass('more');
+                    }
 
 
-                else {
-                    $(this).parents('.benchmark-stats').removeClass('more fourPlus');
-                }
-            });
+                    else {
+                        $(this).parents('.benchmark-stats').removeClass('more fourPlus');
+                    }
+                });
+            };
         });
         drawBellcurveChart(mainChartData.bell_curve, 'bellcurveChartHolder');
     {% endif %}

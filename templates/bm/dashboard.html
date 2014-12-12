@@ -35,14 +35,13 @@
         <div class='user-nav'>
             <div class='container'>
                 <div class='row'>
-                <div class='col-md-8 col-xs-9'>
+                <div class='col-md-8 col-xs-7'>
                     <div class='hello'>Hello,</div>
                     <ul class='user-nav-inner'>
-                        <li class='username'>{{ user.first_name }} {{ user.last_name }}</li>
-                        <li><a class='log-out' href='/logout' title='Log Out'>Log Out</a></li>
+                        <li class='username'><a href="/dashboard">{{ user.first_name }} <span class='hidden-xs'> {{ user.last_name }}</span></a><a class='log-out' href='/logout' title='Log Out'>Log Out</a></li>
                     </ul>
                 </div>
-                <div class='col-md-4 col-xs-3'>
+                <div class='col-md-4 col-xs-4 col-xs-offset-1 col-md-offset-0'>
                     <a href="{% url 'bm_create' %}" class='btn btn-primary pull-right icon-only'><span class='non-mobile'>Create new benchmark</span> <i class='fa fa-plus-circle'></i></a>
                 </div>
             </div>
@@ -121,6 +120,21 @@
                 $('#bmCreated').show();
                 setTimeout(function() {
                     $('#bmCreated').fadeOut(500);
+                }, 2500);
+              </script>
+            {% elif message.tags == 'colleague_invited' %}
+              <!-- Colleague Invited Success Modal -->
+              <div class='smallModal' id='colleagueInvited'>
+                <div class="pop-up-bg"></div>
+                <div class="pop-up-content">
+                    <p style='font-size: 13rem; color: #648E99;'><i class='fa fa-envelope'></i></p>
+                    <p>Your invitation has been successfully sent!</p>
+                </div>
+              </div>
+              <script type="text/javascript">
+                $('#bmCreated').show();
+                setTimeout(function() {
+                    $('#colleagueInvited').fadeOut(500);
                 }, 2500);
               </script>
             {% endif %}

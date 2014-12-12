@@ -315,7 +315,7 @@ class BenchmarkSearchView(ListView):
         return super(BenchmarkSearchView, self).dispatch(request, *args, **kwargs)
 
     def get_queryset(self):
-        return Benchmark.valid.all()
+        return Benchmark.valid.all().order_by('-start_date')
 
 
 class BaseBenchmarkAnswerView(FormView):
@@ -937,6 +937,7 @@ class ExcelDownloadView(BenchmarkDetailView):
                 'border': {'color': 'black'},
                 'fill':   {'color': 'white'}
             })
+            chart.set_title({'name': benchmark.name})
             contributor_worksheet.insert_chart('F3', chart)
 
         elif question_type == 2:
@@ -949,6 +950,7 @@ class ExcelDownloadView(BenchmarkDetailView):
             last_col = ranks[len(ranks_count) + 1]
             for idx, i in enumerate(ranks_count, start=2):
                 chart.add_series({
+                    'name': i,
                     'values': "=Contributor Stats!$B$%s:$%s$%s" % (idx, last_col, idx),
                     'categories': "=Contributor Stats!$B$1:$%s$1" % (last_col,),
                     'data_labels': {'value': True},
@@ -1007,11 +1009,13 @@ class ExcelDownloadView(BenchmarkDetailView):
                 contributor_worksheet.write_row('B%s' % idx, [val, ])
             chart_area.add_series({
                 'name':         benchmark.name,
-                'categories': "='Contributor Stats'!A7:A{0}".format(len(area_data) + 7),
-                'values': "='Contributor Stats'!B7:B{0}".format(len(area_data) + 7),
+                'categories': "='Contributor Stats'!A7:A{0}".format(len(area_data[1:]) + 6),
+                'values': "='Contributor Stats'!B7:B{0}".format(len(area_data[1:]) + 6),
             })
+            chart_bell_curve.set_y_axis({'num_format': ''})
             contributor_worksheet.insert_chart('F6', chart_bell_curve)
             contributor_worksheet.insert_chart('F23', chart_area)
+            # internal_worksheet.protect()
             internal_worksheet.hide()
         elif question_type == 4:
             no_values = [[value[0], value[1]] for value in contributor_results if value[0] == 'No']
@@ -1028,6 +1032,7 @@ class ExcelDownloadView(BenchmarkDetailView):
                 'values':     '=Contributor Stats!$B$2:$B$3',
                 'data_labels': {'percentage': True}
             })
+            chart.set_title({'name': benchmark.name})
             chart.set_chartarea({
                 'border': {'color': 'black'},
                 'fill':   {'color': 'white'}
@@ -1038,20 +1043,43 @@ class ExcelDownloadView(BenchmarkDetailView):
             headings = ['Quartile', 'Min', 'Max', 'Avg']
             for idx, quartile in enumerate(stock_data, start=2):
                 contributor_worksheet.write_row('A%s' % idx, quartile)
-            chart_stock.add_series({
-                'categories': '=Contributor Stats!$A$1:$A$5',
-                'name': "=Contributor Stats!$B$1:$B$1",
-                'values':     "=Contributor Stats!$B$2:$B$5",
-            })
-            chart_stock.add_series({
-                'name': "=Contributor Stats!$C$1:$C$1",
-                'values':     "=Contributor Stats!$C$2:$C$5",
-            })
-            chart_stock.add_series({
-                'name': "=Contributor Stats!$D$1:$D$1",
-                'values':     "=Contributor Stats!$D$2:$D$5",
-            })
             contributor_worksheet.write_row('A1', headings)
+            chart_stock.add_series({
+                # 'name': "=Contributor Stats!$B$1:$B$1",
+                'values':     "=Contributor Stats!$B$2:$B$5",
+                'marker': {
+                    'type': 'circle',
+                    'size': 4,
+                    'border': {'color': 'black'},
+                    'fill':   {'color': 'blue'},
+                },
+            })
+            chart_stock.add_series({
+                # 'categories': "'=Contributor Stats'!$A$2:$A$5",
+                'values':     "=Contributor Stats!$C$2:$C$5",
+                'marker': {
+                    'type': 'circle',
+                    'size': 4,
+                    'border': {'color': 'black'},
+                    'fill':   {'color': 'green'},
+                },
+            })
+            chart_stock.add_series({
+                'categories': "='Contributor Stats'!A2:A5",
+                'values':     "=Contributor Stats!$D$2:$D$5",
+                'marker': {
+                    'type': 'triangle',
+                    'size': 6,
+                    'border': {'color': 'black'},
+                    'fill':   {'color': 'red'},
+                },
+            })
+            chart_stock.set_x_axis({'name': '% of Respondents'})
+            chart_stock.set_y_axis({'name': 'Values'})
+            chart_stock.set_legend({'none': True})
+            chart_stock.set_title ({'name': benchmark.name})
+            chart_stock.set_style(2)
+            chart_stock.set_legend({'none':True})
             contributor_worksheet.insert_chart('E1', chart_stock)
             # Area Chart
             headings_area = ['Frequency', 'Average']
@@ -1065,6 +1093,8 @@ class ExcelDownloadView(BenchmarkDetailView):
                 'categories': "='Contributor Stats'!A17:A%s" % row_index,
                 'values': "='Contributor Stats'!B17:B%s" % row_index,
             })
+            chart_area.set_legend({'none': True})
+            chart_area.set_x_axis({'name': '% of Respondents'})
             contributor_worksheet.insert_chart('E17', chart_area)
         workbook.close()
         output.seek(0)

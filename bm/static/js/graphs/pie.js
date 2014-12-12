@@ -28,7 +28,6 @@ function drawPieChart(chartData, divId) {
             
     if( screen.width < 641 ) {
         var donutOptions = {
-            pieHole: 0,
             legend: { position: "bottom" },
             pieSliceText: 'percentage',
             tooltip: { text: 'percentage' },
@@ -40,7 +39,6 @@ function drawPieChart(chartData, divId) {
         };
     } else {
         var donutOptions = {
-            pieHole: 0.35,
             legend: { position: "bottom" },
             pieSliceText: 'percentage',
             tooltip: { text: 'percentage' },

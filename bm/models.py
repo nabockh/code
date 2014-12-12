@@ -15,7 +15,7 @@ from social.models import LinkedInIndustry
 from social_auth.db.django_models import USER_MODEL
 import numpy
 import collections, operator
-from decimal import Decimal
+from decimal import Decimal, getcontext
 import json
 
 
@@ -280,7 +280,7 @@ class BenchmarkRanking(Benchmark):
             for r in rank[1:]:
                 obj = {'v': (round(Decimal(r/float(summa))*100, 1)),
                        'f': str((round(Decimal(r/float(summa))*100, 1)))+'%'}
-                excel_percent.append(round(Decimal(r/float(summa))*100, 2))
+                excel_percent.append(round(Decimal(r/float(summa))*100, 1))
                 percent.append(obj)
             excel_percent.insert(0, rank[0])
             percent.insert(0, rank[0])
@@ -323,10 +323,11 @@ class BenchmarkNumeric(Benchmark):
         numeric_data = [response[0].value for response in responses]
         stddev = numpy.std(numeric_data)
         avg = numpy.mean(numeric_data)
-        val_range = range(int(avg - 3 * stddev), int(avg + 3 * stddev))
+        min_point = int(avg - (3 * stddev))
+        max_point = int(avg + (3 * stddev))
         for i in xrange(len(numeric_data) - 1, -1, -1):
             element = numeric_data[i]
-            if element not in val_range:
+            if element < min_point or element > max_point:
                 del numeric_data[i]
         counted_dict = collections.Counter(numeric_data)
         sorted_list = sorted(counted_dict.items(), key=operator.itemgetter(0))
@@ -421,11 +422,43 @@ class BenchmarkRange(Benchmark):
             del vote[0]
             vote.insert(0, value)
 
-        quartile_raw = []
-        for s in series:
-            quartile_raw.append([int(s['series']), int(s['sub_series'])])
-        quartile_raw = sorted(quartile_raw)
+        # Data for area chart
+        range_responses = [i.data_range.all() for i in self.question.first().responses.all()]
+        numeric_data = sorted([numpy.mean([response[0].min, response[0].max]) for response in range_responses])
+        avg = numpy.mean(numeric_data)
+        stddev = numpy.std(numeric_data)
+        min_point = int(avg - (3 * stddev))
+        max_point = int(avg + (3 * stddev))
+        for i in xrange(len(numeric_data) - 1, -1, -1):
+            element = numeric_data[i]
+            if element < min_point or element > max_point:
+                del numeric_data[i]
+        percen = []
+        for i in numeric_data:
+            index = numeric_data.index(i)
+            val_sum = len(numeric_data)
+            if index == 0:
+                percen.append(round(Decimal(1/float(val_sum)*100), 1))
+            else:
+                percen.append(round(Decimal(1/float(val_sum)*100 + percen[index-1]), 1))
+        if percen[-1] != 100:
+            percen.remove(percen[-1])
+            percen.append(100)
+        area_raw_data = zip(percen, numeric_data)
+        area_data = [[str(perc) + '%', val]for perc, val in area_raw_data]
+        area_data.insert(0, ['Contributors', 'Contributor Average'])
+
+        # Data for Quartile
+        quartile_data = sorted([([response[0].min, response[0].max, numpy.mean([response[0].min, response[0].max])]) for response in range_responses])
+        for i in xrange(len(quartile_data) - 1, -1, -1):
+            element = quartile_data[i]
+            if element[2] < min_point or element[2] > max_point:
+                del quartile_data[i]
+            else:
+                del element[2]
+        quartile_raw = sorted(quartile_data)
         quartile_raw.insert(0, ['min', 'max'])
+        quartile_raw = [item for item in quartile_raw if item[0]!= item[1]]
         min_values = []
         max_values = []
         average = []
@@ -433,20 +466,6 @@ class BenchmarkRange(Benchmark):
             average.append(numpy.average([min, max]))
             min_values.append(min)
             max_values.append(max)
-        percen = []
-        for i in average:
-            index = average.index(i)
-            val_sum = len(average)
-            if index == 0:
-                percen.append(round(1/float(val_sum), 1)*100)
-            else:
-                percen.append(round((1/float(val_sum))*100 + percen[index-1], 1))
-        if percen[-1] != 100:
-            percen.remove(percen[-1])
-            percen.append(100)
-        area_raw_data = zip(percen, average)
-        area_data = [[str(perc) + '%', val]for perc, val in area_raw_data]
-        area_data.insert(0, ['Contributors', 'Contributor Value'])
         percentiles = [25, 50, 75, 100]
         quartiles = []
         for idx, i in enumerate(percentiles):

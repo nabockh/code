@@ -31,8 +31,8 @@ function drawBellcurveChart(chartData, divId) {
 
     var median = prepareData(chartData.avg,chartData.sd);
 
-    if( screen.width < 641 ) {
-        var bellcurveOptions = {
+    
+    var bellcurveOptions = {
 
         // pointSize: 0,
         enableInteractivity: false,
@@ -43,38 +43,15 @@ function drawBellcurveChart(chartData, divId) {
             {'color': '#33626e'}
         ],
         chartArea: {
-            top: 35,
-            left: 50,
-            width: '75%'
+            top: 25,
+            width: "85%",
+            height: "65%"
         },
         tooltip: {'trigger': 'none'},
         curveType: 'function',
-        vAxis: { titleTextStyle: {color: '#33626e'}, allowContainerBoundaryTextCufoff: true},
-        hAxis: { baselineColor : 'transparent', textStyle: {fontSize : '9'}, ticks: [{v:median[3][0], f:Math.round((chartData.avg - chartData.sd), 1).toFixed(0) + '\n' + '- σ'}, {v:median[4][0], f:chartData.avg.toFixed(0) + '\n' + 'μ'}, {v:median[5][0], f: Math.round((chartData.avg + chartData.sd), 1).toFixed(0) + '\n' + '+ σ'}], titlePosition: 'in' },
+        vAxis: { titleTextStyle: {color: '#33626e'}, textStyle: {fontSize : '1', color: '#fff'}, allowContainerBoundaryTextCufoff: true},
+        hAxis: { baselineColor : 'transparent', textStyle: {fontSize : '9'}, ticks: [{v:median[3][0], f:Math.round((chartData.avg - chartData.sd), 1).toFixed(0) + '\n' + '- σ'}, {v:median[4][0], f:chartData.avg.toFixed(0) + '\n' + 'μ'}, {v:median[5][0], f:Math.round((chartData.avg + chartData.sd), 1).toFixed(0) + '\n' + '+ σ'}], titlePosition: 'in' },
         intervals: { 'style': 'area' },
-    };
-    } else {
-        var bellcurveOptions = {
-
-            // pointSize: 0,
-            enableInteractivity: false,
-            legend: 'none',
-            colors: ['#608a94'],
-            lineWidth: 3,
-            series: [
-                {'color': '#33626e'}
-            ],
-            chartArea: {
-                width: "75%",
-                height: "65%"
-            },
-            tooltip: {'trigger': 'none'},
-            curveType: 'function',
-            vAxis: { titleTextStyle: {color: '#33626e'}, allowContainerBoundaryTextCufoff: true},
-            hAxis: { baselineColor : 'transparent', textStyle: {fontSize : '9'}, ticks: [{v:median[3][0], f:' ( ' + Math.round((chartData.avg - chartData.sd), 1).toFixed(0) + ' )' + '\n' + '- σ'}, {v:median[4][0], f:' ( ' + chartData.avg.toFixed(0) + ' )' + '\n' + 'μ'}, {v:median[5][0], f:' ( ' + Math.round((chartData.avg + chartData.sd), 1).toFixed(0) + ' )' + '\n' + '+ σ'}], titlePosition: 'in' },
-            intervals: { 'style': 'area' },
-        };
-    
     };
 
 
