@@ -1015,6 +1015,7 @@ class ExcelDownloadView(BenchmarkDetailView):
             # chart_bell_curve.set_y_axis({'num_format': ''})
             contributor_worksheet.insert_chart('F6', chart_bell_curve)
             contributor_worksheet.insert_chart('F23', chart_area)
+            # internal_worksheet.protect()
             internal_worksheet.hide()
         elif question_type == 4:
             no_values = [[value[0], value[1]] for value in contributor_results if value[0] == 'No']
@@ -1093,6 +1094,7 @@ class ExcelDownloadView(BenchmarkDetailView):
                 'values': "='Contributor Stats'!B17:B%s" % row_index,
             })
             chart_area.set_legend({'none': True})
+            chart_area.set_x_axis({'name': '% of Respondents'})
             contributor_worksheet.insert_chart('E17', chart_area)
         workbook.close()
         output.seek(0)
