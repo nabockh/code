@@ -446,7 +446,7 @@ class BenchmarkRange(Benchmark):
             percen.append(100)
         area_raw_data = zip(percen, numeric_data)
         area_data = [[str(perc) + '%', val]for perc, val in area_raw_data]
-        area_data.insert(0, ['Contributors', 'Contributor Value'])
+        area_data.insert(0, ['Contributors', 'Contributor Average'])
 
         # Data for Quartile
         quartile_data = sorted([([response[0].min, response[0].max, numpy.mean([response[0].min, response[0].max])]) for response in range_responses])
