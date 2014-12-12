@@ -315,7 +315,7 @@ class BenchmarkSearchView(ListView):
         return super(BenchmarkSearchView, self).dispatch(request, *args, **kwargs)
 
     def get_queryset(self):
-        return Benchmark.valid.all()
+        return Benchmark.valid.all().order_by('-start_date')
 
 
 class BaseBenchmarkAnswerView(FormView):
