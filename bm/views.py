@@ -1055,7 +1055,7 @@ class ExcelDownloadView(BenchmarkDetailView):
                 },
             })
             chart_stock.add_series({
-                # 'name': "=Contributor Stats!$C$1:$C$1",
+                'categories': '=Contributor Stats!$A$2:$A$5',
                 'values':     "=Contributor Stats!$C$2:$C$5",
                 'marker': {
                     'type': 'circle',
@@ -1065,7 +1065,7 @@ class ExcelDownloadView(BenchmarkDetailView):
                 },
             })
             chart_stock.add_series({
-                # 'name': "=Contributor Stats!$D$1:$D$1",
+                'categories': '=Contributor Stats!$A$2:$A$5',
                 'values':     "=Contributor Stats!$D$2:$D$5",
                 'marker': {
                     'type': 'triangle',
