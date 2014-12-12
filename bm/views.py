@@ -1078,6 +1078,7 @@ class ExcelDownloadView(BenchmarkDetailView):
             chart_stock.set_y_axis({'name': 'Values'})
             chart_stock.set_legend({'none': True})
             chart_stock.set_title ({'name': benchmark.name})
+            chart_stock.set_y_axis({'label_position': 'low'})
             chart_stock.set_style(2)
             contributor_worksheet.write_row('A1', headings)
             contributor_worksheet.insert_chart('E1', chart_stock)
