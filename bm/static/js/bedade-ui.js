@@ -469,9 +469,12 @@ $(function () {
         $('.results').dataTable({
             Info: false,
             bPaginate: true,
+            scrollCollapse: false,
             "aaSorting": []
         });
-
+        $('.results').on( 'page.dt', function () {
+            $(window).scrollTop(0);
+        });
     }
 });
 
@@ -726,9 +729,10 @@ $(document).ajaxStop(function() {
 
 
 $( document ).ready(function(){
-    $( "#preview" ).on('shown.bs.modal', function() {
-        $('#default_text').focus();
-    });
+
+$( "#preview" ).on('shown.bs.modal', function() {
+    $('#default_text').focus();
+});
         $( '#saveButton' ).on('click', function() {
              var editedText = $('#default_text').val();
             $('#email_body').text(editedText);
@@ -762,8 +766,6 @@ $( document ).ready(function(){
         }
     });
 });
-
-
 
 
     
