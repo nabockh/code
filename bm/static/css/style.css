@@ -3599,8 +3599,8 @@ span.hide-btn.right {left: auto; right: 0;}
         margin-bottom: 15px !important;
     }
 
-    .colorblock.about p {
-        text-align: center;
+    .carousel-inner > .item > .title {
+        padding: 5px 75px 5px 15px;
     }
 
     .contact-info {
