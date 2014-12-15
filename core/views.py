@@ -115,8 +115,8 @@ class DashboardView(TemplateView):
     def get_context_data(self, *args, **kwargs):
         context = super(DashboardView, self).get_context_data(*args, **kwargs)
         context['user'] = self.request.user
-        context['history'] = Benchmark.valid.filter(models.Q(owner=context['request'].user) |
-                                                    models.Q(question__responses__user=context['request'].user),
+        context['history'] = Benchmark.valid.filter(models.Q(owner=self.request.user) |
+                                                    models.Q(question__responses__user=self.request.user),
                                                     end_date__lte=datetime.now()) \
                                                     .order_by('-end_date', '-id')[:5]
         context['benchmarks'] = {
