@@ -35,7 +35,7 @@ class DashboardHistoryPlugin(CMSPluginBase):
         context['max_items'] = instance.max_items
         context['history'] = Benchmark.valid.filter(models.Q(owner=context['request'].user) |
                                       models.Q(question__responses__user=context['request'].user),
-                                      end_date__lte=datetime.now()).order_by('-end_date', '-id')[:instance.max_items]
+                                      end_date__lte=datetime.now()).order_by('-id', '-end_date', )[:instance.max_items]
         # context['history'] = Benchmark.valid.filter(owner=context['request'].user, end_date__lte=datetime.now())\
         #     .order_by('-end_date', '-id')[:instance.max_items]
         return context
