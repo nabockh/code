@@ -3401,10 +3401,8 @@ span.hide-btn.right {left: auto; right: 0;}
     .colorblock.features {
         background-image: url('../img/bdde_features1.jpg');
     }
-    header.navbar .container{
-         min-width:970px;
-    }
 }
+
 
 @media (min-width: 992px) {
     .col-md-5ths {
