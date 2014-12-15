@@ -1,5 +1,5 @@
 <div class='benchmark'>
-    <div id="myRecentBenchmarks_{{ instance.id }}" class="carousel slide" data-ride="carousel">
+    <div id="myRecentBenchmarks" class="carousel slide" data-ride="carousel">
 {#          TODO: should move js to widget media #}
         <script src="{{ STATIC_URL }}js/graphs/pie.js"></script>
         <script src="{{ STATIC_URL }}js/graphs/column.js"></script>
@@ -27,7 +27,7 @@
                     <p style='margin: 0; text-align: center;'><a href="{% url 'bm_create' %}" class='btn btn-primary'>Create new benchmark <i class='fa fa-plus-circle'></i></a></p>
                     <script type="text/javascript">
                         $(function () {
-                            $('#myRecentBenchmarks_{{ instance.id }} .recent-benchmark-controls').hide();
+                            $('#myRecentBenchmarks .recent-benchmark-controls').hide();
                         });
                     </script>
                 </div>
@@ -36,10 +36,10 @@
 
         <!-- Controls -->
         <div class='recent-benchmark-controls'>
-            <a class="left carousel-control" href="#myRecentBenchmarks_{{ instance.id }}" role="button" data-slide="prev">
+            <a class="left carousel-control" href="#myRecentBenchmarks" role="button" data-slide="prev">
                 <i class='fa fa-caret-left'></i>
             </a>
-            <a class="right carousel-control" href="#myRecentBenchmarks_{{ instance.id }}" role="button" data-slide="next">
+            <a class="right carousel-control" href="#myRecentBenchmarks" role="button" data-slide="next">
                 <i class='fa fa-caret-right'></i>
             </a>
         </div>
