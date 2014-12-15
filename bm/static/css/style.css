@@ -3493,10 +3493,13 @@ span.hide-btn.right {left: auto; right: 0;}
         display: none;
     }
 
+    .container>.navbar-collapse {
+        margin: 0 -15px;        
+    }
+
     nav.collapse.navbar-collapse.bs-navbar-collapse {
         float: none;
         box-shadow: 0 3px 3px rgba(0, 0, 0, 0.2);
-        margin: 0 -15px;
         z-index: 10;
     }
 
