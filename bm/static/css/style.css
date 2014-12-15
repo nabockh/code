@@ -792,7 +792,7 @@ input.btn.full-width, .btn.full-width {
 .example-block {
     width: 16.6666666%;
     height: 240px;
-    display: inline-block;
+    float: left;
     text-align: center;
     margin: 0 -2px;
     color: #fff;
