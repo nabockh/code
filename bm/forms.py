@@ -214,6 +214,10 @@ class CreateBenchmarkStep3Form(forms.Form):
 
 class CreateBenchmarkStep4Form(CreateBenchmarkStep12Form):
     email_body = forms.CharField(widget=forms.Textarea(attrs={'id': 'email_body', 'hidden': True}), required=False)
+    question_label = forms.CharField(max_length=255)
+    question_text = forms.CharField(widget=forms.Textarea(attrs={'maxlength': 10000}),
+                                    max_length=10000, required=False)
+
 
     def __init__(self, user, step0data, end_date, *args, **kwargs):
         if step0data.get('0-geo') == u'':
@@ -239,8 +243,9 @@ class CreateBenchmarkStep4Form(CreateBenchmarkStep12Form):
             'end_date': end_date.date()
         }
         kwargs['initial'] = initial
-        super(CreateBenchmarkStep4Form, self).__init__(user, *args, **kwargs)
         self.end_date = end_date
+        super(CreateBenchmarkStep4Form, self).__init__(user, *args, **kwargs)
+
 
 
 
@@ -312,7 +317,8 @@ class SendMailForm(forms.Form):
 
 class BenchmarkDetailsForm(forms.Form):
     choices = [
-        ('Role', 'Role'), ('Geo', 'Geography'),  ('Country', 'Country'), ('Industry', 'Industry')]
+        ('Industry', 'Industry'), ('Country', 'Country'), ('Geo', 'Geography')
+    ]
 
     def __init__(self, benchmark, *args, **kwargs):
         super(BenchmarkDetailsForm, self).__init__(*args, **kwargs)

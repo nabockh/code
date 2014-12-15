@@ -11,10 +11,6 @@ body {
         font-family: Roboto !important;
     }
 
-    body.unauth {
-        padding-top: 140px;
-    }
-
 html, body {
     height: 100%;
 }
@@ -26,6 +22,10 @@ a {
 
 a.clickable {
     cursor: pointer;
+}
+
+.relative {
+    position: relative;
 }
 
 a[data-export='excel'] {
@@ -122,7 +122,7 @@ span.beta-invite {
 }
 
 .margined {
-    margin: 45px auto;
+    margin: 30px auto 45px;
 }
 
 .margin-bot {
@@ -268,20 +268,13 @@ ul.main-nav .dropdown-menu {
 .user-nav {
     background: #333;
     color: #fff;
-    padding: 25px 0 17px;
+    padding: 25px 0 18px;
     position: fixed;
     top: 90px;
     left: 0;
     right: 0;
     z-index: 9998;
 }
-
-    .user-nav.homepage {
-        padding: 0;
-        position: fixed;
-        left: 0;
-        right: 0;
-    }
 
     .user-nav .hello {
         color: #9dbef0;
@@ -307,6 +300,7 @@ ul.user-nav-inner {
             margin-left: 0;        
             font-size: 20px;
             line-height: 26px;
+            white-space: nowrap;
         }
 
             ul.user-nav-inner > li.username a {
@@ -1409,6 +1403,20 @@ form[role='search'] .btn-search {
         font-weight: 600;
     }
 
+        .benchmark-creation .styled-form label sup {
+            color: red;
+            font-size: 0.9rem;
+        }
+
+        span.required {
+            font-size: 1rem;
+            font-style: italic;
+            letter-spacing: 1px;
+        }
+            span.required .text-red {
+                color:  red;
+            }
+
     .benchmark-creation .styled-form .btn {
         font-size: 14px;
         color: #fff;
@@ -2253,9 +2261,8 @@ form[role='beta-email'] {
     padding: 5px 40px 5px 15px;
     background: #eff0f2;
     border-bottom: 1px solid #dedede;
-    white-space: nowrap;
+    height: 59px;
     overflow: hidden;
-    text-overflow: ellipsis;
 }
 
     .carousel-inner > .item > .title > a {
@@ -2307,7 +2314,7 @@ form[role='beta-email'] {
         .benchmark-stats .single-stat > span.value {
             font-size: 40px;
             font-weight: 500;
-            padding: 15px 0 5px;
+            padding: 5px 0 5px;
         }
 
 .benchmark-stats.perc-based .single-stat:nth-child(1) {
@@ -2890,6 +2897,51 @@ ul#answerSortable {
         background-repeat: no-repeat;
     }
 
+    /* Fixed */
+
+    .ob-header.fixed {
+        padding: 7px 60px;
+    }
+
+        .ob-header.fixed .ob_image {
+            width: 40px;
+            height: 40px;
+            background-size: 100%;
+        }
+
+        .ob-header.fixed .ob_title {
+            margin-top: 5px;
+            margin-bottom: 5px;
+            font-size: 14px;
+            line-height: 14px;
+        }
+
+        .ob-header.fixed .ob_descr {
+            font-size: 12px;
+            line-height: 12px;
+        }
+
+        .ob-header.fixed .ob_title, .ob-header.fixed .ob_descr {
+            margin-left: 60px;
+        }
+
+        .ob-header.fixed .custom_images {    
+            line-height: 12px;
+        }
+
+            .ob-header.fixed .custom_images a {    
+                font-size: 12px;
+            }
+
+                .ob-header.fixed .custom_images a img {
+                    width: 14px;    
+                    vertical-align: text-bottom;
+                }
+
+            .ob-header.fixed a[data-export='excel'] {
+                margin-top: 5px;
+            }
+
 .benchmark.open .benchmark-footer {
     padding: 10px;
 }
@@ -2991,29 +3043,32 @@ ul#answerSortable {
         height: 190px;
     }
 
-    .bigChart + .units {
-        background: #333;
-        color: #fff;
-        font-weight: bold;    
-        padding: 7px 20px;
+    .bigChart[id^="areaChart"], .bigChart[id^="popular-areaChart"] {
+        height: 262px;
     }
-    
-        .bigChart + .units > span {
-            font-weight: 900;
-            line-height: 14px;
-            text-align: left;
-            color: #94a6c3;        
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            max-width: 350px;
-    
-            height: 18px;
-            font-size: 18px;
-            display: inline-block;
-            vertical-align: middle;
-            padding-left: 5px;
+
+#areaStats .units, #bellcurveStats .units {
+    background: #333;
+    color: #fff;
+    font-weight: bold;    
+    padding: 7px 20px;
 }
+    
+    #areaStats .units > span, #bellcurveStats .units > span, #quartileStats .units > span {
+        font-weight: 900;
+        line-height: 14px;
+        text-align: left;
+        color: #94a6c3;        
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 350px;
+        height: 18px;
+        font-size: 18px;
+        display: inline-block;
+        vertical-align: middle;
+        padding-left: 5px;
+    }
 
     .bigChart > div {
         margin: 0 auto;
@@ -3231,22 +3286,6 @@ span.hide-btn.right {left: auto; right: 0;}
         width: auto !important;
         padding: 5px;
     }
-
-    .benchmark-stats.fourPlus .single-stat > span.value {
-        font-size: 24px;    
-        overflow: hidden;
-        text-overflow: ellipsis;
-        padding: 15px 10px 5px;
-    }
-
-
-    .benchmark-stats.sixish .single-stat > span.value {
-        font-size: 26px;
-    }
-
-    .benchmark-stats.more .single-stat > span.value {
-        font-size: 18px;
-    }
     
     ul.user-nav-inner > li > a.log-out {
         text-decoration: none;
@@ -3256,6 +3295,8 @@ span.hide-btn.right {left: auto; right: 0;}
         background: #33626e;
         border-radius: 3px;
         padding: 2px 9px 3px;
+        margin-left: 10px;
+        white-space: nowrap;
     }
 
         .fixed-navs ul.user-nav-inner > li > a.log-out {
@@ -3753,7 +3794,7 @@ span.hide-btn.right {left: auto; right: 0;}
         margin-bottom: 50px;
     }
 
-    .progress {
+    .progress.owned {
         padding-right: 50px;
     }
     
@@ -3901,6 +3942,19 @@ span.hide-btn.right {left: auto; right: 0;}
     }
 }
 
+    .benchmark-stats.fourPlus .single-stat > span.value {
+        padding: 10px;
+        font-size: 21px;
+    }
+
+    .benchmark-stats.sixish .single-stat > span.value {
+        font-size: 18px;
+    }
+
+    .benchmark-stats.more .single-stat > span.value {
+        font-size: 12px;
+    }
+
 @media (max-width: 640px) {
     body,
     header.navbar,
@@ -3932,6 +3986,21 @@ span.hide-btn.right {left: auto; right: 0;}
         line-height: 18px;
         margin-bottom: 5px;
         float: none;
+    }
+
+    .dataTables_length, .dataTables_filter {
+        float: left;
+        width: 100%;
+        margin: 0 15px;
+    }
+
+    .open-benchmark-container {
+        margin-left: 10px;
+        margin-right: 10px;
+    }
+
+    .preloader {
+        top: 60px;
     }
 
     .pop-up-content {
@@ -4076,10 +4145,10 @@ span.hide-btn.right {left: auto; right: 0;}
         height: 34px;
         line-height: 20px;
     }
-
-    body.unauth {
-        padding-top: 145px;
-    }
+    
+        .btn.sign-in-btn.pull-right {
+            margin-right: 15px !important;
+        }
 
     .container.top-navbar, .fixed-navs #top.navbar-default .top-navbar {
         padding: 0 15px;    
@@ -4111,7 +4180,31 @@ span.hide-btn.right {left: auto; right: 0;}
     }
     
     .mobile-wide {
-        margin: -30px -25px 0 !important;
+        margin: -10px -25px 0 !important;
+    }
+
+    .avg-title {
+        display: none;
+    }
+
+    .benchmark-stats .single-stat {
+        width: 100%;
+        padding: 7px 10px;
+        height: auto;
+    }
+        .benchmark-stats .single-stat > span {
+            display: inline-block;
+            max-width: 85%;
+            vertical-align: middle;
+        }
+            .benchmark-stats .single-stat > span.value {
+                padding: 0 10px;
+                float: right;
+                font-size: 24px;
+            }
+
+    #quartileChartHolder rect[height='2']{
+        stroke-width: 20px;
     }
 
     .title-header select {
@@ -4297,4 +4390,86 @@ html[dir="rtl"] .select2-search input,
 .answer_options_inputs a {cursor:pointer;padding: 10px 0; display: inline-block;font-size: 1rem;line-height: 1rem;}
 .container.bordered.bgwhite.benchmark-creation.margined {
     position: relative;
+}
+
+#quartileChartHolder rect[fill='#8592b2'] {
+    stroke: #26B6B0;
+}
+
+.avgBar {
+    position: absolute;
+    top: 50px;
+    right: 15px;
+    width: 45px;
+}
+
+.avgBar .barCircle {
+    background: #41495d;
+    border-radius: 50%;
+    text-align: center;
+    font-size: 12px;
+    font-weight: bold;
+    color: #fff;
+    margin-left: auto;
+    margin-right: auto;
+    position: relative;
+    cursor: pointer;
+}
+
+    .avgBar .barCircle:hover {
+        background-color: #8089A0;
+    }
+
+.avgBar .barCircle .tt{
+    display: none;
+    position: absolute;
+    top: 0;
+    right: 40px;
+}
+
+.avgBar .barCircle:hover .tt {
+    display: block;
+    background: #fff;
+    color: #333;
+    font-weight: normal;
+    padding: 5px;
+    border: 1px solid #eaebec;
+    width: 130px;
+    min-height: 25px;
+    box-shadow: 1px 2px 3px #B1A6A6;
+}
+
+    .avgBar .barCircle .tt:after {
+        content: '';
+        position: absolute;
+        right: -12px;
+        top: 50%;
+        margin-top: -13px;
+        width: 0;   
+        height: 0;   
+        border-top: 13px solid transparent;  
+        border-bottom: 12px solid transparent;    
+        border-left: 12px solid #fff;
+    }
+
+    .avgBar .barCircle .tt:before {
+        content: '';
+        position: absolute;
+        right: -14px;
+        top: 50%;
+        margin-top: -14px;
+        width: 0;
+        height: 0;   
+        border-top: 14px solid transparent;  
+        border-bottom: 14px solid transparent;    
+        border-left: 14px solid #ccc;
+    }
+
+.avg-title {
+    font-size: 10px;
+    line-height: 10px;
+    color: #000;
+    position: absolute;
+    top: 25px;
+    right: 15px;
 }

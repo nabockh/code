@@ -1,96 +1,71 @@
-    <div class='title' title='{{ benchmark.name }}'><a
-            href='/benchmark/{{ benchmark.id }}'>{{ benchmark.name }}</a></div>
+    <div class='title' title='{{ benchmark.question.first.label }}'><a
+            href='/benchmark/{{ benchmark.id }}'>{{ benchmark.question.first.label }}</a></div>
     {% if benchmark.question_type == 1 %}
-        <div id='donutChart-{{ benchmark.id }}-{{ instance.id }}' class='bigChart donut'>
+        <div id='donutChartHolder-{{ benchmark.id }}'>
+            <div id='donutChart' class='bigChart donut'></div>
+        </div>
         <script type="text/javascript">
             var mainChartData_{{ benchmark.id }} = {{ benchmark.charts|safe }};
             var None = null;
-            drawPieChart(mainChartData_{{ benchmark.id }}.pie, 'donutChart-{{ benchmark.id }}-{{ instance.id }}');
+            drawPieChart(mainChartData_{{ benchmark.id }}.pie, 'donutChartHolder-{{ benchmark.id }}');
         </script>
-        </div>
 
     {% elif benchmark.question_type == 2 %}
-        <div id='columnChart-{{ benchmark.id }}-{{ instance.id }}' class='bigChart'></div>
+        <div class='relative'>
+            <div id='barChartHolder-{{ benchmark.id }}-{{ instance.id }}'>
+                <div id='barChart-{{ benchmark.id }}-{{ instance.id }}' class='bigChart'></div>
+            </div>
+            <div class='avg-title'>Avg. Rank</div>
+            <div class='avgBar' id='avgBar-{{ benchmark.id }}-{{ instance.id }}'></div>
+        </div>       
+
         <script type="text/javascript">
             var mainChartData_{{ benchmark.id }} = {{ benchmark.charts|safe }};
-            var None = null;
-            
-            {% if benchmark.question_type == 2 %}
-                drawRankingColumnChart(mainChartData_{{ benchmark.id }}.column_ranking, 'columnChart-{{ benchmark.id }}-{{ instance.id }}');
-            {% else %}
-                drawColumnChart(mainChartData_{{ benchmark.id }}.column, 'columnChart-{{ benchmark.id }}-{{ instance.id }}');
-            {% endif %}
+
+            drawBarChart(mainChartData_{{ benchmark.id }}.bar, 'barChartHolder-{{ benchmark.id }}-{{ instance.id }}');
+
+            if( screen.width > 641 ) {
+                drawCircles(mainChartData_{{ benchmark.id }}.avg, 'avgBar-{{ benchmark.id }}-{{ instance.id }}'); 
+            };
         </script>
 
 
     {% elif benchmark.question_type == 3 %}
-        <div id='bellcurveChart-{{ benchmark.id }}-{{ instance.id }}' class='bigChart'></div>
-        <div class='units'>Chart Data In: <span title='{{ benchmark.question.first.options.first.units }}'>"{{ benchmark.question.first.options.first.units }}"</span></div>
-        <div class='benchmark-stats perc-based'>
-            <div class='single-stat'>
-                <span class='title'>Min</span>
-                <span class='value' id='minVal-{{ benchmark.id }}'></span>
-            </div>
-            <div class='single-stat'>
-                <span class='title'>Max</span>
-                <span class='value' id='maxVal-{{ benchmark.id }}'></span>
-            </div>
-            <div class='single-stat'>
-                <span class='title'>Avg</span>
-                <span class='value' id='avgVal-{{ benchmark.id }}'></span>
-            </div>
-            <div class='single-stat'>
-                <span class='title'>SD</span>
-                <span class='value' id='sdVal-{{ benchmark.id }}'></span>
-            </div>
+        <div id='areaChartHolder-{{ benchmark.id }}-{{ instance.id }}'>
+            <div id='areaChart' class='bigChart'></div>
+        </div>      
+        <div id='areaStats'>
+            <div class='units'>Chart Data In: <span title='{{ benchmark.question.first.options.first.units }}'>"{{ benchmark.question.first.options.first.units }}"</span></div>
         </div>
-
         <script type="text/javascript">
             var mainChartData_{{ benchmark.id }} = {{ benchmark.charts|safe }};
             var None = null;
-
-            $(function () {
-                $("#minVal-{{ benchmark.id }}").text(mainChartData_{{ benchmark.id }}.bell_curve.min.toFixed(0));
-                $("#maxVal-{{ benchmark.id }}").text(mainChartData_{{ benchmark.id }}.bell_curve.max.toFixed(0));
-                $("#avgVal-{{ benchmark.id }}").text(mainChartData_{{ benchmark.id }}.bell_curve.avg.toFixed(0));
-                var sd = mainChartData_{{ benchmark.id }}.bell_curve.sd.toFixed(1);
-                $("#sdVal-{{ benchmark.id }}").text(sd);
-
-                $( ".single-stat .value" ).each(function() {
-                    var len = $(this).text().length;
-                    if (len >= 4) {
-                        $(this).parents('.benchmark-stats').addClass('sixish');
-                    }                    
-
-                    else if (len >= 6) {
-                        $(this).parents('.benchmark-stats').addClass('more');
-                    }
-
-                    else {
-                        $(this).parents('.benchmark-stats').removeClass('more sixish');
-                    }
-                });
-            });
-            drawBellcurveChart(mainChartData_{{ benchmark.id }}.bell_curve, 'bellcurveChart-{{ benchmark.id }}-{{ instance.id }}');
+            drawAreaChart(mainChartData_{{ benchmark.id }}.area, 'areaChartHolder-{{ benchmark.id }}-{{ instance.id }}');
         </script>
 
     {% elif benchmark.question_type == 4 %}
-        <div id='donutChart-{{ benchmark.id }}-{{ instance.id }}' class='bigChart donut'>
+        <div id='donutChartHolder-{{ benchmark.id }}'>
+            <div id='donutChart' class='bigChart donut'></div>
+        </div>
         <script type="text/javascript">
             var mainChartData_{{ benchmark.id }} = {{ benchmark.charts|safe }};
             var None = null;
-            drawPieChart(mainChartData_{{ benchmark.id }}.pie, 'donutChart-{{ benchmark.id }}-{{ instance.id }}');
+            drawPieChart(mainChartData_{{ benchmark.id }}.pie, 'donutChartHolder-{{ benchmark.id }}');
         </script>
-        </div>
+        
 
 
     {% elif benchmark.question_type == 5 %}
-        <div id='lineChart-{{ benchmark.id }}-{{ instance.id }}' class='bigChart'></div>
-        <div class='units'>Chart Data In: <span title='{{ benchmark.question.first.options.first.units }}'>"{{ benchmark.question.first.options.first.units }}"</span></div>
+        <div id='areaChartHolder-{{ benchmark.id }}-{{ instance.id }}'>
+            <div id='areaChart' class='bigChart'></div>
+        </div>      
+        <div id='areaStats'>
+            <div class='units'>Chart Data In: <span title='{{ benchmark.question.first.options.first.units }}'>"{{ benchmark.question.first.options.first.units }}"</span></div>
+        </div>
         <script type="text/javascript">
             var mainChartData_{{ benchmark.id }} = {{ benchmark.charts|safe }};
             var None = null;
-            drawLineChart(mainChartData_{{ benchmark.id }}.line, 'lineChart-{{ benchmark.id }}-{{ instance.id }}');
+            drawAreaChart(mainChartData_{{ benchmark.id }}.area, 'areaChartHolder-{{ benchmark.id }}-{{ instance.id }}');
         </script>
     {% endif %}
 

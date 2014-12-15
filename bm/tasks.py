@@ -157,7 +157,7 @@ def check_response_count():
 @celery_log
 def check_benchmark_results():
     # get finished benchmarks with invites status 1 or 2
-    finished_benchmarks = Benchmark.valid.filter(end_date__lte=datetime.now(), invites__status__range=[1, 2])
+    finished_benchmarks = Benchmark.valid.filter(end_date__lte=datetime.now(), invites__status__range=[0, 1, 2])
     if finished_benchmarks:
         for benchmark in finished_benchmarks:
             subject = "Bedade results published"

@@ -98,6 +98,26 @@ class BenchmarkCreateWizardView(SessionWizardView):
                 return self.render_next_step(form)
         return self.render(form)
 
+    def render_next_step(self, form, **kwargs):
+        """
+        This method gets called when the next step/form should be rendered.
+        `form` contains the last/current form.
+        """
+        next_step = self.steps.next
+        if next_step == '2':
+            new_form = self.get_form(next_step,
+                data=None,
+                files=self.storage.get_step_files(next_step))
+        else:
+            new_form = self.get_form(next_step,
+                data=self.storage.get_step_data(next_step),
+                files=self.storage.get_step_files(next_step))
+
+        # change the stored current step
+        self.storage.current_step = next_step
+        return self.render(new_form, **kwargs)
+
+
     def render_done(self, form, **kwargs):
         """
         This method gets called when all forms passed. The method should also
@@ -295,7 +315,7 @@ class BenchmarkSearchView(ListView):
         return super(BenchmarkSearchView, self).dispatch(request, *args, **kwargs)
 
     def get_queryset(self):
-        return Benchmark.valid.all()
+        return Benchmark.valid.all().order_by('-start_date')
 
 
 class BaseBenchmarkAnswerView(FormView):
@@ -550,6 +570,8 @@ class BenchmarkDetailView(FormView):
         return kwargs
 
     def get_context_data(self, **kwargs):
+        # Note: Role data was removed by request of Customer, but possible will be
+        # needed in future
         context = super(BenchmarkDetailView, self).get_context_data(**kwargs)
         benchmark = self.get_benchmark(**kwargs)
         if not self.request.user.is_anonymous() and Benchmark.objects.filter(id=benchmark.id, question__responses__user=self.request.user):
@@ -557,17 +579,17 @@ class BenchmarkDetailView(FormView):
         context['benchmark'] = benchmark
         context['question'] = benchmark.question.first()
         context['url'] = self.request.META['HTTP_HOST'] + self.request.path
-        group_by_headline = QuestionResponse.objects.filter(question=benchmark.question.first()).\
-            values('user__social_profile__headline').annotate(count=Count('id'))
+        # group_by_headline = QuestionResponse.objects.filter(question=benchmark.question.first()).\
+        #     values('user__social_profile__headline').annotate(count=Count('id'))
         group_by_country = QuestionResponse.objects.filter(question=benchmark.question.first()).\
             values('user__social_profile__location__name').annotate(count=Count('id'))
         group_by_geo = QuestionResponse.objects.filter(question=benchmark.question.first()).\
             values('user__social_profile__location__parent__name').annotate(count=Count('id'))
         group_by_industry = QuestionResponse.objects.filter(question=benchmark.question.first()).\
             values('user__social_profile__company___industry__name').annotate(count=Count('id'))
-        for dictionary in group_by_headline:
-            dictionary['role'] = dictionary['user__social_profile__headline'] or "Not Available"
-            del dictionary['user__social_profile__headline']
+        # for dictionary in group_by_headline:
+        #     dictionary['role'] = dictionary['user__social_profile__headline'] or "Not Available"
+        #     del dictionary['user__social_profile__headline']
         for dictionary in group_by_geo:
             dictionary['geo'] = dictionary['user__social_profile__location__parent__name'] or "Not Available"
             del dictionary['user__social_profile__location__parent__name']
@@ -577,11 +599,11 @@ class BenchmarkDetailView(FormView):
         for dictionary in group_by_industry:
             dictionary['industry'] = dictionary['user__social_profile__company___industry__name'] or "Not Available"
             del dictionary['user__social_profile__company___industry__name']
-        headlines = []
-        for item in group_by_headline:
-            first = item['count']
-            second = item['role']
-            headlines.append([second, first])
+        # headlines = []
+        # for item in group_by_headline:
+        #     first = item['count']
+        #     second = item['role']
+        #     headlines.append([second, first])
         geo = []
         for item in group_by_geo:
             first = item['count']
@@ -597,8 +619,8 @@ class BenchmarkDetailView(FormView):
             first = item['count']
             second = item['industry']
             industries.append([second, first])
-        context['role'] = list(headlines)
-        context['role'].insert(0, ['role', 'count'])
+        # context['role'] = list(headlines)
+        # context['role'].insert(0, ['role', 'count'])
         context['geo'] = list(geo)
         context['geo'].insert(0, ['geo', 'count'])
         context['countries'] = list(countries)
@@ -606,7 +628,7 @@ class BenchmarkDetailView(FormView):
         context['industries'] = list(industries)
         context['industries'].insert(0, ['industries', 'count'])
 
-        for field in ['role', 'geo', 'countries', 'industries']:
+        for field in ['geo', 'countries', 'industries']:
             context[field] = json.dumps(context[field])
 
         # Count percentage in aggregated lists
@@ -618,15 +640,15 @@ class BenchmarkDetailView(FormView):
         sum_geo = sum([each[1] for each in geo_percentage])
         for item in geo_percentage:
             item[1] = round(float(item[1])/sum_geo*100)
-        role_percentage = list(headlines)
-        sum_role = sum([each[1] for each in role_percentage])
-        for item in role_percentage:
-            item[1] = round(float(item[1])/sum_role*100)
+        # role_percentage = list(headlines)
+        # sum_role = sum([each[1] for each in role_percentage])
+        # for item in role_percentage:
+        #     item[1] = round(float(item[1])/sum_role*100)
         industry_percentage = list(industries)
         sum_industry = sum([each[1] for each in industry_percentage])
         for item in industry_percentage:
             item[1] = round(float(item[1])/sum_industry*100)
-        context['role_percentage'] = role_percentage
+        # context['role_percentage'] = role_percentage
         context['industry_percentage'] = industry_percentage
         context['geo_percentage'] = geo_percentage
         context['countries_percentage'] = countries_percentage
@@ -764,7 +786,7 @@ class ExcelDownloadView(BenchmarkDetailView):
         contributor_worksheet = workbook.add_worksheet('Contributor Stats')
         countries_worksheet = workbook.add_worksheet('Countries')
         industry_worksheet = workbook.add_worksheet('Industry')
-        role_worksheet = workbook.add_worksheet('Role')
+        # role_worksheet = workbook.add_worksheet('Role')
         geo_worksheet = workbook.add_worksheet('Geo')
         col = 1
         row = 0
@@ -824,27 +846,30 @@ class ExcelDownloadView(BenchmarkDetailView):
         })
         industry_worksheet.insert_chart('C3', chart)
 
+        #NOTE: Role Stats were removed by request of customer, but it is possible that
+        # we will need this in future.
+
         # role stat data worksheet
-        chart = workbook.add_chart({'type': 'pie'})
-        role_worksheet.set_column(0, 1, 30)
-        role_stat = context['role_percentage']
-        role_data = [
-            [role[0] for role in role_stat],
-            [role[1] for role in role_stat],
-        ]
-        headings = ['Role', 'Percentage %']
-        role_worksheet.write_row('A1', headings, bold)
-        role_worksheet.write_column('A2', role_data[0])
-        role_worksheet.write_column('B2', role_data[1])
-        chart.add_series({
-            'categories': '=Role!$A$2:$A${0}'.format(len(role_stat)+1),
-            'values':     '=Role!$B$2:$B${0}'.format(len(role_stat)+1),
-        })
-        chart.set_chartarea({
-            'border': {'color': 'black'},
-            'fill':   {'color': 'white'}
-        })
-        role_worksheet.insert_chart('C3', chart)
+        # chart = workbook.add_chart({'type': 'pie'})
+        # role_worksheet.set_column(0, 1, 30)
+        # role_stat = context['role_percentage']
+        # role_data = [
+        #     [role[0] for role in role_stat],
+        #     [role[1] for role in role_stat],
+        # ]
+        # headings = ['Role', 'Percentage %']
+        # role_worksheet.write_row('A1', headings, bold)
+        # role_worksheet.write_column('A2', role_data[0])
+        # role_worksheet.write_column('B2', role_data[1])
+        # chart.add_series({
+        #     'categories': '=Role!$A$2:$A${0}'.format(len(role_stat)+1),
+        #     'values':     '=Role!$B$2:$B${0}'.format(len(role_stat)+1),
+        # })
+        # chart.set_chartarea({
+        #     'border': {'color': 'black'},
+        #     'fill':   {'color': 'white'}
+        # })
+        # role_worksheet.insert_chart('C3', chart)
 
         # Geo stat data worksheet
         chart = workbook.add_chart({'type': 'pie'})
@@ -874,17 +899,21 @@ class ExcelDownloadView(BenchmarkDetailView):
             contributor_results = benchmark.charts['pie'][1:]
             chart = workbook.add_chart({'type': 'pie'})
         elif question_type == 2:
-            contributor_results = benchmark.charts['column_ranking']
-            chart = workbook.add_chart({'type': 'column'})
+            contributor_results = json.loads(benchmark.charts)['bar_excel']
+            chart = workbook.add_chart({'type': 'bar', 'subtype': 'percent_stacked'})
         elif question_type == 3:
             contributor_results = benchmark.charts['bell_curve']
-            chart = workbook.add_chart({'type': 'scatter'})
+            area_data = benchmark.charts['area']
+            chart_bell_curve = workbook.add_chart({'type': 'scatter'})
+            chart_area = workbook.add_chart({'type': 'area'})
         elif question_type == 4:
             contributor_results = benchmark.charts['pie']
             chart = workbook.add_chart({'type': 'pie'})
         elif question_type == 5:
-            contributor_results = benchmark.charts['ecxel']
-            chart = workbook.add_chart({'type': 'line'})
+            stock_data = benchmark.charts['ecxel_stock']
+            area_data = benchmark.charts['area']
+            chart_stock = workbook.add_chart({'type': 'stock'})
+            chart_area = workbook.add_chart({'type': 'area'})
         contributor_worksheet.set_column(0, 1, 30)
         if question_type == 1:
             data = [
@@ -908,29 +937,27 @@ class ExcelDownloadView(BenchmarkDetailView):
                 'border': {'color': 'black'},
                 'fill':   {'color': 'white'}
             })
+            chart.set_title({'name': benchmark.name})
             contributor_worksheet.insert_chart('F3', chart)
 
         elif question_type == 2:
-            i = 1
-            for result in contributor_results:
-                contributor_worksheet.write_row('A{0}'.format(i), result)
-                i+=1
-            chart.add_series({'categories': '=Contributor Stats!$A$1:$A$4'.format(len(contributor_results))})
-            chart.add_series({'values': '=Contributor Stats!$B$2:$B${0}'.format(len(contributor_results))})
-            chart.add_series({'values': '=Contributor Stats!$C$2:$C${0}'.format(len(contributor_results))})
-            chart.add_series({'values': '=Contributor Stats!$D$2:$D${0}'.format(len(contributor_results))})
-            chart.add_series({'values': '=Contributor Stats!$E$2:$E${0}'.format(len(contributor_results))})
-            chart.add_series({'values': '=Contributor Stats!$F$2:$F${0}'.format(len(contributor_results))})
-            chart.add_series({'values': '=Contributor Stats!$G$2:$G${0}'.format(len(contributor_results))})
-            chart.add_series({'values': '=Contributor Stats!$H$2:$H${0}'.format(len(contributor_results))})
-            chart.add_series({'values': '=Contributor Stats!$I$2:$I${0}'.format(len(contributor_results))})
-            chart.add_series({'values': '=Contributor Stats!$J$2:$J${0}'.format(len(contributor_results))})
-            chart.add_series({'values': '=Contributor Stats!$K$2:$K${0}'.format(len(contributor_results))})
-            chart.set_title ({'name': benchmark.name})
-            chart.set_chartarea({
-                'border': {'color': 'black'},
-                'fill':   {'color': 'white'}
-            })
+            ranks = ['', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K']
+            ranks_count = []
+            for idx, result in enumerate(contributor_results[::-1], start=2):
+                contributor_worksheet.write_column('%s%s' % (ranks[idx], 1), result)
+                ranks_count.append('Rank'+str(idx-1))
+            contributor_worksheet.write_column('A2', ranks_count)
+            last_col = ranks[len(ranks_count) + 1]
+            for idx, i in enumerate(ranks_count, start=2):
+                chart.add_series({
+                    'name': i,
+                    'values': "=Contributor Stats!$B$%s:$%s$%s" % (idx, last_col, idx),
+                    'categories': "=Contributor Stats!$B$1:$%s$1" % (last_col,),
+                    'data_labels': {'value': True},
+                })
+            chart.set_title({'name': benchmark.name})
+            chart.set_size({'x_scale': 2.5, 'y_scale': 2})
+            chart.set_style(3)
             contributor_worksheet.insert_chart('A13', chart)
         elif question_type == 3:
             internal_worksheet = workbook.add_worksheet('Internal')
@@ -962,7 +989,7 @@ class ExcelDownloadView(BenchmarkDetailView):
             internal_worksheet.write_array_formula('D1:D50',
                                                    "{=NORMDIST(C1:C50,'Contributor Stats'!$B$3,"
                                                    "'Contributor Stats'!$B$4,0)}")
-            chart.add_series({
+            chart_bell_curve.add_series({
                 'name':         benchmark.name,
                 'categories': "='Internal'!C1:C50",
                 'values': "='Internal'!D1:D50",
@@ -970,19 +997,32 @@ class ExcelDownloadView(BenchmarkDetailView):
 
             })
 
-            chart.set_chartarea({
+            chart_bell_curve.set_chartarea({
                 'border': {'color': 'black'},
                 'fill':   {'color': 'white'}
             })
-
-            contributor_worksheet.insert_chart('F3', chart)
+            # for item in area_data:
+            area_headings = ['% of contributor below value', 'Contributor Value']
+            contributor_worksheet.write_row('A6' , area_headings)
+            for idx, (point, val) in enumerate(area_data[1:], start=7):
+                contributor_worksheet.write_row('A%s' % idx, [point, ])
+                contributor_worksheet.write_row('B%s' % idx, [val, ])
+            chart_area.add_series({
+                'name':         benchmark.name,
+                'categories': "='Contributor Stats'!A7:A{0}".format(len(area_data[1:]) + 6),
+                'values': "='Contributor Stats'!B7:B{0}".format(len(area_data[1:]) + 6),
+            })
+            chart_bell_curve.set_y_axis({'num_format': ''})
+            contributor_worksheet.insert_chart('F6', chart_bell_curve)
+            contributor_worksheet.insert_chart('F23', chart_area)
+            # internal_worksheet.protect()
             internal_worksheet.hide()
         elif question_type == 4:
-            no_values = [[value[0], value[1]] for value in  contributor_results if value[0] == 'No']
+            no_values = [[value[0], value[1]] for value in contributor_results if value[0] == 'No']
             yes_values = [[value[0], value[1]] for value in contributor_results if value[0] == 'Yes']
             no = no_values[0] if no_values else []
             yes = yes_values[0] if yes_values else []
-            headings = ['Answer', 'Count']
+            headings = ['Answer', '% of respondents']
             contributor_worksheet.write_row('A1', headings, bold)
             contributor_worksheet.write_row('A2', no)
             contributor_worksheet.write_row('A3', yes)
@@ -992,52 +1032,70 @@ class ExcelDownloadView(BenchmarkDetailView):
                 'values':     '=Contributor Stats!$B$2:$B$3',
                 'data_labels': {'percentage': True}
             })
+            chart.set_title({'name': benchmark.name})
             chart.set_chartarea({
                 'border': {'color': 'black'},
                 'fill':   {'color': 'white'}
             })
             contributor_worksheet.insert_chart('F3', chart)
         elif question_type == 5:
-            internal_worksheet = workbook.add_worksheet('Internal')
-            splited = [[(i.split(',')), v] for [i, v] in contributor_results[1:]]
-            chart_data = [[int(i[0]), int(i[1]), v] for [i, v] in splited]
-            y_axis = []
-            last_end = None
-            for start, end, val in chart_data:
-                if val > 0 and last_end and (start - last_end) > 1:
-                    y_axis.extend([('', 0), ]*(start-last_end))
-                if val > 0:
-                    length = (end-start-1)
-                    y_axis.append((start, val))
-                    if length == 1:
-                        continue
-                    if length > 2:
-                        y_axis.extend([('', val), ]*(end-start-1))
-                    y_axis.append((end, val))
-                    last_end = end
-
-            for idx, (point, val) in enumerate(y_axis, start=1):
-            # internal_worksheet.write_row( 'A1', data[0])
-                internal_worksheet.write_row('A%s' % idx, [point])
-                internal_worksheet.write_row('B%s' % idx, [val])
-
-            chart.add_series({
+            # Stock chart
+            headings = ['Quartile', 'Min', 'Max', 'Avg']
+            for idx, quartile in enumerate(stock_data, start=2):
+                contributor_worksheet.write_row('A%s' % idx, quartile)
+            contributor_worksheet.write_row('A1', headings)
+            chart_stock.add_series({
+                # 'name': "=Contributor Stats!$B$1:$B$1",
+                'values':     "=Contributor Stats!$B$2:$B$5",
+                'marker': {
+                    'type': 'circle',
+                    'size': 4,
+                    'border': {'color': 'black'},
+                    'fill':   {'color': 'blue'},
+                },
+            })
+            chart_stock.add_series({
+                # 'categories': "'=Contributor Stats'!$A$2:$A$5",
+                'values':     "=Contributor Stats!$C$2:$C$5",
+                'marker': {
+                    'type': 'circle',
+                    'size': 4,
+                    'border': {'color': 'black'},
+                    'fill':   {'color': 'green'},
+                },
+            })
+            chart_stock.add_series({
+                'categories': "='Contributor Stats'!A2:A5",
+                'values':     "=Contributor Stats!$D$2:$D$5",
+                'marker': {
+                    'type': 'triangle',
+                    'size': 6,
+                    'border': {'color': 'black'},
+                    'fill':   {'color': 'red'},
+                },
+            })
+            chart_stock.set_x_axis({'name': '% of Respondents'})
+            chart_stock.set_y_axis({'name': 'Values'})
+            chart_stock.set_legend({'none': True})
+            chart_stock.set_title ({'name': benchmark.name})
+            chart_stock.set_style(2)
+            chart_stock.set_legend({'none':True})
+            contributor_worksheet.insert_chart('E1', chart_stock)
+            # Area Chart
+            headings_area = ['Frequency', 'Average']
+            for idx, data in enumerate(area_data[1:], start=17):
+                contributor_worksheet.write_row('A%s' % idx, data)
+            index_row = 16
+            contributor_worksheet.write_row('A%s' % index_row, headings_area)
+            row_index = len(area_data[1:]) + 16
+            chart_area.add_series({
                 'name':         benchmark.name,
-                'categories': "='Internal'!A1:A%s" % (len(y_axis)),
-                'values':     "='Internal'!B1:B%s" % (len(y_axis)),
-                'line': {'dash_type': 'solid'}
+                'categories': "='Contributor Stats'!A17:A%s" % row_index,
+                'values': "='Contributor Stats'!B17:B%s" % row_index,
             })
-            chart.set_size({'width': 720, 'height': 576})
-            chart.set_chartarea({
-                'border': {'color': 'black'},
-                'fill':   {'color': 'white'}
-            })
-            chart.set_y_axis({'min': 0, 'max': 100, 'name': '% of Respondents'})
-            chart.set_x_axis({'name': 'Contributed Values'})
-            contributor_headings = ['Contributor Stats']
-            contributor_worksheet.write_row('A1', contributor_headings, bold)
-            contributor_worksheet.insert_chart('A2', chart)
-            internal_worksheet.hide()
+            chart_area.set_legend({'none': True})
+            chart_area.set_x_axis({'name': '% of Respondents'})
+            contributor_worksheet.insert_chart('E17', chart_area)
         workbook.close()
         output.seek(0)
 

@@ -13,6 +13,11 @@ from django.db.models import Count, F
 from django.db.models.aggregates import Min
 from social.models import LinkedInIndustry
 from social_auth.db.django_models import USER_MODEL
+import numpy
+import collections, operator
+from decimal import Decimal, getcontext
+import json
+
 
 class RegionsManager(models.Manager):
     def get_queryset(self):
@@ -213,13 +218,31 @@ class BenchmarkRanking(Benchmark):
         proxy = True
         verbose_name = 'Benchmark Ranking'
 
-    available_charts = [('Pie', 'Pie Chart'), ('Column', 'Column Chart')]
-    default_chart = 'Column'
+    available_charts = [('Bar', 'Bar Chart')]
+    default_chart = 'Bar'
 
     @property
     def charts(self):
         series1 = self.series_statistic.values('series', 'sub_series', 'value').order_by('series')
-        series1 = [[str(s['series'] + ' as Rank ' + s['sub_series']), s['value']] for s in series1]
+        ranks = []
+        for item in series1:
+            if item.get('series') not in ranks:
+                ranks.append(item.get('series'))
+        value = []
+        for rank in ranks:
+            rank_val = []
+            for item in series1:
+                if item.get('series') == rank:
+                    rank_val.append((item.get('sub_series'), item.get('value')))
+            rank_val.insert(0, rank)
+            value.append(rank_val)
+        avg_total = {}
+        for item in value:
+            avg = []
+            for vote, count in item[1:]:
+                avg.extend(vote * count)
+            avg_total[item[0]] = round(numpy.average(map(int, avg)), 2)
+        series1 = [[(s['series'] + ' as Rank ' + s['sub_series']), s['value']] for s in series1]
         series1.insert(0, ['series', 'count'])
         # series2 = self.series_statistic.values('series', 'sub_series', 'value').order_by('series')
         # series2 = [[int(s['sub_series']), s['series'], s['value']] for s in series2]
@@ -232,9 +255,9 @@ class BenchmarkRanking(Benchmark):
         titles = ['Ranks']
         ranks = []
         for s in series:
-            sub_ranks = [str(s)]
+            sub_ranks = [s]
             for rid, val in sorted(rank_data[s]):
-                titles.append('Rank '+ rid)
+                titles.append('Rank ' + rid)
                 sub_ranks.append(val)
             ranks.append(sub_ranks)
         titles = [str(title) for title in titles]
@@ -244,14 +267,44 @@ class BenchmarkRanking(Benchmark):
             values = rank[1:]
             del rank[1:]
             for value in values:
-                value = round((float(value)/sum(values))*100)
+                value = round((float(value) / sum(values)) * 100, 2)
                 rank.append(value)
         if len(series2) == 11:
             series2.insert(10, series2.pop(2))
-        return {
+        bar_data = []
+        bar_excel = []
+        for rank in ranks:
+            summa = sum(rank[1:])
+            percent = []
+            excel_percent = []
+            for r in rank[1:]:
+                obj = {'v': (round(Decimal(r/float(summa))*100, 1)),
+                       'f': str((round(Decimal(r/float(summa))*100, 1)))+'%'}
+                excel_percent.append(round(Decimal(r/float(summa))*100, 1))
+                percent.append(obj)
+            excel_percent.insert(0, rank[0])
+            percent.insert(0, rank[0])
+            bar_excel.append(excel_percent)
+            bar_data.append(percent)
+        ranks_titles = ['Rank']
+        for idx, i in enumerate(series, start=1):
+            ranks_titles.append('Rank ' + str(idx))
+        [rank.append(avg_total.get(rank[0])) for rank in bar_data]
+        for rank_excel in bar_excel:
+            rank_excel.append(avg_total.get(rank_excel[0]))
+        bar_data = sorted(bar_data, key=lambda k: k[-1])
+        bar_excel = sorted(bar_excel, key=lambda k: k[-1])
+        [rank.remove(rank[-1]) for rank in bar_data]
+        [excel_rank.remove(excel_rank[-1]) for excel_rank in bar_excel]
+        bar_data.insert(0, ranks_titles)
+        graph_average = [v for k, v in avg_total.iteritems()]
+        return json.dumps({
             'pie': series1,
             'column_ranking': series2,
-        }
+            'bar': bar_data,
+            'bar_excel': bar_excel,
+            'avg': graph_average
+        })
 
 
 class BenchmarkNumeric(Benchmark):
@@ -260,11 +313,43 @@ class BenchmarkNumeric(Benchmark):
         proxy = True
         verbose_name = 'Benchmark Open Number'
 
-    available_charts = [('Pie', 'Pie Chart'), ('Column', 'Column Chart'), ('Bell_Curve', 'Bell Curve Chart')]
-    default_chart = 'Bell_Curve'
+    available_charts = [('Area', 'Area Chart'), ('Bell_Curve', 'Bell Curve Chart')]
+    default_chart = 'Area'
 
     @property
     def charts(self):
+        responses = [i.data_numeric.all() for i in self.question.first().responses.all()]
+        # remove extreme values from numeric responses values
+        numeric_data = [response[0].value for response in responses]
+        stddev = numpy.std(numeric_data)
+        avg = numpy.mean(numeric_data)
+        min_point = int(avg - (3 * stddev))
+        max_point = int(avg + (3 * stddev))
+        for i in xrange(len(numeric_data) - 1, -1, -1):
+            element = numeric_data[i]
+            if element < min_point or element > max_point:
+                del numeric_data[i]
+        counted_dict = collections.Counter(numeric_data)
+        sorted_list = sorted(counted_dict.items(), key=operator.itemgetter(0))
+        values = []
+        percen = []
+        for k, v in sorted_list:
+            values.append(k)
+            percen.append(v)
+        values_percent = []
+        for i in values:
+            index = values.index(i)
+            val_sum = sum(percen)
+            if index == 0:
+                values_percent.append(round(percen[index] / float(val_sum), 2) * 100)
+            else:
+                values_percent.append(round((percen[index]/float(val_sum))*100 + values_percent[index-1], 2))
+        if values_percent[-1] != 100:
+            values_percent.remove(values_percent[-1])
+            values_percent.append(100)
+        area_raw_data = zip(values_percent, values)
+        area_data = [[str(perc) + '%', val]for perc, val in area_raw_data]
+        area_data.insert(0, ['Contributors', 'Contributor Value'])
         series = self.series_statistic.values('series', 'sub_series', 'value').order_by('id')
         series = [[str(s['series']), s['value']] for s in series]
         value_sum = sum([vote[1] for vote in series])
@@ -282,9 +367,10 @@ class BenchmarkNumeric(Benchmark):
         for idx, (s, v) in enumerate(series1):
             data = sampled_data[:]
             data[idx] = v
-            series_data.append([s, ]+data)
+            series_data.append([s,]+data)
         bell_curve = self.numeric_statistic.values('min', 'max', 'avg', 'sd').first()
         return {
+            'area': area_data,
             'pie': series,
             'column': series_data,
             'bell_curve': bell_curve,
@@ -298,8 +384,8 @@ class BenchmarkRange(Benchmark):
         proxy = True
         verbose_name = 'Benchmark Range'
 
-    available_charts = [('Pie', 'Pie Chart'), ('Column', 'Column Chart'), ('Line', 'Line Chart')]
-    default_chart = 'Line'
+    available_charts = [('Area', 'Area Chart'), ('Quartile', 'Quartile Chart')]
+    default_chart = 'Area'
 
     @property
     def charts(self):
@@ -335,13 +421,73 @@ class BenchmarkRange(Benchmark):
             value = round((float(vote[0])/value_sum)*100)
             del vote[0]
             vote.insert(0, value)
+
+        # Data for area chart
+        range_responses = [i.data_range.all() for i in self.question.first().responses.all()]
+        numeric_data = sorted([numpy.mean([response[0].min, response[0].max]) for response in range_responses])
+        avg = numpy.mean(numeric_data)
+        stddev = numpy.std(numeric_data)
+        min_point = int(avg - (3 * stddev))
+        max_point = int(avg + (3 * stddev))
+        for i in xrange(len(numeric_data) - 1, -1, -1):
+            element = numeric_data[i]
+            if element < min_point or element > max_point:
+                del numeric_data[i]
+        percen = []
+        for i in numeric_data:
+            index = numeric_data.index(i)
+            val_sum = len(numeric_data)
+            if index == 0:
+                percen.append(round(Decimal(1/float(val_sum)*100), 1))
+            else:
+                percen.append(round(Decimal(1/float(val_sum)*100 + percen[index-1]), 1))
+        if percen[-1] != 100:
+            percen.remove(percen[-1])
+            percen.append(100)
+        area_raw_data = zip(percen, numeric_data)
+        area_data = [[str(perc) + '%', val]for perc, val in area_raw_data]
+        area_data.insert(0, ['Contributors', 'Contributor Average'])
+
+        # Data for Quartile
+        quartile_data = sorted([([response[0].min, response[0].max, numpy.mean([response[0].min, response[0].max])]) for response in range_responses])
+        for i in xrange(len(quartile_data) - 1, -1, -1):
+            element = quartile_data[i]
+            if element[2] < min_point or element[2] > max_point:
+                del quartile_data[i]
+            else:
+                del element[2]
+        quartile_raw = sorted(quartile_data)
+        quartile_raw.insert(0, ['min', 'max'])
+        quartile_raw = [item for item in quartile_raw if item[0]!= item[1]]
+        min_values = []
+        max_values = []
+        average = []
+        for min, max in quartile_raw[1:]:
+            average.append(numpy.average([min, max]))
+            min_values.append(min)
+            max_values.append(max)
+        percentiles = [25, 50, 75, 100]
+        quartiles = []
+        for idx, i in enumerate(percentiles):
+            quartiles.append([numpy.percentile(min_values, percentiles[idx]), numpy.percentile(max_values, percentiles[idx])])
+        stock_data = [['quartile', 'min', 'avg', 'avg2', 'max']]
+        excel_stock = []
+        for idx, (q_min, q_max) in enumerate(quartiles, start=1):
+            average = numpy.average([q_min, q_max])
+            tooltip = {'v': idx, 'f': 'Quartile ' + (str(idx))}
+            stock_data.append([tooltip, q_min, average, average, q_max])
+            excel_stock.append(([str(idx) + ' Quartile', q_min, q_max, average]))
+
         return {
             'pie': series1,
             'column': series_data,
+            'stock': stock_data,
+            'area': area_data,
             'line': series2,
+            'ecxel_stock': excel_stock,
             'ecxel': excel_data,
             'units': self.question.first().options.first().units.encode('utf-8'),
-        }
+         }
 
 
 class BenchmarkYesNo(Benchmark):

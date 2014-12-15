@@ -4,9 +4,9 @@ function drawLineChart(chartData, divId) {
     }
 
     function lineTooltips(chartData) {
-        var votes = chartData[0];
-        var min = chartData[1];
-        var max = chartData[3];
+        var votes = chartData[0],
+            min = chartData[1],
+            max = chartData[3];
         return '<div style="padding:5px 5px 5px 5px;">' + 'Contributors: ' + '<b>' + votes + '%' + '</b>' + '<br/>'+ '<span style="display: block; border-bottom: 1px solid #ccc; padding-top: 5px; margin-bottom: 5px;"></span>' + 'Range: ' + '<b>' + min + ' - ' + max + '</b>' + '</div>';
     };
 

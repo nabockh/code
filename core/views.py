@@ -32,7 +32,7 @@ import django.db.models as models
 from django.template import Context
 from django.template.loader import get_template
 from django.contrib.sites.models import get_current_site
-
+from signals import colleague_invited
 
 class HomeView(TemplateView):
     template_name = 'core/home.html'
@@ -161,6 +161,7 @@ class DashboardView(TemplateView):
                 body = get_template('alerts/invite_colleague_email.html').render(context)
                 subject = 'Bedade exclusive beta test invitation'
                 send_mail(subject, body, None, recipient_list)
+                colleague_invited.send(sender=self.__class__, request=request, user=request.user)
             return HttpResponseRedirect('/dashboard')
         return render(request, 'bm/dashboard.html', {'invite_colegaue_form': invite_colleague})
 

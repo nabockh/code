@@ -45,18 +45,35 @@ function drawColumnChart(chartData, divId) {
 
     var columnChartData = google.visualization.arrayToDataTable(chartData);
  
-    var columnOptions = {
-        legend: { position: "top" },
-        chartArea: {  
-            width: "70%", 
-            height: "65%" 
-        },
-        colors: columnGradient(chartData.length),
-        focusTarget: 'category',
-        tooltip: { isHtml : true, showColorCode : false, textStyle: { color: "#fff", fontSize: 1 }},
-        isStacked: true,
-        vAxis: { title : '% of Respondents', titleTextStyle: {color: '#33626e'}, viewWindow: { min: 0, max: 100}, ticks: [{v:0, f: '0'}, {v:25, f: '25%'}, {v:50, f: '50%'}, {v:75, f: '75%'}, {v:100, f: '100%'}]},
+    if( screen.width < 641 ) {
+        var columnOptions = {
+            legend: { position: "top" },
+            chartArea: {
+                top: 65,
+                left: 60,
+                width: '75%'
+            },
+            colors: columnGradient(chartData.length),
+            focusTarget: 'category',
+            tooltip: { isHtml : true, showColorCode : false, textStyle: { color: "#fff", fontSize: 1 }},
+            isStacked: true,
+            vAxis: { title : '% of Respondents', titleTextStyle: {color: '#33626e'}, viewWindow: { min: 0, max: 100}, ticks: [{v:0, f: '0'}, {v:25, f: '25%'}, {v:50, f: '50%'}, {v:75, f: '75%'}, {v:100, f: '100%'}]},
+        };
+    } else {
+        var columnOptions = {
+            legend: { position: "top" },
+            chartArea: {  
+                width: "70%", 
+                height: "65%" 
+            },
+            colors: columnGradient(chartData.length),
+            focusTarget: 'category',
+            tooltip: { isHtml : true, showColorCode : false, textStyle: { color: "#fff", fontSize: 1 }},
+            isStacked: true,
+            vAxis: { title : '% of Respondents', titleTextStyle: {color: '#33626e'}, viewWindow: { min: 0, max: 100}, ticks: [{v:0, f: '0'}, {v:25, f: '25%'}, {v:50, f: '50%'}, {v:75, f: '75%'}, {v:100, f: '100%'}]},
+        };
     };
+
 
     var columnChart = new google.visualization.ColumnChart(document.getElementById(divId));
 

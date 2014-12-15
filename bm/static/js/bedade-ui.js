@@ -7,103 +7,159 @@ $(function () {
 
     var sectionStateChangeStep1 = function() {
         var selectedStep1 = $('#id_0-question_type').find('option:selected').val();
-            if (selectedStep1 > 2) {
-                $('#units_maxDecimals').show();
-                $('#answer_options').hide();
-                $('#units_maxDecimals').next('hr').show();
-            }
-            else {
-                $('#answer_options').show();
-                $('#units_maxDecimals').hide();
-                $('#units_maxDecimals').next('hr').show();
-            }
-            if (selectedStep1 == 4) {
-                $('#units_maxDecimals').hide();
-                $('#answer_options').hide();
-                $('#units_maxDecimals').next('hr').hide();
-            }
+        if (selectedStep1 > 2) {
+            $('#units_maxDecimals').show();
+            $('#answer_options').hide();
+            $('#units_maxDecimals').next('hr').show();
+        }
+        else {
+            $('#answer_options').show();
+            $('#units_maxDecimals').hide();
+            $('#units_maxDecimals').next('hr').show();
+        }
+        if (selectedStep1 == 4) {
+            $('#units_maxDecimals').hide();
+            $('#answer_options').hide();
+            $('#units_maxDecimals').next('hr').hide();
+        }
     };
 
     var sectionStateChangeStep3 = function() {
         var selectedStep3 = $('#id_2-question_type').find('option:selected').val();
-            if (selectedStep3 > 2) {
-                $('#units_maxDecimals_step3').show();
-                $('#answer_options_step3').hide();
-                $('#units_maxDecimals_step3').next('hr').show();
-            }
-            else {
-                $('#answer_options_step3').show();
-                $('#units_maxDecimals_step3').hide();
-                $('#units_maxDecimals_step3').next('hr').show();
-            }
+        if (selectedStep3 > 2) {
+            $('#units_maxDecimals_step3').show();
+            $('#answer_options_step3').hide();
+            $('#units_maxDecimals_step3').next('hr').show();
+        }
+        else {
+            $('#answer_options_step3').show();
+            $('#units_maxDecimals_step3').hide();
+            $('#units_maxDecimals_step3').next('hr').show();
+        }
 
-            if (selectedStep3 == 4) {
-                $('#units_maxDecimals_step3').hide();
-                $('#answer_options_step3').hide();
-                $('#units_maxDecimals_step3').next('hr').hide();
-            }
+        if (selectedStep3 == 4) {
+            $('#units_maxDecimals_step3').hide();
+            $('#answer_options_step3').hide();
+            $('#units_maxDecimals_step3').next('hr').hide();
+        }
     };
 
     var chartTypeChange = function() {
         var chartTypeChange = $('#id_Benchmark_Results').find('option:selected').val();
-            if (chartTypeChange == "Pie") {
-                $('#donutChartHolder').show();
-                $('#columnChartHolder').hide();
-                $('#bellcurveChartHolder').hide();
-                $('#lineChartHolder').hide();
-            }
+        if (chartTypeChange == "Pie") {
+            $('#donutChartHolder').show();
+            $('#columnChartHolder').hide();
+            $('#bellcurveChartHolder').hide();
+            $('#bellcurveStats').hide();
+            $('#lineChartHolder').hide();
+            $('#areaChartHolder').hide();
+            $('#areaStats').hide();
+            $('#quartileChartHolder').hide();
+            $('#barChartHolder').hide();
+        }
 
-            if (chartTypeChange == "Column") {
-                $('#donutChartHolder').hide();
-                $('#columnChartHolder').show();
-                $('#bellcurveChartHolder').hide();
-                $('#lineChartHolder').hide();
-            }
+        if (chartTypeChange == "Area") {
+            $('#donutChartHolder').hide();
+            $('#columnChartHolder').hide();
+            $('#bellcurveChartHolder').hide();
+            $('#bellcurveStats').hide();
+            $('#lineChartHolder').hide();
+            $('#areaChartHolder').show();
+            $('#areaStats').show();
+            $('#quartileChartHolder').hide();
+            $('#barChartHolder').hide();
+        }
 
-            if (chartTypeChange == "Bell_Curve") {
-                $('#donutChartHolder').hide();
-                $('#columnChartHolder').hide();
-                $('#bellcurveChartHolder').show();
-                $('#lineChartHolder').hide();
-            }
+        if (chartTypeChange == "Column") {
+            $('#donutChartHolder').hide();
+            $('#columnChartHolder').show();
+            $('#bellcurveChartHolder').hide();
+            $('#lineChartHolder').hide();
+            $('#areaChartHolder').hide();
+            $('#quartileChartHolder').hide();
+            $('#barChartHolder').hide();
+            $('#bellcurveStats').hide();
+            $('#areaStats').hide();
+        }
 
-            if (chartTypeChange == "Line") {
-                $('#donutChartHolder').hide();
-                $('#columnChartHolder').hide();
-                $('#bellcurveChartHolder').hide();
-                $('#lineChartHolder').show();
-            }
+        if (chartTypeChange == "Bell_Curve") {
+            $('#donutChartHolder').hide();
+            $('#columnChartHolder').hide();
+            $('#bellcurveChartHolder').show();
+            $('#lineChartHolder').hide();
+            $('#areaChartHolder').hide();
+            $('#quartileChartHolder').hide();
+            $('#barChartHolder').hide();
+            $('#bellcurveStats').show();
+            $('#areaStats').hide();
+        }
+
+        if (chartTypeChange == "Line") {
+            $('#donutChartHolder').hide();
+            $('#columnChartHolder').hide();
+            $('#bellcurveChartHolder').hide();
+            $('#lineChartHolder').show();
+            $('#areaChartHolder').hide();
+            $('#quartileChartHolder').hide();
+            $('#barChartHolder').hide();
+            $('#bellcurveStats').hide();
+            $('#areaStats').hide();
+        }
+
+        if (chartTypeChange == "Bar") {
+            $('#donutChartHolder').hide();
+            $('#columnChartHolder').hide();
+            $('#bellcurveChartHolder').hide();
+            $('#lineChartHolder').hide();
+            $('#areaChartHolder').hide();
+            $('#quartileChartHolder').hide();
+            $('#barChartHolder').show();
+            $('#bellcurveStats').hide();
+            $('#areaStats').hide();
+        }
+
+        if (chartTypeChange == "Quartile") {
+            $('#donutChartHolder').hide();
+            $('#columnChartHolder').hide();
+            $('#bellcurveChartHolder').hide();
+            $('#lineChartHolder').hide();
+            $('#areaChartHolder').hide();
+            $('#areaStats').show();
+            $('#quartileChartHolder').show();
+            $('#barChartHolder').hide();
+            $('#bellcurveStats').hide();
+        }
     };
 
     var statisticViewChange = function() {
         var statisticViewChange = $('#id_Contributor_Data').find('option:selected').val();
-            if (statisticViewChange == "Role") {
-                $('#roleStats').show();
-                $('#industryStats').hide();
-                $('#countryStats').hide();
-                $('#geoStats').hide();
-            }
+//        if (statisticViewChange == "Role") {
+//            $('#roleStats').show();
+//            $('#industryStats').hide();
+//            $('#countryStats').hide();
+//            $('#geoStats').hide();
+//        }
 
-            if (statisticViewChange == "Geo") {
-                $('#roleStats').hide();
-                $('#industryStats').hide();
-                $('#countryStats').hide();
-                $('#geoStats').show();
-            }
+        if (statisticViewChange == "Geo") {
+            $('#roleStats').hide();
+            $('#industryStats').hide();
+            $('#countryStats').hide();
+            $('#geoStats').show();
+        }
 
-            if (statisticViewChange == "Country") {
-                $('#roleStats').hide();
-                $('#industryStats').hide();
-                $('#countryStats').show();
-                $('#geoStats').hide();
-            }
+        if (statisticViewChange == "Country") {
+            $('#roleStats').hide();
+            $('#industryStats').hide();
+            $('#countryStats').show();
+            $('#geoStats').hide();
+        }
 
-            if (statisticViewChange == "Industry") {
-                $('#roleStats').hide();
-                $('#industryStats').show();
-                $('#countryStats').hide();
-                $('#geoStats').hide();
-            }
+        if (statisticViewChange == "Industry") {
+            $('#roleStats').hide();
+            $('#industryStats').show();
+            $('#countryStats').hide();
+            $('#geoStats').hide();
+        }
     };
 
     sectionStateChangeStep1();
@@ -141,7 +197,7 @@ $(function () {
 
 
     $('#preview').on('shown.bs.modal', function (e) {
-        if ($('#default_text').text().length <= 1) {
+//        if ($('#default_text').text().length <= 1) {
             var csrf = document.cookie.match(/csrftoken=([\w]+)/);
             var data = $('.styled-form').serialize();
             var request = $.ajax({
@@ -167,7 +223,7 @@ $(function () {
                     textStatus, errorThrown
                 );
             });
-        }
+//        }
     });
 
 
@@ -222,6 +278,7 @@ $(function () {
         });
     } else {
         $('.add_help').on('click', function(e) {
+           $('.add_help_inner').removeClass('visible');
            $(this).children('.add_help_inner').toggleClass('visible');
            e.stopPropagation();
         });
@@ -411,9 +468,13 @@ $(function () {
     if ( (document.getElementsByClassName('benchmark')).length > 0 ) {
         $('.results').dataTable({
             Info: false,
-            bPaginate: true
+            bPaginate: true,
+            scrollCollapse: false,
+            "aaSorting": []
         });
-
+        $('.results').on( 'page.dt', function () {
+            $(window).scrollTop(0);
+        });
     }
 });
 
@@ -521,8 +582,13 @@ $( document ).ready(function() {
 
 
     $('#recommendedContactList .add-contact-btn, #searchContactList .add-contact-btn').on('click',function(){
-        if(!$(this).attr('disabled')){
-            var $this_parent = $(this).closest('.single-contact');
+        addContact($(this), true);
+        numberOfSelectedContacts();
+    });
+
+    function addContact(curr_obj, append) {
+        if(!curr_obj.attr('disabled')){
+            var $this_parent = curr_obj.closest('.single-contact');
             var this_id = $this_parent.attr('data-contact-id');
             var this_name = $this_parent.find('label:not(.btn)').text();
             var this_title = $this_parent.find('p:not(.grey)').text();
@@ -541,7 +607,7 @@ $( document ).ready(function() {
                                     '<p title="' + this_title + '">' + this_title + '</p>',
                                 '</div>',
                                 '<div class="col-md-12 col-xs-12 selected-check">',
-                                    '<input type="checkbox" name="1-selected-' + this_id + '-secondary" id="id_1-selected-' + this_id + '-secondary" class="share-checkbox" ' + allowed_target + '>',
+                                    '<input type="checkbox" name="1-selected-' + this_id + '-secondary" id="id_1-selected-' + this_id + '-secondary" class="share-checkbox" checked="checked">',
                                     '<label for="id_1-selected-' + this_id + '-secondary" class="nobold">Allow Forwarding</label>',
                                 '</div>',
                             '</div>',
@@ -553,10 +619,14 @@ $( document ).ready(function() {
                     '</div>',
                 '</div>',
             ].join("\n");
-            $('#selectedContactList .mCSB_container').append(clone_block);
-            $(this).attr('disabled', 'disabled');
+            if (append) {
+                $('#selectedContactList .mCSB_container').append(clone_block)
+            }
+            // $('#selectedContactList .mCSB_container').append(clone_block);
+            curr_obj.parent('.col-md-2.col-xs-2').siblings('.col-md-4.col-xs-3').find('.share-checkbox').prop('checked', true);
+            curr_obj.attr('disabled', 'disabled');
             $('#selectedContactList .deselect-btn').click( function(){
-                var $this_parent = $(this).closest('.single-contact');
+                var $this_parent = curr_obj.closest('.single-contact');
                 var this_id = $this_parent.attr('data-contact-id');
                 $target_block = $('#recommendedContactList, #searchContactList').find('.single-contact[data-contact-id="' + this_id + '"]');
                 $target_block.find('.add-contact-btn').removeAttr('disabled');
@@ -564,19 +634,23 @@ $( document ).ready(function() {
                 $target_block.find('.choose-checkbox, .share-checkbox').removeAttr('checked');
                 numberOfSelectedContacts();               
             });
+            
         }
         $('#selectedContactList .share-checkbox').on('click',function() {
-            var $this_parent = $(this).closest('.single-contact');
+            var $this_parent = curr_obj.closest('.single-contact');
             var this_id = $this_parent.attr('data-contact-id');
             $target_checkbox = $('.col-md-8.lined-left.margined').find('.single-contact[data-contact-id="' + this_id + '"]').find('.share-checkbox');
-            if ($(this)[0].checked  === true) {
+            if (curr_obj[0].checked  === true) {
                 $target_checkbox.removeAttr('checked').prop('checked', true);
             }
             else {
                 $target_checkbox.removeAttr('checked').prop('checked', false);
             }
         });
-    });
+        if (typeof(clone_block) !== 'undefined'){
+            return clone_block;   
+        }
+    }
 
     $('#selectedContactList .share-checkbox').on('click',function() {
         var $this_parent = $(this).closest('.single-contact');
@@ -605,10 +679,33 @@ $( document ).ready(function() {
         numberOfSelectedContacts();
     });
 
-    $('.add-all').click( function(){
+    $('.add-all#srcAddAll').click( function(){
         $('#selectedPreloader').fadeIn(500);
         setTimeout(function() {
-            $('.add-all').closest('.title-header').next('.contact-results').find('.add-contact-btn').click();
+            var str = '';
+            $.each($('.add-all#srcAddAll').closest('.title-header').next('.contact-results').find('.add-contact-btn'),function(index, value) {
+                str += addContact($(this), false);
+                if (str == 'undefined') {
+                    str = '';
+                }
+            });
+            if (str.length) {
+                $('#selectedContactList .mCSB_container').append(str);
+            }
+            numberOfSelectedContacts();
+            $('#selectedPreloader').fadeOut(500);
+        }, 1000);
+     });
+
+    $('.add-all#recAddAll').click( function(){
+        $('#selectedPreloader').fadeIn(500);
+        setTimeout(function() {
+            var str = '';
+            $.each($('.add-all#recAddAll').closest('.title-header').next('.contact-results').find('.add-contact-btn'),function(index, value) {
+                str += addContact($(this), false);
+            });
+            $('#selectedContactList .mCSB_container').append(str);
+            numberOfSelectedContacts();
             $('#selectedPreloader').fadeOut(500);
         }, 1000);
      });
@@ -639,9 +736,9 @@ $( document ).ready(function() {
     });
 
 
-    $('.add-contact-btn, .add-all').on('click', function() {
-       numberOfSelectedContacts();
-    }); 
+    // $('.add-contact-btn, .add-all').on('click', function() {
+    //    numberOfSelectedContacts();
+    // }); 
 
 });
 $(window).on('resize', function(){
@@ -653,18 +750,24 @@ $(document).ajaxStop(function() {
 
 
 $( document ).ready(function(){
-    $( "#preview" ).on('shown.bs.modal', function() {
-        $('#default_text').focus();
-    });
+
+$( "#preview" ).on('shown.bs.modal', function() {
+    $('#default_text').focus();
+});
         $( '#saveButton' ).on('click', function() {
              var editedText = $('#default_text').val();
             $('#email_body').text(editedText);
             $( "#preview" ).modal('hide');
         });
 
-    
-
-
+        $('.carousel-inner .title a').each(function() {
+            var divh = $(this).parent('.carousel-inner .title').height();
+            while ($(this).outerHeight()>divh) {
+                $(this).text(function (index, text) {
+                    return text.replace(/\W*\s(\S)*$/, ' ...');
+                });
+            };
+        });
 
     $('.select2-search input').attr('disabled', 'disabled');
 
@@ -684,8 +787,6 @@ $( document ).ready(function(){
         }
     });
 });
-
-
 
 
     
