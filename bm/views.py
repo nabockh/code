@@ -952,7 +952,7 @@ class ExcelDownloadView(BenchmarkDetailView):
                 chart.add_series({
                     'name': i,
                     'values': "=Contributor Stats!$B$%s:$%s$%s" % (idx, last_col, idx),
-                    'categories': "=Contributor Stats!$B$1:$%s$1" % (last_col,),
+                    'categories': "='Contributor Stats'!B1:$%s$1" % (last_col,),
                     'data_labels': {'value': True},
                 })
             chart.set_title({'name': benchmark.name})
