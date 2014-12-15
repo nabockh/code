@@ -341,9 +341,9 @@ class BenchmarkNumeric(Benchmark):
             index = values.index(i)
             val_sum = sum(percen)
             if index == 0:
-                values_percent.append(round(percen[index] / float(val_sum), 2) * 100)
+                values_percent.append(round(Decimal(percen[index] / float(val_sum) * 100), 1))
             else:
-                values_percent.append(round((percen[index]/float(val_sum))*100 + values_percent[index-1], 2))
+                values_percent.append(round(Decimal(percen[index]/float(val_sum)*100 + values_percent[index-1]), 1))
         if values_percent[-1] != 100:
             values_percent.remove(values_percent[-1])
             values_percent.append(100)
