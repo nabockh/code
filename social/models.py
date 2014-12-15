@@ -186,7 +186,8 @@ class Contact(models.Model):
             contact.provider = provider
             contact.first_name = kwargs['firstName']
             contact.last_name = kwargs['lastName']
-            contact.email = kwargs.get('email') or contact.email
+            if kwargs.get('email'):
+                contact.email = kwargs.get('email')
             contact.headline = kwargs.get('headline')
             contact.save()
             contact.owners.add(owner)
