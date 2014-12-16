@@ -387,9 +387,15 @@ $(function () {
             var target = $(this.hash);
             target = target.length ? target : $('[name=' + this.hash.slice(1) + ']');
             if (target.length) {
-                $('html,body').animate({
-                    scrollTop: target.offset().top - 90
-                }, 500);
+                if( screen.width > 641 ) {
+                    $('html,body').animate({
+                        scrollTop: target.offset().top - 90
+                    }, 500);
+                }else {
+                    $('html,body').animate({
+                        scrollTop: target.offset().top - 60
+                    }, 500);                
+                };
                 return false;
             }
         }
@@ -750,6 +756,10 @@ $(document).ajaxStop(function() {
 
 
 $( document ).ready(function(){
+
+    $('.navbar-collapse a').on('click', function(){
+        $(".navbar-toggle").click() //bootstrap 3.x by Richard
+    });
 
     $( "#preview" ).on('shown.bs.modal', function() {
         $('#default_text').focus();
