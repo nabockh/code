@@ -757,9 +757,11 @@ $(document).ajaxStop(function() {
 
 $( document ).ready(function(){
 
-    $('.navbar-collapse a').on('click', function(){
-        $(".navbar-toggle").click() //bootstrap 3.x by Richard
-    });
+    if( screen.width < 769 ) {
+        $('.navbar-collapse a').on('click', function(){
+            $(".navbar-toggle").click();
+        });
+    }
 
     $( "#preview" ).on('shown.bs.modal', function() {
         $('#default_text').focus();
