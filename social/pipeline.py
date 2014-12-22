@@ -9,6 +9,7 @@ from social_auth.backends.pipeline.user import create_user
 from social_auth.utils import setting, module_member
 from social_auth.models import UserSocialAuth
 from django.contrib.auth.models import User
+from core.utils import celery_log, logger
 
 slugify = module_member(setting('SOCIAL_AUTH_SLUGIFY_FUNCTION',
                                 'django.template.defaultfilters.slugify'))
@@ -107,31 +108,41 @@ def load_extra_data(backend, details,request, response, uid, user, social_user=N
         for position in response.get('positions', {}).get('position', []):
             if position == 'is-current' or (isinstance(position, dict) and
                                             position.get('is-current', '')):
-                if response.get('positions', {}).get('position', {}).has_key('company'):
-                    position_company = response.get('positions', {}).get('position', {}).get('company', {})
-                    if position_company.has_key('id'):
-                        company = Company.objects.filter(code=position_company['id']).first()
-                    elif position_company.has_key('name'):
-                        company = Company.objects.filter(name=position_company.get('name', None)).first()
+                try:
+                    if isinstance(response.get('positions', {}).get('position', {}), list):
+                        position_company = response.get('positions', {}).get('position', {})[0].get('company', {})
+                        if position_company.has_key('id'):
+                            company = Company.objects.filter(code=position_company['id']).first()
+                        elif position_company.has_key('name'):
+                            company = Company.objects.filter(name=position_company.get('name', None)).first()
+                    elif response.get('positions', {}).get('position', {}).has_key('company'):
+                        position_company = response.get('positions', {}).get('position', {}).get('company', {})
+                        if position_company.has_key('id'):
+                            company = Company.objects.filter(code=position_company['id']).first()
+                        elif position_company.has_key('name'):
+                            company = Company.objects.filter(name=position_company.get('name', None)).first()
+                        else:
+                            continue
+                    elif isinstance(position, str):
+                        company = Company.objects.filter(name=position).first()
+                        position_company = {'name': position}
                     else:
-                        continue
-                elif isinstance(position, str):
-                    company = Company.objects.filter(name=position).first()
-                    position_company = {'name': position}
-                else:
-                    position_company = position.get('company', {})
-                    if position_company.has_key('id'):
-                        company = Company.objects.filter(code=position_company['id']).first()
-                    elif position_company.has_key('name'):
-                        company = Company.objects.filter(name=position_company.get('name', None)).first()
-                    else:
-                        continue
-                if not company:
-                    company = Company()
-                    company.code = position_company.get('id', None)
-                    company.name = position_company.get('name', None)
-                    company.industry = LinkedInIndustry.objects.filter(name=response.get('industry', {})).first()
-                    company.save()
+                        position_company = position.get('company', {})
+                        if position_company.has_key('id'):
+                            company = Company.objects.filter(code=position_company['id']).first()
+                        elif position_company.has_key('name'):
+                            company = Company.objects.filter(name=position_company.get('name', None)).first()
+                        else:
+                            continue
+                    if not company:
+                        company = Company()
+                        company.code = position_company.get('id', None)
+                        company.name = position_company.get('name', None)
+                        company.industry = LinkedInIndustry.objects.filter(name=response.get('industry', {})).first()
+                        company.save()
+                except:
+                    logger.exception('Reponse error: %s' % response)
+                    raise
                 social_profile.company = company
                 break
     elif response.get('industry'):
