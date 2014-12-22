@@ -10,7 +10,7 @@ from django import forms
 from bm.widgets import RankingWidget
 from django.db.models import Q
 from social.models import LinkedInIndustry, Contact
-from math import pow
+import operator
 
 
 class CreateBenchmarkStep12Form(forms.Form):
@@ -111,8 +111,13 @@ class CreateBenchmarkStep3Form(forms.Form):
         contact_filter = {}
         name_filter = None
         if cleaned_data.get('name'):
-            name_filter = Q(last_name__istartswith=cleaned_data.get('name')) | \
-                          Q(first_name__istartswith=cleaned_data.get('name'))
+            search_query = cleaned_data.get('name').split()
+            if len(search_query) > 1:
+                name_filter = Q(last_name__istartswith=search_query[0], first_name__istartswith=search_query[1]) | \
+                              Q(last_name__istartswith=search_query[1], first_name__istartswith=search_query[0])
+            else:
+                name_filter = Q(last_name__istartswith=cleaned_data.get('name')) | \
+                              Q(first_name__istartswith=cleaned_data.get('name'))
         if cleaned_data.get('role'):
             contact_filter['headline__icontains'] = cleaned_data.get('role')
         if cleaned_data.get('industry'):
