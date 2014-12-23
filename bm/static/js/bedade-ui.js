@@ -270,17 +270,18 @@ $(function () {
 
     if ($(window).width() > 640) {
         $('.add_help').on('click', function(e) {
-           $(this).children('.add_help_inner').addClass('visible');
-           e.stopPropagation();
+            $('.add_help_inner').removeClass('visible');
+            $(this).children('.add_help_inner').addClass('visible');
+            e.stopPropagation();
         });
         $("html").click(function() {
             $(".add_help_inner").removeClass('visible');
         });
     } else {
         $('.add_help').on('click', function(e) {
-           $('.add_help_inner').removeClass('visible');
-           $(this).children('.add_help_inner').toggleClass('visible');
-           e.stopPropagation();
+            $('.add_help_inner').removeClass('visible');
+            $(this).children('.add_help_inner').toggleClass('visible');
+            e.stopPropagation();
         });
         $( '.add_help_inner' ).on('click', function(e) {
              $(".add_help_inner").removeClass('visible');

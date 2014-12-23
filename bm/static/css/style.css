@@ -1097,8 +1097,7 @@ input.btn.full-width, .btn.full-width {
 }
 
 .title-header .add_help {
-    background: #fff;
-    color: #333;
+    background: #fff url('../img/tooltip_b.png');
     margin: 0 1px;
 }
 
@@ -1548,15 +1547,9 @@ span.add_info {
 
 .add_help {
     display: inline-block;
-    background: #33626e;
-    color: #fff;
+    background: #33626e url('../img/tooltip_w.png');
     height: 12px;
     width: 12px;
-    padding: 1px 4px 0 3px;
-    text-align: center;
-    line-height: 12px;
-    font-size: 10px;
-    font-weight: bold;
     border-radius: 6px;
     cursor: pointer;
     position: relative;
