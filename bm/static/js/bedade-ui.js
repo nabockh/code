@@ -717,6 +717,7 @@ $( document ).ready(function() {
             $target_block = $('#recommendedContactList, #searchContactList').find('.single-contact');
             $target_block.find('.add-contact-btn').removeAttr('disabled');
             $('#selectedContactList .single-contact').remove();
+            $('#mCSB_3_container').empty();
             $target_block.find('.choose-checkbox, .share-checkbox').removeAttr('checked');
             $('#selectedPreloader').fadeOut(500);
             numberOfSelectedContacts();
