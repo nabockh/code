@@ -92,14 +92,18 @@ class CreateBenchmarkStep3Form(forms.Form):
         super(CreateBenchmarkStep3Form, self).__init__(*args, **kwargs)
         self.user = user
         self.benchmark = benchmark
-        self.min_number_of_answers = self.num(step0data.get('0-minimum_number_of_answers'))
+        if not step0data:
+            self.min_number_of_answers = 5
+            self.fields['geo'].initial = u''
+        else:
+            self.min_number_of_answers = self.num(step0data.get('0-minimum_number_of_answers'))
+            self.fields['geo'].initial = step0data.get('0-geo')
         data = kwargs.get('data') or {}
         self.is_continue = data.get('is_continue', False) and not (
             data.get('add_selected') or data.get('save_and_wizard_goto_step'))
         regions = [('', 'All')]
         regions.extend(list(Region.regions.values_list('id', 'name').order_by('name')))
         self.fields['geo'].choices = regions
-        self.fields['geo'].initial = step0data.get('0-geo')
         industries = list(LinkedInIndustry.get_proposal(user.contacts))
         self.fields['industry'].choices = industries
         cleaned_data = {
