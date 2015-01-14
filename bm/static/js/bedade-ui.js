@@ -633,11 +633,12 @@ $( document ).ready(function() {
             curr_obj.parent('.col-md-2.col-xs-2').siblings('.col-md-4.col-xs-3').find('.share-checkbox').prop('checked', true);
             curr_obj.attr('disabled', 'disabled');
             $('#selectedContactList .deselect-btn').click( function(){
-                var $this_parent = curr_obj.closest('.single-contact');
+                var $this_parent = $(this).closest('.single-contact');
+                console.log(curr_obj);
                 var this_id = $this_parent.attr('data-contact-id');
                 var $target_block = $('#recommendedContactList, #searchContactList').find('.single-contact[data-contact-id="' + this_id + '"]');
                 $target_block.find('.add-contact-btn').removeAttr('disabled');
-
+                console.log($target_block);
                 $(this).parents('.single-contact').remove();
                 $target_block.find('.choose-checkbox, .share-checkbox').removeAttr('checked');
                 numberOfSelectedContacts();               
