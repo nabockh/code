@@ -10,7 +10,7 @@ from django import forms
 from bm.widgets import RankingWidget
 from django.db.models import Q
 from social.models import LinkedInIndustry, Contact
-from math import pow
+import operator
 
 
 class CreateBenchmarkStep12Form(forms.Form):
@@ -92,14 +92,18 @@ class CreateBenchmarkStep3Form(forms.Form):
         super(CreateBenchmarkStep3Form, self).__init__(*args, **kwargs)
         self.user = user
         self.benchmark = benchmark
-        self.min_number_of_answers = self.num(step0data.get('0-minimum_number_of_answers'))
+        if not step0data:
+            self.min_number_of_answers = 5
+            self.fields['geo'].initial = u''
+        else:
+            self.min_number_of_answers = self.num(step0data.get('0-minimum_number_of_answers'))
+            self.fields['geo'].initial = step0data.get('0-geo')
         data = kwargs.get('data') or {}
         self.is_continue = data.get('is_continue', False) and not (
             data.get('add_selected') or data.get('save_and_wizard_goto_step'))
         regions = [('', 'All')]
         regions.extend(list(Region.regions.values_list('id', 'name').order_by('name')))
         self.fields['geo'].choices = regions
-        self.fields['geo'].initial = step0data.get('0-geo')
         industries = list(LinkedInIndustry.get_proposal(user.contacts))
         self.fields['industry'].choices = industries
         cleaned_data = {
@@ -111,8 +115,13 @@ class CreateBenchmarkStep3Form(forms.Form):
         contact_filter = {}
         name_filter = None
         if cleaned_data.get('name'):
-            name_filter = Q(last_name__istartswith=cleaned_data.get('name')) | \
-                          Q(first_name__istartswith=cleaned_data.get('name'))
+            search_query = cleaned_data.get('name').split()
+            if len(search_query) > 1:
+                name_filter = Q(last_name__istartswith=search_query[0], first_name__istartswith=search_query[1]) | \
+                              Q(last_name__istartswith=search_query[1], first_name__istartswith=search_query[0])
+            else:
+                name_filter = Q(last_name__istartswith=cleaned_data.get('name')) | \
+                              Q(first_name__istartswith=cleaned_data.get('name'))
         if cleaned_data.get('role'):
             contact_filter['headline__icontains'] = cleaned_data.get('role')
         if cleaned_data.get('industry'):
