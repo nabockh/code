@@ -1,5 +1,6 @@
 from __future__ import absolute_import
 import json
+import logging
 from linkedin import linkedin
 from linkedin.exceptions import LinkedInError
 import collections
@@ -51,8 +52,12 @@ def get_contacts(user=None, tokens=None):
             ''
         )
         application = linkedin.LinkedInApplication(authentication)
-        connections = application.get_connections(selectors=['id', 'first-name', 'last-name', 'industry', 'location', 'headline', 'positions'])
-        if not connections['_total'] == 0:
+        try:
+            connections = application.get_connections(selectors=['id', 'first-name', 'last-name', 'industry', 'location', 'headline', 'positions'])
+        except LinkedInError as e:
+            logging.exception('LinkedIn auth error for user "%s": %s' % (user.username, e))
+            connections = {}
+        if connections.has_key('_total') and connections['_total'] != 0:
             return connections['values']
         else:
             return None
@@ -68,8 +73,12 @@ def get_contacts(user=None, tokens=None):
         ''
     )
     application = linkedin.LinkedInApplication(authentication)
-    connections = application.get_connections(selectors=['id', 'first-name', 'last-name', 'industry', 'location', 'headline', 'positions'])
-    if not connections['_total'] == 0:
+    try:
+        connections = application.get_connections(selectors=['id', 'first-name', 'last-name', 'industry', 'location', 'headline', 'positions'])
+    except LinkedInError as e:
+        logging.exception('LinkedIn auth error for user "%s": %s' % (user.username, e))
+        connections = {}
+    if connections.has_key('_total') and connections['_total'] != 0:
         return connections['values']
     else:
         return []
