@@ -39,5 +39,14 @@ def periodic_import_linkedin_contacts():
     for user in auth_users:
         if user.social_profile.first():
             contacts = linkedin.get_contacts(user)
+            num_contacts = len(contacts)
+            last_pct = progress_pct = 0
+            progress = 0
+            logging.info(' - got %s contacts for user "%s" to process' % (num_contacts, user.username))
             for contact_data in contacts:
                 Contact.create(user, providers.LINKEDIN, **contact_data)
+                progress_pct = round((float(progress) / num_contacts) * 100)
+                if progress_pct != last_pct and progress_pct % 20 == 0:
+                    logging.info('  -- processed %s%% of "%s" contacts' % (progress_pct, user.username))
+                    last_pct = progress_pct
+                progress += 1
