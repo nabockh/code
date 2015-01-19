@@ -70,7 +70,7 @@ def send_invites(benchmark_id):
             invite.status = 1
             invite.save()
         if len(invites_without_email) > 100:
-            send_invites.apply_async(benchmark_id, countdown=86400)
+            send_invites.apply_async([benchmark_id], countdown=86400)
         else:
             if BmInviteEmail.objects.filter(benchmark_id=benchmark.id).first():
                 BmInviteEmail.objects.filter(benchmark_id=benchmark.id).first().delete()
