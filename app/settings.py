@@ -39,7 +39,7 @@ CELERY_RESULT_BACKEND = 'amqp://'
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 TEMPLATE_DEBUG = True
 
@@ -294,10 +294,11 @@ LINKEDIN_CONSUMER_SECRET = ''
 
 
 LINKEDIN_SCOPE = ['r_basicprofile', 'r_emailaddress', 'r_network', 'w_messages']
-LINKEDIN_EXTRA_FIELD_SELECTORS = ['email-address', 'headline', 'industry', 'location:(country)', 'positions']
-LINKEDIN_OAUTH2_EXTRA_DATA = [('id', 'id'), ]
+LINKEDIN_EXTRA_FIELD_SELECTORS = ['email-address', 'headline', 'industry', 'location:(country)',
+                                  'positions']
+LINKEDIN_OAUTH2_EXTRA_DATA = [('id', 'id'),  ('positions', 'positions')]
 
-GOOGLE_ANALYTICS_PROPERTY_ID = ''
+GOOGLE_ANALYTICS_PROPERTY_ID = 'fdvdfvdfvdfvdf'
 GOOGLE_ANALYTICS_DOMAIN = 'bedade.com'
 
 LOGIN_REDIRECT_URL = "/"
