@@ -291,7 +291,9 @@ SOCIAL_AUTH_PIPELINE = (
 
 LINKEDIN_CONSUMER_KEY = ''
 LINKEDIN_CONSUMER_SECRET = ''
-
+SOCIAL_AUTH_SESSION_EXPIRATION = False
+SESSION_COOKIE_AGE = 7200
+SESSION_SAVE_EVERY_REQUEST = True
 
 LINKEDIN_SCOPE = ['r_basicprofile', 'r_emailaddress', 'r_network', 'w_messages']
 LINKEDIN_EXTRA_FIELD_SELECTORS = ['email-address', 'headline', 'industry', 'location:(country)', 'positions']

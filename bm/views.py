@@ -104,6 +104,8 @@ class BenchmarkCreateWizardView(SessionWizardView):
         `form` contains the last/current form.
         """
         next_step = self.steps.next
+        if next_step in ['1', '2'] and self.storage.data['step_data']['0'] is None:
+            return HttpResponseRedirect('create')
         if next_step == '2':
             new_form = self.get_form(next_step,
                 data=None,
