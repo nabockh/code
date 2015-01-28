@@ -1,6 +1,6 @@
 from __future__ import absolute_import
 import itertools
-from bm.models import Benchmark, BenchmarkInvitation, BmInviteEmail
+from bm.models import Benchmark, BenchmarkInvitation, BmInviteEmail, QuestionResponse
 from datetime import datetime, timedelta
 from celery import shared_task
 from core.utils import celery_log, logger
@@ -161,14 +161,19 @@ def check_benchmark_results():
     if finished_benchmarks:
         for benchmark in finished_benchmarks:
             subject = "Bedade results published"
-            contacts = Contact.objects.filter(invites__benchmark__id=benchmark.id)\
-                .annotate(responses_count=Count('invites__benchmark__question__responses'))\
-                .filter(responses_count__gte=1)
+            contacts = []
+            filtered_contacts = Contact.objects.filter(invites__benchmark__id=benchmark.id)
+            responded__users = [response.user_id for response in
+                                QuestionResponse.objects.filter(question_id=benchmark.question.first().id)]
+            for contact in filtered_contacts:
+                if contact.user and contact.user_id in responded__users:
+                    contacts.append(contact)
             contacts_ids = [contact.id for contact in contacts]
             recipients = [contact.email for contact in contacts]
             if benchmark.owner:
                 recipients.append(benchmark.owner.email)
             raw_context = get_context_variables(benchmark)
+            successfully_send = []
             if contacts_ids:
                 for recipient in recipients:
                     contact = Contact.objects.filter(_email=recipient).first()
@@ -179,8 +184,9 @@ def check_benchmark_results():
                     raw_context['contact_first_name'] = contact.first_name
                     context = Context(raw_context)
                     body = get_template('alerts/benchmark_results.html').render(context)
-                    send_mail(subject, body, None, [recipient])
-                BenchmarkInvitation.objects.filter(recipient__id__in=contacts_ids).update(status=3)
+                    if send_mail(subject, body, None, [recipient, ]):
+                        successfully_send.append(contact.id)
+                BenchmarkInvitation.objects.filter(recipient__id__in=successfully_send).update(status=3)
 
 
 @periodic_task(run_every=crontab(minute=0, hour=0))
