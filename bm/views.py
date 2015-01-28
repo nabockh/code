@@ -55,6 +55,10 @@ class BenchmarkCreateWizardView(SessionWizardView):
         # Look for a wizard_goto_step element in the posted data which
         # contains a valid step name. If one was found, render the requested
         # form. (This makes stepping back a lot easier).
+
+        # if self.request.is_ajax():
+        #     print self.request
+
         wizard_goto_step = self.request.POST.get('wizard_goto_step', None)
         if wizard_goto_step and wizard_goto_step in self.get_form_list():
             return self.render_goto_step(wizard_goto_step)
@@ -104,7 +108,7 @@ class BenchmarkCreateWizardView(SessionWizardView):
         `form` contains the last/current form.
         """
         next_step = self.steps.next
-        if next_step in ['1', '2'] and self.storage.data['step_data']['0'] is None:
+        if next_step in ['1', '2'] and self.storage.data['step_data'].get('0') is None:
             return HttpResponseRedirect('create')
         if next_step == '2':
             new_form = self.get_form(next_step,
@@ -162,7 +166,7 @@ class BenchmarkCreateWizardView(SessionWizardView):
             'link_to_answer': "Link to answer form will be here",
             'link_to_bm_results': "Link to benchmark results will be here"
         })
-        response = HttpResponse("<textarea type='text'  id='default_text'>"
+        response = HttpResponse("<textarea type='text' name='text-area' id='default_text'>"
                                 + template.render(context)
                                 + '</textarea>')
         return response
