@@ -206,13 +206,10 @@ $(function () {
                     'csrfmiddlewaretoken' : csrf? csrf[1] : null,
                     'data': data
             });
-            // callback handler that will be called on success
             request.done(function (response, textStatus, jqXHR){
                 $('#preview #emailPre').html(response);
                 $("#default_text").height($("#default_text")[0].scrollHeight);
                 $("#default_text").focus();
-
-                // log a message to the console
             });
 
             // callback handler that will be called on failure
