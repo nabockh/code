@@ -57,7 +57,7 @@ class BenchmarkCreateWizardView(SessionWizardView):
         # form. (This makes stepping back a lot easier).
 
         # if self.request.is_ajax():
-        #     print self.request
+        #     print 'ajax'
 
         wizard_goto_step = self.request.POST.get('wizard_goto_step', None)
         if wizard_goto_step and wizard_goto_step in self.get_form_list():
@@ -145,8 +145,10 @@ class BenchmarkCreateWizardView(SessionWizardView):
         # response. This is needed to prevent from rendering done with the
         # same data twice.
         if self.request.is_ajax():
+            preview_body = self.request.session._session.get('preview_body', None)
+            # if
             benchmark = self.done(final_form_list, preview=True, **kwargs)
-            return self.render_email_preview(benchmark, form)
+            return self.render_email_preview(self.request, benchmark, form)
 
         done_response = self.done(final_form_list, **kwargs)
 
@@ -154,7 +156,7 @@ class BenchmarkCreateWizardView(SessionWizardView):
         return done_response
 
     @staticmethod
-    def render_email_preview(benchmark, form):
+    def render_email_preview(request, benchmark, form):
         template = loader.get_template('alerts/invite.html')
         # TODO: http is hardcoded
         context = Context({
@@ -166,8 +168,15 @@ class BenchmarkCreateWizardView(SessionWizardView):
             'link_to_answer': "Link to answer form will be here",
             'link_to_bm_results': "Link to benchmark results will be here"
         })
-        response = HttpResponse("<textarea type='text' name='text-area' id='default_text'>"
-                                + template.render(context)
+        preview_body = request.session._session.get('preview_body', None)
+        default_preview = request.session._session.get('default_preview', None)
+        if preview_body and (preview_body != default_preview):
+            context = preview_body
+        else:
+            context = template.render(context)
+            request.session['default_preview'] = context
+        response = HttpResponse("<textarea type='text' style='width:100%' name='text-area' id='default_text'>"
+                                + context
                                 + '</textarea>')
         return response
 
@@ -194,6 +203,11 @@ class BenchmarkCreateWizardView(SessionWizardView):
 
     def get_context_data(self, form, **kwargs):
         context = super(BenchmarkCreateWizardView, self).get_context_data(form, **kwargs)
+
+        #reset email preview session keys
+        if len(self.storage.data.get('step_data')) == 0:
+            self.refresh_preview_data()
+
         if self.steps.current == '2':
             context['selected_contacts'] = self.selected_contacts if hasattr(self, 'selected_contacts') else []
             question_type = form.initial['question_type']
@@ -239,10 +253,10 @@ class BenchmarkCreateWizardView(SessionWizardView):
             if bm_geo:
                 region = Region.objects.get(pk=bm_geo)
                 benchmark.geographic_coverage.add(region)
-            if step3.cleaned_data['email_body']:
+            if self.request.session._session.get('preview_body', None):
                 invite_mail = BmInviteEmail()
                 invite_mail.benchmark = benchmark
-                invite_mail.body = step3.cleaned_data['email_body']
+                invite_mail.body = self.request.session._session.get('preview_body', None)
                 invite_mail.save()
             question = Question()
             question.benchmark = benchmark
@@ -279,10 +293,28 @@ class BenchmarkCreateWizardView(SessionWizardView):
             link = benchmark.create_link()
             benchmark.calculate_deadline()
             benchmark.save()
+            self.refresh_preview_data()
         if benchmark.pk:
             benchmark_created.send(sender=self.__class__, request=self.request, benchmark=benchmark)
             self.benchmark = benchmark
         return redirect('bm_dashboard')
+
+    def refresh_preview_data(self):
+            self.request.session['preview_body'] = None
+            self.request.session['default_preview'] = None
+
+
+class PreviewPopupView(FormView):
+
+    def post(self, request, *args, **kwargs):
+        if request.is_ajax():
+            preview_body = self.request.session._session.get('preview_body', None)
+            new_body = self.request.POST.get('text-area')
+            if not preview_body or preview_body != new_body:
+                self.request.session['preview_body'] = new_body
+                return HttpResponse(200)
+            else:
+                return HttpResponse(200)
 
 
 class BenchmarkHistoryView(ListView):

@@ -136,7 +136,54 @@
     </div>
 {% endif %}
     <div class="margined no-bottom">
-        <div class='row'>            
+        <div class='row'>
+        <!-- Email Preview Modal -->
+        <div class="modal fade" id="preview" tabindex="-1" role="dialog" aria-labelledby="previewLabel" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true"><i class='fa fa-times-circle'></i></span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" id="prviewLabel">Email Preview</h4>
+              </div>
+              <div class="modal-body">
+                <script>
+                    function save(){
+                        var editedText = $('#default_text').val();
+                        $('#email_body').text(editedText);
+                        var data = $('#default_text').serializeArray();
+                        var csrf = document.cookie.match(/csrftoken=([\w]+)/);
+                        data.push({
+                            name: "csrfmiddlewaretoken",
+                            value:  csrf? csrf[1] : null
+                        });
+                        var request = $.ajax({
+                                url: '/benchmark/save_preview',
+                                type: 'post',
+                                'data': data
+                        });
+                        event.stopPropagation();
+                        request.done(function (response, textStatus, jqXHR){
+                            console.log(response);
+                        });
+                        // callback handler that will be called on failure
+                        request.fail(function (jqXHR, textStatus, errorThrown){
+                            console.error(
+                                "The following error occured: " +
+                                textStatus, errorThrown
+                            );
+                        });
+                        $( "#preview" ).modal('hide');
+                    }
+                </script>
+
+                <div id='emailPre'>
+                    <!-- Insert Email Preview Here -->
+                </div>
+                <button type="button" onclick="save(); return false;" class='btn btn-primary' id="saveButton">Save</button>
+              </div>
+            </div>
+          </div>
+        </div>
             <form action="" method="post" class='styled-form'>
                 {% csrf_token %}
                 {{ wizard.management_form }}
@@ -589,24 +636,6 @@
                                 <label for="go_back" class="link-like"><i class="fa fa-cog"></i> Edit</label> 
                                 
                             </div>
-                        </div>
-
-                        <!-- Email Preview Modal -->
-                        <div class="modal fade" id="preview" tabindex="-1" role="dialog" aria-labelledby="previewLabel" aria-hidden="true">
-                          <div class="modal-dialog">
-                            <div class="modal-content">
-                              <div class="modal-header">
-                                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true"><i class='fa fa-times-circle'></i></span><span class="sr-only">Close</span></button>
-                                <h4 class="modal-title" id="prviewLabel">Email Preview</h4>
-                              </div>
-                              <div class="modal-body">
-                                <div id='emailPre'>
-                                    <!-- Insert Email Preview Here -->
-                                </div>
-                                <button type="button" class='btn btn-primary' id="saveButton">Save</button>
-                              </div>
-                            </div>
-                          </div>
                         </div>
                     {% endif %}
                 {% endif %}
