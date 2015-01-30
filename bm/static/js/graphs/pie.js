@@ -1,24 +1,3 @@
-function pieGradient(slices){
-    var startColor = { r : 32, g : 44, b : 69};
-    var endColor = { r : 96, g : 138, b : 148};
-
-    var results = {};
-
-    var deltaR = ((endColor.r - startColor.r) / slices);
-    var deltaG = ((endColor.g - startColor.g) / slices);
-    var deltaB = ((endColor.g - startColor.g) / slices);
-
-    for (var i = 0; i < slices; i++){
-        var r = Math.round(startColor.r + deltaR * i);
-        var g = Math.round(startColor.g + deltaG * i);
-        var b = Math.round(startColor.b + deltaB * i);
-
-        results[i] = {'color' : 'rgb(' + r + ',' + g + ',' + b + ')'};
-    }
-
-    return results;
-}
-
 function drawPieChart(chartData, divId) {
     if (typeof google == 'undefined') {
         throw new Exception();
@@ -31,7 +10,18 @@ function drawPieChart(chartData, divId) {
             legend: { position: "bottom" },
             pieSliceText: 'percentage',
             tooltip: { text: 'percentage' },
-            slices: pieGradient(chartData.length),
+            slices: {
+                0: {color: '#202c45'},
+                1: {color: '#5c6e7c'},
+                2: {color: '#41495d'},
+                3: {color: '#636e88'},
+                4: {color: '#8592b2'},
+                5: {color: '#8fa1b3'},
+                6: {color: '#98b0b3'},
+                7: {color: '#608a94'},
+                8: {color: '#33626e'},
+                9: {color: '#2a475a'}
+            },
             chartArea: {
                 top: 25,
                 width: '80%'
@@ -42,7 +32,19 @@ function drawPieChart(chartData, divId) {
             legend: { position: "bottom" },
             pieSliceText: 'percentage',
             tooltip: { text: 'percentage' },
-            slices: pieGradient(chartData.length),
+            // slices: pieGradient(chartData.length),
+            slices: {
+                0: {color: '#202c45'},
+                1: {color: '#5c6e7c'},
+                2: {color: '#41495d'},
+                3: {color: '#636e88'},
+                4: {color: '#8592b2'},
+                5: {color: '#8fa1b3'},
+                6: {color: '#98b0b3'},
+                7: {color: '#608a94'},
+                8: {color: '#33626e'},
+                9: {color: '#2a475a'}
+            },
             chartArea: {
                 top: '5%',
                 width: "90%", 

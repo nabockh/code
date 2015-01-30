@@ -1,6 +1,6 @@
 function statsGradient(slices){
     var startColor = { r : 32, g : 44, b : 69};
-    var endColor = { r : 96, g : 138, b : 148};
+    var endColor = { r : 140, g : 175, b : 184};
 
     var results = {};
 
