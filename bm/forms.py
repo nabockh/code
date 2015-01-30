@@ -222,7 +222,7 @@ class CreateBenchmarkStep3Form(forms.Form):
 
 
 class CreateBenchmarkStep4Form(CreateBenchmarkStep12Form):
-    email_body = forms.CharField(widget=forms.Textarea(attrs={'id': 'email_body', 'hidden': True}), required=False)
+    # email_body = forms.CharField(widget=forms.Textarea(attrs={'id': 'email_body', 'hidden': True}), required=False)
     question_label = forms.CharField(max_length=255)
     question_text = forms.CharField(widget=forms.Textarea(attrs={'maxlength': 10000}),
                                     max_length=10000, required=False)

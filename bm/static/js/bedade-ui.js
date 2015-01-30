@@ -197,14 +197,21 @@ $(function () {
 
 
     $('#preview').on('shown.bs.modal', function (e) {
-//        if ($('#default_text').text().length <= 1) {
             var csrf = document.cookie.match(/csrftoken=([\w]+)/);
-            var data = $('.styled-form').serialize();
+            var all_form = $('.styled-form').serializeArray();
+            var data = $('#default_text').serialize();
+            all_form.push({
+                name: 'text-area',
+                value: data
+            },{
+                name: "csrfmiddlewaretoken",
+                value:  csrf? csrf[1] : null
+            });
             var request = $.ajax({
                     url: window.location.pathname,
                     type: 'post',
                     'csrfmiddlewaretoken' : csrf? csrf[1] : null,
-                    'data': data
+                    'data': all_form
             });
             request.done(function (response, textStatus, jqXHR){
                 $('#preview #emailPre').html(response);
@@ -732,17 +739,71 @@ $( document ).ready(function(){
     $( "#preview" ).on('shown.bs.modal', function() {
         $('#default_text').focus();
     });
-   
-    $( '#saveButton' ).on('click', function() {
-         var editedText = $('#default_text').val();
-        $('#email_body').text(editedText);
-        $( "#preview" ).modal('hide');
-    });
+
+
+
+
+    //function saveButton(){
+    //     var editedText = $('#default_text').val();
+    //    $('#email_body').text(editedText);
+    //    var data = $('#default_text').serialize();
+    //    var csrf = document.cookie.match(/csrftoken=([\w]+)/);
+    //    var request = $.ajax({
+    //            url: window.location.pathname,
+    //            type: 'post',
+    //            'csrfmiddlewaretoken':  csrf? csrf[1] : null,
+    //            'data': data
+    //    });
+    //    event.stopPropagation();
+    //    request.done(function (response, textStatus, jqXHR){
+    //        console.log(response);
+    //    });
+    //    // callback handler that will be called on failure
+    //    request.fail(function (jqXHR, textStatus, errorThrown){
+    //        console.error(
+    //            "The following error occured: " +
+    //            textStatus, errorThrown
+    //        );
+    //    });
+    //    $( "#preview" ).modal('hide');
+    //    return false;
+    //}
+
+    //$('#sendInv').on('click', function(){
+    //    var preview_text = $('#default_text').val();
+    //    $('#email_body').text(preview_text);
+    //});
+
+    //$( '#saveButton' ).on('click', function() {
+    //     var editedText = $('#default_text').val();
+    //    $('#email_body').text(editedText);
+    //    var data = $('#default_text').serialize();
+    //    var csrf = document.cookie.match(/csrftoken=([\w]+)/);
+    //    var request = $.ajax({
+    //            url: window.location.pathname,
+    //            type: 'post',
+    //            'csrfmiddlewaretoken':  csrf? csrf[1] : null,
+    //            'data': data
+    //    });
+    //    event.stopPropagation();
+    //    request.done(function (response, textStatus, jqXHR){
+    //        console.log(response);
+    //    });
+    //    // callback handler that will be called on failure
+    //    request.fail(function (jqXHR, textStatus, errorThrown){
+    //        console.error(
+    //            "The following error occured: " +
+    //            textStatus, errorThrown
+    //        );
+    //    });
+    //    $( "#preview" ).modal('hide');
+    //    return false;
+    //});
 
     $('.carousel-inner .title a').each(function() {
         if ($(this).outerHeight() > 35) {
             $(this).parent('.title').addClass('twoLines');
-        }; 
+        };
         if ($(this).outerHeight() > 60) {
             $(this).parent('.title').addClass('ellipsisize');
         };
