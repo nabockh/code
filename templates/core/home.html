@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 {% load bootstrap %}
 {% load cms_tags %}
+{% load cache %}
 {% block navigation %}
 
         <header class="navbar navbar-default bs-docs-nav" id="top" role="banner">
@@ -126,7 +127,9 @@
         {% endfor %}
     {% endif %}
 {% endblock %}
+
 {% block content %}
+    {% cache 3600 home_page %}
         {% if terms_and_conditions_form %}
             {% include 'core/explanation_pop_up.html' %}
         {% endif %}
@@ -462,4 +465,5 @@
                 });
             });
         </script>
+    {% endcache %}
 {% endblock %}

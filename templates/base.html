@@ -1,5 +1,6 @@
 {% extends "base_empty.html" %}
 {% load cms_tags %}
+{% load cache %}
 
 {% block body %}
         {% block navigation %}{% endblock %}
@@ -9,6 +10,7 @@
         {% block messages %}{% endblock %}
         {% block content %}{% endblock %}
         {% block footer %}
+            {% cache 3600 footer %}
             <div class="colorblock footer">
                     <div class='container'>
                       <div class='row'>
@@ -124,6 +126,7 @@
             </div>
           </div>
         </div>
+        {% endcache %}
         {% endblock %}
 {% endblock %}
 
