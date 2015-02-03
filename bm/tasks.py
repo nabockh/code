@@ -52,11 +52,11 @@ def send_invites(benchmark_id):
             body = get_template('alerts/invite.html').render(context)
 
         invites_without_email = []
+        sent = []
         for invite in invites:
             if invite.recipient.email:
                 Contact.send_mail(invite.sender, subject, body, (invite.recipient,))
-                invite.status = 1
-                invite.save()
+                sent.append(invite.id)
             else:
                 invites_without_email.append(invite)
 
@@ -65,15 +65,13 @@ def send_invites(benchmark_id):
         for invites_group in invites_groups:
             sender = invites_group[0].sender
             contacts = [invite.recipient for invite in invites_group if invite]
+            sent = sent + [invite.id for invite in invites_group if invite]
             Contact.send_mail(sender, subject, body, contacts)
-        for invite in invites_to_send_via_linked:
-            invite.status = 1
-            invite.save()
+        benchmark.invites.filter(id__in=sent).update(status=1, sent_date = datetime.date())
         if len(invites_without_email) > 100:
             send_invites.apply_async((benchmark_id,), countdown=86400)
         else:
-            if BmInviteEmail.objects.filter(benchmark_id=benchmark.id).first():
-                BmInviteEmail.objects.filter(benchmark_id=benchmark.id).first().delete()
+            BmInviteEmail.objects.filter(benchmark_id=benchmark.id).delete()
 
 @periodic_task(run_every=crontab(minute=0, hour=0))
 @celery_log
