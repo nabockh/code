@@ -86,7 +86,7 @@
     </div>
 {% endblock %}
 {% block content %}
-{% cache 3600 details_view benchmark.id user.is_authenticated %}
+{% cache 3600 details_view benchmark.id user.is_authenticated is_contributor %}
 <!-- Preloader -->
 <div class="preloader"><div class='full-centered'><i class="fa fa-cog fa-spin"></i></div></div>
 <!-- End Preloader -->
