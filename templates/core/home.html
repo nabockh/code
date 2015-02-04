@@ -309,6 +309,7 @@
                 {% static_placeholder "home_contact_text" or %}
                 <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut euismod vel neque vel ullamcorper. Morbi vel placerat lorem. Integer lacinia vulputate ligula id consectetur. Vivamus commodo nibh in ultricies varius. Quisque semper pellentesque rutrum. Fusce semper porta massa, congue egestas nunc accumsan sollicitudin. Fusce sagittis leo vitae nunc fermentum vestibulum. Donec vel euismod velit. Fusce luctus metus vitae justo semper, vitae auctor urna consequat. Nunc eget lacus sed magna tincidunt mattis. Proin viverra luctus quam, et congue mauris ornare eu.</p>
                 {% endstatic_placeholder %}
+    {% endcache %}
                 <div class='row'>
                     <div class='col-md-9'>
                         <form id="contact_form" action="" method="post" class='styled-form'>
@@ -335,6 +336,7 @@
                             </div>
                         </form>
                     </div>
+                {% cache 3600 home_contact_details %}
                     <div class='col-md-3 lined-right'>
                         <div class='contact-info'>
                             <div class='title'>Contact Details</div>
@@ -348,6 +350,7 @@
                             {% endstatic_placeholder %}
                         </div>
                     </div>
+                {% endcache %}
                 </div>
             </div>
         </div>
@@ -465,5 +468,5 @@
                 });
             });
         </script>
-    {% endcache %}
+
 {% endblock %}

@@ -1,13 +1,16 @@
 {% load bootstrap %}
 {% load helpers %}
 {% load cms_tags %}
+{% load cache %}
 <div class='benchmark-help search'>
     <div class='row'>
         <div class='col-md-12'>
+        {% cache 3600 bm_create_step2_text %}
             {% static_placeholder "bm_create_step2_text" or %}
                 Use the search fields below to narrow your network to those most relevant to your benchmark. You will be
                 able to preview &amp; edit your list before publishing.</div>
             {% endstatic_placeholder %}
+        {% endcache %}
     </div>
     <div class='row contacts-search'>
         <div class="col-md-5ths">
@@ -81,12 +84,14 @@
                         <span class="add_help">
                             <span class='add_help_inner'>
                                 <span>
+                                {% cache 3600 bm_create_recommended_tooltip %}
                                     {% static_placeholder "bm_create_recommended_tooltip" or %}
                                         Lorem ipsum dolor sit amet, consectetur eta
                                         adipiscing elit. Pellentasque eu tempor tortor.
                                         Aliquam Trisque eros arcu, sed bibendum enim
                                         faucibus in. In vulputate blendit lorem ut.
                                     {% endstatic_placeholder %}
+                                {% endcache %}
                                 </span>
                             </span>
                         </span>
@@ -95,12 +100,14 @@
                         <span class="add_help">
                             <span class='add_help_inner'>
                                 <span>
+                                {% cache 3600 bm_create_share_tooltip %}
                                     {% static_placeholder "bm_create_share_tooltip" or %}
                                         Lorem ipsum dolor sit amet, consectetur eta
                                         adipiscing elit. Pellentasque eu tempor tortor.
                                         Aliquam Trisque eros arcu, sed bibendum enim
                                         faucibus in. In vulputate blendit lorem ut.
                                     {% endstatic_placeholder %}
+                                {% endcache %}
                                 </span>
                             </span>
                         </span>
@@ -139,12 +146,14 @@
                         <span class="add_help">
                             <span class='add_help_inner'>
                                 <span>
+                                {% cache 3600 bm_create_share_tooltip %}
                                     {% static_placeholder "bm_create_share_tooltip" or %}
                                         Lorem ipsum dolor sit amet, consectetur eta
                                         adipiscing elit. Pellentasque eu tempor tortor.
                                         Aliquam Trisque eros arcu, sed bibendum enim
                                         faucibus in. In vulputate blendit lorem ut.
                                     {% endstatic_placeholder %}
+                                {% endcache %}
                                 </span>
                             </span>
                         </span>

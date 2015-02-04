@@ -3,6 +3,7 @@
 {% load bootstrap %}
 {% load helpers %}
 {% load cms_tags %}
+{% load cache %}
 
 {% block js %}
 {{ wizard.form.media }}
@@ -88,9 +89,11 @@
         </div>
     </div>
     <div class='benchmark-help'>
-    {% static_placeholder "bm_create_help_text" or %}
-    This space is reserved for instructional text. Should try to keep it pretty succinct but helpful. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed pellentesque tincidunt est, id lacinia orci lacinia eu. Aenean dignissim rutrum velit in faucibus. Nam non odio non neque porttitor dignissim in sed enim. Nunc facilisis ac mauris at eleifend. Maecenas pulvinar erat vestibulum odio aliquet suscipit. Nam venenatis nec lorem vel cursus.
-    {% endstatic_placeholder %}
+    {% cache 3600 bm_create_help_text %}
+        {% static_placeholder "bm_create_help_text" or %}
+        This space is reserved for instructional text. Should try to keep it pretty succinct but helpful. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed pellentesque tincidunt est, id lacinia orci lacinia eu. Aenean dignissim rutrum velit in faucibus. Nam non odio non neque porttitor dignissim in sed enim. Nunc facilisis ac mauris at eleifend. Maecenas pulvinar erat vestibulum odio aliquet suscipit. Nam venenatis nec lorem vel cursus.
+        {% endstatic_placeholder %}
+    {% endcache %}
     </div>
 
 {% elif wizard.steps.step1 == 2 %}
@@ -130,9 +133,11 @@
         </div>
     </div>
     <div class='benchmark-help'>
-        {% static_placeholder "bm_create_step3_text" or %}
-        This space is reserved for instructional text. Should try to keep it pretty succinct but helpful. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed pellentesque tincidunt est, id lacinia orci lacinia eu. Aenean dignissim rutrum velit in faucibus. Nam non odio non neque porttitor dignissim in sed enim. Nunc facilisis ac mauris at eleifend. Maecenas pulvinar erat vestibulum odio aliquet suscipit. Nam venenatis nec lorem vel cursus.
-        {% endstatic_placeholder %}
+        {% cache 3600 bm_create_step3_text %}
+            {% static_placeholder "bm_create_step3_text" or %}
+            This space is reserved for instructional text. Should try to keep it pretty succinct but helpful. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed pellentesque tincidunt est, id lacinia orci lacinia eu. Aenean dignissim rutrum velit in faucibus. Nam non odio non neque porttitor dignissim in sed enim. Nunc facilisis ac mauris at eleifend. Maecenas pulvinar erat vestibulum odio aliquet suscipit. Nam venenatis nec lorem vel cursus.
+            {% endstatic_placeholder %}
+        {% endcache %}
     </div>
 {% endif %}
     <div class="margined no-bottom">
@@ -202,9 +207,11 @@
                                     <span class="add_help">
                                         <span class='add_help_inner'>
                                             <span>
-                                                {% static_placeholder "bm_create_query_body" or %}
-                                                Lorem ipsum dolor sit amet, consectetur eta adipiscing elit. Pellentasque eu tempor tortor. Aliquam Trisque eros arcu, sed bibendum enim faucibus in. In vulputate blendit lorem ut.
-                                                {% endstatic_placeholder %}
+                                                {% cache 3600 bm_create_query_body %}
+                                                    {% static_placeholder "bm_create_query_body" or %}
+                                                    Lorem ipsum dolor sit amet, consectetur eta adipiscing elit. Pellentasque eu tempor tortor. Aliquam Trisque eros arcu, sed bibendum enim faucibus in. In vulputate blendit lorem ut.
+                                                    {% endstatic_placeholder %}
+                                                {% endcache %}
                                             </span>
                                         </span>
                                     </span>
@@ -217,9 +224,11 @@
                                     <span class="add_help">
                                         <span class='add_help_inner'>
                                             <span>
-                                                {% static_placeholder "bm_create_query_topic" or %}
-                                                Lorem ipsum dolor sit amet, consectetur eta adipiscing elit. Pellentasque eu tempor tortor. Aliquam Trisque eros arcu, sed bibendum enim faucibus in. In vulputate blendit lorem ut.
-                                                {% endstatic_placeholder %}
+                                                {% cache 3600 bm_create_query_topic %}
+                                                    {% static_placeholder "bm_create_query_topic" or %}
+                                                    Lorem ipsum dolor sit amet, consectetur eta adipiscing elit. Pellentasque eu tempor tortor. Aliquam Trisque eros arcu, sed bibendum enim faucibus in. In vulputate blendit lorem ut.
+                                                    {% endstatic_placeholder %}
+                                                {% endcache %}
                                             </span>                                            
                                         </span>
                                     </span>
@@ -232,9 +241,11 @@
                                     <span class="add_help">
                                         <span class='add_help_inner'>
                                             <span>
-                                                {% static_placeholder "bm_create_query_details" or %}
-                                                Lorem ipsum dolor sit amet, consectetur eta adipiscing elit. Pellentasque eu tempor tortor. Aliquam Trisque eros arcu, sed bibendum enim faucibus in. In vulputate blendit lorem ut.
-                                                {% endstatic_placeholder %}
+                                                {% cache 3600 bm_create_query_details %}
+                                                    {% static_placeholder "bm_create_query_details" or %}
+                                                    Lorem ipsum dolor sit amet, consectetur eta adipiscing elit. Pellentasque eu tempor tortor. Aliquam Trisque eros arcu, sed bibendum enim faucibus in. In vulputate blendit lorem ut.
+                                                    {% endstatic_placeholder %}
+                                                {% endcache %}
                                             </span>
                                         </span>
                                     </span>
@@ -248,9 +259,11 @@
                                             <span class="add_help">
                                                 <span class='add_help_inner'>
                                                     <span>
+                                                        {% cache 3600 bm_create_query_geo %}
                                                         {% static_placeholder "bm_create_query_geo" or %}
                                                         Lorem ipsum dolor sit amet, consectetur eta adipiscing elit. Pellentasque eu tempor tortor. Aliquam Trisque eros arcu, sed bibendum enim faucibus in. In vulputate blendit lorem ut.
                                                         {% endstatic_placeholder %}
+                                                        {% endcache %}
                                                     </span>
                                                 </span>
                                             </span>
@@ -262,9 +275,11 @@
                                             <span class="add_help">
                                                 <span class='add_help_inner'>
                                                     <span>
-                                                        {% static_placeholder "bm_create_query_industry" or %}
-                                                        Lorem ipsum dolor sit amet, consectetur eta adipiscing elit. Pellentasque eu tempor tortor. Aliquam Trisque eros arcu, sed bibendum enim faucibus in. In vulputate blendit lorem ut.
-                                                        {% endstatic_placeholder %}
+                                                        {% cache 3600 bm_create_query_industry %}
+                                                            {% static_placeholder "bm_create_query_industry" or %}
+                                                            Lorem ipsum dolor sit amet, consectetur eta adipiscing elit. Pellentasque eu tempor tortor. Aliquam Trisque eros arcu, sed bibendum enim faucibus in. In vulputate blendit lorem ut.
+                                                            {% endstatic_placeholder %}
+                                                        {% endcache %}
                                                     </span>
                                                 </span>
                                             </span>
@@ -276,9 +291,11 @@
                                             <span class="add_help">
                                                 <span class='add_help_inner'>
                                                     <span>
-                                                        {% static_placeholder "bm_create_query_type" or %}
-                                                        Lorem ipsum dolor sit amet, consectetur eta adipiscing elit. Pellentasque eu tempor tortor. Aliquam Trisque eros arcu, sed bibendum enim faucibus in. In vulputate blendit lorem ut.
-                                                        {% endstatic_placeholder %}
+                                                        {% cache 3600 bm_create_query_type %}
+                                                            {% static_placeholder "bm_create_query_type" or %}
+                                                            Lorem ipsum dolor sit amet, consectetur eta adipiscing elit. Pellentasque eu tempor tortor. Aliquam Trisque eros arcu, sed bibendum enim faucibus in. In vulputate blendit lorem ut.
+                                                            {% endstatic_placeholder %}
+                                                        {% endcache %}
                                                     </span>
                                                 </span>
                                             </span>
@@ -293,9 +310,11 @@
                                     <span class="add_help">
                                         <span class='add_help_inner'>
                                             <span>
-                                                {% static_placeholder "bm_create_query_options" or %}
-                                                Lorem ipsum dolor sit amet, consectetur eta adipiscing elit. Pellentasque eu tempor tortor. Aliquam Trisque eros arcu, sed bibendum enim faucibus in. In vulputate blendit lorem ut.
-                                                {% endstatic_placeholder %}
+                                                {% cache 3600 bm_create_query_options %}
+                                                    {% static_placeholder "bm_create_query_options" or %}
+                                                    Lorem ipsum dolor sit amet, consectetur eta adipiscing elit. Pellentasque eu tempor tortor. Aliquam Trisque eros arcu, sed bibendum enim faucibus in. In vulputate blendit lorem ut.
+                                                    {% endstatic_placeholder %}
+                                                {% endcache %}
                                             </span>
                                         </span>
                                     </span>
@@ -328,9 +347,11 @@
                                             <span class="add_help">
                                                 <span class='add_help_inner'>
                                                     <span>
-                                                        {% static_placeholder "bm_create_units_tooltip" or %}
-                                                        Lorem ipsum dolor sit amet, consectetur eta adipiscing elit. Pellentasque eu tempor tortor. Aliquam Trisque eros arcu, sed bibendum enim faucibus in. In vulputate blendit lorem ut.
-                                                        {% endstatic_placeholder %}
+                                                        {% cache 3600 bm_create_units_tooltip %}
+                                                            {% static_placeholder "bm_create_units_tooltip" or %}
+                                                            Lorem ipsum dolor sit amet, consectetur eta adipiscing elit. Pellentasque eu tempor tortor. Aliquam Trisque eros arcu, sed bibendum enim faucibus in. In vulputate blendit lorem ut.
+                                                            {% endstatic_placeholder %}
+                                                        {% endcache %}
                                                     </span>
                                                 </span>
                                             </span>
@@ -349,9 +370,9 @@
                                             <span class="add_help">?
                                                 <span class='add_help_inner'>
                                                     <span>
-                                                        {% static_placeholder "bm_create_min_ans_tooltip" or %}
+{#                                                        {% static_placeholder "bm_create_min_ans_tooltip" or %}#}
                                                         Lorem ipsum dolor sit amet, consectetur eta adipiscing elit. Pellentasque eu tempor tortor. Aliquam Trisque eros arcu, sed bibendum enim faucibus in. In vulputate blendit lorem ut.
-                                                        {% endstatic_placeholder %}
+{#                                                        {% endstatic_placeholder %}#}
                                                     </span>
                                                 </span>
                                             </span>
@@ -368,12 +389,14 @@
                             <div class='tips firstStep'>
                                 <p class='label-like'>BENCHMARK TIPS...</p>
                                 <hr>
-                                {% static_placeholder "bm_create_tips_text" or %}
-                                <p class='title'>Get Maximum Responses TO YOUR BENCHMARK QUERY</p>
-                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer suscipit, dui in mattis venenatis, purus lectus dictum quam, et vehicula nunc risus nec orci.</p>
-                                <p class='title'>THIS IS ANOTHER BENCHMARK TIP TO HELP PEOPLE SUCCEED</p>
-                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer suscipit, dui in mattis venenatis, purus lectus dictum quam, et vehicula nunc risus nec orci.</p>
-                                {% endstatic_placeholder %}
+                                {% cache 3600 bm_create_tips_text %}
+                                    {% static_placeholder "bm_create_tips_text" or %}
+                                    <p class='title'>Get Maximum Responses TO YOUR BENCHMARK QUERY</p>
+                                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer suscipit, dui in mattis venenatis, purus lectus dictum quam, et vehicula nunc risus nec orci.</p>
+                                    <p class='title'>THIS IS ANOTHER BENCHMARK TIP TO HELP PEOPLE SUCCEED</p>
+                                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer suscipit, dui in mattis venenatis, purus lectus dictum quam, et vehicula nunc risus nec orci.</p>
+                                    {% endstatic_placeholder %}
+                                {% endcache %}
                             </div>
                         </div>
                     {% elif wizard.steps.step1 == 2 %}
@@ -390,9 +413,11 @@
                                     <span class="add_help">
                                         <span class='add_help_inner'>
                                             <span>
+                                            {% cache 3600 bm_create_query_body %}
                                                 {% static_placeholder "bm_create_query_body" or %}
                                                 Lorem ipsum dolor sit amet, consectetur eta adipiscing elit. Pellentasque eu tempor tortor. Aliquam Trisque eros arcu, sed bibendum enim faucibus in. In vulputate blendit lorem ut.
                                                 {% endstatic_placeholder %}
+                                            {% endcache %}
                                             </span>
                                         </span>
                                     </span>
@@ -405,9 +430,11 @@
                                     <span class="add_help">
                                         <span class='add_help_inner'>
                                             <span>
+                                            {% cache 3600 bm_create_query_topic %}
                                                 {% static_placeholder "bm_create_query_topic" or %}
                                                 Lorem ipsum dolor sit amet, consectetur eta adipiscing elit. Pellentasque eu tempor tortor. Aliquam Trisque eros arcu, sed bibendum enim faucibus in. In vulputate blendit lorem ut.
                                                 {% endstatic_placeholder %}
+                                            {% endcache %}
                                             </span>                                            
                                         </span>
                                     </span>
@@ -420,9 +447,11 @@
                                     <span class="add_help">
                                         <span class='add_help_inner'>
                                             <span>
+                                            {% cache 3600 bm_create_query_details %}
                                                 {% static_placeholder "bm_create_query_details" or %}
                                                 Lorem ipsum dolor sit amet, consectetur eta adipiscing elit. Pellentasque eu tempor tortor. Aliquam Trisque eros arcu, sed bibendum enim faucibus in. In vulputate blendit lorem ut.
                                                 {% endstatic_placeholder %}
+                                            {% endcache %}
                                             </span>
                                         </span>
                                     </span>
@@ -436,9 +465,11 @@
                                             <span class="add_help">
                                                 <span class='add_help_inner'>
                                                     <span>
+                                                    {% cache 3600 bm_create_query_geo %}
                                                         {% static_placeholder "bm_create_query_geo" or %}
                                                         Lorem ipsum dolor sit amet, consectetur eta adipiscing elit. Pellentasque eu tempor tortor. Aliquam Trisque eros arcu, sed bibendum enim faucibus in. In vulputate blendit lorem ut.
                                                         {% endstatic_placeholder %}
+                                                    {% endcache %}
                                                     </span>
                                                 </span>
                                             </span>
@@ -450,9 +481,11 @@
                                             <span class="add_help">
                                                 <span class='add_help_inner'>
                                                     <span>
+                                                    {% cache 3600 bm_create_query_industry %}
                                                         {% static_placeholder "bm_create_query_industry" or %}
                                                         Lorem ipsum dolor sit amet, consectetur eta adipiscing elit. Pellentasque eu tempor tortor. Aliquam Trisque eros arcu, sed bibendum enim faucibus in. In vulputate blendit lorem ut.
                                                         {% endstatic_placeholder %}
+                                                    {% endcache %}
                                                     </span>
                                                 </span>
                                             </span>
@@ -464,9 +497,11 @@
                                             <span class="add_help">
                                                 <span class='add_help_inner'>
                                                     <span>
+                                                    {% cache 3600 bm_create_query_type %}
                                                         {% static_placeholder "bm_create_query_type" or %}
                                                         Lorem ipsum dolor sit amet, consectetur eta adipiscing elit. Pellentasque eu tempor tortor. Aliquam Trisque eros arcu, sed bibendum enim faucibus in. In vulputate blendit lorem ut.
                                                         {% endstatic_placeholder %}
+                                                    {% endcache %}
                                                     </span>
                                                 </span>
                                             </span>
@@ -481,9 +516,11 @@
                                     <span class="add_help">
                                         <span class='add_help_inner'>
                                             <span>
+                                            {% cache 3600 bm_create_query_options %}
                                                 {% static_placeholder "bm_create_query_options" or %}
                                                 Lorem ipsum dolor sit amet, consectetur eta adipiscing elit. Pellentasque eu tempor tortor. Aliquam Trisque eros arcu, sed bibendum enim faucibus in. In vulputate blendit lorem ut.
                                                 {% endstatic_placeholder %}
+                                            {% endcache %}
                                             </span>
                                         </span>
                                     </span>
@@ -517,9 +554,11 @@
                                             <span class="add_help">
                                                 <span class='add_help_inner'>
                                                     <span>
+                                                    {% cache 3600 bm_create_units_tooltip %}
                                                         {% static_placeholder "bm_create_units_tooltip" or %}
                                                         Lorem ipsum dolor sit amet, consectetur eta adipiscing elit. Pellentasque eu tempor tortor. Aliquam Trisque eros arcu, sed bibendum enim faucibus in. In vulputate blendit lorem ut.
                                                         {% endstatic_placeholder %}
+                                                    {% endcache %}
                                                     </span>
                                                 </span>
                                             </span>
@@ -538,9 +577,9 @@
                                             <span class="add_help">?
                                                 <span class='add_help_inner'>
                                                     <span>
-                                                        {% static_placeholder "bm_create_min_ans_tooltip" or %}
+{#                                                        {% static_placeholder "bm_create_min_ans_tooltip" or %}#}
                                                         Lorem ipsum dolor sit amet, consectetur eta adipiscing elit. Pellentasque eu tempor tortor. Aliquam Trisque eros arcu, sed bibendum enim faucibus in. In vulputate blendit lorem ut.
-                                                        {% endstatic_placeholder %}
+{#                                                        {% endstatic_placeholder %}#}
                                                     </span>
                                                 </span>
                                             </span>
@@ -562,9 +601,11 @@
                                     <span class="add_help">
                                         <span class='add_help_inner'>
                                             <span>
-                                            {% static_placeholder "bm_customize_the_email_tooltip" or %}
-                                                Lorem ipsum dolor sit amet, consectetur eta adipiscing elit. Pellentasque eu tempor tortor. Aliquam Trisque eros arcu, sed bibendum enim faucibus in. In vulputate blendit lorem ut.
-                                            {% endstatic_placeholder %}
+                                            {% cache 3600 bm_customize_the_email_tooltip %}
+                                                {% static_placeholder "bm_customize_the_email_tooltip" or %}
+                                                    Lorem ipsum dolor sit amet, consectetur eta adipiscing elit. Pellentasque eu tempor tortor. Aliquam Trisque eros arcu, sed bibendum enim faucibus in. In vulputate blendit lorem ut.
+                                                {% endstatic_placeholder %}
+                                            {% endcache %}
                                             </span>
                                         </span>
                                     </span>
@@ -577,9 +618,11 @@
                                     <span class="add_help">
                                         <span class='add_help_inner'>
                                             <span>
+                                            {% cache 3600 bm_create_view_answer_form_tooltip %}
                                               {% static_placeholder "bm_create_view_answer_form_tooltip" or %}
                                                 Lorem ipsum dolor sit amet, consectetur eta adipiscing elit. Pellentasque eu tempor tortor. Aliquam Trisque eros arcu, sed bibendum enim faucibus in. In vulputate blendit lorem ut.
                                               {% endstatic_placeholder %}
+                                            {% endcache %}
                                             </span>
                                         </span>
                                     </span>
