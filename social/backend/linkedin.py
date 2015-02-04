@@ -25,11 +25,7 @@ class LinkedInApplication(linkedin.LinkedInApplication):
         url = '%s/~/mailbox' % linkedin.ENDPOINTS.PEOPLE
         response = self.make_request('POST', url,
                                      data=json.dumps(data))
-        try:
-            raise_for_error(response)
-        except LinkedInError as error:
-            print "Could not send message to at least one of the contacts: %s" % \
-                response.message
+        raise_for_error(response)
         return True
 
 

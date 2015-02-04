@@ -1,4 +1,5 @@
 from functools import wraps
+import traceback
 import os
 from app import settings
 from app.settings import BASE_DIR
