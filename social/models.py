@@ -136,6 +136,7 @@ class Contact(models.Model):
             if contact:
                 contact.code = kwargs['id']
                 contact.save()
+                return contact
         contact = contact or cls()
         with transaction.atomic():
             try:
@@ -172,7 +173,7 @@ class Contact(models.Model):
                                 contact.company = company
                             break
             except AttributeError:
-                print "Contacts have explicitly set their information to private"
+                print "Contacts have explicitly set their information to private %s" % kwargs['id']
                 return
             location = Region.objects.filter(code=kwargs.get('location', {}).get('country', {}).get('code')).first()
             if not location:

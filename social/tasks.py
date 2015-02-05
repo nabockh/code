@@ -15,7 +15,7 @@ from celery.task import periodic_task
 
 import logging
 logging.config.dictConfig(settings.LOGGING)
-logger = logging.getLogger('django.request')
+logger = logging.getLogger('bedade.background')
 
 
 @shared_task
