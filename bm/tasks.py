@@ -52,11 +52,11 @@ def send_invites(benchmark_id):
             body = get_template('alerts/invite.html').render(context)
 
         invites_without_email = []
+        sent = []
         for invite in invites:
             if invite.recipient.email:
                 Contact.send_mail(invite.sender, subject, body, (invite.recipient,))
-                invite.status = 1
-                invite.save()
+                sent.append(invite.id)
             else:
                 invites_without_email.append(invite)
 
@@ -65,24 +65,25 @@ def send_invites(benchmark_id):
         for invites_group in invites_groups:
             sender = invites_group[0].sender
             contacts = [invite.recipient for invite in invites_group if invite]
+            sent = sent + [invite.id for invite in invites_group if invite]
             Contact.send_mail(sender, subject, body, contacts)
-        for invite in invites_to_send_via_linked:
-            invite.status = 1
-            invite.save()
+        benchmark.invites.filter(id__in=sent).update(status=1, sent_date = datetime.date(datetime.now()))
         if len(invites_without_email) > 100:
             send_invites.apply_async((benchmark_id,), countdown=86400)
         else:
-            if BmInviteEmail.objects.filter(benchmark_id=benchmark.id).first():
-                BmInviteEmail.objects.filter(benchmark_id=benchmark.id).first().delete()
+            BmInviteEmail.objects.filter(benchmark_id=benchmark.id).delete()
 
 @periodic_task(run_every=crontab(minute=0, hour=0))
 @celery_log
 def send_reminders():
     current_time = datetime.now()
     days_count = timedelta(days=2)
-    approved_benchmarks = Benchmark.objects.filter(approved=True, end_date__gt=current_time, end_date__lte=current_time+days_count)
+    approved_benchmarks = Benchmark.objects.filter(approved=True,
+                                                   end_date__gt=current_time,
+                                                   end_date__lte=current_time+days_count)\
+                                            .select_related('owner', 'link')
     query = '''
-            SELECT
+    SELECT
       "social_contact"."id",
       "social_contact"."code",
       "social_contact"."provider",
@@ -106,21 +107,36 @@ def send_reminders():
         '''
     for benchmark in approved_benchmarks:
         subject = "Bedade benchmark response reminder"
-        contacts = Contact.objects.raw(query, [benchmark.id])
-        for contact in contacts:
-            raw_context = get_context_variables(benchmark)
+        contacts = list(Contact.objects.raw(query, [benchmark.id]))
+        sent = []
+        contacts_without_email = []
+        count_contacts_without_email = 0
+        total_contacts = len(contacts)
+        raw_context = get_context_variables(benchmark)
+        raw_context['remaining_before_closure'] = benchmark.days_left
+        for i, contact in enumerate(contacts, start=1):
             raw_context['reminder_contact'] = contact.first_name
-            raw_context['remaining_before_closure'] = benchmark.days_left
             context = Context(raw_context)
             body = get_template('alerts/reminder_not_responded.html').render(context)
             if benchmark.owner:
-                Contact.send_mail(benchmark.owner, subject, body, [contact])
-                BenchmarkInvitation.objects.filter(benchmark_id=benchmark.id, recipient__id=contact.id).update(status=2)
-            elif contact.email:
-                send_mail(subject, body, None, [contact.email])
-                BenchmarkInvitation.objects.filter(benchmark_id=benchmark.id, recipient__id=contact.id).update(status=2)
+                if contact.email:
+                    Contact.send_mail(benchmark.owner, subject, body, [contact])
+                    sent.append(contact.id)
+                else:
+                    contacts_without_email.append(contact)
+                    if len(contacts_without_email) == 10 or i == total_contacts:
+                        count_contacts_without_email += len(contacts_without_email)
+                        if count_contacts_without_email <= 100:
+                            try:
+                                Contact.send_mail(benchmark.owner, subject, body, contacts_without_email)
+                                sent = sent + [c.id for c in contacts_without_email]
+                                contacts_without_email = []
+                            except:
+                                logger.exception('')
             else:
                 logger.warning("Cannot send reminder. Benchmark owner or Contact email does not exist")
+        BenchmarkInvitation.objects.filter(benchmark_id=benchmark.id, recipient__id__in=sent)\
+            .update(status=2, sent_date=datetime.date(datetime.now()))
 
 
 
@@ -150,23 +166,25 @@ def check_response_count():
         if recipient_list:
             send_mail('Uncomplete Benchmark', 'Hi! Current benchmarks has not reached min_number_of_responses: %s' %
                       benchmark_names, None, recipient_list)
-        BenchmarkInvitation.objects.filter(benchmark__id__in=benchmark_ids).update(status=4)
+        BenchmarkInvitation.objects.filter(benchmark__id__in=benchmark_ids)\
+            .update(status=4, sent_date=datetime.date(datetime.now()))
 
 
 @periodic_task(run_every=crontab(minute=0, hour=0))
 @celery_log
 def check_benchmark_results():
     # get finished benchmarks with invites status 1 or 2
-    finished_benchmarks = Benchmark.valid.filter(end_date__lte=datetime.now(), invites__status__range=[0, 2])
+    finished_benchmarks = Benchmark.valid.filter(end_date__lte=datetime.now(), invites__status__range=[0, 2])\
+        .select_related('owner')
     if finished_benchmarks:
         for benchmark in finished_benchmarks:
             subject = "Bedade results published"
             contacts = []
             filtered_contacts = Contact.objects.filter(invites__benchmark__id=benchmark.id)
-            responded__users = [response.user_id for response in
-                                QuestionResponse.objects.filter(question_id=benchmark.question.first().id)]
+            responded__users = QuestionResponse.objects.filter(question_id=benchmark.question.first().id)\
+                .values_list('user_id', flat=True)
             for contact in filtered_contacts:
-                if contact.user and contact.user_id in responded__users:
+                if contact.user_id in responded__users:
                     contacts.append(contact)
             contacts_ids = [contact.id for contact in contacts]
             recipients = [contact.email for contact in contacts]
@@ -186,7 +204,8 @@ def check_benchmark_results():
                     body = get_template('alerts/benchmark_results.html').render(context)
                     if send_mail(subject, body, None, [recipient, ]):
                         successfully_send.append(contact.id)
-                BenchmarkInvitation.objects.filter(recipient__id__in=successfully_send).update(status=3)
+                BenchmarkInvitation.objects.filter(recipient__id__in=successfully_send)\
+                    .update(status=3, sent_date=datetime.date(datetime.now()))
 
 
 @periodic_task(run_every=crontab(minute=0, hour=0))

@@ -1,5 +1,6 @@
 from datetime import datetime
 from app.settings import DEBUG, REGISTERED_USER_REDIRECT_URL
+from django.core.cache import get_cache
 from metrics.utils import event_log
 from bm import metric_events
 from bm.forms import CreateBenchmarkStep12Form, AnswerMultipleChoiceForm, \
@@ -569,6 +570,10 @@ class YesNoAnswerView(BaseBenchmarkAnswerView):
 class ForbiddenView(TemplateView):
     template_name = '403.html'
 
+    def get(self, request, *args, **kwargs):
+        context = self.get_context_data(**kwargs)
+        return self.render_to_response(context, status=403)
+
 
 class WelcomeView(TemplateView):
     template_name = 'bm/welcome.html'
@@ -610,86 +615,94 @@ class BenchmarkDetailView(FormView):
     def get_context_data(self, **kwargs):
         # Note: Role data was removed by request of Customer, but possible will be
         # needed in future
-        context = super(BenchmarkDetailView, self).get_context_data(**kwargs)
         benchmark = self.get_benchmark(**kwargs)
-        if not self.request.user.is_anonymous() and Benchmark.objects.filter(id=benchmark.id, question__responses__user=self.request.user):
-                context['is_contributor'] = True
+        question = benchmark.question.first()
+        is_contributor = not self.request.user.is_anonymous() and \
+                         Benchmark.objects.filter(id=benchmark.id, question__responses__user=self.request.user)
+        cache = get_cache('default')
+        cache_key = 'bm_detail_view_context%d' % benchmark.id
+        context = cache.get(cache_key)
+        if context is None:
+            context = dict()
+            context['url'] = self.request.META['HTTP_HOST'] + self.request.path
+            # group_by_headline = QuestionResponse.objects.filter(question=benchmark.question.first()).\
+            #     values('user__social_profile__headline').annotate(count=Count('id'))
+            group_by_country = QuestionResponse.objects.filter(question=question).\
+                values('user__social_profile__location__name').annotate(count=Count('id'))
+            group_by_geo = QuestionResponse.objects.filter(question=question).\
+                values('user__social_profile__location__parent__name').annotate(count=Count('id'))
+            group_by_industry = QuestionResponse.objects.filter(question=question).\
+                values('user__social_profile__company___industry__name').annotate(count=Count('id'))
+            # for dictionary in group_by_headline:
+            #     dictionary['role'] = dictionary['user__social_profile__headline'] or "Not Available"
+            #     del dictionary['user__social_profile__headline']
+            for dictionary in group_by_geo:
+                dictionary['geo'] = dictionary['user__social_profile__location__parent__name'] or "Not Available"
+                del dictionary['user__social_profile__location__parent__name']
+            for dictionary in group_by_country:
+                dictionary['country'] = dictionary['user__social_profile__location__name'] or "Not Available"
+                del dictionary['user__social_profile__location__name']
+            for dictionary in group_by_industry:
+                dictionary['industry'] = dictionary['user__social_profile__company___industry__name'] or "Not Available"
+                del dictionary['user__social_profile__company___industry__name']
+            # headlines = []
+            # for item in group_by_headline:
+            #     first = item['count']
+            #     second = item['role']
+            #     headlines.append([second, first])
+            geo = []
+            for item in group_by_geo:
+                first = item['count']
+                second = item['geo']
+                geo.append([second, first])
+            countries = []
+            for item in group_by_country:
+                first = item['count']
+                second = item['country']
+                countries.append([second, first])
+            industries = []
+            for item in group_by_industry:
+                first = item['count']
+                second = item['industry']
+                industries.append([second, first])
+            # context['role'] = list(headlines)
+            # context['role'].insert(0, ['role', 'count'])
+            context['geo'] = list(geo)
+            context['geo'].insert(0, ['geo', 'count'])
+            context['countries'] = list(countries)
+            context['countries'].insert(0, ['countries', 'count'])
+            context['industries'] = list(industries)
+            context['industries'].insert(0, ['industries', 'count'])
+
+            for field in ['geo', 'countries', 'industries']:
+                context[field] = json.dumps(context[field])
+
+            # Count percentage in aggregated lists
+            countries_percentage = list(countries)
+            sum_country = sum([each[1] for each in countries_percentage])
+            for item in countries_percentage:
+                item[1] = round(float(item[1])/sum_country*100)
+            geo_percentage = list(geo)
+            sum_geo = sum([each[1] for each in geo_percentage])
+            for item in geo_percentage:
+                item[1] = round(float(item[1])/sum_geo*100)
+            # role_percentage = list(headlines)
+            # sum_role = sum([each[1] for each in role_percentage])
+            # for item in role_percentage:
+            #     item[1] = round(float(item[1])/sum_role*100)
+            industry_percentage = list(industries)
+            sum_industry = sum([each[1] for each in industry_percentage])
+            for item in industry_percentage:
+                item[1] = round(float(item[1])/sum_industry*100)
+            # context['role_percentage'] = role_percentage
+            context['industry_percentage'] = industry_percentage
+            context['geo_percentage'] = geo_percentage
+            context['countries_percentage'] = countries_percentage
+            cache.set(cache_key, context)
+        context.update(super(BenchmarkDetailView, self).get_context_data(**kwargs))
         context['benchmark'] = benchmark
-        context['question'] = benchmark.question.first()
-        context['url'] = self.request.META['HTTP_HOST'] + self.request.path
-        # group_by_headline = QuestionResponse.objects.filter(question=benchmark.question.first()).\
-        #     values('user__social_profile__headline').annotate(count=Count('id'))
-        group_by_country = QuestionResponse.objects.filter(question=benchmark.question.first()).\
-            values('user__social_profile__location__name').annotate(count=Count('id'))
-        group_by_geo = QuestionResponse.objects.filter(question=benchmark.question.first()).\
-            values('user__social_profile__location__parent__name').annotate(count=Count('id'))
-        group_by_industry = QuestionResponse.objects.filter(question=benchmark.question.first()).\
-            values('user__social_profile__company___industry__name').annotate(count=Count('id'))
-        # for dictionary in group_by_headline:
-        #     dictionary['role'] = dictionary['user__social_profile__headline'] or "Not Available"
-        #     del dictionary['user__social_profile__headline']
-        for dictionary in group_by_geo:
-            dictionary['geo'] = dictionary['user__social_profile__location__parent__name'] or "Not Available"
-            del dictionary['user__social_profile__location__parent__name']
-        for dictionary in group_by_country:
-            dictionary['country'] = dictionary['user__social_profile__location__name'] or "Not Available"
-            del dictionary['user__social_profile__location__name']
-        for dictionary in group_by_industry:
-            dictionary['industry'] = dictionary['user__social_profile__company___industry__name'] or "Not Available"
-            del dictionary['user__social_profile__company___industry__name']
-        # headlines = []
-        # for item in group_by_headline:
-        #     first = item['count']
-        #     second = item['role']
-        #     headlines.append([second, first])
-        geo = []
-        for item in group_by_geo:
-            first = item['count']
-            second = item['geo']
-            geo.append([second, first])
-        countries = []
-        for item in group_by_country:
-            first = item['count']
-            second = item['country']
-            countries.append([second, first])
-        industries = []
-        for item in group_by_industry:
-            first = item['count']
-            second = item['industry']
-            industries.append([second, first])
-        # context['role'] = list(headlines)
-        # context['role'].insert(0, ['role', 'count'])
-        context['geo'] = list(geo)
-        context['geo'].insert(0, ['geo', 'count'])
-        context['countries'] = list(countries)
-        context['countries'].insert(0, ['countries', 'count'])
-        context['industries'] = list(industries)
-        context['industries'].insert(0, ['industries', 'count'])
-
-        for field in ['geo', 'countries', 'industries']:
-            context[field] = json.dumps(context[field])
-
-        # Count percentage in aggregated lists
-        countries_percentage = list(countries)
-        sum_country = sum([each[1] for each in countries_percentage])
-        for item in countries_percentage:
-            item[1] = round(float(item[1])/sum_country*100)
-        geo_percentage = list(geo)
-        sum_geo = sum([each[1] for each in geo_percentage])
-        for item in geo_percentage:
-            item[1] = round(float(item[1])/sum_geo*100)
-        # role_percentage = list(headlines)
-        # sum_role = sum([each[1] for each in role_percentage])
-        # for item in role_percentage:
-        #     item[1] = round(float(item[1])/sum_role*100)
-        industry_percentage = list(industries)
-        sum_industry = sum([each[1] for each in industry_percentage])
-        for item in industry_percentage:
-            item[1] = round(float(item[1])/sum_industry*100)
-        # context['role_percentage'] = role_percentage
-        context['industry_percentage'] = industry_percentage
-        context['geo_percentage'] = geo_percentage
-        context['countries_percentage'] = countries_percentage
+        context['question'] = question
+        context['is_contributor'] = is_contributor
         return context
 
     @method_decorator(login_required_ajax)

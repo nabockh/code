@@ -1,5 +1,5 @@
 {% load cms_tags %}
-
+{% load cache %}
 <div class="modal fade" id="support" tabindex="-1" role="dialog" aria-labelledby="supportLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -10,11 +10,13 @@
           <div class="modal-body">
             <div class='modal-body-inner'>
                 <h4>Got Questions?</h4>
+                {% cache 3600 support_popup_text %}
                 {% static_placeholder "support_popup_text" or %}
                 <p>
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed condimentum posuere libero, ut accumsan enim dapibus nec. Quisque hendrerit sollicitudin elit, non elementum est.
                 </p>
                 {% endstatic_placeholder %}
+                {% endcache %}
                 <hr>
                 <h4>Contact Us!</h4>
                 <div class='row'>

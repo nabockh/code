@@ -191,7 +191,7 @@ LOGGING = {
     'disable_existing_loggers': False,
     'formatters': {
         'simple': {
-            'format': '%(levelname)s %(message)s',
+            'format': "\n%(levelname)s[%(asctime)s]\n%(message)s\n",
             'datefmt': '%y %b %d, %H:%M:%S',
         },
     },
@@ -200,7 +200,7 @@ LOGGING = {
             'level': 'ERROR',
             'class': 'logging.handlers.RotatingFileHandler',
             'filename': 'log/web_worker.log',
-            # 'formatter': 'simple',
+            'formatter': 'simple',
             'maxBytes': 1024 * 1024 * 100,  # 100 mb
         },
         'console': {
@@ -211,13 +211,13 @@ LOGGING = {
         'mail_admins': {
             'level': 'ERROR',
             'class': 'django.utils.log.AdminEmailHandler',
-            # 'formatter': 'simple'
+            'formatter': 'simple'
         },
         'celery': {
-            'level': 'DEBUG',
+            'level': 'ERROR',
             'class': 'logging.handlers.RotatingFileHandler',
             'filename': 'log/celery.log',
-            # 'formatter': 'simple',
+            'formatter': 'simple',
             'maxBytes': 1024 * 1024 * 100,  # 100 mb
         },
     },

@@ -2,6 +2,7 @@
 {% load i18n %}
 {% block meta_tags %}
 {% load cms_tags %}
+{% load cache %}
     <!-- Open Graph data -->
     <meta property="og:type" content="article" />
     <meta property="og:title" content="{{ benchmark.name }}" />
@@ -85,6 +86,7 @@
     </div>
 {% endblock %}
 {% block content %}
+{% cache 3600 details_view benchmark.id user.is_authenticated is_contributor %}
 <!-- Preloader -->
 <div class="preloader"><div class='full-centered'><i class="fa fa-cog fa-spin"></i></div></div>
 <!-- End Preloader -->
@@ -218,6 +220,7 @@ $( document ).ready(function() {
             </div>
           </div>
         </div>
+{% endcache %}
 <!-- Support Modal -->
     {% include 'core/contact_form.html' %}    
 {% endblock %}

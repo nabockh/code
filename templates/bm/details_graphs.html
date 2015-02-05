@@ -89,10 +89,8 @@
                                 <div class='fill-value' style='width: {% widthratio benchmark.calc_average_rating 5 100 %}%'></div>
                             </span>
                             <span class='color-grey'>({{ benchmark.calc_average_rating }})</span>
-                            {% if user.is_authenticated %}
-                                {% if is_contributor %}
-                                    <a href='#' class="btn btn-primary btn-lg" data-toggle="modal" data-target="#rating">Rate this benchmark <i class='fa fa-star'></i></a>
-                                {% endif %}
+                            {% if user.is_authenticated and is_contributor %}
+                                <a href='#' class="btn btn-primary btn-lg" data-toggle="modal" data-target="#rating">Rate this benchmark <i class='fa fa-star'></i></a>
                             {% endif %}
                         </div>
                     </div>
