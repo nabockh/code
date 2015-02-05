@@ -335,7 +335,8 @@ class BenchmarkHistoryView(ListView):
 
     def get_queryset(self):
         return Benchmark.valid.filter(Q(owner=self.request.user) |
-                                      Q(question__responses__user=self.request.user))
+                                      Q(question__responses__user=self.request.user),
+                                      end_date__lte=datetime.now()).order_by('-start_date')
 
 
 class BenchmarkSearchView(ListView):
@@ -354,7 +355,7 @@ class BenchmarkSearchView(ListView):
         return super(BenchmarkSearchView, self).dispatch(request, *args, **kwargs)
 
     def get_queryset(self):
-        return Benchmark.valid.all().order_by('-start_date')
+        return Benchmark.valid.filter(end_date__lte=datetime.now()).order_by('-start_date')
 
 
 class BaseBenchmarkAnswerView(FormView):
