@@ -1,5 +1,5 @@
 from app import settings
-from django.core.cache import cache
+from django.core.cache import get_cache
 from django.core.mail import send_mail
 from django.db import models, transaction
 from django.db.models import Count
@@ -22,6 +22,7 @@ class LinkedInIndustry(models.Model):
     def get(cls, name='', code=None):
         if isinstance(name, cls):
             return name
+        cache = get_cache('default')
         data = cache.get(cls.__name__)
         if not data:
             data = dict(LinkedInIndustry.objects.all().values_list('name', 'code'))
@@ -209,7 +210,8 @@ class Contact(models.Model):
                           .order_by('-is_active_user',
                                     'num_responses',
                                     'company___industry',
-                                    'headline')[:10]
+                                    'headline')\
+                          .select_related('user', 'company', 'company___industry', 'location')[:10]
 
 
 class Invite(models.Model):

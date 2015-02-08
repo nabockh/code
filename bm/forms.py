@@ -129,8 +129,9 @@ class CreateBenchmarkStep3Form(forms.Form):
         if cleaned_data.get('geo'):
             contact_filter['location__parent__id'] = cleaned_data.get('geo')
         self.contacts_filtered = user.contacts.filter(name_filter, **contact_filter).exclude(id__in=except_ids) \
-            .order_by('last_name') if name_filter else \
-            user.contacts.filter(**contact_filter).exclude(id__in=except_ids).order_by('last_name')
+            .order_by('last_name').select_related('user', 'company', 'company___industry', 'location') if name_filter else \
+            user.contacts.filter(**contact_filter).exclude(id__in=except_ids).order_by('last_name')\
+                .select_related('user', 'company', 'company___industry', 'location')
         for contact in self.contacts_filtered:
             self.fields['contact-{0}-invite'.format(contact.id)] = \
                 forms.BooleanField(widget=forms.CheckboxInput(attrs={'class': 'choose-checkbox'}), required=False)
@@ -190,7 +191,8 @@ class CreateBenchmarkStep3Form(forms.Form):
 
 
         count_without_email = 0
-        self.selected_contacts = Contact.objects.filter(id__in=selected_ids).select_related('user')
+        self.selected_contacts = Contact.objects.filter(id__in=selected_ids)\
+            .select_related('user', 'company', 'company___industry', 'location')
         for contact in self.selected_contacts:
             self.fields['selected-{0}-invite'.format(contact.id)] = \
                 forms.BooleanField(initial=True,
