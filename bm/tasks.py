@@ -1,9 +1,9 @@
 from __future__ import absolute_import
 import itertools
-from bm.models import Benchmark, BenchmarkInvitation, BmInviteEmail, QuestionResponse
+from bm.models import Benchmark, BenchmarkInvitation, BmInviteEmail, QuestionResponse, Question
 from datetime import datetime, timedelta
 from celery import shared_task
-from core.utils import celery_log, logger
+from core.utils import celery_log, logger, get_context_variables_by_id
 from django.contrib.sites.models import Site
 from django.core.mail import send_mail
 from django.core.urlresolvers import reverse
@@ -173,39 +173,43 @@ def check_response_count():
 @periodic_task(run_every=crontab(minute=0, hour=0))
 @celery_log
 def check_benchmark_results():
-    # get finished benchmarks with invites status 1 or 2
-    finished_benchmarks = Benchmark.valid.filter(end_date__lte=datetime.now(), invites__status__range=[0, 2])\
-        .select_related('owner')
-    if finished_benchmarks:
-        for benchmark in finished_benchmarks:
-            subject = "Bedade results published"
-            contacts = []
-            filtered_contacts = Contact.objects.filter(invites__benchmark__id=benchmark.id)
-            responded__users = QuestionResponse.objects.filter(question_id=benchmark.question.first().id)\
-                .values_list('user_id', flat=True)
-            for contact in filtered_contacts:
-                if contact.user_id in responded__users:
-                    contacts.append(contact)
-            contacts_ids = [contact.id for contact in contacts]
-            recipients = [contact.email for contact in contacts]
-            if benchmark.owner:
-                recipients.append(benchmark.owner.email)
-            raw_context = get_context_variables(benchmark)
-            successfully_send = []
-            if contacts_ids:
-                for recipient in recipients:
-                    contact = Contact.objects.filter(_email=recipient).first()
-                    if not contact:
-                        logger.warning("Cannot send notification. Contact with email '%s' does not exist" %
-                                       recipient)
-                        continue
-                    raw_context['contact_first_name'] = contact.first_name
-                    context = Context(raw_context)
-                    body = get_template('alerts/benchmark_results.html').render(context)
-                    if send_mail(subject, body, None, [recipient, ]):
-                        successfully_send.append(contact.id)
-                BenchmarkInvitation.objects.filter(recipient__id__in=successfully_send)\
-                    .update(status=3, sent_date=datetime.date(datetime.now()))
+    # get all invites needed to be notify
+    sql = '''
+    WITH finished_benchmarks AS (
+        SELECT bm_benchmark.id FROM bm_benchmark
+          JOIN bm_question ON bm_benchmark.id = bm_question.benchmark_id
+          JOIN bm_questionresponse ON bm_question.id = bm_questionresponse.question_id
+        WHERE
+          bm_benchmark.end_date <= %s AND bm_benchmark.approved = TRUE
+        GROUP BY bm_benchmark.id
+        HAVING COUNT(DISTINCT bm_questionresponse.id) >= bm_benchmark.min_numbers_of_responses
+    )
+    SELECT
+      bm_benchmarkinvitation.*,
+      social_contact.first_name as contact_first_name,
+      social_contact.email as contact_email
+    FROM bm_benchmarkinvitation
+      JOIN social_contact ON social_contact.id = bm_benchmarkinvitation.recipient_id
+      JOIN bm_benchmark ON bm_benchmark.id = bm_benchmarkinvitation.benchmark_id
+      JOIN bm_question ON bm_benchmark.id = bm_question.benchmark_id
+      JOIN bm_questionresponse ON bm_question.id = bm_questionresponse.question_id
+                                  AND social_contact.user_id = bm_questionresponse.user_id
+    WHERE
+      bm_benchmarkinvitation.status::INT8 < 3
+      AND bm_benchmark.id IN (SELECT id FROM finished_benchmarks);
+    '''
+    invites = BenchmarkInvitation.objects.raw(sql, (datetime.date(datetime.now()),))
+    successfully_send = []
+    for invite in invites:
+        subject = "Bedade results published"
+        raw_context = get_context_variables_by_id(invite.benchmark_id, Question)
+        raw_context['contact_first_name'] = invite.contact_first_name
+        context = Context(raw_context)
+        body = get_template('alerts/benchmark_results.html').render(context)
+        if send_mail(subject, body, None, [invite.contact_email,]):
+            successfully_send.append(invite.id)
+    BenchmarkInvitation.objects.filter(id__in=successfully_send)\
+        .update(status=3, sent_date=datetime.date(datetime.now()))
 
 
 @periodic_task(run_every=crontab(minute=0, hour=0))

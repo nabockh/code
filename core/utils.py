@@ -1,5 +1,6 @@
 from functools import wraps
 import traceback
+from django.core.cache import get_cache
 import os
 from app import settings
 from app.settings import BASE_DIR
@@ -23,7 +24,7 @@ def get_context_variables(benchmark):
     Return variables needed for emails context
 
     """
-    question = benchmark.question.first()
+    question = benchmark.related_question if hasattr(benchmark, 'related_question') else benchmark.question.first()
     context_vars = {}
     context_vars['benchmark'] = benchmark
     context_vars['question_label'] = question.label
@@ -34,6 +35,18 @@ def get_context_variables(benchmark):
     context_vars['benchmark_creator'] = benchmark.owner.get_full_name() if benchmark.owner else None
     context_vars['link_to_bm_results'] = str(Site.objects.get_current()) + reverse('bm_details', args=[benchmark.id])
     return context_vars
+
+
+def get_context_variables_by_id(benchmark_id, question_cls):
+    cache = get_cache('default')
+    key = 'BENCHMARK::CACHE::%d' % benchmark_id
+    benchmark = cache.get(key)
+    if benchmark is None:
+        question = question_cls.objects.filter(benchmark_id=benchmark_id).select_related('benchmark').first()
+        benchmark = question.benchmark
+        benchmark.related_question = question
+        cache.set(key, benchmark, 600)
+    return get_context_variables(benchmark)
 
 
 def login_required_ajax(function=None, redirect_field_name=None):
