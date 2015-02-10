@@ -7,7 +7,7 @@ from celery import shared_task
 from django.contrib.auth.models import User
 from social import providers
 from social.backend import linkedin
-from social.models import Contact
+from social.models import Contact, ContactOwners
 from celery.schedules import crontab
 from celery.task import periodic_task
 # from celery.utils.log import get_task_logger
@@ -48,9 +48,10 @@ def periodic_import_linkedin_contacts_for_user(user_id):
         num_contacts = len(contacts)
         contacts = {c['id']: c for c in contacts if c['id'] != 'private'}
         contact_codes = set(contacts.keys())
-        exists_contact_codes = set(Contact.objects.filter(code__in=contact_codes).values_list('code', flat=True))
+        exists_contact_codes = set(ContactOwners.objects.filter(code__in=contact_codes, user=user)\
+                                   .values_list('code', flat=True))
         contacts_diff = contact_codes - exists_contact_codes
-        last_pct = progress_pct = 0
+        last_pct = 0
         logging.info(' - got %d contacts %d new of them for user "%s" to process' %
                      (num_contacts, len(contacts_diff), user.username))
         num_contacts = len(contacts_diff)
@@ -60,3 +61,5 @@ def periodic_import_linkedin_contacts_for_user(user_id):
             if progress_pct != last_pct and progress_pct % 20 == 0:
                 logging.info('  -- processed %s%% of "%s" contacts' % (progress_pct, user.username))
                 last_pct = progress_pct
+        #clear old dependencies for e.g. if some contact changed his headline, for removing duplicates
+        ContactOwners.objects.filter(user=user).exclude(code__in=contact_codes).delete()
