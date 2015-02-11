@@ -87,7 +87,7 @@ def load_extra_data(backend, details,request, response, uid, user, social_user=N
 
     """
     social_profile = Profile.objects.filter(user=user).first()
-    social_contact = Contact.objects.filter(code=uid).first()
+    social_contact = Contact.objects.filter(codes__code=uid).first()
     if social_contact:
         social_contact.user = user
         social_contact.email = user.email
