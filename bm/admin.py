@@ -77,7 +77,7 @@ class SendMail(FormView):
                 subject = form.cleaned_data['Subject']
                 recipient_list = [email]
                 context = Context({
-                    'user': user,
+                    'user': '%s %s' % (user.first_name, user.last_name),
                     'email_body': email_body
                 })
                 send_mail(subject, template.render(context), None, recipient_list)

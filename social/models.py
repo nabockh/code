@@ -68,11 +68,7 @@ class Profile(models.Model):
 
 
 class Contact(models.Model):
-    class Meta:
-        unique_together = (('code', 'provider'),)
-
-    code = models.CharField(max_length=255)
-    owners = models.ManyToManyField(USER_MODEL, related_name='contacts')
+    owners = models.ManyToManyField(USER_MODEL, related_name='contacts', through='ContactOwners')
     provider = models.PositiveSmallIntegerField()
     first_name = models.CharField(max_length=100)
     last_name = models.CharField(max_length=100)
@@ -136,20 +132,26 @@ class Contact(models.Model):
             application.send_message(subject, body, recipients_without_email)
 
     @classmethod
-    def create(cls, owner, provider, **kwargs):
+    def create(cls, owner, provider, already_checked=False, **kwargs):
         from bm.models import Region
         if kwargs['id'] == 'private':
             print "Contacts have explicitly set their information to private"
             return
 
         #check if contact already exists
-        contact = cls.objects.filter(code=kwargs['id'], provider=provider).first()
-        if not contact:
-            contact = cls.objects.filter(first_name=kwargs['firstName'], last_name=kwargs['lastName'], headline=kwargs.get('headline', None), provider=provider).first()
-            if contact:
-                contact.code = kwargs['id']
-                contact.save()
-                return contact
+        contact = None if already_checked else \
+            ContactOwners.objects.filter(user=owner, code=kwargs['id'], contact__provider=provider).first()
+        if contact is None:
+            contact_code = ContactOwners.objects.filter(user=owner,
+                                                        contact__first_name=kwargs['firstName'],
+                                                        contact__last_name=kwargs['lastName'],
+                                                        contact__headline=kwargs.get('headline'),
+                                                        contact__provider=provider).select_related('contact').first()
+            if contact_code:
+                if (not already_checked and contact_code.code != kwargs['id']) or already_checked:
+                    contact_code.code = kwargs['id']
+                    contact_code.save()
+                return contact_code.contact
         contact = contact or cls()
         with transaction.atomic():
             try:
@@ -159,7 +161,7 @@ class Contact(models.Model):
                             company = None
                             company_id = position.get('company', {}).get('id')
                             if company_id:
-                                company = Company.objects.filter(code=position.get('company', {}).get('id'), _industry__name=kwargs.get('industry', {})).first()
+                                company = Company.objects.filter(code=company_id, _industry__name=kwargs.get('industry', {})).first()
                             if not company:
                                 company = Company.objects.filter(name=position.get('company', {}).get('name'), _industry__name=kwargs.get('industry', {})).first()
                                 if company and company_id and company.code != company_id:
@@ -196,7 +198,6 @@ class Contact(models.Model):
                 # location.code = kwargs.get('location', {}).get('country', {}).get('code')
                 # location.save()
             contact.location = location
-            contact.code = kwargs['id']
             contact.provider = provider
             contact.first_name = kwargs['firstName']
             contact.last_name = kwargs['lastName']
@@ -204,7 +205,8 @@ class Contact(models.Model):
                 contact.email = kwargs.get('email')
             contact.headline = kwargs.get('headline')
             contact.save()
-            contact.owners.add(owner)
+            co = ContactOwners.objects.create(contact=contact, user=owner, code=kwargs['id'])
+            co.save()
         return contact
 
     @classmethod
@@ -224,6 +226,14 @@ class Contact(models.Model):
                                     'company___industry',
                                     'headline')\
                           .select_related('user', 'company', 'company___industry', 'location')[:10]
+
+
+class ContactOwners(models.Model):
+    class Meta:
+        db_table = 'social_contact_owners'
+    contact = models.ForeignKey(Contact, related_name='codes')
+    user = models.ForeignKey(USER_MODEL, related_name='contact_codes')
+    code = models.CharField(max_length=10, null=True)
 
 
 class Invite(models.Model):
