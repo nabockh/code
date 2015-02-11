@@ -83,6 +83,18 @@ class Contact(models.Model):
     company = models.ForeignKey(Company, blank=True, null=True, db_constraint=False, on_delete=models.SET_NULL,
                                 related_name='employees')
     user = models.ForeignKey(USER_MODEL, blank=True, null=True, db_constraint=False, on_delete=models.SET_NULL)
+    _code = None
+
+    @property
+    def code(self):
+        if self._code is None:
+            self._code = self.codes.filter(user_id=self.owner_id).first()\
+                if hasattr(self, 'owner_id') else self.codes.first()
+        return self._code
+
+    @code.setter
+    def code(self, value):
+        self._code = value
 
     @property
     def email(self):

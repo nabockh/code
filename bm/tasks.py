@@ -2,6 +2,7 @@ from __future__ import absolute_import
 import itertools
 from bm.models import Benchmark, BenchmarkInvitation, BmInviteEmail, QuestionResponse, Question
 from datetime import datetime, timedelta
+from bm.utils import StringAgg
 from celery import shared_task
 from core.utils import celery_log, logger, get_context_variables_by_id
 from django.contrib.sites.models import Site
@@ -30,9 +31,11 @@ def grouper(n, iterable, fillvalue=None):
 @shared_task
 @celery_log
 def send_invites(benchmark_id):
-    benchmark = Benchmark.objects.get(pk=benchmark_id)
+    benchmark = Benchmark.objects.filter(id=benchmark_id).select_related('owner').first()
     if benchmark:
-        invites = benchmark.invites.filter(status='0').select_related('recipient', 'recipient__user', 'sender')
+        invites = benchmark.invites.filter(status='0', recipient__codes__user=benchmark.owner)\
+            .annotate(recipient_code=StringAgg('recipient__codes__code'))\
+            .select_related('recipient', 'recipient__user', 'sender')
         subject = INVITE_SUBJECT
         raw_context = get_context_variables(benchmark)
         raw_context['remaining_before_closure'] = benchmark.days_left
@@ -64,10 +67,15 @@ def send_invites(benchmark_id):
         invites_groups = grouper(10, invites_to_send_via_linked)
         for invites_group in invites_groups:
             sender = invites_group[0].sender
-            contacts = [invite.recipient for invite in invites_group if invite]
+            contacts = []
+            for invite in invites_group:
+                if invite:
+                    contact = invite.recipient
+                    contact.code = invite.recipient_code
+                    contacts.append(contact)
             sent = sent + [invite.id for invite in invites_group if invite]
             Contact.send_mail(sender, subject, body, contacts)
-        benchmark.invites.filter(id__in=sent).update(status=1, sent_date = datetime.date(datetime.now()))
+        benchmark.invites.filter(id__in=sent).update(status=1, sent_date=datetime.date(datetime.now()))
         if len(invites_without_email) > 100:
             send_invites.apply_async((benchmark_id,), countdown=86400)
         else:
@@ -85,7 +93,6 @@ def send_reminders():
     query = '''
     SELECT
       "social_contact"."id",
-      "social_contact"."code",
       "social_contact"."provider",
       "social_contact"."first_name",
       "social_contact"."last_name",
@@ -93,8 +100,10 @@ def send_reminders():
       "social_contact"."headline",
       "social_contact"."location_id",
       "social_contact"."company_id",
-      "social_contact"."user_id"
+      "social_contact"."user_id",
+      "social_contact_owners".code
     FROM "social_contact"
+      INNER JOIN  "social_contact_owners" ON social_contact.id = social_contact_owners.contact_id
       INNER JOIN  "bm_benchmarkinvitation" ON ( "social_contact"."id" = "bm_benchmarkinvitation"."recipient_id" )
       INNER JOIN  "bm_benchmark" ON ( "bm_benchmarkinvitation"."benchmark_id" = "bm_benchmark"."id" )
       INNER JOIN  "bm_question" ON ( "bm_benchmark"."id" = "bm_question"."benchmark_id" )
@@ -102,6 +111,7 @@ def send_reminders():
       LEFT JOIN   "bm_questionresponse" ON ( "auth_user"."id" = "bm_questionresponse"."user_id" AND bm_questionresponse.question_id = bm_question.id )
     WHERE
       "bm_benchmark"."id" = %s
+      AND "bm_benchmark".owner_id = "social_contact_owners".user_id
       AND "bm_benchmarkinvitation"."status" = '1'
       AND bm_questionresponse.id IS NULL
         '''

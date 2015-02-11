@@ -22,3 +22,17 @@ class ArrayAgg(AggregateWrapper):
         aggregate = ArrayAggSql(col, source=source, is_summary=is_summary, **self.extra)
         aggregate.field = DecimalField()
         query.aggregates[alias] = aggregate
+
+
+class StringAggSql(Aggregate):
+    sql_function = 'string_agg'
+    sql_template = "%(function)s(%(field)s, '')"
+
+
+class StringAgg(AggregateWrapper):
+    name = 'String_Agg'
+
+    def add_to_query(self, query, alias, col, source, is_summary):
+        aggregate = StringAggSql(col, source=source, is_summary=is_summary, **self.extra)
+        aggregate.field = DecimalField()
+        query.aggregates[alias] = aggregate
