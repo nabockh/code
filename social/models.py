@@ -139,9 +139,10 @@ class Contact(models.Model):
             return
 
         #check if contact already exists
-        contact = None if already_checked else \
-            ContactOwners.objects.filter(user=owner, code=kwargs['id'], contact__provider=provider).first()
-        if contact is None:
+        contact_code = None if already_checked else \
+            ContactOwners.objects.filter(user=owner, code=kwargs['id'], contact__provider=provider)\
+                .select_related('contact').first()
+        if contact_code is None:
             contact_code = ContactOwners.objects.filter(user=owner,
                                                         contact__first_name=kwargs['firstName'],
                                                         contact__last_name=kwargs['lastName'],
@@ -152,7 +153,9 @@ class Contact(models.Model):
                     contact_code.code = kwargs['id']
                     contact_code.save()
                 return contact_code.contact
-        contact = contact or cls()
+        else:
+            return contact_code.contact
+        contact = cls()
         with transaction.atomic():
             try:
                 if kwargs.get('positions').get('values'):
