@@ -320,7 +320,7 @@ class DeclineBenchmarkForm(forms.Form):
 class SendMailForm(forms.Form):
     def __init__(self, user, *args, **kwargs):
         super(SendMailForm, self).__init__(*args, **kwargs)
-        self.fields['User'] = forms.CharField(widget=forms.TextInput({'value': user}))
+        self.fields['User'] = forms.CharField(widget=forms.TextInput({'value': user.first_name}))
         self.fields['To'] = forms.EmailField(widget=forms.TextInput({'value': user.email}))
         self.fields['Subject'] = forms.CharField()
         self.fields['Email_text'] = forms.CharField(widget=forms.Textarea())
