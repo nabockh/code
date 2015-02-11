@@ -68,9 +68,9 @@ def beta_login(backend, details, request, response, uid, user, social_user=None,
     if invited.exists():
         return
 
-    forwarded_invites = BenchmarkInvitation.user_friendly_invites(details['first_name'],
-                                                                  details['last_name'])
-    if not allowed and len([x for x in forwarded_invites]) == 0:
+    forwarded_invites_count = BenchmarkInvitation.user_friendly_invites_count(details['first_name'],
+                                                                              details['last_name'])
+    if not allowed and forwarded_invites_count == 0:
         raise StopPipeline
 
 

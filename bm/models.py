@@ -545,9 +545,9 @@ class BenchmarkInvitation(models.Model):
         return str(self.recipient)
 
     @classmethod
-    def user_friendly_invites(cls, first_name, last_name, bm_id=None):
+    def user_friendly_invites_count(cls, first_name, last_name, bm_id=None):
         query = """
-            SELECT * FROM bm_benchmarkinvitation i
+            SELECT i.id FROM bm_benchmarkinvitation i
               INNER JOIN social_contact sc ON sc.id = i.recipient_id
               INNER JOIN social_contact_owners o ON o.user_id = sc.user_id
               INNER JOIN social_contact c ON o.contact_id=c.id
@@ -560,7 +560,7 @@ class BenchmarkInvitation(models.Model):
             query += ' AND i.benchmark_id=%s'
             args.append(bm_id)
 
-        return cls.objects.raw(query, args)
+        return len(list(cls.objects.raw(query, args)))
 
 
 class BenchmarkLink(models.Model):

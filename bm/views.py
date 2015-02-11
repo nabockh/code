@@ -387,14 +387,14 @@ class BaseBenchmarkAnswerView(FormView):
             .first()
         if user_responses_count and not DEBUG:
             return HttpResponseRedirect(REGISTERED_USER_REDIRECT_URL)
-        friendly_contacts = BenchmarkInvitation.user_friendly_invites(
+        friendly_contacts_count = BenchmarkInvitation.user_friendly_invites_count(
                                     request.user.first_name,
                                     request.user.last_name,
                                     benchmark.id)
 
         recipient = benchmark.invites. filter(
                                  Q(recipient__user=request.user)).first()
-        if not recipient and len([x for x in friendly_contacts]) == 0:
+        if not recipient and friendly_contacts_count == 0:
             return ForbiddenView.as_view()(self.request, *args, **kwargs)
 
         question_type = benchmark.question.first().type
