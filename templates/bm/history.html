@@ -72,7 +72,7 @@
                                   <td class='date'>{{ benchmark.start_date }}</td>
                                   <td class='benchmark'>
                                     <div class='text-teal'><strong><a href='/benchmark/{{ benchmark.id }}'>{{ benchmark.name }}</a></strong></div>
-                                    <div class='benchmark_query'>{{ benchmark.question.first.description }}</div>
+                                    <div class='benchmark_query'>{{ benchmark.description }}</div>
                                   </td>
                                   <td class='owner text-teal'>{{ benchmark.owner.first_name }} {{ benchmark.owner.last_name }}</td>
                                   <td class='participants'>{{ benchmark.contributors }}</td>

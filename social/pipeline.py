@@ -1,4 +1,5 @@
 from uuid import uuid4
+from app.settings import DEBUG
 from django.shortcuts import redirect
 from social.models import Profile, Company, LinkedInIndustry, Contact, Invite
 from bm.models import Region, BenchmarkInvitation
@@ -75,9 +76,10 @@ def beta_login(backend, details, request, response, uid, user, social_user=None,
 
 
 def contacts_validation(backend, details, request, response, uid, user, social_user=None, *args, **kwargs):
-    connections = get_contacts(tokens=response['access_token'])
-    if connections is None or len(connections) < 10:
-        raise StopPipeline
+    if not DEBUG:
+        connections = get_contacts(tokens=response['access_token'])
+        if connections is None or len(connections) < 10:
+            raise StopPipeline
 
 
 def load_extra_data(backend, details,request, response, uid, user, social_user=None,

@@ -51,7 +51,7 @@ def get_contacts(user=None, tokens=None):
         try:
             connections = application.get_connections(selectors=['id', 'first-name', 'last-name', 'industry', 'location', 'headline', 'positions'])
         except LinkedInError as e:
-            logging.exception('LinkedIn auth error for user "%s": %s' % (user.username, e))
+            logging.exception('LinkedIn auth error for user "%s": %s' % (user and user.username, e))
             connections = {}
         if connections.has_key('_total') and connections['_total'] != 0:
             return connections['values']

@@ -156,17 +156,19 @@ class Benchmark(models.Model):
         return {}
 
     def calc_average_rating(self):
-        all_ratings = BenchmarkRating.objects.filter(benchmark=self)
-        if all_ratings:
-            rating_digits = [rating.rating for rating in all_ratings]
-            average = float(sum(rating_digits))/len(rating_digits)
-        else:
-            average = 0
-        return average
+        if not hasattr(self, 'rate_avg'):
+            all_ratings = BenchmarkRating.objects.filter(benchmark=self).values_list('rating', flat=True)
+            if all_ratings:
+                self.rate_avg = float(sum(all_ratings))/len(all_ratings)
+            else:
+                self.rate_avg = 0
+        return self.rate_avg or 0
 
     @property
     def contributors(self):
-        return self.question.first().responses.count()
+        if not hasattr(self, '_contributors'):
+            return self.question.first().responses.count()
+        return self._contributors
 
     @property
     def charts_allowed(self):

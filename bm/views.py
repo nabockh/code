@@ -1,5 +1,6 @@
 from datetime import datetime
 from app.settings import DEBUG, REGISTERED_USER_REDIRECT_URL
+from bm.utils import StringAgg
 from django.core.cache import get_cache
 from metrics.utils import event_log
 from bm import metric_events
@@ -28,7 +29,7 @@ from django.utils.decorators import method_decorator
 from django.views.generic import ListView, TemplateView
 from django.views.generic.edit import FormView
 from bm.signals import benchmark_answered, benchmark_created
-from django.db.models import Count, Q
+from django.db.models import Count, Q, Avg, F
 from social.models import Contact
 
 import json
@@ -355,7 +356,11 @@ class BenchmarkSearchView(ListView):
         return super(BenchmarkSearchView, self).dispatch(request, *args, **kwargs)
 
     def get_queryset(self):
-        return Benchmark.valid.filter(end_date__lte=datetime.now()).order_by('-start_date')
+        return Benchmark.valid.filter(end_date__lte=datetime.now())\
+            .extra(select={'description': 'bm_question.description'})\
+            .select_related('owner')\
+            .annotate(rate_avg=Avg('ratings__rating'),
+                      _contributors=Count('question__responses')).order_by('-start_date')
 
 
 class BaseBenchmarkAnswerView(FormView):
