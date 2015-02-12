@@ -11,6 +11,7 @@ from django.core.urlresolvers import reverse
 from django.db import models, IntegrityError, connection
 from django.db.models import Count, F
 from django.db.models.aggregates import Min
+from django.utils.functional import cached_property
 from social.models import LinkedInIndustry
 from social_auth.db.django_models import USER_MODEL
 import numpy
@@ -151,7 +152,7 @@ class Benchmark(models.Model):
         cursor.close()
         return result
 
-    @property
+    @cached_property
     def charts(self):
         return {}
 
@@ -188,7 +189,7 @@ class BenchmarkMultiple(Benchmark):
     available_charts = [('Pie', 'Pie Chart'), ('Column', 'Column Chart')]
     default_chart = 'Pie'
 
-    @property
+    @cached_property
     def charts(self):
         series = self.series_statistic.values('series', 'value')
         series = [[str(s['series']), s['value']] for s in series]
@@ -223,7 +224,7 @@ class BenchmarkRanking(Benchmark):
     available_charts = [('Bar', 'Bar Chart')]
     default_chart = 'Bar'
 
-    @property
+    @cached_property
     def charts(self):
         series1 = self.series_statistic.values('series', 'sub_series', 'value').order_by('series')
         ranks = []
@@ -318,7 +319,7 @@ class BenchmarkNumeric(Benchmark):
     available_charts = [('Area', 'Area Chart'), ('Bell_Curve', 'Bell Curve Chart')]
     default_chart = 'Area'
 
-    @property
+    @cached_property
     def charts(self):
         responses = [i.data_numeric.all() for i in self.question.first().responses.all()]
         # remove extreme values from numeric responses values
@@ -389,7 +390,7 @@ class BenchmarkRange(Benchmark):
     available_charts = [('Area', 'Area Chart'), ('Quartile', 'Quartile Chart')]
     default_chart = 'Area'
 
-    @property
+    @cached_property
     def charts(self):
         series = self.series_statistic.values('series', 'sub_series', 'value').order_by('id')
         series1 = [[str(s['series'] + '-' + s['sub_series']), s['value']] for s in series]
@@ -501,7 +502,7 @@ class BenchmarkYesNo(Benchmark):
     available_charts = [('Pie', 'Pie Chart'), ('Column', 'Column Chart')]
     default_chart = 'Pie'
 
-    @property
+    @cached_property
     def charts(self):
         series = self.series_statistic.values('series', 'value')
         series = [[str(s['series']), s['value']] for s in series]

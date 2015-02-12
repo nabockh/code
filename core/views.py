@@ -15,6 +15,7 @@ from django.core.cache import get_cache
 from django.core.mail import send_mail
 from django.core.urlresolvers import reverse
 from django.db import IntegrityError
+from django.db.models import Avg, Count
 from django.http import HttpResponseRedirect, HttpResponseForbidden, HttpResponse
 from django.shortcuts import render, resolve_url, render_to_response, get_object_or_404
 from django.template.response import TemplateResponse
@@ -122,6 +123,7 @@ class DashboardView(TemplateView):
         context['benchmarks'] = {
             'pending': Benchmark.pending.filter(models.Q(question__responses__user=self.request.user) |
                                                 models.Q(owner=self.request.user)) \
+                .annotate(_contributors=Count('question__responses'))\
                 .order_by('-end_date', '-id'),
             'recent': Benchmark.objects \
                 .annotate(responses_count=models.Count('question__responses', distinct=True)) \
@@ -130,6 +132,8 @@ class DashboardView(TemplateView):
                                  end_date__lte=datetime.now()) &
                         (models.Q(question__responses__user=self.request.user) |
                          models.Q(owner=self.request.user)) ) \
+                .extra(select={'label': 'bm_question.label'})\
+                .annotate(rate_avg=Avg('ratings__rating'), _contributors=Count('question__responses'))\
                 .order_by('-end_date', '-id')[:5],
 
         }
@@ -140,6 +144,8 @@ class DashboardView(TemplateView):
                           end_date__lte=datetime.now())) &
                 (models.Q(_industry=self.request.user.social_profile.first().company.industry) |
                  models.Q(_industry=None))) \
+                .extra(select={'label': 'bm_question.label'})\
+                .annotate(rate_avg=Avg('ratings__rating'), _contributors=Count('question__responses'))\
                 .order_by('-end_date', '-id')
         else:
             context['benchmarks']['popular'] = None

@@ -1,5 +1,5 @@
-    <div class='title' title='{{ benchmark.question.first.label }}'><a
-            href='/benchmark/{{ benchmark.id }}'>{{ benchmark.question.first.label }}</a></div>
+    <div class='title' title='{{ benchmark.label }}'><a
+            href='/benchmark/{{ benchmark.id }}'>{{ benchmark.label }}</a></div>
     {% if benchmark.question_type == 1 %}
         <div id='donutChartHolder-{{ benchmark.id }}'>
             <div id='donutChart' class='bigChart donut'></div>

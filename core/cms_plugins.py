@@ -5,6 +5,7 @@ from cms.plugin_pool import plugin_pool
 from core.models import DashboardPanel, DashboardHistory, DashboardPending, DashboardRecent, DashboardPopular, \
     ButtonInviteColleague, HomeExample, HomeHowItWorks
 from django.utils.translation import ugettext_lazy as _
+from django.db.models import Avg, Count
 import django.db.models as models
 
 class DashboardPanelGroupPlugin(CMSPluginBase):
@@ -53,7 +54,9 @@ class DashboardPendingPlugin(CMSPluginBase):
         context['placeholder'] = placeholder
         context['benchmarks'] = {
                 'pending': Benchmark.pending.filter(models.Q(question__responses__user=context['request'].user) |
-                                                    models.Q(owner=context['request'].user)).order_by('-end_date', '-id'),
+                                                    models.Q(owner=context['request'].user))\
+                    .annotate(_contributors=Count('question__responses'))\
+                    .order_by('-end_date', '-id'),
         }
         return context
 
@@ -76,6 +79,8 @@ class DashboardRecentPlugin(CMSPluginBase):
                                  end_date__lte=datetime.now()) &
                         (models.Q(question__responses__user=context['request'].user) |
                          models.Q(owner=context['request'].user)) ) \
+                .extra(select={'label': 'bm_question.label'})\
+                .annotate(rate_avg=Avg('ratings__rating'), _contributors=Count('question__responses'))\
                 .order_by('-end_date', '-id')[:5]
         }
         return context
@@ -97,6 +102,8 @@ class DashboardPopularPlugin(CMSPluginBase):
                                 popular=True,
                                 end_date__lte=datetime.now(),
                                 _industry=context['request'].user.social_profile.first().company.industry) \
+                            .extra(select={'label': 'bm_question.label'})\
+                            .annotate(rate_avg=Avg('ratings__rating'), _contributors=Count('question__responses'))\
                             .order_by('-end_date', '-id')
             }
         return context
