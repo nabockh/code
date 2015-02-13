@@ -194,6 +194,10 @@ LOGGING = {
             'format': "\n%(levelname)s[%(asctime)s]\n%(message)s\n",
             'datefmt': '%y %b %d, %H:%M:%S',
         },
+        'message': {
+            'format': "[%(asctime)s]%(message)s",
+            'datefmt': '%y %b %d, %H:%M:%S',
+        },
     },
     'handlers': {
         'file': {
@@ -220,6 +224,13 @@ LOGGING = {
             'formatter': 'simple',
             'maxBytes': 1024 * 1024 * 100,  # 100 mb
         },
+        'message': {
+            'level': 'INFO',
+            'class': 'logging.handlers.RotatingFileHandler',
+            'filename': 'log/notifications.log',
+            'formatter': 'message',
+            'maxBytes': 1024 * 1024 * 200,  # 100 mb
+        }
     },
     'loggers': {
         'django.request': {
@@ -232,6 +243,10 @@ LOGGING = {
             'level': 'ERROR',
             'propagate': True,
         },
+        'mail.messages': {
+            'handlers': ['message'],
+            'level': 'INFO',
+        }
     },
 }
 

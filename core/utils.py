@@ -17,6 +17,7 @@ from django.contrib.sites.models import Site
 
 logging.config.dictConfig(settings.LOGGING)
 logger = logging.getLogger('bedade.background')
+mail_logger = logging.getLogger('mail.messages')
 
 
 def get_context_variables(benchmark):

@@ -7,6 +7,9 @@ from linkedin import linkedin
 from social.backend.linkedin import extract_access_tokens, LinkedInApplication
 from social_auth.db.django_models import USER_MODEL
 import random
+import logging
+logging.config.dictConfig(settings.LOGGING)
+logger = logging.getLogger('mail.messages')
 
 
 class LinkedInIndustry(models.Model):
@@ -108,16 +111,20 @@ class Contact(models.Model):
         return self.full_name
 
     @classmethod
-    def send_mail(cls, user_from, subject, body, contacts):
+    def send_mail(cls, user_from, subject, body, contacts, benchmark=None):
         if not list(contacts):
             return
         assert isinstance(contacts[0], cls), 'Contacts should be social.Contact instances'
         recipients_without_email = []
+        recipients_names_without_email = []
         for contact in contacts:
             if contact.email:
                 send_mail(subject, body, user_from.email, recipient_list=[contact.email])
+                logger.info('[%s] To: %s; BM: %s' % (subject, '%s<%s>' % (contact.full_name, contact.email),
+                                                     benchmark and benchmark.id))
             else:
                 recipients_without_email.append(contact.code)
+                recipients_names_without_email.append(contact.full_name)
         if len(recipients_without_email):
             auth = user_from.social_auth.first()
             user_access = extract_access_tokens(auth.tokens)
@@ -130,6 +137,8 @@ class Contact(models.Model):
             )
             application = LinkedInApplication(authentication)
             application.send_message(subject, body, recipients_without_email)
+            recipients = ('%s<%s>' % i for i in zip(recipients_names_without_email, recipients_without_email))
+            logger.info('[%s] To: %s; BM: %s' % (subject, ', '.join(recipients), benchmark and benchmark.id))
 
     @classmethod
     def create(cls, owner, provider, already_checked=False, **kwargs):

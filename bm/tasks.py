@@ -4,7 +4,7 @@ from bm.models import Benchmark, BenchmarkInvitation, BmInviteEmail, QuestionRes
 from datetime import datetime, timedelta
 from bm.utils import StringAgg
 from celery import shared_task
-from core.utils import celery_log, logger, get_context_variables_by_id
+from core.utils import celery_log, logger, get_context_variables_by_id, mail_logger
 from django.contrib.sites.models import Site
 from django.core.mail import send_mail
 from django.core.urlresolvers import reverse
@@ -58,7 +58,7 @@ def send_invites(benchmark_id):
         sent = []
         for invite in invites:
             if invite.recipient.email:
-                Contact.send_mail(invite.sender, subject, body, (invite.recipient,))
+                Contact.send_mail(invite.sender, subject, body, (invite.recipient,), benchmark)
                 sent.append(invite.id)
             else:
                 invites_without_email.append(invite)
@@ -74,7 +74,7 @@ def send_invites(benchmark_id):
                     contact.code = invite.recipient_code
                     contacts.append(contact)
             sent = sent + [invite.id for invite in invites_group if invite]
-            Contact.send_mail(sender, subject, body, contacts)
+            Contact.send_mail(sender, subject, body, contacts, benchmark)
         benchmark.invites.filter(id__in=sent).update(status=1, sent_date=datetime.date(datetime.now()))
         if len(invites_without_email) > 100:
             send_invites.apply_async((benchmark_id,), countdown=86400)
@@ -130,7 +130,7 @@ def send_reminders():
             body = get_template('alerts/reminder_not_responded.html').render(context)
             if benchmark.owner:
                 if contact.email:
-                    Contact.send_mail(benchmark.owner, subject, body, [contact])
+                    Contact.send_mail(benchmark.owner, subject, body, [contact], benchmark)
                     sent.append(contact.id)
                 else:
                     contacts_without_email.append(contact)
@@ -138,7 +138,7 @@ def send_reminders():
                         count_contacts_without_email += len(contacts_without_email)
                         if count_contacts_without_email <= 100:
                             try:
-                                Contact.send_mail(benchmark.owner, subject, body, contacts_without_email)
+                                Contact.send_mail(benchmark.owner, subject, body, contacts_without_email, benchmark)
                                 sent = sent + [c.id for c in contacts_without_email]
                                 contacts_without_email = []
                             except:
@@ -197,6 +197,7 @@ def check_benchmark_results():
     SELECT
       bm_benchmarkinvitation.*,
       social_contact.first_name as contact_first_name,
+      social_contact.last_name as contact_last_name,
       social_contact.email as contact_email
     FROM bm_benchmarkinvitation
       JOIN social_contact ON social_contact.id = bm_benchmarkinvitation.recipient_id
@@ -218,6 +219,8 @@ def check_benchmark_results():
         body = get_template('alerts/benchmark_results.html').render(context)
         if send_mail(subject, body, None, [invite.contact_email,]):
             successfully_send.append(invite.id)
+            recipient_name = '%s %s<%s>' % (invite.contact_first_name, invite.contact_last_name, invite.contact_email)
+            mail_logger.info('[%s] To: %s; BM: %s' % (subject, recipient_name, invite.benchmark_id))
     BenchmarkInvitation.objects.filter(id__in=successfully_send)\
         .update(status=3, sent_date=datetime.date(datetime.now()))
 
