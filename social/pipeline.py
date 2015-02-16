@@ -1,10 +1,10 @@
 from uuid import uuid4
 from app.settings import DEBUG
 from django.shortcuts import redirect
-from social.models import Profile, Company, LinkedInIndustry, Contact, Invite
+from social.models import Profile, Company, LinkedInIndustry, Contact, Invite, ContactOwners
 from bm.models import Region, BenchmarkInvitation
 from social_auth.exceptions import StopPipeline, AuthFailed
-from django.db.models import Count
+from django.db.models import Count, Q
 from social.backend.linkedin import get_contacts
 from social_auth.backends.pipeline.user import create_user
 from social_auth.utils import setting, module_member
@@ -94,6 +94,13 @@ def load_extra_data(backend, details,request, response, uid, user, social_user=N
         social_contact.user = user
         social_contact.email = user.email
         social_contact.save()
+    else:
+        social_contact = Contact.objects.filter(Q(user=user) | Q(email=user.email)).first()
+        if social_contact:
+            social_contact.user = user
+            social_contact.email = user.email
+            social_contact.save()
+            ContactOwners.objects.filter(contact=social_contact).update(code=uid)
 
     if not social_profile:
         social_profile = Profile()
