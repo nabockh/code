@@ -88,7 +88,7 @@ class Contact(models.Model):
     def code(self):
         if self._code is None:
             self._code = self.codes.filter(user_id=self.owner_id).first()\
-                if hasattr(self, 'owner_id') else self.codes.first()
+                if hasattr(self, 'owner_id') else str(self.codes.first())
         return self._code
 
     @code.setter
@@ -246,6 +246,9 @@ class ContactOwners(models.Model):
     contact = models.ForeignKey(Contact, related_name='codes')
     user = models.ForeignKey(USER_MODEL, related_name='contact_codes')
     code = models.CharField(max_length=10, null=True)
+
+    def __str__(self):
+        return self.code
 
 
 class Invite(models.Model):
