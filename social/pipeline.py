@@ -95,7 +95,7 @@ def load_extra_data(backend, details,request, response, uid, user, social_user=N
         social_contact.email = user.email
         social_contact.save()
     else:
-        social_contact = Contact.objects.filter(Q(user=user) | Q(email=user.email)).first()
+        social_contact = Contact.objects.filter(Q(user=user) | Q(_email=user.email)).first()
         if social_contact:
             social_contact.user = user
             social_contact.email = user.email
