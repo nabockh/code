@@ -129,10 +129,10 @@
 {% endblock %}
 
 {% block content %}
-    {% cache 3600 home_page %}
         {% if terms_and_conditions_form %}
             {% include 'core/explanation_pop_up.html' %}
         {% endif %}
+        {% cache 3600 home_page %}
         <div class="colorblock banner" id='banner'>
             <div class='container text-center'>
                 <span class='big-title'>
