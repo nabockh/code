@@ -168,7 +168,8 @@ class BenchmarkCreateWizardView(SessionWizardView):
             'query_details': form.cleaned_data['question_text'],
             'benchmark_creator': benchmark.owner.get_full_name(),
             'link_to_answer': "Link to answer form will be here",
-            'link_to_bm_results': "Link to benchmark results will be here"
+            'link_to_bm_results': "Link to benchmark results will be here",
+            'remaining_before_closure': benchmark.days_left,
         })
         preview_body = request.session._session.get('preview_body', None)
         default_preview = request.session._session.get('default_preview', None)

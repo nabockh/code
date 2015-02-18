@@ -72,7 +72,7 @@ def check_new_bm_created(sender, request, benchmark, **kwargs):
     messages.add_message(request, MESSAGE_BM_CREATED, 'New Benchmark was created - %s' % benchmark.name )
     raw_context = get_context_variables(benchmark)
     raw_context['type'] = type
-    raw_context['remaining_before_closure'] = (benchmark.end_date.date() - datetime.now().date()).days
+    raw_context['remaining_before_closure'] = benchmark.days_left
     context = Context(raw_context)
     if len(recipient_list) > 0:
         send_mail('New Benchmark has been created', template.render(context), None, recipient_list)
