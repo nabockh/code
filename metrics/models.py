@@ -9,6 +9,7 @@ import keen
 import logging
 from app import settings
 from keen.exceptions import BaseKeenClientError
+from requests import ConnectionError
 
 
 logging.config.dictConfig(settings.LOGGING)
@@ -75,6 +76,6 @@ class Event(models.Model):
                         'user': user.get_full_name() if user else '',
                         'user_id': user.id if user else '',
                     })
-            except BaseKeenClientError:
+            except (BaseKeenClientError, ConnectionError):
                 logger.exception('Error occurred when logging an event to Keen')
             return obj

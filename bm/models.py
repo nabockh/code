@@ -115,8 +115,11 @@ class Benchmark(models.Model):
 
     @property
     def days_left(self):
-        delta = self.end_date - datetime.now().date()
-        return delta.days
+        if self.end_date:
+            delta = self.end_date - datetime.now().date()
+            return delta.days
+        else:
+            return 4
 
     @property
     def progress(self):
