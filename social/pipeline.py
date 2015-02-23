@@ -126,6 +126,8 @@ def load_extra_data(backend, details,request, response, uid, user, social_user=N
                             company = Company.objects.filter(name=position_company.get('name', None)).first()
                     elif response.get('positions', {}).get('position', {}).has_key('company'):
                         position_company = response.get('positions', {}).get('position', {}).get('company', {})
+                        if type(position_company) == str:
+                            position_company = dict(name=position_company)
                         if position_company.has_key('id'):
                             company = Company.objects.filter(code=position_company['id']).first()
                         elif position_company.has_key('name'):
