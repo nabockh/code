@@ -162,6 +162,23 @@ class Contact(models.Model):
                     contact_code.code = kwargs['id']
                     contact_code.save()
                 return contact_code.contact
+            else:
+                ###Try to find this contact for other owners
+                other_contact_code = ContactOwners.objects.filter(code=kwargs['id'], contact__provider=provider)\
+                    .select_related('contact').first()
+                if other_contact_code is None:
+                    other_contact_code = ContactOwners.objects.filter(
+                                                        contact__first_name=kwargs['firstName'],
+                                                        contact__last_name=kwargs['lastName'],
+                                                        contact__headline=kwargs.get('headline'),
+                                                        contact__provider=provider).select_related('contact').first()
+                if other_contact_code:
+                    contact_code = ContactOwners()
+                    contact_code.code = kwargs['id']
+                    contact_code.user = owner
+                    contact_code.contact = other_contact_code.contact
+                    contact_code.save()
+                    return contact_code.contact
         else:
             return contact_code.contact
         contact = cls()
