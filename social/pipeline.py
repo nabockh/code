@@ -89,11 +89,9 @@ def load_extra_data(backend, details,request, response, uid, user, social_user=N
 
     """
     social_profile = Profile.objects.filter(user=user).first()
-    social_contact = Contact.objects.filter(codes__code=uid).first()
-    if social_contact:
-        social_contact.user = user
-        social_contact.email = user.email
-        social_contact.save()
+    social_contacts = Contact.objects.filter(codes__code=uid)
+    if social_contacts.exists():
+        social_contacts.update(user=user, email=user.email)
     else:
         social_contact = Contact.objects.filter(Q(user=user) | Q(_email=user.email)).first()
         if social_contact:

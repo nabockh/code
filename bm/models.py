@@ -115,11 +115,14 @@ class Benchmark(models.Model):
 
     @property
     def days_left(self):
-        if self.end_date:
+        if self.end_date is not None:
             if type(self.end_date) == datetime:
                 self.end_date = self.end_date.date()
-            delta = self.end_date - datetime.now().date()
-            return delta.days
+            try:
+                delta = self.end_date - datetime.now().date()
+                return delta.days
+            except:
+                return 4
         else:
             return 4
 

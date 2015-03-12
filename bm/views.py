@@ -398,8 +398,7 @@ class BaseBenchmarkAnswerView(FormView):
                                     request.user.last_name,
                                     benchmark.id)
 
-        recipient = benchmark.invites. filter(
-                                 Q(recipient__user=request.user)).first()
+        recipient = benchmark.invites.filter(Q(recipient__user=request.user)).first()
         if not recipient and friendly_contacts_count == 0:
             return ForbiddenView.as_view()(self.request, *args, **kwargs)
 

@@ -32,18 +32,18 @@ def periodic_import_linkedin_contacts():
     auth_user_ids = User.objects.values_list('id', flat=True)
     for user_id in auth_user_ids:
         periodic_import_linkedin_contacts_for_user.delay(user_id)
+    clear_unused_contacts.delay()
 
 @shared_task
 @celery_log
 def periodic_import_linkedin_contacts_for_user(user_id):
     """
     periodic task for import of linked in
-    contacts for all users with social profile.
-    Execute on the first day of every month.
-    Developers are morons!
+    contacts for particular user with social profile.
     """
     user = User.objects.filter(id=user_id).first()
     if user and user.social_auth.first():
+        logger.info('Importing contacts for %s' % user)
         contacts = linkedin.get_contacts(user)
         num_contacts = len(contacts)
         contacts = {c['id']: c for c in contacts if c['id'] != 'private'}
@@ -62,4 +62,11 @@ def periodic_import_linkedin_contacts_for_user(user_id):
                 logging.info('  -- processed %s%% of "%s" contacts' % (progress_pct, user.username))
                 last_pct = progress_pct
         #clear old dependencies for e.g. if some contact changed his headline, for removing duplicates
+        # Contact.objects.filter(codes__code__in=contact_codes, codes__user=user)
         ContactOwners.objects.filter(user=user).exclude(code__in=contact_codes).delete()
+
+
+@shared_task
+@celery_log
+def clear_unused_contacts():
+    Contact.objects.filter(codes__id__isnull=True).delete()
