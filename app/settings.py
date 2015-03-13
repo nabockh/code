@@ -181,9 +181,9 @@ TEMPLATE_DIRS = (
 )
 
 ADMINS = (
-    # ('Volodymyr', 'volodymyr.trotsyshyn@perfectial.com'),
-    #('Volodymyr', 'devova@gmail.com'),
-    ('Petro', 'petro.zdeb@perfectial.com'),
+    ('Volodymyr', 'volodymyr.trotsyshyn@perfectial.com'),
+    # ('Volodymyr', 'devova@gmail.com'),
+    # ('Petro', 'petro.zdeb@perfectial.com'),
 )
 
 LOGGING = {
@@ -234,7 +234,7 @@ LOGGING = {
     },
     'loggers': {
         'django.request': {
-            'handlers': ['file'],
+            'handlers': ['file', 'mail_admins'],
             'level': 'ERROR',
             'propagate': True,
         },
