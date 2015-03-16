@@ -69,4 +69,4 @@ def periodic_import_linkedin_contacts_for_user(user_id):
 @shared_task
 @celery_log
 def clear_unused_contacts():
-    Contact.objects.filter(codes__id__isnull=True).delete()
+    Contact.objects.filter(codes__id__isnull=True, invites__id__isnull=True).delete()

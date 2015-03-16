@@ -174,7 +174,7 @@ class Contact(models.Model):
                                                         contact__provider=provider).select_related('contact').first()
                 if other_contact_code:
                     contact_code = ContactOwners()
-                    contact_code.code = kwargs['id']
+                    contact_code.code = other_contact_code.code
                     contact_code.user = owner
                     contact_code.contact = other_contact_code.contact
                     contact_code.save()
