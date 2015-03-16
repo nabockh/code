@@ -167,8 +167,12 @@ def benchmark_aggregate(self):
 @celery_log
 def check_response_count():
     today = datetime.now()
-    benchmarks = Benchmark.objects.annotate(responses_count=Count('question__responses', distinct=True))\
-        .filter(end_date__lte=today, responses_count__lt=F('min_numbers_of_responses'), approved=True).exclude(invites__status=4)
+    benchmarks = Benchmark.objects.annotate(responses_count=Count('question__responses', distinct=True),
+                                            invites_count=Count('invites', distinct=True))\
+        .filter(end_date__lte=today,
+                responses_count__lt=F('min_numbers_of_responses'),
+                invites_count__gt=0,
+                approved=True).exclude(invites__status=4)
     if benchmarks.exists():
         benchmark_names = ', '.join([benchmark.name for benchmark in benchmarks])
         recipient_list = [email for email in User.objects.filter(is_superuser=True).values_list('email', flat=True) if email]
