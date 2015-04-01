@@ -123,7 +123,6 @@ class DashboardView(TemplateView):
         context['benchmarks'] = {
             'pending': Benchmark.pending.filter(models.Q(question__responses__user=self.request.user) |
                                                 models.Q(owner=self.request.user)) \
-                .annotate(_contributors=Count('question__responses'))\
                 .order_by('-end_date', '-id'),
             'recent': Benchmark.objects \
                 .annotate(responses_count=models.Count('question__responses', distinct=True)) \

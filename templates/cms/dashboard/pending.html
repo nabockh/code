@@ -4,8 +4,8 @@
             <p class="title" title='{{ benchmark.name }}'>{{ benchmark.name }}</p>
             <p class="info">
                 <span>
-                    {{ benchmark.contributors }}
-                    {% if benchmark.contributors <= benchmark.min_numbers_of_responses %}
+                    {{ benchmark.responses_count }}
+                    {% if benchmark.responses_count <= benchmark.min_numbers_of_responses %}
                         of {{ benchmark.min_numbers_of_responses }}
                     {% endif %}
                 </span>
@@ -22,8 +22,8 @@
             <p class="title" title='{{ benchmark.name }}'>{{ benchmark.name }}</p>
             <p class="info">
                 <span>
-                    {{ benchmark.contributors }}
-                    {% if benchmark.contributors <= benchmark.min_numbers_of_responses %}
+                    {{ benchmark.responses_count }}
+                    {% if benchmark.responses_count <= benchmark.min_numbers_of_responses %}
                         of {{ benchmark.min_numbers_of_responses }}
                     {% endif %}
                 </span>

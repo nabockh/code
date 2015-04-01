@@ -55,7 +55,6 @@ class DashboardPendingPlugin(CMSPluginBase):
         context['benchmarks'] = {
                 'pending': Benchmark.pending.filter(models.Q(question__responses__user=context['request'].user) |
                                                     models.Q(owner=context['request'].user))\
-                    .annotate(_contributors=Count('question__responses'))\
                     .order_by('-end_date', '-id'),
         }
         return context

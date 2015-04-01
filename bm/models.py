@@ -175,8 +175,10 @@ class Benchmark(models.Model):
 
     @property
     def contributors(self):
-        if not hasattr(self, '_contributors'):
+        if not hasattr(self, '_contributors') and not hasattr(self, 'responses_count'):
             return self.question.first().responses.count()
+        elif hasattr(self, 'responses_count'):
+            self._contributors = self.responses_count
         return self._contributors
 
     @property
