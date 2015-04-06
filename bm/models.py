@@ -119,7 +119,7 @@ class Benchmark(models.Model):
             if type(self.end_date) == datetime:
                 self.end_date = self.end_date.date()
             try:
-                delta = self.end_date - datetime.now().date()
+                delta = self.end_date - datetime.utcnow().date()
                 return delta.days
             except:
                 return 4
@@ -152,7 +152,7 @@ class Benchmark(models.Model):
     def calculate_deadline(self):
         count_without_email = self.invites.filter(recipient___email__isnull=True, recipient__user_id__isnull=True).count()
         days_to_sent_via_linkedin = math.ceil(float(count_without_email)/100)
-        self.end_date = datetime.now() + timedelta(days=days_to_sent_via_linkedin+BENCHMARK_DURATIONS_DAYS)
+        self.end_date = (datetime.utcnow() + timedelta(days=days_to_sent_via_linkedin+BENCHMARK_DURATIONS_DAYS)).date()
 
     def aggregate(self):
         cursor = connection.cursor()

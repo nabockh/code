@@ -153,9 +153,11 @@ def send_reminders():
 @periodic_task(bind=True, run_every=crontab(minute=1, hour=0), default_retry_delay=30*60)
 @celery_log
 def benchmark_aggregate(self):
-    today = datetime.now()
+    today = datetime.utcnow().date()
+    logger.debug('benchmark_aggregate today is: %s' % today.isoformat())
     benchmarks = Benchmark.valid.annotate(series_cnt=Count('series_statistic')) \
                                 .filter(end_date__lte=today, series_cnt=0)
+    logger.debug(benchmarks.query)
     for benchmark in benchmarks:
         try:
             benchmark.aggregate()
